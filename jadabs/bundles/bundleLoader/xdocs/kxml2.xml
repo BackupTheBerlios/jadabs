@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>kxml2 Pull Parser</title>
+  </properties>
+
+  <body>
+    <section name="kxml2 Pull Parser">    
+    <p>
+	<code>BundleLoader</code> expects bundles to be described in obr files, that are 
+	xml encoded. For parsing these (and other xml based descriptors), <code>kxml2</code>
+	by 
+	
+	is used. <code>kxml2</code> is a lightweight implementation of the xmlpull specification. 
+	So instead of building up large data structures for a DOM tree, xmlpull 
+	sweeps through the document and processes only the current element. But in difference 
+	to SAX, where handlers are registered that are called on specific events 
+	(SAX is a push system), xmlpull leaves it up to the application to extract 
+	the required information of the current element or continue processing with the 
+	next element. This is less flexible than DOM or SAX but very efficient in terms 
+	of resources and specially designed for small devices like PDAs or mobile phones. 	
+	</p>
+	</section>
+</body>
+</document>
+
+
+
+
+
+

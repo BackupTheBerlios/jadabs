@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Scheduling</title>
+  </properties>
+
+  <body>
+    <section name="Iterations instead of recursion">    
+    <p>
+	Generally, every bundle has a list of dependencies that are again bundles with each 
+	of them having dependencies again. This forms a tree with the root note beeing the 
+	bundle that is to be loaded and the child nodes having no more dependencies or only 
+	dependencies that already ocured on a higher level. For loading, these cycles are 
+	not relevant because once a dependency bundle is loades, it exports all the 
+	necessary classes and services and can used by all bundles that proceed. The problem 
+	of building up these dependency trees and flattening them to a linear schedule is 
+	inherently recursive. But recursions lead to a situation where many obr files must 
+	be processed at once because the parsing is not complete as long as not all 
+	dependencies have been parsed. Even simple scenarios with just a couple of dependencies
+	lead to an unacceptable memory consumtion by simultaneously open parsers and 
+	Java itself allows only a limited number of open files at once. The solution of this 
+	problem is to avoid this situation by using an iterative approach instead of a recursive.
+	</p>
+	</section>
+	<section name="Iterative resolution">
+	<p>
+	At the beginning, a list is filled with the initial <code>BundleDescriptor</code>. 
+	Then, a loop starts that takes in each iteration the first bundle in the list that has
+	unprocessed dependencies. This dependency either omitted because the BundleLoader 
+	has already resolved this bundle in prior iteration steps as a dependency of 
+	a different bundle. If this is not the case, it is processed in the sense that the according
+	obr is fetched and transformed to a new <code>BundleDescriptor</code>. This new descriptor 
+	is enqueued behind the bundle that had the dependency. Finally, the dependency is marked 
+	as processed and will not be touched again, the loop terminates when no more 
+	<code>BundleDescriptors</code> with unprocessed dependency are in the queue. 
+	The result of the procedure is a valid linear schedule that can be used to load 
+	the bundles and all dependencies will be fullfilled. 
+	<img src="scheduling1.gif" title="Iterative resolution" alt="Iterative resolution" />
+	</p>
+	</section>
+	<section name="Consequences">
+	<p>
+	Only one file is open per Iteration and it can be closed at the end of an iteration. 
+	At no time, more than one instance of the <code>kxml2</code> parser has to be used. 
+	Parsing and serializing of the schedule is done in one step. In Theory, the core algorithm runs in 
+	O(n), where n is the number of nodes in the dependency graph, in comparison, a parallel 
+	recursive algorithm could run in O(log(n)). This is the price for 
+	eliminating context switches and saving resources. As all processing is done in one loop, 
+	no overhead of function calls per element is created. 
+	</p>
+	</section>	
+</body>
+</document>
+
+
+
+
+
+

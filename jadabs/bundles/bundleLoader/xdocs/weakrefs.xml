@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Weak References</title>
+  </properties>
+
+  <body>
+    <section name="Weak References">    
+    <p>
+	During processing, all required obr files are parsed and used for building
+	<code>BundleDescriptors</code>. These descriptors are used for building
+	the schedule that finally describes the right order in that bundles with their
+	dependencies have to be loaded. In cases where many schedules have to be built up, 
+	the same <code>BundleDescriptor</code> may occur in several dependency trees 
+	so caching of the parsed information improves performance. On the other hand, 
+	small devices have only limited resources and a middleware layer 
+	like the <code>BundleLoader </code> should not 
+	comsume too much memory. The tradeoff between performance and resources is 
+	solved with the use of weak references, a native Java construct 
+	(<code>java.lang.ref.WeakReference</code>). Instead of 
+	having hard references that keep the referenced objects reachable, weak references
+	allow the garbage collector to collect the referenced objects in situations where 
+	memory becomes short. So all <code>BundleDescriptors</code> are weak references and can be reused 
+	at any time, only in cases where the Java VM requires additional memory for 
+	running application, the <code>BundleDescriptor</code> is collected and 
+	the next time the weak reference is accessed, it will return <code>null</code>. 
+	In this case, the BundleLoader parses the obr again. 
+ 	</p>
+ 	</section>    
+</body>
+</document>
+
+
+
+
+
+
