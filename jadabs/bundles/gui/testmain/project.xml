@@ -16,9 +16,9 @@
    <dependencies>
    
         <dependency>
-            <groupId>ibm</groupId>
-            <artifactId>swt-prsnlwin-ppcj9</artifactId>
-            <version>2.13</version>
+            <groupId>swt</groupId>
+            <artifactId>swt</artifactId>
+            <version>3.0.1-ppc</version>
         </dependency>
         
 	</dependencies>

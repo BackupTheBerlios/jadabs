@@ -2,7 +2,7 @@
 
 <project>
 
-	<extend>${basedir}/../../project.xml</extend>
+	<extend>${basedir}/../../../project.xml</extend>
 
   	<name>jadabsgui</name>
   	<groupId>jadabs</groupId>
@@ -28,13 +28,6 @@
             <version>3.0RC1-osgi</version>
         </dependency>
         
-        <!--
-        <dependency>
-            <groupId>ibm</groupId>
-            <artifactId>swt-prsnlwin-ppcj9</artifactId>
-            <version>2.13</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>jadabs</groupId>
             <artifactId>remotefw-api</artifactId>
