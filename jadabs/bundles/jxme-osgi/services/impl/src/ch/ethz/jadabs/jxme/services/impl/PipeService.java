@@ -1,5 +1,5 @@
 /**
- * $Id: PipeService.java,v 1.1 2004/11/08 07:30:35 afrei Exp $
+ * $Id: PipeService.java,v 1.2 2004/11/16 14:32:51 afrei Exp $
  *
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -206,14 +206,14 @@ public class PipeService extends Service implements Listener
     void send(Pipe pipe, Message message) throws IOException
     {
         String ownerId = pipe.getOwnerId();
-        LOG.debug("Pipe owner id: " + ownerId);
 
         EndpointAddress[] URIList = pipe.getResolvedURIList();
+        
         if (URIList == null) { throw new IOException("unresolved Pipe"); }
 
         try
         {
-            sendToEndpoint(message, pipe, URIList);
+                sendToEndpoint(message, pipe, URIList);
         } catch (IOException e)
         {
             // Couldn't sent to the URIList of the given Peer. May be the Peer
