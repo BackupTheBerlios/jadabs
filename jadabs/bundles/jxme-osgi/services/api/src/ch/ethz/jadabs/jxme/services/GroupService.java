@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: GroupService.java,v 1.1 2004/11/08 07:30:35 afrei Exp $
+ * $Id: GroupService.java,v 1.2 2005/01/12 20:59:10 printcap Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -150,7 +150,7 @@ public interface GroupService extends Listener
      * 
      * 
      * @param precookedID
-     *            pre-defined id of the resource bieng created. Can be null.
+     *            pre-defined id of the resource being created. Can be null.
      * 
      * @param arg
      *            an optional arg depending upon the type of resource being
