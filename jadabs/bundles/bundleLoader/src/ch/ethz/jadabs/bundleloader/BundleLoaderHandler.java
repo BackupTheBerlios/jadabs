@@ -23,7 +23,7 @@ public class BundleLoaderHandler implements ch.ethz.jadabs.http.RequestHandler {
       System.out.println("REQUEST: " + request.file);
       if (request.file.startsWith("/listrepo")) {
          File repofile = new File(repolocation.substring(5) + File.separatorChar + ".." + File.separatorChar + "htdocs" + File.separatorChar + "repository.xml");
-         request.sendFile(repofile, "text/xml");
+         request.sendFile(repofile, "text/xml", null);
       } 
       if (request.file.startsWith("/getobr/")) {
          String id = request.file.substring(8);
@@ -39,13 +39,33 @@ public class BundleLoaderHandler implements ch.ethz.jadabs.http.RequestHandler {
             File repofile = new File(repolocation.substring(5) + group
                   + File.separatorChar + "obrs" + File.separatorChar + name
                   + "-" + version + ".obr");
-
-            request.sendFile(repofile, "text/xml");
+            
+            request.sendFile(repofile, "text/xml", null);
          } catch (Exception e) {
             e.printStackTrace();
             request.send404();            
          }
+      }
+      if (request.file.startsWith("/getjar/")) {
+         String id = request.file.substring(8);
+         System.out.println(id);
+         try {
+            String group = id.substring(0, id.indexOf(":"));
+            id = id.substring(id.indexOf(":") + 1);
+            String name = id.substring(0, id.indexOf(":"));
+            id = id.substring(id.indexOf(":") + 1);
+            String version = id.substring(0, id.indexOf(":"));
+            String rest = id.substring(id.indexOf(":") + 1);
 
+            File repofile = new File(repolocation.substring(5) + group
+                  + File.separatorChar + "jars" + File.separatorChar + name
+                  + "-" + version + ".jar");
+
+            request.sendFile(repofile, "application/x-java-jar-file", "Content-disposition: attachment; filename =" + name + "-" + version + ".jar"  + "\r\n");
+         } catch (Exception e) {
+            e.printStackTrace();
+            request.send404();            
+         }      
       }
       if (request.file.startsWith("/test")) {
          request.sendString("<test>Hallo Welt</test>", "text/xml");

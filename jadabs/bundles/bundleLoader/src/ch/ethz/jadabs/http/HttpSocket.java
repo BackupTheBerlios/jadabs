@@ -18,7 +18,6 @@ public class HttpSocket extends Socket {
    public String method = null;
    public String file = null;
    public Hashtable headerValues = new Hashtable();
-   public String extraHdr = null;
 
    HttpSocket() {
       super();
@@ -94,7 +93,7 @@ public class HttpSocket extends Socket {
 
          toClient = getOutputStream();
 
-         String hdr = "HTTP/1.0 404 NOT_FOUND\r\n\r\n";
+         String hdr = "HTTP/1.0 404 NOT FOUND\r\nNONE\r\n\r\n\n Not Found";
          toClient.write(hdr.getBytes());
 
          toClient.close();
@@ -107,9 +106,8 @@ public class HttpSocket extends Socket {
       }
    }
 
-   public void sendFile(File file, String MimeType) {
+   public void sendFile(File file, String MimeType, String extraHdr) {
       OutputStream toClient = null;
-
       
       try {
          toClient = getOutputStream();
@@ -119,9 +117,10 @@ public class HttpSocket extends Socket {
 
          String hdr = "HTTP/1.0 200 OK\r\n";
          hdr += "Content-type: " + MimeType + "\r\n";
-         hdr += "Content-Length: " + fileSize + "\r\n";
-         if (extraHdr != null)
+         hdr += "Content-Length: " + fileSize + "\r\n";         
+         if (extraHdr != null)                             
             hdr += extraHdr;
+         
          hdr += "\r\n";
 
          toClient.write(hdr.getBytes());
@@ -153,8 +152,6 @@ public class HttpSocket extends Socket {
          String hdr = "HTTP/1.0 200 OK\r\n";
          hdr += "Content-type: " + MimeType + "\r\n";
          hdr += "Content-Length: " + data.length() + "\r\n";
-         if (extraHdr != null)
-            hdr += extraHdr;
          hdr += "\r\n";
 
          toClient.write(hdr.getBytes());
