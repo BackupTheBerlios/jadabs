@@ -51,7 +51,7 @@
  *
  *  This license is based on the BSD license adopted by the Apache Foundation.
  *
- *  $Id: Cache.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
+ *  $Id: Cache.java,v 1.3 2004/12/20 21:25:33 afrei Exp $
  */
 
 package ch.ethz.jadabs.jxme.services.impl;
@@ -59,7 +59,7 @@ package ch.ethz.jadabs.jxme.services.impl;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.LinkedList;
-import java.util.Random;
+//import java.util.Random;
 
 import org.apache.log4j.Logger;
 
@@ -99,7 +99,7 @@ class Cache
 
     private Hashtable otherTable = null;
 
-    private Random random = new Random();
+//    private Random random = new Random();
 
     private Cache()
     {
@@ -237,14 +237,14 @@ class Cache
 
     private void removeOlderEntry(Hashtable table)
     {
-        Enumeration enum = table.elements();
+        Enumeration elmse = table.elements();
         // called when the table is full, so there is always at least one
         // element
-        NamedResource resMinTime = (NamedResource) enum.nextElement();
+        NamedResource resMinTime = (NamedResource) elmse.nextElement();
 
-        while (enum.hasMoreElements())
+        while (elmse.hasMoreElements())
         {
-            NamedResource res = (NamedResource) enum.nextElement();
+            NamedResource res = (NamedResource) elmse.nextElement();
             if (resMinTime.getLastUsed() > res.getLastUsed())
             {
                 resMinTime = res;
@@ -315,29 +315,29 @@ class Cache
     synchronized NamedResource[] getResources(String reqpeerId, String groupId, String type, String attr, String value)
     {
         LOG.debug("searching for :  type: " + type + ", group: " + groupId + " " + attr + ": " + value);
-        Enumeration enum = null;
+        Enumeration en = null;
         if (type.equals(NamedResource.PIPE))
         {
-            enum = pipeTable.elements();
+            en = pipeTable.elements();
         } else if (type.equals(NamedResource.PEER))
         {
-            enum = peerTable.elements();
+            en = peerTable.elements();
         }
         if (type.equals(NamedResource.GROUP))
         {
-            enum = groupTable.elements();
+            en = groupTable.elements();
         }
         if (type.equals(NamedResource.OTHER))
         {
-            enum = otherTable.elements();
+            en = otherTable.elements();
         }
 
         LinkedList resList = new LinkedList();
-        if (enum != null)
+        if (en != null)
         {
-            while (enum.hasMoreElements())
+            while (en.hasMoreElements())
             {
-                NamedResource res = (NamedResource) enum.nextElement();
+                NamedResource res = (NamedResource) en.nextElement();
                 //String attribute = res.getValueof(attr);
 
                 //                if (value.equals(attribute) &&
@@ -405,10 +405,10 @@ class Cache
         // noOfNeighbors);
         EndpointAddress[][] neighborURI = new EndpointAddress[noOfNeighbors][];
 
-        Enumeration enum = peerTable.elements();
+        Enumeration enelms = peerTable.elements();
         for (int i = 0; i < noOfNeighbors; i++)
         {
-            Peer neighbor = (Peer) enum.nextElement();
+            Peer neighbor = (Peer) enelms.nextElement();
             if (myID.equals(neighbor.getID()))
             {
                 continue; // neighbors only, not me

@@ -245,12 +245,12 @@ public class SwtManagerImpl extends Thread implements SwtManager
 
                     public void run()
                     {
-                        Enumeration enum = shells.keys();
+                        Enumeration shellsen = shells.keys();
                         //TODO: This is a little weak. If any of the shells
                         // throws an exception none of the shells after it will
                         // be closed
-                        while (enum.hasMoreElements())
-                            ((Shell) enum.nextElement()).close();
+                        while (shellsen.hasMoreElements())
+                            ((Shell) shellsen.nextElement()).close();
 
                     }
                 });
