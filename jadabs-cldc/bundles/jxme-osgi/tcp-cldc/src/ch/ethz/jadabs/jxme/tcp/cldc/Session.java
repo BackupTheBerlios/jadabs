@@ -1,5 +1,5 @@
 /*
- * $Id: Session.java,v 1.1 2005/02/18 14:15:29 printcap Exp $
+ * $Id: Session.java,v 1.2 2005/02/18 14:50:10 printcap Exp $
  * 
  * Copyright (c) 2001 Sun Microsystems, Inc. All rights reserved.
  * 
@@ -300,7 +300,6 @@ public final class Session
         if (exceptionOccurred) {
             throw new IOException("exception on at least one connection: "+lastExceptionSession);
         }
- 
     }
 
     /**
