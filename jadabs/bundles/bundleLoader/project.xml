@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../project.xml</extend>
+
+  	<groupId>jadabs</groupId>
+  	<id>bundleLoader</id>
+  	<name>Jadabs BundleLoader</name>
+
+  	<shortDescription>Jadabs BundleLoader</shortDescription>
+
+	<properties>
+		<osgi.import.service></osgi.import.service>		
+		<osgi.export.service>ch.ethz.jadabs.bundleLoader.BundleLoader</osgi.export.service>
+	</properties>
+	
+	
+  	<dependencies>
+
+        <dependency>
+            <groupId>osgi</groupId>
+            <artifactId>osgi-framework</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+		<dependency>
+      		<groupId>kobjects</groupId>
+      		<artifactId>kxml2</artifactId>
+      		<version>2.1.9-osgi</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>log4j-cdc</artifactId>
+			<version>${pom.currentVersion}</version>
+		</dependency>
+				
+  	</dependencies>
+  
+</project>

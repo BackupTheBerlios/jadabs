@@ -1,0 +1,17 @@
+<bundleLoader>
+   <bundle>
+      <bundle-name>jxme-udp</bundle-name>
+      <bundle-group>jadabs</bundle-group>
+      <bundle-version>0.7.1-SNAPSHOT</bundle-version>
+   </bundle>
+   <bundle>
+      <bundle-name>jxme-services-impl</bundle-name>
+      <bundle-group>jadabs</bundle-group>
+      <bundle-version>0.7.1-SNAPSHOT</bundle-version>
+   </bundle>
+   <bundle>
+      <bundle-name>jadabs-shell</bundle-name>
+      <bundle-group>jadabs</bundle-group>
+      <bundle-version>0.7.1-SNAPSHOT</bundle-version>
+   </bundle>
+</bundleLoader>

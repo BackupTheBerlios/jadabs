@@ -86,7 +86,7 @@ public class Activator implements BundleActivator
         }
         Activator.remotefw = (FrameworkManager) bc.getService(sref);
 
-        Activator.peerName = bc.getProperty("jxme.peername");
+        Activator.peerName = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
 
         if (LOG.isDebugEnabled())
             LOG.debug("peername is " + peerName);
