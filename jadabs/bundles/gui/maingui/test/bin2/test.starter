@@ -18,6 +18,8 @@
 -startopd   jadabs:jxme-osgi:0.7.1-SNAPSHOT:
 -startopd   jadabs:jxme-udp:0.7.1-SNAPSHOT:
 -startopd   jadabs:jxme-services:0.7.1-SNAPSHOT:
+-startopd   swt:swt-linux:3.0.1:
+-startopd   jadabs:maingui:0.7.1-SNAPSHOT:
 
 -runlevel 3
 # start the MailService on this hotspot
