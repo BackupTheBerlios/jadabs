@@ -1,4 +1,4 @@
-$Id: messageformats.txt,v 1.1 2005/01/23 13:02:11 printcap Exp $
+$Id: messageformats.txt,v 1.2 2005/01/23 15:47:01 printcap Exp $
 
 Message-Format between Jadabs-Bundle and Jadabs-Core-Entity
 -----------------------------------------------------------
@@ -412,12 +412,11 @@ LISTEN_REPLY:
    8:      message length (in bytes)          short
 
 
-In oder to call the handleSearchResponse and handleNamedResourceLoss
-method of the supplied MicroDiscoveryListener instance, asynchronous
-messages are used. These messages are sent by the Jadabs-Core when 
-the corresponding events occur. 
+In oder to call the handleMessage method of the supplied MicroListener 
+instance, a asynchronous message is used. This messages is sent by 
+the Jadabs-Core when the corresponding event occurs. 
 
-SEARCH_ASYNC_MSG:
+MESSAGE_ASYNC_MSG:
  offset    field                       type 
  ------------------------------------------------------------
    0:      is a reply message (false)  boolean
@@ -425,10 +424,11 @@ SEARCH_ASYNC_MSG:
            (reqeust that requested
             messages of such kind)    
    3:      gruop number (internally)   short 
-   5:      async type (SEARCH_REPONSE) short 
+   5:      async type (MESSAGE)        short 
    7:      message length (in bytes)   short
-   9:      resource type               UTF String
-  ..:      resource name               UTF String
+   9:      pipeID string               UTF String
+  ..:      message string              UTF String 
+  ..:      listener ID string          UTF String 
   ..:      resource ID string          UTF String
 
 
