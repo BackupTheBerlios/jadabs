@@ -43,7 +43,11 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import ch.ethz.iks.jadabs.maingui.SwtManager;
+import ch.ethz.jadabs.jxme.Pipe;
+import ch.ethz.jadabs.jxme.services.GroupService;
+import ch.ethz.jadabs.pluginloader.PluginLoader;
 import ch.ethz.jadabs.remotefw.FrameworkManager;
+import ch.ethz.jadabs.servicemanager.ServiceManager;
 
 /**
  * @author andfrei
@@ -58,6 +62,12 @@ public class Activator implements BundleActivator
     
     static MainGUI maingui;
 
+    static GroupService groupService;
+    
+    static ServiceManager serviceManager;
+        
+    static PluginLoader pluginLoader;
+    
     /* RemoteFramework */
     static FrameworkManager rmanager;
 
@@ -79,6 +89,18 @@ public class Activator implements BundleActivator
         ui = new SwtManagerImpl();
         ui.start();
 
+        // GroupService
+        ServiceReference sref = bc.getServiceReference(GroupService.class.getName());
+        groupService = (GroupService)bc.getService(sref);
+        
+        // ServiceManager
+        sref = bc.getServiceReference(ServiceManager.class.getName());
+        serviceManager = (ServiceManager)bc.getService(sref);
+        
+        // PluginLoader
+        sref = bc.getServiceReference(PluginLoader.class.getName());
+        pluginLoader = (PluginLoader)bc.getService(sref);
+        
         // FrameworkManager
         ServiceReference srefrm = Activator.bc.getServiceReference(FrameworkManager.class.getName());
         rmanager = (FrameworkManager) bc.getService(srefrm);

@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.kxml2.io.*;
 import org.xmlpull.v1.XmlPullParserException;
 
-public class BundleInformation {
-
+public class BundleInformation 
+{
+    private static Logger LOG = Logger.getLogger(BundleInformation.class);
+    
 	private String bundleName;
 	private String bundleGroup;	
 	private String bundleVersion;
@@ -167,7 +170,7 @@ public class BundleInformation {
 				BundleInformation dependency = new BundleInformation(uuid);
 				bundleDependencies.add(dependency);
 			} catch (Exception e) {
-				System.out.println("malformed bundle uuid: " + uuid);
+				LOG.error("malformed bundle uuid: " + uuid);
 				e.printStackTrace();
 			}			
 		}

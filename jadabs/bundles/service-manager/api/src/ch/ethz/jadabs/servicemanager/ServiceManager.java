@@ -13,18 +13,25 @@ import ch.ethz.jadabs.jxme.Pipe;
  */
 public interface ServiceManager
 {
+    
+    public static String PROVIDING_SERVICE = "provide";
+    public static String RUNNING_SERVICE = "running";
 
     /**
      * Returns installed services as an array of strings.
      * The strings usually contain .obr, opd strings
      * 
+     * Set which type of service you are interested in. Running gives
+     * the services which are running on the other node, Providing gives
+     * the services which are available through the repository.
+     * 
      * @param pipe
      * @param filter
      * @param serviceListener
+     * @param type kind of PROVIDING_SERVICE, RUNNING_SERVICE
      * @return
      */
-    boolean getServices(Pipe pipe, 
-            String filter, ServiceListener serviceListener);
+    boolean getServices(ServiceListener serviceListener, String type);
     
     /**
      * Add providing service which can be found by other ServiceManagers.
@@ -33,7 +40,7 @@ public interface ServiceManager
      * @param pipe
      * @param sref
      */
-    void addProvidingService(Pipe pipe, ServiceReference sref);
+    void addProvidingService(ServiceReference sref);
     
     /** 
      * Remove providing service added with addProvidingService.
@@ -41,7 +48,7 @@ public interface ServiceManager
      * @param pipe
      * @param sref
      */
-    void removeProvidingService(Pipe pipe, ServiceReference sref);
+    void removeProvidingService(ServiceReference sref);
     
     /**
      * Returns bytearray of a specified service. The service is
@@ -52,7 +59,7 @@ public interface ServiceManager
      * @param uuid
      * @return
      */
-    boolean getService(Pipe pipe, String fromPeer, ServiceReference sref);
+    boolean getService(String fromPeer, ServiceReference sref);
     
     /**
      * Install and Start service on a remote Peer.
@@ -62,7 +69,7 @@ public interface ServiceManager
      * @param sref ServiceReference should contain at least the uuid and path to the jar file to install
      * @return
      */
-    boolean istartService(Pipe pipe, String toPeer, ServiceReference sref);
+    boolean istartService(String toPeer, ServiceReference sref);
     
     /**
      * Returns a RemoteService with the given serviceName. Return null if

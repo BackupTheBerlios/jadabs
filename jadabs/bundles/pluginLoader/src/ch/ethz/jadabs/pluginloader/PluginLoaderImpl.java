@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -14,10 +15,9 @@ import java.util.LinkedList;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParserException;
-
-import ch.ethz.jadabs.pluginloader.fileFilters.PluginFilter;
 
 
 /**
@@ -27,11 +27,13 @@ import ch.ethz.jadabs.pluginloader.fileFilters.PluginFilter;
 public class PluginLoaderImpl extends Thread implements PluginLoader
 {
 
+    private static Logger LOG = Logger.getLogger(PluginLoaderImpl.class);
+    
     private KXmlParser parser;
 
     private OSGiPlugin currentPlugin;
 
-    private Hashtable registeredPlugins = new Hashtable();
+    private Hashtable registeredPlugins = new Hashtable(); // [(osgiplugin.getName, osgiplugin)]
 
     private Hashtable extensions = new Hashtable();
 
@@ -65,7 +67,7 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
             {
                 if (line.startsWith("-usepad"))
                 {
-                    System.out.println("Opening " + "." + File.separatorChar
+                    LOG.debug("Opening " + "." + File.separatorChar
                             + line.substring(7).trim());
                     File padfile = new File("." + File.separatorChar
                             + line.substring(7).trim());
@@ -78,7 +80,7 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
                 } else if (line.startsWith("-startopd"))
                 {
                     String id = line.substring(9).trim();
-                    System.out.println("Starting Plugin " + id);
+                    LOG.debug("Starting Plugin " + id);
                     // TODO: Get OSGiBundle, resolve it and start it.
                 
                     String group = id.substring(0,id.indexOf(":"));
@@ -94,11 +96,11 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
                     String opdpath = repopath.substring(5) +
                     	group + File.separatorChar + "opds" + File.separatorChar+
                     	name + "-" + version + ".opd";
-                    System.out.println("opdpath: "+opdpath);
+                    LOG.debug("opdpath: "+opdpath);
                                         
                     File opdfile = new File(opdpath);
                     
-                    System.out.println("opdfile: "+opdfile.getAbsolutePath());
+                    LOG.debug("opdfile: "+opdfile.getAbsolutePath());
                     
                     loadPlugin(opdfile);
                 }
@@ -142,7 +144,7 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
         // TEST STARTS HERE
 
 //        File opdfile = new File("." + File.separatorChar + "MailService.opd");
-//        System.out.println(opdfile.getAbsolutePath());
+//        LOG.debug(opdfile.getAbsolutePath());
 //        loadPlugin(opdfile);
 
         // TEST ENDS HERE
@@ -154,7 +156,8 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
         for (Iterator it = pluginSchedule.iterator(); it.hasNext();)
         {
             plugin = (OSGiPlugin) it.next();
-            System.out.println("LOADING BUNDLE " + plugin.getActivator());
+            LOG.debug("LOADING BUNDLE " + plugin.getActivator());
+            
             try
             {
                 PluginLoaderActivator.bloader.load(plugin.getActivator().getName(), plugin.getActivator().getGroup(),
@@ -166,8 +169,34 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
         }
     }
 
-    public void loadPlugin(File file)
+    public OSGiPlugin parsePluginAdvertisement(String adv)
     {
+        parser = new KXmlParser();
+
+        StringReader reader = new StringReader(adv);
+        try
+        {
+            parser.setInput(reader);
+            
+
+            parsePlugin();
+            
+        } catch (XmlPullParserException e)
+        {
+            LOG.error("error in parsing string: "+adv);
+            return null;
+        } catch (IOException e)
+        {
+            LOG.error("error in parsing string: "+adv);
+            return null;
+        }
+        
+        
+        return currentPlugin;
+    }
+    
+    public void loadPlugin(File file)
+    {        
         FileReader reader;
         parser = new KXmlParser();
 
@@ -175,10 +204,16 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
         {
             reader = new FileReader(file);
             parser.setInput(reader);
+            
             parsePlugin();
+            
+            currentPlugin.setAdvertisement(file);
+            
             registerPlugin(currentPlugin);
             resolvePlugin(currentPlugin);
-            System.out.println(pluginSchedule);
+            
+            LOG.debug(pluginSchedule);
+            
             loadScheduledPlugins();
         } catch (Exception e)
         {
@@ -190,9 +225,9 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
         }
     }
 
-    public Hashtable getOSGiPlugins()
+    public Enumeration getOSGiPlugins()
     {
-        return registeredPlugins;
+        return registeredPlugins.elements();
     }
     
     private void parsePlatform() throws XmlPullParserException, IOException
@@ -224,22 +259,37 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
 
         if (stack.peek().equals("Platform"))
         {
-            platform = new Platform(parser.getAttributeValue(null, "id"), parser.getAttributeValue(null, "name"),
-                    parser.getAttributeValue(null, "version"), parser.getAttributeValue(null, "provider"));
+            platform = new Platform(
+                    parser.getAttributeValue(null, "id"), 
+                    parser.getAttributeValue(null, "name"),
+                    parser.getAttributeValue(null, "version"), 
+                    parser.getAttributeValue(null, "provider"));
         } else if (stack.peek().equals("Property"))
         {
-            platform.setProperty(parser.getAttributeValue(null, "name"), parser.getAttributeValue(null, "value"));
-            System.out.println("ADDED PROPERTY " + parser.getAttributeValue(null, "name"));
+            String name = parser.getAttributeValue(null, "name");
+            String value = parser.getAttributeValue(null, "value");
+            
+            platform.setProperty(name, value);
+                        
+            LOG.debug("ADDED PROPERTY: " + name+"/"+value);
         } else if (stack.peek().equals("NetIface"))
         {
-            NetIface iface = new NetIface(parser.getAttributeValue(null, "type"), parser.getAttributeValue(null,
-                    "connection"), parser.getAttributeValue(null, "configuration"), parser.getAttributeValue(null,
-                    "name"), parser.getAttributeValue(null, "essid"), parser.getAttributeValue(null, "mode"), parser
-                    .getAttributeValue(null, "iface"), parser.getAttributeValue(null, "ip"), parser.getAttributeValue(
-                    null, "description"));
+            NetIface iface = new NetIface(
+                    parser.getAttributeValue(null, "type"), 
+                    parser.getAttributeValue(null, "connection"), 
+                    parser.getAttributeValue(null, "configuration"), 
+                    parser.getAttributeValue(null, "name"), 
+                    parser.getAttributeValue(null, "essid"), 
+                    parser.getAttributeValue(null, "mode"), 
+                    parser.getAttributeValue(null, "iface"), 
+                    parser.getAttributeValue(null, "ip"), 
+                    parser.getAttributeValue(null, "description"));
+            
             platform.addNetIface(iface);
+            
             extensions.put(iface.toString(), new Vector());
-            System.out.println("ADDED EXTENSION " + iface.toString());
+            
+            LOG.debug("ADDED EXTENSION: " + iface.toString());
         } else if (stack.peek().equals("Configuration"))
         {
             // TODO: implement configuration
@@ -247,7 +297,7 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
         }
     }
 
-    private void parsePlugin() throws XmlPullParserException, IOException
+    private synchronized void parsePlugin() throws XmlPullParserException, IOException
     {
         Stack stack = new Stack();
 
@@ -275,23 +325,35 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
 
         if (stack.peek().equals("OSGiServicePlugin"))
         {
-            currentPlugin = new OSGiPlugin(parser.getAttributeValue(null, "id"),
-                    parser.getAttributeValue(null, "name"), parser.getAttributeValue(null, "version"), parser
-                            .getAttributeValue(null, "description"), parser.getAttributeValue(null, "provider"));
+            currentPlugin = new OSGiPlugin(
+                    parser.getAttributeValue(null, "id"),
+                    parser.getAttributeValue(null, "name"), 
+                    parser.getAttributeValue(null, "group"),
+                    parser.getAttributeValue(null, "version"), 
+                    parser.getAttributeValue(null, "description"), 
+                    parser.getAttributeValue(null, "provider"));
         } else if (stack.peek().equals("Extension"))
         {
-            currentPlugin.addExtension(new Extension(parser.getAttributeValue(null, "id"), parser.getAttributeValue(
-                    null, "service")));
+            currentPlugin.addExtension(
+                    new Extension(
+                            parser.getAttributeValue(null, "id"), 
+                            parser.getAttributeValue(null, "service")));
         } else if (stack.peek().equals("Extension-Point"))
         {
-            currentPlugin.addExtensionPoint(new ExtensionPoint(parser.getAttributeValue(null, "id"), parser
-                    .getAttributeValue(null, "service"), parser.getAttributeValue(null, "description")));
+            currentPlugin.addExtensionPoint(
+                    new ExtensionPoint(
+                            parser.getAttributeValue(null, "id"), 
+                            parser.getAttributeValue(null, "service"), 
+                            parser.getAttributeValue(null, "description")));
         } else if (stack.peek().equals("ServiceActivatorBundle"))
         {
             if (PluginLoaderActivator.LOG.isDebugEnabled())
                 PluginLoaderActivator.LOG.debug(currentPlugin);
-            currentPlugin.setActivator(new ActivatorBundle(parser.getAttributeValue(null, "bundle-name"), parser
-                    .getAttributeValue(null, "bundle-group"), parser.getAttributeValue(null, "bundle-version")));
+            	currentPlugin.setActivator(
+            	        new ActivatorBundle(
+            	                parser.getAttributeValue(null, "bundle-name"), 
+            	                parser.getAttributeValue(null, "bundle-group"), 
+            	                parser.getAttributeValue(null, "bundle-version")));
         } else if (stack.peek().equals("Configuration"))
         {
             // TODO: implement configuration
@@ -328,10 +390,17 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
     {
         for (Enumeration en = plugin.getExtensionPoints(); en.hasMoreElements();)
         {
-            String ep = en.nextElement().toString();
+            ExtensionPoint extp = (ExtensionPoint)en.nextElement();
+            String ep = extp.toString();
+            
+            if (extp.getType().equals("platform"))
+                continue;
+            
             Vector matchingPlugins = (Vector) extensions.get(ep);
+            
             if (matchingPlugins == null)
                 throw new Exception("Plugin " + plugin.getName() + " has unsatisfied ExtensionPoint " + ep);
+
             //TODO: Implement some kind of priority if more than one matching
             // plugin has been found
             for (Enumeration pl = matchingPlugins.elements(); pl.hasMoreElements();)

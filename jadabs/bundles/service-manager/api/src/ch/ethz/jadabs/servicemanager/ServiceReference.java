@@ -4,48 +4,28 @@
  */
 package ch.ethz.jadabs.servicemanager;
 
-import ch.ethz.jadabs.bundleloader.BundleInformation;
-import ch.ethz.jadabs.pluginloader.OSGiPlugin;
+//import ch.ethz.jadabs.bundleloader.BundleInformation;
+//import ch.ethz.jadabs.pluginloader.OSGiPlugin;
 
 
 /**
  * @author andfrei
  * 
  */
-public class ServiceReference
+public interface ServiceReference
 {
 
-    public static int SERVICE_TYPE_OBR = 1;
-    public static int SERVICE_TYPE_OPD = 2;
+    static int SERVICE_TYPE_OBR = 1;
+    static int SERVICE_TYPE_OPD = 2;
     
-    String group;
-    String name;
-    String version;
+    String getName();
     
-    String advertisement;
+    String getVersion();
     
-    public ServiceReference(String group, String name, String version, int type)
-    {
-        this.group = group;
-        this.name = name;
-        this.version = version;
-    }
+    String getGroup();
     
-    public void initAdvertisement(String adv)
-    {
-        this.advertisement = adv;
-    }
+    String getPeer();
     
-    public BundleInformation getBundleInformation()
-    {
-        return null;
-    }
-    
-    public OSGiPlugin getOSGiPlugin()
-    {
-        return null;
-    }
-    
-    
+    String getID();
     
 }

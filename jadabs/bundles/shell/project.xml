@@ -29,6 +29,9 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.8-osgi</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
         </dependency>
         
         <dependency>

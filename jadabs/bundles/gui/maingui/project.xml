@@ -27,6 +27,9 @@
             <groupId>swt</groupId>
             <artifactId>swt</artifactId>
             <version>3.0RC1-osgi</version>
+            <properties>
+            	<obr.dynamic>true</obr.dynamic>
+            </properties>
         </dependency>
                 
         <dependency>
@@ -45,9 +48,41 @@
             <groupId>jadabs</groupId>
             <artifactId>log4j-cdc</artifactId>
             <version>${pom.currentVersion}</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
         </dependency>
 	    
+	    <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>pluginloader</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        
+      	<dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>servicemanager</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>servicemanager-impl</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
 	    
+	    <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>jxme-osgi</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+	    
+	    <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>jxme-services-api</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        
 	</dependencies>
   
   	<build>

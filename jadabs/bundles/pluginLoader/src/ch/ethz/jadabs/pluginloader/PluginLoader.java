@@ -3,7 +3,8 @@
  */
 package ch.ethz.jadabs.pluginloader;
 
-import java.util.Hashtable;
+import java.util.Enumeration;
+
 
 /**
  * 
@@ -11,5 +12,7 @@ import java.util.Hashtable;
  */
 public interface PluginLoader {
    
-    Hashtable getOSGiPlugins();
+    Enumeration getOSGiPlugins();
+    
+    OSGiPlugin parsePluginAdvertisement(String adv);
 }

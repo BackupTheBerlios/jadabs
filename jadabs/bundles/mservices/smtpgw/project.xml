@@ -43,7 +43,10 @@
       <dependency>
          <groupId>jadabs</groupId>
          <artifactId>log4j-cdc</artifactId>
-         <version>${pom.currentVersion}</version>         
+         <version>${pom.currentVersion}</version>   
+         <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>      
       </dependency>
 		
   	</dependencies>

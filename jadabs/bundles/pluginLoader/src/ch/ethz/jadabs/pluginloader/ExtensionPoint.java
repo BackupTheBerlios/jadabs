@@ -15,6 +15,7 @@ public class ExtensionPoint {
    private String id;
    private String service;
    private int type;   
+   private String strtype;
    private String section;  
    private String description;
    
@@ -22,7 +23,9 @@ public class ExtensionPoint {
       if (id.startsWith("Extension/")) {
          this.id = id.substring(10);
          type = EXTENSION;
+         strtype = "extension";
       } else if (id.startsWith("Platform/")) {
+         strtype = "platform";
          id = id.substring(9);
          int pos = id.indexOf("/");
          if (pos >= 0) {
@@ -45,6 +48,11 @@ public class ExtensionPoint {
       }
    }
 
+   public String getType()
+   {
+       return strtype;
+   }
+   
    /*
    public boolean equals(Object obj) {
       if (obj instanceof ExtensionPoint) {

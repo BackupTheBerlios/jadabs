@@ -60,10 +60,14 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.osgi.framework.Bundle;
 
+import ch.ethz.jadabs.pluginloader.OSGiPlugin;
 import ch.ethz.jadabs.remotefw.BundleInfo;
 import ch.ethz.jadabs.remotefw.BundleInfoListener;
 import ch.ethz.jadabs.remotefw.Framework;
 import ch.ethz.jadabs.remotefw.RemoteFrameworkListener;
+import ch.ethz.jadabs.servicemanager.ServiceListener;
+import ch.ethz.jadabs.servicemanager.ServiceManager;
+import ch.ethz.jadabs.servicemanager.ServiceReference;
 
 /**
  * This code was generated using CloudGarden's Jigloo SWT/Swing GUI Builder,
@@ -71,11 +75,18 @@ import ch.ethz.jadabs.remotefw.RemoteFrameworkListener;
  * (ie, by a for-profit company or business) then you should purchase a license -
  * please visit www.cloudgarden.com for details.
  */
-public class MainComposite extends Composite implements RemoteFrameworkListener, BundleInfoListener
+public class MainComposite extends Composite 
+	implements RemoteFrameworkListener, BundleInfoListener,  ServiceListener
 {
 
     private static Logger LOG = Logger.getLogger(MainComposite.class.getName());
 
+    private static String ITEM_SERVICE_NAME = "services";
+    private static String ITEM_BUNDLE_NAME = "bundles";
+    
+    private static int ITEM_ORDER_SERVICES = 0;
+    private static int ITEM_ORDER_BUNDLES = 1;
+    
     private Label cLabel1;
 
     private Menu menu1;
@@ -322,6 +333,8 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
             {
                 TreeItem item = new TreeItem(peertree, SWT.NULL);
                 item.setText(finalrfw.getPeername());
+                
+                addPeerItems(item);
             }
         }, false);
 
@@ -362,6 +375,15 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
         }, false);
     }
 
+    private void addPeerItems(TreeItem item)
+    {
+        TreeItem svcitem = new TreeItem(item, SWT.NULL);
+        svcitem.setText(ITEM_SERVICE_NAME);
+
+        TreeItem bitem = new TreeItem(item, SWT.NULL);
+        bitem.setText(ITEM_BUNDLE_NAME);   
+    }
+    
     protected void select(String peername)
     {
         TreeItem peeritem = null;
@@ -387,35 +409,80 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
      * @param evt
      */
     protected void peertreeWidgetSelected(SelectionEvent evt)
-    {        
+    {                        
         TreeItem titem;
         TreeItem[] selection;
-        if ( (peertree.getSelection().length > 0) && 
-             ((titem = peertree.getSelection()[0]).getParentItem() == null) &&
-             (titem.getItems().length == 0))
+
+        if ( peertree.getSelection().length > 0)
         {
-            //            TreeItem titem = treeitems[0];
+            titem = peertree.getSelection()[0];
             
-            // get Bundles for the selection
-            String peername = titem.getText();
-            Framework rframework = Activator.rmanager.getFrameworkByPeername(peername);
-            
-            // register this gui as listener change in the framework
-            rframework.addBundleInfoListener(this);
-            
-            long[] bids = rframework.getBundles();
-            
-            if (bids != null)
+            if (titem.getText().equals(ITEM_SERVICE_NAME))
             {
-	            Arrays.sort(bids);
-	
-	//            TreeItem[] items = titem.getItems();
-	//            for (int k = 0; k < items.length; k++)
-	//                items[k].dispose();
-	
-	            for (int i = 0; i < bids.length; i++)
+                TreeItem pitem = titem.getParentItem();
+                
+	            // get Bundles for the selection
+	            String peername = pitem.getText();
+	            
+                if (peername.equals(Activator.peername))
+                {
+                    Enumeration en = Activator.pluginLoader.getOSGiPlugins();
+                                                 
+                    TreeItem[] items = titem.getItems();
+                    
+                    for (int i = 0; i < items.length; i++)
+                    {
+                        items[i].dispose();
+                    }
+                    
+                    for (;en.hasMoreElements();)
+                    {
+                        OSGiPlugin plugin = (OSGiPlugin)en.nextElement();
+                        
+                        TreeItem bundleitem = new TreeItem(titem, SWT.NULL);
+
+                        bundleitem.setText(plugin.getID());
+                    }
+                }
+                else
+                {
+                    //TODO: should be changed to register only once
+                    Activator.serviceManager.getServices(
+                            this,
+                            ServiceManager.RUNNING_SERVICE);
+                }
+                
+                
+            }
+            else if (titem.getText().equals(ITEM_BUNDLE_NAME))
+            {
+            
+	            //            TreeItem titem = treeitems[0];
+                TreeItem pitem = titem.getParentItem();
+                
+	            // get Bundles for the selection
+	            String peername = pitem.getText();
+	            
+	                       
+	            Framework rframework = Activator.rmanager.getFrameworkByPeername(peername);
+	            
+	            // register this gui as listener change in the framework
+	            rframework.addBundleInfoListener(this);
+	            
+	            long[] bids = rframework.getBundles();
+	            
+	            if (bids != null)
 	            {
-	                addBundle(peername, titem, rframework.getBundleInfo(bids[i]));
+		            Arrays.sort(bids);
+		
+		//            TreeItem[] items = titem.getItems();
+		//            for (int k = 0; k < items.length; k++)
+		//                items[k].dispose();
+		
+		            for (int i = 0; i < bids.length; i++)
+		            {
+		                addBundle(peername, titem, rframework.getBundleInfo(bids[i]));
+		            }
 	            }
             }
             
@@ -433,11 +500,12 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
                         
             // refresh remoteFW
             frw.refresh();
-            synchronized(peertree)
-            {
-                TreeItem item = new TreeItem(peertree, SWT.NULL);
-                item.setText(frw.getPeername());
-            }
+
+            TreeItem item = new TreeItem(peertree, SWT.NULL);
+            item.setText(frw.getPeername());
+            
+            addPeerItems(item);
+
         }
     }
     
@@ -451,7 +519,7 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
         synchronized(peertree)
         {
 	        peertree.removeAll();
-	
+		        
 	        for (; en.hasMoreElements();)
 	        {
 	            Framework frw = (Framework) en.nextElement();
@@ -461,6 +529,8 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
 	
 	            TreeItem item = new TreeItem(peertree, SWT.NULL);
 	            item.setText(frw.getPeername());
+	            	
+	            addPeerItems(item);
 	        }
         }
     }
@@ -637,7 +707,7 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
 
             public void run()
             {
-                TreeItem peeritem = null;
+                TreeItem bitem = null;
                 
                 // get peer-item
                 TreeItem[] titems = peertree.getItems();
@@ -645,15 +715,17 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
                 {
                     if (titems[i].getText().equals(fpeername))
                     {
-                        peeritem = titems[i];
+                        TreeItem peeritem = titems[i];
+                        
+                        bitem = peeritem.getItems()[1];
                         break;
                     }
                 }
                 
                 // get bundle-item
-                if (peeritem != null)
+                if (bitem != null)
                 {
-                    refreshTreeItem(peeritem, fframework);
+                    refreshTreeItem(bitem, fframework);
                 } else
                 {
                     LOG.warn("this is a new peer: " + fpeername);
@@ -681,24 +753,25 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
 
             public void run()
             {
-                TreeItem peeritem = null;
-
+                TreeItem bitem = null;
+                
                 // get peer-item
                 TreeItem[] titems = peertree.getItems();
                 for (int i = 0; i < titems.length; i++)
                 {
                     if (titems[i].getText().equals(fpeername))
                     {
-                        peeritem = titems[i];
+                        TreeItem peeritem = titems[i];
+                        bitem = peeritem.getItems()[1];
                         break;
                     }
                 }
 
                 // get bundle-item
-                if (peeritem != null)
+                if (bitem != null)
                 {
                     TreeItem bundleitem = null;
-                    titems = peeritem.getItems();
+                    titems = bitem.getItems();
                     long bid = fbundleinfo.bid;
 
                     for (int i = 0; i < titems.length; i++)
@@ -713,7 +786,7 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
                     // bundleitem is new
                     if (bundleitem == null)
                     {
-                        bundleitem = addBundle(fpeername, peeritem, fbundleinfo);
+                        bundleitem = addBundle(fpeername, bitem, fbundleinfo);
                     } else
                     {
                         // set text of bundle-item
@@ -780,4 +853,68 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
             
         }
     }
+    
+
+    /*
+     */
+    public void foundService(ServiceReference serviceRef, String peer)
+    {
+        LOG.debug("got ServiceReference from:"+
+                peer+":"+serviceRef.toString());
+        
+        final String fpeername = peer;
+        final String fid = serviceRef.getID();
+        
+        MainGUI.manager.exec(new Runnable()
+                {
+
+                    public void run()
+                    {
+                        TreeItem svcitems = null;
+                        
+                        // get peer-item
+                        TreeItem[] titems = peertree.getItems();
+                        for (int i = 0; i < titems.length; i++)
+                        {
+                            if (titems[i].getText().equals(fpeername))
+                            {
+                                TreeItem peeritem = titems[i];
+                                svcitems = peeritem.getItems()[0];
+                                break;
+                            }
+                        }
+
+                        // get service-item
+                        if (svcitems != null)
+                        {
+                            TreeItem[] items = null;
+                            items = svcitems.getItems();
+                            boolean found = false;
+                            for (int i = 0; i < items.length; i++)
+                            {
+                                if (items[i].getText().equals(fid))
+                                {
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            // bundleitem is new
+                            if (!found)
+                            {
+                                TreeItem newitem = new TreeItem(svcitems,SWT.NULL);
+                                newitem.setText(fid);
+                            }
+                        } else
+                        {
+                            LOG.warn("this is a new peer: " + fpeername);
+
+                        }
+
+        	           
+                    }
+                }, false);
+        
+    }
+        
 }

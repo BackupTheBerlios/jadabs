@@ -24,8 +24,10 @@ import org.osgi.framework.*;
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 
-public class BundleLoaderImpl implements BundleLoader, BundleListener {
-   private static Logger LOG = Logger.getLogger(BundleLoaderImpl.class);
+public class BundleLoaderImpl implements BundleLoader, BundleListener 
+{
+   
+    private static Logger LOG = Logger.getLogger(BundleLoaderImpl.class);
 
    private static HashSet queuedBundles = new HashSet();
    private static HashSet installedBundles = new HashSet();
@@ -68,7 +70,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          for (Enumeration en = tasks.elements(); en.hasMoreElements();) {
             BundleInformation bundle = (BundleInformation) en.nextElement();
             scheduleDependencies(bundle);
-            System.out.println("<<Schedule for " + bundle + ": "
+            LOG.debug("<<Schedule for " + bundle + ": "
                   + installationQueue + ">>");
             install();
          }
@@ -89,8 +91,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
    public synchronized void load(String name, String group, String version) throws Exception {
       BundleInformation bundle = new BundleInformation(name, group, version);
       scheduleDependencies(bundle);
-      System.out.println();
-      System.out.println("Schedule for " + bundle + ": " + installationQueue);
+      LOG.debug("Schedule for " + bundle + ": " + installationQueue);
       install();
    }
 
@@ -137,7 +138,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          FileInputStream fin = new FileInputStream(file);
          Bundle bundle = BundleLoaderActivator.bc.installBundle(file.getName(),
                fin);
-         System.out.println("installed " + location);
+         LOG.debug("installed " + location);
 
          binfos.put(binf.getID(), binf);
          
@@ -199,11 +200,10 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       queuedBundles.clear();
       installationQueue.add(initial);
 
-      System.out.println();
       if (BundleLoaderActivator.LOG.isDebugEnabled())
          BundleLoaderActivator.LOG.debug("<<Installed Bundles: "
                + installedBundles + ">>");
-      System.out.println("<<Reqested Bundle: " + initial + ">>");
+      LOG.debug("<<Reqested Bundle: " + initial + ">>");
 
       boolean found;
       int index;
@@ -358,7 +358,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
        }
        // Jan, ist der Vergleich mit 1, 16 richtig hier?
       else if (bevent.getType() == 1) {
-         System.out.println("bevent");
+         LOG.debug("bevent");
          String loc = bevent.getBundle().getLocation();
          int pos = loc.lastIndexOf(File.separatorChar);
 
@@ -415,13 +415,14 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
                if (BundleLoaderActivator.LOG.isDebugEnabled())
                   BundleLoaderActivator.LOG.debug(bundle + " started");
             } catch (BundleException be) {
-               System.out.println("Error starting bundle "
+               LOG.debug("Error starting bundle "
                      + bundle.getLocation());
+               be.printStackTrace();
                if (be.getNestedException() == null) {
-                  System.out.println("Exception: ");
+                  LOG.debug("Exception: ");
                   be.printStackTrace();
                } else {
-                  System.out.println("Nested exception: ");
+                  LOG.debug("Nested exception: ");
                   be.getNestedException().printStackTrace();
                }
             }

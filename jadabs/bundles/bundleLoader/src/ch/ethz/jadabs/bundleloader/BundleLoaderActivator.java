@@ -12,27 +12,27 @@ import org.osgi.framework.BundleContext;
 /**
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
-public class BundleLoaderActivator implements BundleActivator {
+public class BundleLoaderActivator implements BundleActivator 
+{
     
 	protected static Logger LOG = Logger.getLogger(BundleLoaderImpl.class.getName());
+	
 	protected static BundleContext bc;
 	protected static BundleLoaderImpl bundleLoader;
 	static String repository;
-	
 
 	
 	/**
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
-	public void start(BundleContext bc) throws Exception {
-		System.out.println("BundleLoader starting ...");			
+	public void start(BundleContext bc) throws Exception 
+	{
+		LOG.info("BundleLoader starting ...");			
 		BundleLoaderActivator.bc = bc;
 				
 		String location = BundleLoaderActivator.bc.getBundle().getLocation();
 	    repository = location.substring(location.indexOf(":")+1, location.indexOf("jadabs") - 1);
-	    
-	    System.out.println("bundlelocation: "+repository);
-	    
+	    	    
 		// register all system bundles
 		Bundle [] bundles = BundleLoaderActivator.bc.getBundles();
 		Vector sysBundles = new Vector();

@@ -54,6 +54,7 @@ public class PluginLoaderActivator implements BundleActivator
 {
 
     protected static Logger LOG = Logger.getLogger(PluginLoaderActivator.class.getName());    
+    
     protected static BundleContext b_context;
     protected static String peerName;
     protected static BundleLoader bloader;
@@ -71,7 +72,7 @@ public class PluginLoaderActivator implements BundleActivator
         PluginLoaderActivator.b_context = bc;
         ServiceReference sref;
         
-        System.out.println("STARTING PLUGIN LOADER");
+        LOG.debug("STARTING PLUGIN LOADER");
         
         if (LOG.isDebugEnabled())
             LOG.debug("starting Plugin Loader ... ");        

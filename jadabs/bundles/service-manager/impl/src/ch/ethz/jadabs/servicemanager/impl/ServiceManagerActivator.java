@@ -8,10 +8,9 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import ch.ethz.jadabs.bundleloader.BundleLoader;
 import ch.ethz.jadabs.jxme.Pipe;
 import ch.ethz.jadabs.jxme.services.GroupService;
-import ch.ethz.jadabs.servicemanager.ServiceManager;
+import ch.ethz.jadabs.pluginloader.PluginLoader;
 
 
 
@@ -25,11 +24,13 @@ public class ServiceManagerActivator implements BundleActivator
     static BundleContext bc;
 
     static GroupService groupService;
-    static BundleLoader bundleLoader;
     static Pipe groupPipe;
     
+    static PluginLoader pluginLoader;
     
     private ServiceManagerImpl serviceManager;
+    
+    static String peername;
     
     /*
      */
@@ -37,17 +38,12 @@ public class ServiceManagerActivator implements BundleActivator
     {
         ServiceManagerActivator.bc = bc;
         
-        
+        peername = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
+                
         // GroupService
         ServiceReference sref = bc.getServiceReference(
                 "ch.ethz.jadabs.jxme.services.GroupService");
         groupService = (GroupService)bc.getService(sref);
-        
-        // BundleLoader
-        sref = bc.getServiceReference(BundleLoader.class.getName());
-        bundleLoader = (BundleLoader)bc.getService(sref);
-        
-        
         
         //  create Pipe
         String gmpipeName = bc.getProperty("ch.ethz.jadabs.servicemanager.gmpipe.name");
@@ -58,8 +54,12 @@ public class ServiceManagerActivator implements BundleActivator
         
         // create and publish ServiceManager
         serviceManager = new ServiceManagerImpl();
+        serviceManager.initRepoCache();
 
-        bundleLoader.addListener(serviceManager);
+//        bundleLoader.addListener(serviceManager);
+        
+        sref = bc.getServiceReference(PluginLoader.class.getName());
+        pluginLoader = (PluginLoader)bc.getService(sref);
         
         // register servicemanager
         bc.registerService("ch.ethz.jadabs.servicemanager.ServiceManager", serviceManager, null);
@@ -68,12 +68,14 @@ public class ServiceManagerActivator implements BundleActivator
         groupService.listen(groupPipe, serviceManager);
         
     }
+    
+    
 
     /*
      */
     public void stop(BundleContext bc) throws Exception
     {
-        bundleLoader.removeListener(serviceManager);
+//        bundleLoader.removeListener(serviceManager);
     }
     
 }
