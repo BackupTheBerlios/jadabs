@@ -1,4 +1,4 @@
-$Id: messageformats.txt,v 1.2 2005/01/23 15:47:01 printcap Exp $
+$Id: messageformats.txt,v 1.3 2005/02/17 13:40:05 printcap Exp $
 
 Message-Format between Jadabs-Bundle and Jadabs-Core-Entity
 -----------------------------------------------------------
@@ -421,9 +421,9 @@ MESSAGE_ASYNC_MSG:
  ------------------------------------------------------------
    0:      is a reply message (false)  boolean
    1:      request number              short 
-           (reqeust that requested
+           (request that requested
             messages of such kind)    
-   3:      gruop number (internally)   short 
+   3:      group number (internally)   short 
    5:      async type (MESSAGE)        short 
    7:      message length (in bytes)   short
    9:      pipeID string               UTF String
