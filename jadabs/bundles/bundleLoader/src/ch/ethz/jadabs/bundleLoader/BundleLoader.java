@@ -160,6 +160,7 @@ public class BundleLoader implements IBundleLoader, BundleListener
 
    private static boolean fetchBundle(String name, String group, String version) {
       // TODO: download bundle
+      // FIXME: Maybe return false here and crosscut this method from remoteLoader ?
 
       return true;
    }

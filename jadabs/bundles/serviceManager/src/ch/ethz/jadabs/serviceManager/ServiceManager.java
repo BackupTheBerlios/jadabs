@@ -6,6 +6,8 @@ package ch.ethz.jadabs.serviceManager;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -18,7 +20,11 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 public class ServiceManager implements IServiceManager {
    private KXmlParser parser;
-
+   private OSGiPlugin currentPlugin;
+   private Vector registeredPlugins = new Vector();
+   private Hashtable extensions = new Hashtable();
+   private Platform platform;   
+   
    public ServiceManager() {
       // get all *Plugin.xml files ...
       File dir = new File("./plugins");
@@ -36,7 +42,7 @@ public class ServiceManager implements IServiceManager {
             reader = new FileReader(files[i]);
             parser.setInput(reader);
             parsePlugin();
-
+            registerPlugin(currentPlugin);
          } catch (Exception e) {
             e.printStackTrace();
          } finally {
@@ -44,14 +50,27 @@ public class ServiceManager implements IServiceManager {
             reader = null;
          }
 
+         System.out.println(extensions);
+      }
+   }
+   
+   public void registerPlugin(File file) {      
+      FileReader reader;
+      try {
+         reader = new FileReader(file);
+         parser.setInput(reader);
+         parsePlugin();
+      } catch (Exception e) {
+         e.printStackTrace();
+      } finally {
+         parser = null;
+         reader = null;
       }
    }
 
    private void parsePlugin() throws XmlPullParserException, IOException {
 
       Stack stack = new Stack();
-      Vector extensions = new Vector();
-      Vector extensionPoints = new Vector();
 
       for (int type = parser.next(); (type != KXmlParser.END_DOCUMENT); type = parser
             .next()) {
@@ -63,18 +82,8 @@ public class ServiceManager implements IServiceManager {
                stack.pop();
             } catch (Exception e) {
                System.err
-                     .println("ERROR while parsing, OBR-File not well-formed");
+                     .println("ERROR while parsing, Plugin-File not well-formed");
             }
-         } else if (type == KXmlParser.TEXT) {
-            if (!parser.getText().trim().equals("")) {
-               // DEBUG one line
-               System.out.println("Scope:" + stack + " <" + stack.peek() + ">"
-                     + parser.getText().trim() + "</" + stack.peek() + ">");
-               // processElement(stack);
-            }
-         } else {
-            // element with attributes
-
          }
       }
    }
@@ -82,15 +91,39 @@ public class ServiceManager implements IServiceManager {
    private void processAttributes(Stack stack) {
 
       if (stack.peek().equals("OSGiPlugin")) {
-         OSGiPlugin pl = new OSGiPlugin(parser.getAttributeValue(null, "id"), parser.getAttributeValue(null, "name"), parser.getAttributeValue(null, "version"), parser.getAttributeValue(null, "description"), parser.getAttributeValue(null, "provider"));
+         currentPlugin = new OSGiPlugin(parser.getAttributeValue(null, "id"), parser.getAttributeValue(null, "name"), parser.getAttributeValue(null, "version"), parser.getAttributeValue(null, "description"), parser.getAttributeValue(null, "provider"));
       } else if (stack.peek().equals("Extension")) {
-
-      } else if (stack.peek().equals("ExtensionPoint")) {
-
+         currentPlugin.addExtension(new Extension(parser.getAttributeValue(null, "id"), parser.getAttributeValue(null, "service")));
+      } else if (stack.peek().equals("Extension-Point")) {
+         currentPlugin.addExtensionPoint(new ExtensionPoint(parser.getAttributeValue(null, "id"), parser.getAttributeValue(null, "service"), parser.getAttributeValue(null, "description")));
       } else if (stack.peek().equals("PluginActivatorBundle")) {
-
+         System.out.println(currentPlugin);
+      } else if (stack.peek().equals("Configuration")) {
+         // TODO: implement configuration
+         
       }
-
+   }
+   
+   private void registerPlugin(OSGiPlugin plugin) {
+      registeredPlugins.add(plugin);
+      for (Enumeration en = plugin.getExtensions(); en.hasMoreElements(); ) {
+         Extension key = (Extension)en.nextElement();
+         if (!extensions.containsKey(key.toString())) {            
+            Vector value = new Vector();
+            value.add(plugin);
+            extensions.put(key.toString(), value);   
+         } else {
+            System.out.println("SECOND ENTRY :...........................");
+            Vector values = (Vector)extensions.get(key.toString());
+            values.add(plugin);
+            extensions.remove(key.toString());
+            extensions.put(key.toString(), values);
+         }         
+      }
    }
 
+   public void getService() {
+      
+   }
+   
 }
