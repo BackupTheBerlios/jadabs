@@ -1,0 +1,37 @@
+<project default="jadabs:buildall" 
+	xmlns:maven="jelly:maven"
+	xmlns:jar="jelly:jar"
+	xmlns:j="jelly:core" 
+	xmlns:util="jelly:util" 
+	xmlns:ant="jelly:ant"
+	xmlns:artifact="artifact">
+
+
+  <!--==================================================================-->
+  <!-- Properties                                                       -->
+  <!--==================================================================-->
+  
+  <postGoal name="java:compile">
+
+		<ant:mkdir dir="${basedir}/target/classes/gov/nist/sip/proxy/configuration"/>
+		
+		<!-- copy configuration -->
+		<ant:copy todir="${basedir}/target/classes/gov/nist/sip/proxy/configuration">
+			<ant:fileset dir="${basedir}/src/gov/nist/sip/proxy/configuration" includes="**" />
+		</ant:copy>
+		
+		<!-- rmic 
+		<ant:rmic classname="gov.nist.sip.proxy.registrar.Registrar" base="${basedir}/target/classes" >
+       		<classpath>
+				<pathelement location="${classes}"/>
+		</classpath>
+       </rmic>
+       -->
+       <ant:rmic base="${maven.build.dest}" 
+       			classname="gov.nist.sip.proxy.registrar.Registrar">
+			<classpath refid="maven.dependency.classpath"/>
+		</ant:rmic>
+		
+  </postGoal>
+  
+</project>

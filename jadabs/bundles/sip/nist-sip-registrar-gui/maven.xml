@@ -1,0 +1,26 @@
+<project default="jadabs:buildall" 
+	xmlns:maven="jelly:maven"
+	xmlns:jar="jelly:jar"
+	xmlns:j="jelly:core" 
+	xmlns:util="jelly:util" 
+	xmlns:ant="jelly:ant"
+	xmlns:artifact="artifact">
+
+
+  <!--==================================================================-->
+  <!-- Properties                                                       -->
+  <!--==================================================================-->
+  
+  <postGoal name="java:compile">
+
+		<ant:mkdir dir="${basedir}/target/classes/gov/nist/sip/proxy/gui/images"/>
+		
+		<!-- copy configuration -->
+		<ant:copy todir="${basedir}/target/classes/gov/nist/sip/proxy/gui/images">
+			<ant:fileset dir="${basedir}/src/gov/nist/sip/proxy/gui/images" includes="**" />
+		</ant:copy>
+		
+		
+  </postGoal>
+  
+</project>
