@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: Peer.java,v 1.3 2005/01/19 10:00:05 afrei Exp $
+ * $Id: Peer.java,v 1.4 2005/01/26 15:58:21 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -213,7 +213,6 @@ public final class Peer extends NamedResource
             }
         }
         
-        System.out.println("b6");
         return elm;
     }
 

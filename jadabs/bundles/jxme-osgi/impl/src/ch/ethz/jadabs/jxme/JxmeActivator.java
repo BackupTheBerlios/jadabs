@@ -26,11 +26,13 @@ public class JxmeActivator implements BundleActivator
         // set hostname or peeralias
         String hostname = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
                 
-//        if (hostname == null)
-//        {
+        if (hostname == null)
+        {
 //            InetAddress localhost = InetAddress.getLocalHost();
 //            hostname = localhost.getHostName();
-//        }
+            
+            hostname = "manager";
+        }
         
         pnet = PeerNetwork.createInstance(hostname);
         

@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: GroupService.java,v 1.2 2005/01/12 20:59:10 printcap Exp $
+ * $Id: GroupService.java,v 1.3 2005/01/26 15:58:21 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -201,6 +201,34 @@ public interface GroupService extends Listener
      */
     public void send(Pipe pipe, Message data) throws IOException;
 
+    /**
+     * Send message to a core Service, which has to be specified previously 
+     * with addCoreService(). It uses all connections to send out the message.
+     * 
+     * @param message
+     * @param serviceName
+     * @param serviceHandler
+     * @throws IOException
+     */
+    public void send(Message message, String serviceName, String serviceHandler) 
+		throws IOException;
+    
+    /** 
+     * Add a core Service to the GroupService, uses all its connections
+     * to send out a message.
+     * 
+     * @param serviceName
+     * @param listener
+     */
+    public void addCoreService(String serviceName, Listener listener);
+    
+    /**
+     * Remove a core Service again.
+     * 
+     * @param serviceName
+     */
+    public void removeCoreService(String serviceName);
+    
     /**
      * Register a listener for the pipe and start listening on the pipe.
      * 

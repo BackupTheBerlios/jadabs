@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Platform SYSTEM "D:\andfrei-nobkp\workspace\jadabs\docs\spec\dtd\PlatformDescriptor.dtd">
+
+<Platform 
+	id="mservices.wlab.ethz.ch"
+	name="mservices"
+	version="0.1.0"
+	provider-name="ETHZ-IKS">
+	
+    <Property name="processor" value="armv4l" />
+    <!-- <Property name="display" value="480x640" /> -->
+    <Property name="os" value="linux" />
+    
+    <Property name="display" value="no" />
+    
+    <Property name="vm" value="cdc/fp" />
+    <Property name="vm-version" value="1.0.1" />
+    
+    <!-- can also be omitted, as it is specified per default -->
+    <OSGiContainer id="core-osgi-daop"/>
+        	    
+     <NetIface 
+        type="wlan/managed"
+        connection="static"
+        configuration="internet"
+        name="mservices"
+        essid="wlan"
+        mode="managed"
+        iface="eth0"
+        ip="192.168.55.10"
+        description="connection to Internet Gateway"
+     />
+     
+    <NetIface 
+        type="wlan/adhoc"
+        connection="dynamic"
+        name="bt-hotspot"
+        iface="eth1"
+        ip="192.168.55.55"
+        description="for ad-hoc wireless"
+     />
+
+     <NetIface 
+        type="bt/jsr-82"
+        connection="dynamic"
+        name="bt-hotspot"
+        iface="hci0"
+        description="for BT/JSR-82 Connections"
+     />
+    
+    <NetIface
+    	type="internet"
+    	ext-type="wlan/managed"
+    />
+	
+</Platform>

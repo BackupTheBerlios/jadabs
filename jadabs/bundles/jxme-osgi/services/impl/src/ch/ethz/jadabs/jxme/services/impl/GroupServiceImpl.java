@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: GroupServiceImpl.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
+ * $Id: GroupServiceImpl.java,v 1.3 2005/01/26 15:58:20 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -158,6 +158,23 @@ public class GroupServiceImpl extends Service implements GroupService
         {
             resServ.remotePublish(res, myGroup);
         }
+    }
+    
+    public void addCoreService(String serviceName, Listener listener)
+    {        
+        resServ.epService.addListener(serviceName, listener);
+    }
+    
+    public void removeCoreService(String serviceName)
+    {
+        resServ.epService.removeListener(serviceName);
+    }
+    
+    public void send(Message message, String serviceName, String serviceHandler) 
+    	throws IOException
+    {
+        
+        resServ.send(message.getElements(), serviceName, serviceHandler);
     }
     
     /**
@@ -342,7 +359,7 @@ public class GroupServiceImpl extends Service implements GroupService
 
         pipeServ.send(pipe, data);
     }
-
+    
     /**
      * Register a listener for the pipe and start listening on the pipe.
      * 

@@ -479,13 +479,11 @@ public class FrameworkManagerActivator
             
 	        // JSX
 	        try {
-	            System.out.println("array: "+bxmlresp);
 //		        ObjIn in = new ObjIn(new StringReader(bxmlresp));
 //		        Object obj = in.readObject();
 	            
 	            Object obj = new ObjectReader(new StringReader(bxmlresp)).readObject();
 
-		        System.out.println("class1: "+obj.getClass().getName());
 		        
 		        BundleInfo[] binforesp = (BundleInfo[])obj;
 
@@ -530,7 +528,6 @@ public class FrameworkManagerActivator
 		        Object obj2 = new ObjectReader(new StringReader(dataupd)).readObject();
 
 		        
-		        System.out.println("class2: "+obj2.getClass().getName());
 		        BundleInfo binfo = (BundleInfo)obj2;
 		        
 	    	    RemoteFramework rfwupd = (RemoteFramework)frameworks.get(fwnameupd);

@@ -1,0 +1,34 @@
+<project default="jadabs:buildall" 
+	xmlns:maven="jelly:maven"
+	xmlns:jar="jelly:jar"
+	xmlns:j="jelly:core" 
+	xmlns:util="jelly:util" 
+	xmlns:ant="jelly:ant"
+	xmlns:fn="jelly:functions"
+	xmlns:artifact="artifact">
+
+	<ant:property name="jadabs.bin" value="${basedir}/bin"/>
+
+	<pregoal name="jadabs:eclipse-plugins">
+		
+		<j:set var="pluginversion" value="${pom.currentVersion}" />
+		<j:if test="${pluginversion.endsWith('-SNAPSHOT') == 'true'}">
+      		<j:set var="pluginversion" value="${pluginversion.substring(0, pluginversion.indexOf('-SNAPSHOT'))}" />
+    	</j:if>
+		<j:set var="plugin_id"  value="${pom.getProperty('eclipse.bundle.symbolicname')}"/>
+		<j:set var="plugin_name"  value="${plugin_id}_${pluginversion}"/>
+		
+		<!-- setup dist directory -->
+		<ant:mkdir dir="${maven.build.dir}/tmp"/>
+		<ant:mkdir dir="${maven.build.dir}/tmp/${plugin_name}"/>
+		
+		<ant:copy 
+			file="${basedir}/../../../bin/log4j.properties"
+			todir="${maven.build.dir}/tmp/${plugin_name}">
+		</ant:copy>
+		
+	
+	</pregoal>
+  
+ 
+</project>

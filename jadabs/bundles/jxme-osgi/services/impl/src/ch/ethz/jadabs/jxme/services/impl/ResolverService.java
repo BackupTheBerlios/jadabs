@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: ResolverService.java,v 1.3 2005/01/19 10:00:05 afrei Exp $
+ * $Id: ResolverService.java,v 1.4 2005/01/26 15:58:20 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -139,7 +139,7 @@ public class ResolverService extends Service implements Runnable, Listener
     private final Hashtable queries = new Hashtable(); 
     	// [(listener, Query)]
     
-    private EndpointService epService; // Endpoint Service
+    EndpointService epService; // Endpoint Service
 
     private EndpointAddress[][] seedURI = null;
 
@@ -534,6 +534,11 @@ public class ResolverService extends Service implements Runnable, Listener
      */
     private void send(Element[] elm, String serviceHandler) throws IOException
     {
+        send(elm, serviceName, serviceHandler);
+    }
+
+    public void send(Element[] elm, String servicename, String serviceHandler) throws IOException
+    {
         EndpointAddress[][] neighborURI = cache.getNeighbors(neighbors, peerId);
         if (neighborURI.length == 0)
         {
@@ -551,7 +556,7 @@ public class ResolverService extends Service implements Runnable, Listener
                 EndpointAddress[] uriList = neighborURI[i];
                 for (int ndx = 0; ndx < uriList.length; ndx++)
                 {
-                    uriList[ndx] = new EndpointAddress(uriList[ndx], serviceName, serviceHandler);
+                    uriList[ndx] = new EndpointAddress(uriList[ndx], servicename, serviceHandler);
                 }
                 try
                 {
@@ -568,7 +573,7 @@ public class ResolverService extends Service implements Runnable, Listener
             // I am an ISLAND. Try multicast if it works.
         
         try {
-            EndpointAddress endptaddr = new EndpointAddress(null, serviceName, serviceHandler);
+            EndpointAddress endptaddr = new EndpointAddress(null, servicename, serviceHandler);
             epService.propagate(elm, endptaddr);
         }catch(IOException io)
         {
@@ -576,7 +581,7 @@ public class ResolverService extends Service implements Runnable, Listener
         }
 //        } // else
     }
-
+    
     /**
      * GetNextRequestId generates new id for each query
      * 

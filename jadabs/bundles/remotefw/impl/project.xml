@@ -63,7 +63,7 @@
 			<artifactId>log4j-cdc</artifactId>
 			<version>${pom.currentVersion}</version>
 		</dependency>
-		
+		<!--
 		<dependency>
 			<groupId>xstream</groupId>
 			<artifactId>xstream</artifactId>
@@ -80,7 +80,7 @@
 			<properties>
 	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
 	      	</properties>
-		</dependency>
+		</dependency> -->
 	
 		<dependency>
 			<groupId>jsx</groupId>

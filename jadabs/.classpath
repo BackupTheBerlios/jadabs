@@ -9,6 +9,8 @@
 	<classpathentry kind="src" path="bundles/jxme-osgi/services/api/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/services/impl/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/services/test-osgi/src"/>
+	<classpathentry kind="src" path="bundles/jxme-osgi/bundleservice/src"/>
+	<classpathentry kind="src" path="bundles/jxme-osgi/bundleservice/test-osgi/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/udp/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/udp/test-osgi/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/tcp/src"/>

@@ -45,15 +45,24 @@
       		<groupId>jadabs</groupId>
       		<artifactId>log4j-cdc</artifactId>
       		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		
+		<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8-osgi</version>
       		<properties>
 	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
 	      	</properties>
 		</dependency>
+		
 		
   	</dependencies>
 
   <reports>
   	<report>maven-javadoc-plugin</report>
   </reports>
+
 
 </project>
