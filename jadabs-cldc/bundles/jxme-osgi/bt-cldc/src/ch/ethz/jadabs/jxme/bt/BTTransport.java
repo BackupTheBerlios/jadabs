@@ -1,6 +1,6 @@
 /*
  * Created on Jul 22, 2004
- * $Id: BTTransport.java,v 1.1 2004/11/10 10:28:13 afrei Exp $
+ * $Id: BTTransport.java,v 1.2 2004/12/22 12:39:31 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.bt;
 
@@ -234,10 +234,10 @@ public class BTTransport implements Transport
         bout.close();
         byte[] messagebuffer = bout.toByteArray();
         
-        Enumeration enum = connections.elements();
+        Enumeration econs = connections.elements();
         boolean rememberException = false;
-        while (enum.hasMoreElements()) {
-            BTConnection connection = (BTConnection)enum.nextElement();
+        while (econs.hasMoreElements()) {
+            BTConnection connection = (BTConnection)econs.nextElement();
             try {                
                 connection.sendMessage(messagebuffer, 
                                        connection.getRemoteBTAddress(), true);
@@ -306,9 +306,9 @@ public class BTTransport implements Transport
         
         // propagage multicast message 
         if (multicast) {
-            Enumeration enum = connections.elements();
-            while (enum.hasMoreElements()) {
-                BTConnection connection = (BTConnection)enum.nextElement();
+            Enumeration econs = connections.elements();
+            while (econs.hasMoreElements()) {
+                BTConnection connection = (BTConnection)econs.nextElement();
                 String destination = connection.getRemoteBTAddress();
                 if (!destination.equals(sender)) {
                     // only forward message to links other than the 
@@ -459,9 +459,9 @@ public class BTTransport implements Transport
             }
             
             // closing still open connections
-            Enumeration enum = connections.elements();
-            while (enum.hasMoreElements()) {
-                BTConnection connection = (BTConnection)enum.nextElement();
+            Enumeration econs = connections.elements();
+            while (econs.hasMoreElements()) {
+                BTConnection connection = (BTConnection)econs.nextElement();
                 connection.close();
             }            
         }        

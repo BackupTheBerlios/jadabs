@@ -1,7 +1,7 @@
 /*
  * Created on Aug 1, 2004
  *
- * $Id: BTDiscovery.java,v 1.1 2004/11/10 10:28:13 afrei Exp $
+ * $Id: BTDiscovery.java,v 1.2 2004/12/22 12:39:31 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.bt;
 
@@ -199,8 +199,8 @@ public class BTDiscovery implements DiscoveryListener, Runnable
                         connection.startWorker();
                     
                     } catch(IOException e) {
-                        LOG.error("cannot connect to "+connectionURL+": "
-                                +e.getMessage());
+                        LOG.error("cannot connect to "+connectionURL+": ");
+                        e.printStackTrace();
                     }                
                 }
                 
