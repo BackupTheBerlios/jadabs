@@ -15,7 +15,7 @@
     <section name="Iterations instead of recursion">    
     <p>
 	Generally, every bundle has a list of dependencies that are again bundles with each 
-	of them having dependencies again. This forms a tree with the root note beeing the 
+	of them having dependencies. This forms a tree with the root note beeing the 
 	bundle that is to be loaded and the child nodes having no more dependencies or only 
 	dependencies that already ocured on a higher level. For loading, these cycles are 
 	not relevant because once a dependency bundle is loades, it exports all the 
@@ -53,14 +53,11 @@
 	O(n), where n is the number of nodes in the dependency graph, in comparison, a parallel 
 	recursive algorithm could run in O(log(n)). This is the price for 
 	eliminating context switches and saving resources. As all processing is done in one loop, 
-	no overhead of function calls per element is created. 
+	no overhead of function calls per element is created. The result is a linear schedule that 
+	can be executed to load all required dependencies an the bundle itself. If dependencies cannot 
+	be satisfied with the available InformationSources, the algorithm will return null. In this case, 
+	it is not possible to load the bundle unless the environment changes, i.e. new bundles appear. 
 	</p>
 	</section>	
 </body>
 </document>
-
-
-
-
-
-

@@ -14,17 +14,17 @@
   <body>
     <section name="Information Sources">    
     <p>
-      In a Jadabs system, several sources for bundles and obrs exist, first 
+      In a Jadabs system, several sources for bundles and obrs exist. First 
       of all, every Jadabs container has a repository, normally a directory 
-      on a local fixed disk. But if an internet connection exists, Bundle 
-      Loader can also ask Repository Servers via http for information. On a     
-      even leven, the Service Manager can use the JXME groupservice to 
+      on a local fixed disk. But if an internet connection exists, <code>BundleLoader</code> 
+      can also ask Repository Servers via http for information. On a     
+      even leven, the <code>ServiceManager</code> can use the JXME groupservice to 
       retrieve information. All this possibilities are abstracted to 
-      Information Sources, where bundles or obrs can be requested and the 
-      Plugin Loader can start filtered queries for matching plugins. The  
+      <code>InformationSources</code>, where bundles or obrs can be requested and the 
+      <code>PluginLoader</code> can start filtered queries for matching plugins. The  
       result of a request is always a <code>InputStream</code> because the 
       found information is not necessarily a file, it can also be a Network 
-      Stream or a different source. As standard, every Bundle Loader has it's 
+      Stream or a different source. As standard, every <code>BundleLoader</code> has it's 
       local repository registered as Information Source, if a 
       <code>Socket</code> can be opened, a http client is also registered.  
       Higher level bundles can register additional Information Sources, like
@@ -54,9 +54,3 @@ public interface InformationSource {
  </section>    
 </body>
 </document>
-
-
-
-
-
-
