@@ -1,0 +1,7 @@
+
+# use a default Platform 
+-usepad osgi-nanning.pad
+
+# start here the required plugins
+-startopd   jadabs:maingui:0.7.1-SNAPSHOT:opd
+

@@ -302,10 +302,12 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
     * @param requestor self reference
     * @return InputStream to the opd or null if not found
     */
-   protected static InputStream fetchInformation(String uuid, Object requestor) {
+   public InputStream fetchInformation(String uuid, Object requestor) {
       InputStream result = null;
+            
       for (Enumeration sources = infoSources.elements(); sources.hasMoreElements();) {
          InformationSource source = (InformationSource) sources.nextElement();
+                  
          if (source instanceof InformationSource) {
             if (source == requestor) return result;
          }
@@ -323,7 +325,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
     */
    public void registerInformationSource(InformationSource infoSource) {
       if (!infoSources.contains(infoSource))
-         infoSources.add(infoSources);
+         infoSources.add(infoSource);
    }
 
    

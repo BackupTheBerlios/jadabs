@@ -1,1 +1,0 @@
-18#"\j9\bin\j9.exe" -Djava.home=\j9 -cp \j9\lib\jclMax\swt.jar;\jadabs\framework-1.3.0-aop.jar org.knopflerfish.framework.Main -xargs \jadabs\init-ppcj9.xargs

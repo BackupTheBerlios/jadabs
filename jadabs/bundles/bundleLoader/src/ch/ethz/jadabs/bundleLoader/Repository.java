@@ -76,8 +76,11 @@ public class Repository extends PluginFilterMatcher implements InformationSource
 
          File repofile = new File(repopath + File.separator + group + File.separator + type + "s"
          + File.separator + name + "-" + version + "." + type);
-                
-         return new FileInputStream(repofile);
+         
+         if (repofile.exists())
+             return new FileInputStream(repofile);
+         else
+             return null;
          
       } catch (Exception e) {
          e.printStackTrace();

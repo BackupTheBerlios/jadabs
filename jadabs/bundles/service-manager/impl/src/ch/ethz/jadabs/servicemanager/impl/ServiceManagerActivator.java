@@ -38,6 +38,7 @@ public class ServiceManagerActivator implements BundleActivator
     
     static String peername;
     
+//    private Thread svcManagerThread;
     
     /*
      */
@@ -62,14 +63,7 @@ public class ServiceManagerActivator implements BundleActivator
         ServiceReference sref = bc.getServiceReference(
                 "ch.ethz.jadabs.jxme.services.GroupService");
         groupService = (GroupService)bc.getService(sref);
-        
-        // Create Pipe
-        groupPipe = groupService.createGroupPipe(gmpipeName, gmpipeID);
-        
-        // create and publish ServiceManager
-        serviceManager = new ServiceManagerImpl();
-        serviceManager.initRepoCache();
-        
+                
 //        	// PluginLoader
         sref = bc.getServiceReference(PluginLoader.class.getName());
         pluginLoader = (PluginLoader)bc.getService(sref);
@@ -78,14 +72,27 @@ public class ServiceManagerActivator implements BundleActivator
         sref = bc.getServiceReference(BundleLoader.class.getName());
         bundleLoader = (BundleLoader)bc.getService(sref);
         
-        // register servicemanager
-        bc.registerService("ch.ethz.jadabs.servicemanager.ServiceManager", serviceManager, null);
+        // Create Pipe
+        groupPipe = groupService.createGroupPipe(gmpipeName, gmpipeID);
+        
+        // create and publish ServiceManager
+        serviceManager = new ServiceManagerImpl();
+        serviceManager.initRepoCache();
         
         // set listener
         groupService.listen(groupPipe, serviceManager);
+        groupService.addDiscoveryListener(serviceManager);
         
-        // register ServiceManager in PluginLoader
-//        pluginLoader.registerInformationSource(serviceManager);
+        bundleLoader.registerInformationSource(serviceManager);
+        pluginLoader.registerInformationSource(serviceManager);
+        
+        // register servicemanager
+        bc.registerService("ch.ethz.jadabs.servicemanager.ServiceManager", serviceManager, null);
+        
+        
+        // start the servicemanager thread
+//        svcManagerThread =  new Thread(serviceManager);
+//        svcManagerThread.start();
         
     }
     
@@ -97,6 +104,8 @@ public class ServiceManagerActivator implements BundleActivator
     {
         // unregister serviceManager
        pluginLoader.unregisterInformationSource(serviceManager);
+       
+//       serviceManager.stop();
        
     }
     

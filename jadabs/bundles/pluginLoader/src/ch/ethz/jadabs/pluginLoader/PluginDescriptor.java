@@ -78,7 +78,7 @@ public class PluginDescriptor extends Descriptor {
 
       parser = new KXmlParser();
 
-      InputStream instream = PluginLoaderImpl.fetchInformation(uuid, this);
+      InputStream instream = PluginLoaderImpl.getInstance().fetchInformation(uuid, this);
       parser.setInput(new InputStreamReader(instream));
       parseOPD();
 

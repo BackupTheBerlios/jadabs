@@ -29,7 +29,7 @@ public class PluginLoaderHandler implements HttpRequestHandler {
          try {                
             for (Iterator plugins = PluginLoaderActivator.ploader.getMatchingPlugins(filter, this); plugins.hasNext(); ) {
                String uuid = (String)plugins.next();
-               BufferedReader reader = new BufferedReader(new InputStreamReader(PluginLoaderImpl.fetchInformation(uuid, this)));
+               BufferedReader reader = new BufferedReader(new InputStreamReader(PluginLoaderImpl.getInstance().fetchInformation(uuid, this)));
                while (reader.ready()) {
                   buffer.append(reader.readLine());
                }

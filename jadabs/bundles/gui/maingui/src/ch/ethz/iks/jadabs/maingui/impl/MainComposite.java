@@ -109,6 +109,8 @@ public class MainComposite extends Composite
 
     private Button getServiceButton;
     
+    private Button provServiceButton;
+    
     private Composite composite1;
 
     protected Tree peertree;
@@ -144,6 +146,7 @@ public class MainComposite extends Composite
             stopButton = new Button(composite1, SWT.PUSH | SWT.CENTER);
             uninstallButton = new Button(composite1, SWT.PUSH | SWT.CENTER);
             getServiceButton = new Button(composite1, SWT.PUSH | SWT.CENTER);
+            provServiceButton = new Button(composite1, SWT.PUSH | SWT.CENTER);
             peertree = new Tree(this, SWT.SINGLE | SWT.BORDER);
 
             this.setSize(new org.eclipse.swt.graphics.Point(507, 526));
@@ -172,9 +175,9 @@ public class MainComposite extends Composite
 
             FormData composite1LData = new FormData();
             composite1LData.height = 46;
-            composite1LData.width = 334;
+            composite1LData.width = 400;
             composite1LData.left = new FormAttachment(22, 1000, 0);
-            composite1LData.right = new FormAttachment(0, 1000, 345);
+            composite1LData.right = new FormAttachment(0, 1000, 400);
             composite1LData.top = new FormAttachment(1000, 1000, -191);
             composite1LData.bottom = new FormAttachment(1000, 1000, -145);
             composite1.setLayoutData(composite1LData);
@@ -255,6 +258,19 @@ public class MainComposite extends Composite
                 public void widgetSelected(SelectionEvent evt)
                 {
                     getServiceButtonWidgetSelected(evt);
+                }
+            });
+            
+            RowData provServiceButtonLData = new RowData(50, 39);
+            provServiceButton.setLayoutData(provServiceButtonLData);
+            provServiceButton.setText("prov service");
+            provServiceButton.setSize(new org.eclipse.swt.graphics.Point(57, 39));
+            provServiceButton.addSelectionListener(new SelectionAdapter()
+            {
+
+                public void widgetSelected(SelectionEvent evt)
+                {
+                    provServiceButtonWidgetSelected(evt);
                 }
             });
             
@@ -684,6 +700,31 @@ public class MainComposite extends Composite
 
     }
 
+    /**
+     * Install a Bundle in a Framework.
+     * 
+     * @param evt
+     */
+    protected void provServiceButtonWidgetSelected(SelectionEvent evt)
+    {
+        TreeItem titem = null;
+        Framework fw = null;
+        if ( peertree.getSelection().length > 0 && 
+             (titem = peertree.getSelection()[0]).getParentItem() == null &&
+             titem.getText().equals(Activator.peername))
+        {
+//            String peername = titem.getText();
+
+//            fw = Activator.rmanager.getFrameworkByPeername(peername);
+
+            ServiceChooser svcChooser = new ServiceChooser(fw, MainGUI.shell, SWT.ICON_QUESTION);
+            svcChooser.open();
+
+        } else
+            System.out.println("select first your own peer!");
+
+    }
+    
     /**
      * Stop a bundle in a Framework.
      * 

@@ -428,7 +428,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     */
    public void registerInformationSource(InformationSource infoSource) {
       if (!infoSources.contains(infoSource))
-         infoSources.add(infoSources);
+         infoSources.add(infoSource);
    }
 
    /**
@@ -479,6 +479,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       for (Enumeration sources = infoSources.elements(); sources
             .hasMoreElements();) {
          InformationSource source = (InformationSource) sources.nextElement();
+         
          if (source instanceof InformationSource) {
             if (((InformationSource) source) == requestor)
                return result;

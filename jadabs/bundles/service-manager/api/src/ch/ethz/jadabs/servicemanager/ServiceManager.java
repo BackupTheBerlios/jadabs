@@ -25,8 +25,8 @@ public interface ServiceManager
     public static String FILTER_REQ = "filreq";
     public static String FILTER_ACK = "filack";
     
-    public static String INFO_REQ = "inforeq";
-    public static String INFO_ACK = "infoack";
+    public static String OBR_REQ = "obrreq";
+    public static String OBR_ACK = "obrack";
     
     /** Jar Service Types */
     public static String JAR_REQ = "jarreq";
@@ -34,6 +34,8 @@ public interface ServiceManager
     
     /** Service Information */
     public static String SERVICE_ADV = "svcadv";
+    
+    public static String ADV_DESCRIPTOR = "advdesc";
     public static String SERVICE_ID = "svcid";
     
     public static String SERVICE_FILTER = "svcfil";
@@ -80,9 +82,9 @@ public interface ServiceManager
      * Service needs not to be installed.
      * 
      * @param pipe
-     * @param sref
+     * @param uuid
      */
-    void addProvidingService(ServiceReference sref);
+    void addProvidingService(String uuid);
     
     /** 
      * Remove providing service added with addProvidingService.
