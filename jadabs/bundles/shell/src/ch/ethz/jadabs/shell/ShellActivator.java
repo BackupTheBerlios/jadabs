@@ -43,7 +43,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import ch.ethz.jadabs.bundleloader.BundleLoader;
+import ch.ethz.jadabs.bundleLoader.api.BundleLoader;
 
 
 /**
@@ -75,11 +75,11 @@ public class ShellActivator implements BundleActivator
             LOG.debug("starting Jadabs Shell ... ");        
         
         // get BundleLoader
-        sref = bc.getServiceReference(BundleLoader.class.getName());
+        sref = bc.getServiceReference(ch.ethz.jadabs.bundleLoader.api.BundleLoader.class.getName());
         if (sref != null)
         {
             LOG.debug("Connected to BundleLoader ");
-            ShellActivator.bloader = (BundleLoader) bc.getService(sref);
+            ShellActivator.bloader = (ch.ethz.jadabs.bundleLoader.api.BundleLoader) bc.getService(sref);
         } else
         {
             LOG.debug("BundleLoader is not running, load command will be deactivated ...");

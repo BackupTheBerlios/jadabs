@@ -203,7 +203,7 @@ public class Shell extends Thread implements IShellPluginService {
          } else if (cmdString.equalsIgnoreCase("loadBundle")) {
             if (cmd.length > 3) {
                if (ShellActivator.bloader != null) {
-                  ShellActivator.bloader.load(cmd[1], cmd[2], cmd[3]);
+                  ShellActivator.bloader.loadBundle(cmd[1] + ":obr");
                } else {
                   System.out
                         .println("Sorry, there is no BundleLoader on this machine.");

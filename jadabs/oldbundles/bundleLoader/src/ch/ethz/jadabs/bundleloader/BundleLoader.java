@@ -2,6 +2,8 @@ package ch.ethz.jadabs.bundleloader;
 
 import java.util.Enumeration;
 
+import ch.ethz.jadabs.http.RequestHandler;
+
 /**
  * @author rjan
  *
@@ -33,4 +35,6 @@ public interface BundleLoader {
 	 * @param bl
 	 */
 	public void removeListener(BundleLoaderListener bl);
+	
+	public void registerRequestHandler(RequestHandler handler);
 }

@@ -9,5 +9,5 @@ package ch.ethz.jadabs.http;
  */
 public interface RequestHandler {
 
-   public void delegate(HttpSocket request);
+   public boolean delegate(HttpSocket request);
 }

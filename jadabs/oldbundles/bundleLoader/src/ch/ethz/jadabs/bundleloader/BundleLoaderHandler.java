@@ -19,11 +19,12 @@ public class BundleLoaderHandler implements ch.ethz.jadabs.http.RequestHandler {
    /**
     * @see ch.ethz.jadabs.http.RequestHandler#delegate(ch.ethz.jadabs.http.HttpSocket)
     */
-   public void delegate(HttpSocket request) {      
+   public boolean delegate(HttpSocket request) {      
       System.out.println("REQUEST: " + request.file);
       if (request.file.startsWith("/listrepo")) {
          File repofile = new File(repolocation.substring(5) + File.separatorChar + ".." + File.separatorChar + "htdocs" + File.separatorChar + "repository.xml");
          request.sendFile(repofile, "text/xml", null);
+         return true;
       } 
       if (request.file.startsWith("/getobr/")) {
          String id = request.file.substring(8);
@@ -44,7 +45,8 @@ public class BundleLoaderHandler implements ch.ethz.jadabs.http.RequestHandler {
          } catch (Exception e) {
             e.printStackTrace();
             request.send404();            
-         }
+         } 
+         return true;
       }
       if (request.file.startsWith("/getjar/")) {
          String id = request.file.substring(8);
@@ -65,14 +67,18 @@ public class BundleLoaderHandler implements ch.ethz.jadabs.http.RequestHandler {
          } catch (Exception e) {
             e.printStackTrace();
             request.send404();            
-         }      
+         }
+         return true;
       }
       if (request.file.startsWith("/test")) {
          request.sendString("<test>Hallo Welt</test>", "text/xml");
+         return true;
       } 
       if (request.file.startsWith("/error")) {
          request.send404();
+         return true;
       }
+      return false;
    }
 
 }

@@ -21,6 +21,9 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.xmlpull.v1.XmlPullParserException;
 
+import ch.ethz.jadabs.http.RequestHandler;
+import java.lang.ref.SoftReference;
+
 /**
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
@@ -30,20 +33,13 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
 {
 
     private static Logger LOG = Logger.getLogger(BundleLoaderImpl.class);
-
     private static HashSet queuedBundles = new HashSet();
-
     private static HashSet installedBundles = new HashSet();
-
     private static LinkedList installationQueue = new LinkedList();
-
-    private static Hashtable binfos = new Hashtable(); // [(String(group-name-version),
-                                                       // BundleInformation)]
+    private static Hashtable binfos = new Hashtable();                                                        
 
     protected final static int Eager = 1;
-
     protected final static int Lazy = 2;
-
     protected static int fetchPolicy = Eager;
 
     private BundleStarter starter;
@@ -66,7 +62,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
      */
     protected void startup()
     {
-
         try
         {
             FileReader reader = new FileReader("startup.xml");
@@ -80,7 +75,8 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
             {
                 BundleInformation bundle = (BundleInformation) en.nextElement();
                 scheduleDependencies(bundle);
-                LOG.debug("<<Schedule for " + bundle + ": " + installationQueue + ">>");
+                if (LOG.isDebugEnabled())
+                   LOG.debug("<<Schedule for " + bundle + ": " + installationQueue + ">>");
                 install();
             }
 
@@ -91,13 +87,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
         }
     }
 
-    /**
-     * 
-     * @param name
-     * @param group
-     * @param version
-     * @throws Exception
-     */
+
     public synchronized void load(String name, String group, String version) throws Exception
     {
         BundleInformation bundle = new BundleInformation(name, group, version);
@@ -106,6 +96,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
         install();
     }
 
+    
     public void addListener(BundleLoaderListener bl)
     {
         bls.add(bl);
@@ -151,9 +142,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
             FileInputStream fin = new FileInputStream(file);
             Bundle bundle = BundleLoaderActivator.bc.installBundle(file.getName(), fin);
 //            System.out.println("installed " + location);
-
-            binfos.put(binf.getID(), binf);
-
+           
             // enqueue bundle for threaded starting
             starter.enqueue(bundle);
         }
@@ -162,15 +151,9 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
         installationQueue.clear();
     }
 
-    /**
-     * 
-     * @param bundleName
-     * @param group
-     * @param version
-     */
+
     protected static boolean loadBundle(String name, String group, String version)
     {
-
         // TODO: download obr
 
         if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Eager) { return fetchBundle(name, group, version); }
@@ -223,7 +206,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
             // another iteration until all dependencies are processed
             for (index = 0; ((BundleInformation) installationQueue.get(index)).bundleDependencies.isEmpty()
                     && index < installationQueue.size() - 1; index++)
-                ;
 
             if (BundleLoaderActivator.LOG.isDebugEnabled())
                 BundleLoaderActivator.LOG.debug(installationQueue);
@@ -294,12 +276,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
         } while (found);
     }
 
-    /**
-     * 
-     * @param parser
-     * @return
-     * @throws Exception
-     */
+    
     private Vector parseStartup(KXmlParser parser) throws Exception
     {
         Vector startup = new Vector();
@@ -359,7 +336,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
 
         return startup;
     }
-
+    
     /**
      * @see org.osgi.framework.BundleListener#bundleChanged(org.osgi.framework.BundleEvent)
      */
@@ -375,7 +352,8 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
 
         }
         // Jan, ist der Vergleich mit 1, 16 richtig hier?
-        else if (bevent.getType() == 1)
+        // Sollte richtig sein, habe ich mit einem Log-Listener ausprobiert. 
+        else if (bevent.getType() == BundleEvent.INSTALLED)
         {
             LOG.debug("bevent");
             String loc = bevent.getBundle().getLocation();
@@ -391,7 +369,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
                 loc = loc.substring(0, pos);
             }
             installedBundles.add(loc);
-        } else if (bevent.getType() == 16)
+        } else if (bevent.getType() == BundleEvent.UNINSTALLED)
         {
             String loc = bevent.getBundle().getLocation();
             int pos = loc.lastIndexOf(File.separatorChar);
@@ -408,20 +386,17 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
             installedBundles.remove(loc);
         }
     }
-
-//    protected Hashtable getInstalledBundles()
-//    {
-//        return binfos;
-//    }
-
+    
     public Enumeration getBundleAdvertisements()
     {
-        return binfos.elements();
-    }
+       //FIXME: If soft references are used, the hashtable will no longer contain
+       //       all BundleInformations processed so far
+       return binfos.elements();
+    }    
     
-    public BundleInformation getBundleInfo(String id)
+    public BundleInformation getBundleInfo(String id) 
     {
-        return (BundleInformation)binfos.get(id);
+        return bundleInfoCache(id);
     }
     
     public class BundleStarter extends Thread
@@ -487,4 +462,33 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
             }
         }
     }
+
+   /**
+    * @see ch.ethz.jadabs.bundleloader.BundleLoader#registerRequestHandler(ch.ethz.jadabs.http.RequestHandler)
+    */
+   public void registerRequestHandler(RequestHandler handler) {
+      BundleLoaderActivator.httpDaemon.addRequestHandler(handler);      
+   }
+   
+   protected static BundleInformation bundleInfoCache(String uuid) {
+      BundleInformation result = (BundleInformation)binfos.get(uuid);
+
+      if (result == null) {      
+         try {
+            result = new BundleInformation(uuid);
+            // TODO: Replace strong with soft reference
+            // binfos.put(uuid, new SoftReference(result));
+            binfos.put(uuid, result);
+         } catch (Exception e) {
+            e.printStackTrace();
+         }
+      }
+      
+      return result; 
+   }
+   
+   protected static void cacheBundleInfo(BundleInformation binfo) {
+      binfos.put(binfo.getID(), binfo);
+   }
+   
 }

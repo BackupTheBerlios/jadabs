@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler;
-
 /**
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
@@ -21,13 +19,13 @@ public class HttpDaemon extends Thread {
       handlers.add(new StandardHandler());
    }
    
-   public void addRequestHandler(HttpRequestHandler handler) {
+   public void addRequestHandler(RequestHandler handler) {
       if (!handlers.contains(handler)) {
          handlers.add(0, handler);
       }
    }
    
-   public void removeRequestHandler(HttpRequestHandler handler) {
+   public void removeRequestHandler(RequestHandler handler) {
       handlers.remove(handler);
    }
    
@@ -54,7 +52,7 @@ public class HttpDaemon extends Thread {
              clientSocket = (HttpSocket)serverSocket.accept();
              System.out.println("Connect from: " + clientSocket );
              for (Enumeration en = handlers.elements(); en.hasMoreElements(); ) {
-                if (((HttpRequestHandler)en.nextElement()).delegate(clientSocket)) break;
+                if (((RequestHandler)en.nextElement()).delegate(clientSocket)) break;
              }
              clientSocket.close();
          } while (clientSocket != null);

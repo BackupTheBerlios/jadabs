@@ -28,13 +28,9 @@ public class BundleInformation extends ServiceAdvertisement
     private static Logger LOG = Logger.getLogger(BundleInformation.class);
 
     private String bundleId;
-
     private String bundleUpdateLocation;
-
     private String bundleSourceURL;
-
     private String bundleDocURL;
-
     private String bundleChecksum;
 
     protected Vector bundleDependencies = new Vector();
@@ -50,7 +46,6 @@ public class BundleInformation extends ServiceAdvertisement
 
     /** location of the cached jar file */
     private String cachedFilePath;
-
     
     private BundleInformation()
     {
@@ -80,17 +75,19 @@ public class BundleInformation extends ServiceAdvertisement
             File obrfile = new File(BundleLoaderActivator.repository + File.separator + group + File.separator + "obrs"
                     + File.separator + bundle + "-" + version + ".obr");
             
-            System.out.println("created Binfo: "+obrfile);
+            System.out.println("###############created Binfo: "+ group + ":" + bundle + ":" + version + ":");
             
             reader = new FileReader(obrfile);
             parser.setInput(reader);
             parseOBR();
             
             setAdvertisement(obrfile);
+            
+            BundleLoaderImpl.cacheBundleInfo(this);
 
         } catch (Exception e)
         {
-            e.printStackTrace();
+            e.printStackTrace(); 
         } finally
         {
             parser = null;
@@ -129,11 +126,15 @@ public class BundleInformation extends ServiceAdvertisement
             File obrfile = new File(BundleLoaderActivator.repository + File.separator + group + File.separator + "obrs"
                     + File.separator + bundle + "-" + version + ".obr");
             
+            System.out.println("###############created Binfo: " + uuid);
+            
             reader = new FileReader(obrfile);
             parser.setInput(reader);
             parseOBR();
 
             setAdvertisement(obrfile);
+            
+            BundleLoaderImpl.cacheBundleInfo(this);
             
         } catch (Exception e)
         {
@@ -233,9 +234,6 @@ public class BundleInformation extends ServiceAdvertisement
         {
             if (type == KXmlParser.START_TAG)
             {
-                // if (parser.getName().equals("dependencies")) {
-                // 	buildSchedule();
-                // }
                 stack.push(parser.getName());
             }
             if (type == KXmlParser.END_TAG)
@@ -301,6 +299,7 @@ public class BundleInformation extends ServiceAdvertisement
             try
             { 
                LOG.debug("Dependency:" + uuid);
+               /*
                if (bound)
                {
                    BundleInformation dependency = new BundleInformation(uuid);
@@ -308,6 +307,8 @@ public class BundleInformation extends ServiceAdvertisement
                }
                else 
                    bundleDependencies.add(uuid);
+               */
+               BundleInformation dependency = BundleLoaderImpl.bundleInfoCache(uuid);               
                
             } catch (Exception e)
             {
@@ -317,11 +318,7 @@ public class BundleInformation extends ServiceAdvertisement
         }
     }
 
-    /**
-     * 
-     * @throws XmlPullParserException
-     * @throws IOException
-     */
+/*
     private void buildSchedule() throws XmlPullParserException, IOException
     {
 
@@ -364,7 +361,7 @@ public class BundleInformation extends ServiceAdvertisement
                 }
                 if (bundlename != null && bundleversion != null && bundlegroup != null)
                 {
-                    BundleInformation dependency = new BundleInformation(bundlename, bundlegroup, bundleversion);
+                    BundleInformation dependency = BundleLoaderImpl.bundleInfoBroker(bundlename, bundlegroup, bundleversion); 
                     bundleDependencies.add(dependency);
                 }
                 parser.next();
@@ -380,6 +377,7 @@ public class BundleInformation extends ServiceAdvertisement
 
         return;
     }
+*/
 
     /**
      * Reads a file storing intermediate data into a list. Fast method.
@@ -472,7 +470,7 @@ public class BundleInformation extends ServiceAdvertisement
 
     public String getID()
     {
-        return group + ":" + name + ":" + version + ":" + "obr";
+        return group + ":" + name + ":" + version + ":";
     }
 
 }

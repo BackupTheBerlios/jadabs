@@ -20,8 +20,11 @@ public class BundleLoaderActivator implements BundleActivator
     
 	protected static Logger LOG = Logger.getLogger(BundleLoaderImpl.class.getName());
 	
-	protected static BundleContext bc;
+	public static BundleContext bc;
 	protected static BundleLoaderImpl bundleLoader;
+	
+	protected static HttpDaemon httpDaemon;
+	
 	static String repository;
 
 	
@@ -59,10 +62,12 @@ public class BundleLoaderActivator implements BundleActivator
 		// OSGi API is provided by knopflerfish
 		sysBundles.add(new String("osgi-framework-1.2"));
 		// this is a hack
-		sysBundles.add(new String("log4j-cdc-0.7.1"));
+		sysBundles.add(new String("log4j-cdc-0.7.1-SNAPSHOT"));
 		
 		// start a http daemon to answer bundle loader requests
-		new HttpDaemon(new BundleLoaderHandler()).start();
+		httpDaemon = new HttpDaemon();
+		httpDaemon.addRequestHandler(new BundleLoaderHandler());
+		httpDaemon.start();
 		
 		// instanciate BundleLoader, register and start
 		BundleLoaderActivator.bundleLoader = new BundleLoaderImpl(sysBundles);
