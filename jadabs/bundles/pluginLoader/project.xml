@@ -5,7 +5,7 @@
   	<extend>${basedir}/../../project.xml</extend>
 
   	<groupId>jadabs</groupId>
-  	<id>pluginLoader</id>
+  	<id>pluginloader</id>
   	<name>Jadabs Plugin Loader</name>
 
   	<shortDescription>Jadabs Plugin Loader</shortDescription>

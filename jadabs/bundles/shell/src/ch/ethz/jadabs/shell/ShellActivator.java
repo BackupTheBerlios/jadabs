@@ -42,7 +42,8 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import ch.ethz.jadabs.bundleLoader.IBundleLoader;
+
+import ch.ethz.jadabs.bundleloader.BundleLoader;
 
 
 /**
@@ -55,7 +56,7 @@ public class ShellActivator implements BundleActivator
     protected static Logger LOG = Logger.getLogger(ShellActivator.class.getName());    
     protected static BundleContext b_context;
     protected static String peerName;
-    protected static IBundleLoader bloader;
+    protected static BundleLoader bloader;
     protected static boolean running = true;
     private Shell shell;
 
@@ -74,11 +75,11 @@ public class ShellActivator implements BundleActivator
             LOG.debug("starting Jadabs Shell ... ");        
         
         // get BundleLoader
-        sref = bc.getServiceReference(IBundleLoader.class.getName());
+        sref = bc.getServiceReference(BundleLoader.class.getName());
         if (sref != null)
         {
             LOG.debug("Connected to BundleLoader ");
-            ShellActivator.bloader = (IBundleLoader) bc.getService(sref);
+            ShellActivator.bloader = (BundleLoader) bc.getService(sref);
         } else
         {
             LOG.debug("BundleLoader is not running, load command will be deactivated ...");

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2004, Jadabs project
+ * Copyright (c) 2003-2005, Jadabs project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

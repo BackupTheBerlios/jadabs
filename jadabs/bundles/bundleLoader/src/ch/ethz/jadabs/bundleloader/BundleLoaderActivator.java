@@ -1,4 +1,4 @@
-package ch.ethz.jadabs.bundleLoader;
+package ch.ethz.jadabs.bundleloader;
 
 
 import java.util.Vector;
@@ -14,9 +14,9 @@ import org.osgi.framework.BundleContext;
  */
 public class BundleLoaderActivator implements BundleActivator {
     
-	protected static Logger LOG = Logger.getLogger(BundleLoader.class.getName());
+	protected static Logger LOG = Logger.getLogger(BundleLoaderImpl.class.getName());
 	protected static BundleContext bc;
-	protected static BundleLoader bundleLoader;
+	protected static BundleLoaderImpl bundleLoader;
 	static String repository;
 	
 
@@ -58,10 +58,10 @@ public class BundleLoaderActivator implements BundleActivator {
 		sysBundles.add(new String("log4j-cdc-0.7.1-SNAPSHOT"));
 		
 		// instanciate BundleLoader, register and start
-		BundleLoaderActivator.bundleLoader = new BundleLoader(sysBundles);
-		bc.registerService(IBundleLoader.class.getName(), bundleLoader, null);
+		BundleLoaderActivator.bundleLoader = new BundleLoaderImpl(sysBundles);
+		bc.registerService(BundleLoader.class.getName(), bundleLoader, null);
 		bc.addBundleListener(BundleLoaderActivator.bundleLoader);
-		BundleLoaderActivator.bundleLoader.startup();
+//		BundleLoaderActivator.bundleLoader.startup();
 
 		
 	}

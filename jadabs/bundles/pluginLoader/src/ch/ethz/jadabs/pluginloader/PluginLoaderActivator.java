@@ -36,13 +36,14 @@
  */
 
 
-package ch.ethz.jadabs.pluginLoader;
+package ch.ethz.jadabs.pluginloader;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import ch.ethz.jadabs.bundleLoader.IBundleLoader;
+
+import ch.ethz.jadabs.bundleloader.BundleLoader;
 
 
 /**
@@ -55,9 +56,9 @@ public class PluginLoaderActivator implements BundleActivator
     protected static Logger LOG = Logger.getLogger(PluginLoaderActivator.class.getName());    
     protected static BundleContext b_context;
     protected static String peerName;
-    protected static IBundleLoader bloader;
+    protected static BundleLoader bloader;
     protected static boolean running = true;
-    private PluginLoader ploader;
+    private PluginLoaderImpl ploader;
     
     /**
      * start the bundle, this method is called by the OSGi implementation.
@@ -76,11 +77,11 @@ public class PluginLoaderActivator implements BundleActivator
             LOG.debug("starting Plugin Loader ... ");        
         
         // get BundleLoader
-        sref = bc.getServiceReference(IBundleLoader.class.getName());
+        sref = bc.getServiceReference(BundleLoader.class.getName());
         if (sref != null)
         {
             LOG.debug("Connected to BundleLoader ");
-            PluginLoaderActivator.bloader = (IBundleLoader) bc.getService(sref);
+            PluginLoaderActivator.bloader = (BundleLoader) bc.getService(sref);
         } else
         {
             LOG.debug("BundleLoader is not running, load command will be deactivated ...");
@@ -92,10 +93,10 @@ public class PluginLoaderActivator implements BundleActivator
         if (LOG.isDebugEnabled())
             LOG.debug("peername is " + peerName);
 
-        ploader = new PluginLoader();
+        ploader = new PluginLoaderImpl();
         ploader.start();
         
-        b_context.registerService(IPluginLoader.class.getName(),ploader,null);
+        b_context.registerService(PluginLoader.class.getName(),ploader,null);
 
     }
     

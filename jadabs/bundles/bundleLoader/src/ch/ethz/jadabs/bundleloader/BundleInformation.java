@@ -1,4 +1,4 @@
-package ch.ethz.jadabs.bundleLoader;
+package ch.ethz.jadabs.bundleloader;
 
 /**
  * 
@@ -39,8 +39,8 @@ public class BundleInformation {
 		FileReader reader;
 		
 		try {
-			if (BundleLoader.fetchPolicy == BundleLoader.Eager) {
-				BundleLoader.loadBundle(bundle, group, version);
+			if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Eager) {
+				BundleLoaderImpl.loadBundle(bundle, group, version);
 			}
 			
 			filename = BundleLoaderActivator.repository + File.separator + group + File.separator + "jars" + File.separator + bundle + "-" + version + ".jar";
@@ -81,8 +81,8 @@ public class BundleInformation {
 		FileReader reader;
 		
 		try {
-			if (BundleLoader.fetchPolicy == BundleLoader.Eager) {
-				BundleLoader.loadBundle(bundle, group, version);
+			if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Eager) {
+				BundleLoaderImpl.loadBundle(bundle, group, version);
 			}
 			
 			filename = BundleLoaderActivator.repository + File.separator + group + File.separator + "jars" + File.separator + bundle + "-" + version + ".jar";
@@ -271,4 +271,9 @@ public class BundleInformation {
 		return bundleVersion;
 	}
 
+	public String getID()
+	{
+	    return bundleGroup +":"+bundleName+":"+bundleVersion+":obr";
+	}
+	
 }

@@ -1,4 +1,4 @@
-package ch.ethz.jadabs.bundleLoader;
+package ch.ethz.jadabs.bundleloader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
@@ -23,13 +24,15 @@ import org.osgi.framework.*;
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 
-public class BundleLoader implements IBundleLoader, BundleListener {
-   private static Logger LOG = Logger.getLogger(BundleLoader.class);
+public class BundleLoaderImpl implements BundleLoader, BundleListener {
+   private static Logger LOG = Logger.getLogger(BundleLoaderImpl.class);
 
    private static HashSet queuedBundles = new HashSet();
    private static HashSet installedBundles = new HashSet();
    private static LinkedList installationQueue = new LinkedList();
 
+   private static Hashtable binfos = new Hashtable(); // [(String(group-name-version), BundleInformation)]
+   
    protected final static int Eager = 1;
    protected final static int Lazy = 2;
 
@@ -37,11 +40,13 @@ public class BundleLoader implements IBundleLoader, BundleListener {
 
    private BundleStarter starter;
 
+   private static HashSet bls = new HashSet();
+   
    /**
     * 
     * @param sysBundles
     */
-   public BundleLoader(Collection sysBundles) {
+   public BundleLoaderImpl(Collection sysBundles) {
       starter = new BundleStarter();
       starter.start();
       installedBundles.addAll(sysBundles);
@@ -89,6 +94,26 @@ public class BundleLoader implements IBundleLoader, BundleListener {
       install();
    }
 
+   public void addListener(BundleLoaderListener bl)
+   {
+       bls.add(bl);
+   }
+   
+   public void removeListener(BundleLoaderListener bl)
+   {
+       bls.remove(bl);
+   }
+   
+   private void notifyBundleLoaderListener(BundleInformation binfo, int event)
+   {
+       for(Iterator it = bls.iterator(); it.hasNext();)
+       {
+           BundleLoaderListener bl = (BundleLoaderListener)it.next();
+           
+           bl.bundleChanged(binfo, event);
+       }
+   }
+   
    /**
     * 
     * @throws BundleException
@@ -97,7 +122,7 @@ public class BundleLoader implements IBundleLoader, BundleListener {
    private synchronized void install() throws BundleException, FileNotFoundException {
 
       // in case we have lazy fetching, bundles must be downloaded now
-      if (BundleLoader.fetchPolicy == BundleLoader.Lazy) {
+      if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Lazy) {
          if (!loadBundles(installationQueue))
             throw new BundleException(
                   "BundleLoader failed getting dependencies");
@@ -106,6 +131,7 @@ public class BundleLoader implements IBundleLoader, BundleListener {
       // install and start all bundles
       for (Iterator bundles = installationQueue.iterator(); bundles.hasNext();) {
          BundleInformation binf = ((BundleInformation) bundles.next());
+                  
          String location = binf.filename;
          File file = new File(location);
          FileInputStream fin = new FileInputStream(file);
@@ -113,6 +139,10 @@ public class BundleLoader implements IBundleLoader, BundleListener {
                fin);
          System.out.println("installed " + location);
 
+         binfos.put(binf.getID(), binf);
+         
+         
+         
          // enqueue bundle for threaded starting
          starter.enqueue(bundle);
       }
@@ -131,7 +161,7 @@ public class BundleLoader implements IBundleLoader, BundleListener {
 
       // TODO: download obr
 
-      if (BundleLoader.fetchPolicy == BundleLoader.Eager) {
+      if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Eager) {
          return fetchBundle(name, group, version);
       }
       return true;
@@ -317,7 +347,18 @@ public class BundleLoader implements IBundleLoader, BundleListener {
     * @see org.osgi.framework.BundleListener#bundleChanged(org.osgi.framework.BundleEvent)
     */
    public void bundleChanged(BundleEvent bevent) {
-      if (bevent.getType() == 1) {
+       
+       if (bevent.getType() == Bundle.UNINSTALLED)
+       {
+           String loc = bevent.getBundle().getLocation();
+           LOG.debug("bundle uninstalled: "+loc);
+           
+           // how do we map unknown bundle obrs to BundleInfo???
+           
+       }
+       // Jan, ist der Vergleich mit 1, 16 richtig hier?
+      else if (bevent.getType() == 1) {
+         System.out.println("bevent");
          String loc = bevent.getBundle().getLocation();
          int pos = loc.lastIndexOf(File.separatorChar);
 
@@ -344,8 +385,8 @@ public class BundleLoader implements IBundleLoader, BundleListener {
       }
    }
 
-   protected Set getInstalledBundles() {
-      return installedBundles;
+   protected Hashtable getInstalledBundles() {
+      return binfos;
    }
 
    

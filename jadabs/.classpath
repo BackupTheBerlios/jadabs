@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="bundles/bundleLoader/src"/>
+	<classpathentry kind="src" path="bundles/service-manager/api/src"/>
+	<classpathentry kind="src" path="bundles/service-manager/impl/src"/>
 	<classpathentry kind="src" path="bundles/bundleLoader/remoteLoader/src"/>
 	<classpathentry kind="src" path="bundles/pluginLoader/src"/>
 	<classpathentry kind="src" path="bundles/commons/concurrent/src"/>

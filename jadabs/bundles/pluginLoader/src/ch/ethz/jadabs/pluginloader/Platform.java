@@ -1,7 +1,7 @@
 /*
  * Created on 02.01.2005
  */
-package ch.ethz.jadabs.pluginLoader;
+package ch.ethz.jadabs.pluginloader;
 
 import java.util.Properties;
 import java.util.Vector;
