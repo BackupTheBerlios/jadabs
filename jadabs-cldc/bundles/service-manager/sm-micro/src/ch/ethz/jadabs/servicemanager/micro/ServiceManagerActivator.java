@@ -226,19 +226,16 @@ public class ServiceManagerActivator extends Thread
         
             if (type.equals(FILTER_ACK))
             {     
-                LOG.debug("b1");
-		         String uuid = new String(message.getElement(SERVICE_ID).getData());
-		         LOG.debug("b2");
+		         String uuid = new String(message.getElement(SERVICE_ID).getData());	
 		         String adv = new String(message.getElement(SERVICE_ADV).getData());
-//		         String port = new String(message.getElement("port").getData());
-		         LOG.debug("b3");
+
 		         LOG.info("uuid: "+ uuid);
 		         
 		         if (!services.containsKey(uuid))
 		         {
-		             LOG.debug("b4");
+		   
 		             ServiceReferenceImpl sref = new ServiceReferenceImpl(uuid, frompeer, adv);
-		             LOG.debug("b5");
+		  
 		             services.put(uuid, sref);
 				     
 				     listener.foundService(sref);
@@ -277,9 +274,7 @@ public class ServiceManagerActivator extends Thread
         LOG.info("found named resource: "+ namedResource.getName());
         
         if (namedResource instanceof Peer)
-        {
-            LOG.info("resource is peer .");
-            
+        {            
             serviceManager.getServiceAdvertisements(namedResource.getName(), "|OPD", null);
             
         }

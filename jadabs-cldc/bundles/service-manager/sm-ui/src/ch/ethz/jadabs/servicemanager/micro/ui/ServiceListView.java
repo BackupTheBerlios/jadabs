@@ -46,19 +46,16 @@ public class ServiceListView extends List
     
     public void foundService(ServiceReference sref)
     {
-        LOG.info("b1");
         services.put(sref.getName(), sref);
-        LOG.info("b2");
+
         if (none)
         {
             this.set(0,sref.getName(), null);
             none = false;
-            LOG.info("b3");
         }
         else
             this.append(sref.getName(), null);
         
-        LOG.info("b4");
     }
   
     ServiceReference getSelectedServiceReference()
