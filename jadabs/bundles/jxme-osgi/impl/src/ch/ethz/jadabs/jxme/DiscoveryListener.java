@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: DiscoveryListener.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
+ * $Id: DiscoveryListener.java,v 1.3 2005/01/20 14:33:22 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -67,13 +67,19 @@ public interface DiscoveryListener
 {
 
     /**
-     * handle Search Response from the resolver and above
+     * Handle Search Response from the resolver and above.
      * 
      * @param namedResource
      *            discovered {@link NamedResource}/Advertisement
      */
     public void handleSearchResponse(NamedResource namedResource);
     
+    /**
+     * Handle loss of a NamedResource. DiscoveryListener needs to be
+     * registered in GroupService.
+     * 
+     * @param namedResource
+     */
     public void handleNamedResourceLoss(NamedResource namedResource);
 
 }
