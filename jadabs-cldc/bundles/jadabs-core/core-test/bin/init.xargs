@@ -1,0 +1,37 @@
+#
+# startup bin1-aop
+#
+
+# load common properties
+#-xargs props.xargs
+
+#-Dch.ethz.jadabs.starter=BundleService.starter
+-Dch.ethz.jadabs.jxme.tcp.port=2120
+
+# load bin1 specifics
+
+# initialize bundles
+-init
+
+
+## Basic bundles
+-initlevel 1
+-install   log4j/jars/log4j-1.2.8-osgi.jar
+
+-initlevel 2
+
+
+-install  	jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar
+-install  	jadabs/jars/jxme-tcp-0.7.1-SNAPSHOT.jar
+-install  	jadabs/jars/jxme-services-api-0.7.1-SNAPSHOT.jar
+-install  	jadabs/jars/jxme-services-impl-0.7.1-SNAPSHOT.jar
+-install    jadabs/jars/jadabs-core-groupservice-test-0.7.1-SNAPSHOT.jar
+
+-startlevel 2
+
+-launch
+
+-start    jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar
+-start    jadabs/jars/jxme-tcp-0.7.1-SNAPSHOT.jar
+-start    jadabs/jars/jxme-services-impl-0.7.1-SNAPSHOT.jar
+-start    jadabs/jars/jadabs-core-groupservice-test-0.7.1-SNAPSHOT.jar

@@ -1,11 +1,9 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreMIDlet.java,v 1.3 2005/02/17 17:29:17 printcap Exp $
+ * $Id: JadabsCoreMIDlet.java,v 1.4 2005/02/18 21:12:30 printcap Exp $
  */
 package ch.ethz.jadabs.core;
-
-import java.io.IOException;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -22,6 +20,7 @@ import ch.ethz.jadabs.jxme.JxmeActivator;
 import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreActivator;
 import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreImpl;
 import ch.ethz.jadabs.jxme.services.impl.ServiceActivator;
+import ch.ethz.jadabs.jxme.tcp.cldc.TCPActivator;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
 
 /**
@@ -64,13 +63,15 @@ public class JadabsCoreMIDlet extends MIDlet
         OSGiContainer osgicontainer = OSGiContainer.Instance();
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.peeralias", this.getAppProperty("ch.ethz.jadabs.jxme.peeralias"));
         osgicontainer.setProperty("log4j.priority", this.getAppProperty("log4j.priority"));
-        osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer", 
-                                  this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));
+        osgicontainer.setProperty("ch.ethz.jadabs.jxme.tcp.port", 
+                                  this.getAppProperty("ch.ethz.jadabs.jxme.tcp.port"));
+        
         osgicontainer.startBundle(new LogActivator());
         LOG = Logger.getLogger("ch.ethz.jadabs.core.JadabsCoreMIDlet");        
         
         // now bring up the entire Jxme stuff
         osgicontainer.startBundle(new JxmeActivator());
+        osgicontainer.startBundle(new TCPActivator());
         osgicontainer.startBundle(new ServiceActivator());
         
         // finally start the micro group service 

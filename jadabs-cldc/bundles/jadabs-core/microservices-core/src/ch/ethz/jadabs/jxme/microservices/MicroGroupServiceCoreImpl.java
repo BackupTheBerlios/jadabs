@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceCoreImpl.java,v 1.4 2005/02/18 08:58:02 printcap Exp $
+ * $Id: MicroGroupServiceCoreImpl.java,v 1.5 2005/02/18 21:12:30 printcap Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -98,6 +99,62 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
             return (Pipe)item.res;
         } else {
             return null;
+        }
+    }
+    
+    /** 
+     * Registers a local GroupServiceListener with a pipe. This allows receiving 
+     * locally sent messages. 
+     * 
+     * @param pipeIdString ID as String representation of pipe
+     * @param localListener local GroupServiceListener that is registered 
+     */
+    public synchronized void registerLocalListener(String pipeIdString, 
+            		GroupServiceListener localListener) 
+    {
+        CacheItem item = (CacheItem)namedResourceTable.get(pipeIdString);
+        if ((item != null) && (item.res instanceof Pipe)) {
+            item.registeredWorkers.addElement(localListener);            
+        }
+    }
+    
+    /** 
+     * Unregisters a local GroupServiceListener worker from a pipe
+     * specified by the bundle worker (removes all GroupServiceListeners
+     * from that bundle worker registered with the specified pipe). 
+     * 
+     * @param pipeIdString ID as String representation of pipe
+     * @param bundleWorker bundle worker that unregisters on this pipe 
+     */
+    public synchronized void unregisterLocalListener(String pipeIdString, 
+            		BundleWorker bundleWorker) 
+    {
+        CacheItem item = (CacheItem)namedResourceTable.get(pipeIdString);
+        if ((item != null) && (item.res instanceof Pipe)) {
+            Enumeration listeners = item.registeredWorkers.elements();
+            while (listeners.hasMoreElements()) {
+                GroupServiceListener listener = (GroupServiceListener)listeners.nextElement();
+                if (listener.bundleWorker == bundleWorker) {
+                    item.registeredWorkers.removeElement(listener);
+                }
+            }                        
+        }
+    }    
+    
+    /**
+     * Forward message send by one worker to all registered local listeners (possibly including
+     * sender)
+     * @param pipeIdString JXTA-ID string of pipe
+     * @param message message to be forwarded
+     */
+    public synchronized void forwardMessageToLocalListeners(String pipeIdString, Message message) {
+        CacheItem item = (CacheItem)namedResourceTable.get(pipeIdString);
+        if ((item != null) && (item.res instanceof Pipe)) {
+            Enumeration workers = item.registeredWorkers.elements();
+            while (workers.hasMoreElements()) {
+                GroupServiceListener listener =  (GroupServiceListener)workers.nextElement();
+                listener.handleMessage(message, "");                
+            }            
         }
     }
         
@@ -234,7 +291,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
                     short groupNumber = din.readShort();
                     short requestType = din.readShort();
                     short messageLength = din.readShort();
-                    System.out.println("requestType = "+requestType);
+//                    System.out.println("requestType = "+requestType);
                     
                     // read rest of message and dispatch according to the request type
                     switch (requestType) {                    
@@ -414,6 +471,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
                         
             Pipe pipe = lookupPipeByID(pipeIdString);
             dereferenceNamedResource(pipeIdString);
+            unregisterLocalListener(pipeIdString, this);                    
             if (pipe == null) {
                 LOG.error("Pipe with ID '"+pipeIdString+"' not found.");                
             } else {                
@@ -424,6 +482,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
 	            	LOG.error("Cannot close pipe "+pipeIdString);
 	        		}
             }
+            LOG.debug("Pipe with ID '"+pipeIdString+"' closed (locally).");
             
             // Prepare reply
             byte[] reply = null;
@@ -511,8 +570,10 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
                 LOG.error("Pipe with ID '"+pipeIdString+"' not found.");                
             } else {                
 	            try {
-	                groupService.listen(pipe, new GroupServiceListener(requestNumber, groupNumber, 
-	                                             pipeIdString, connection));
+	                GroupServiceListener listener = new GroupServiceListener(requestNumber, groupNumber, 
+                           pipeIdString, this, connection);
+	                groupService.listen(pipe, listener);
+	                registerLocalListener(pipeIdString, listener);
 	                LOG.debug("Listener added to Pipe "+pipeIdString);
 	                error = false;
 	            } catch (IOException e) {
@@ -566,7 +627,8 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
 	                LOG.error("groupservice: cannot send massage over pipe '"+pipe.toString()+"'");
 	                e.printStackTrace();
 	            }
-            }
+            }            
+            LOG.debug("Sending message to '"+pipeIdString+"'.");
             
             // Prepare reply
             byte[] reply = null;
@@ -589,7 +651,10 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
                 connection.sendBytes(reply);
             } catch(IOException e) {
                 LOG.error("cannot send SEND_REPLY.");
-            }            
+            }  
+            
+            // forward messages to local listeners
+            forwardMessageToLocalListeners(pipeIdString, message);
         }
 
         /**
@@ -829,13 +894,15 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
         private short groupNumber;
         private String pipeIdString;
         private LocalWiringConnection connection;
+        BundleWorker bundleWorker;
         
         /** create new listener */
         GroupServiceListener(short requestNumber, short groupNumber, String pipeIdString, 
-                             LocalWiringConnection connection) {
+                             BundleWorker bundleWorker, LocalWiringConnection connection) {
             this.requestNumber = requestNumber;
             this.groupNumber = groupNumber;
             this.pipeIdString = pipeIdString;
+            this.bundleWorker = bundleWorker;
             this.connection = connection;            
         }
         
@@ -988,6 +1055,9 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
         NamedResource res;
         String id;
         int refCount = 0;
+        
+        /** only for pipes: vector contains BundleWorkers that have registered with this pipe */
+        Vector registeredWorkers = new Vector();
     }    
     
     /** sequence number used as remote search handles */

@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: Constants.java,v 1.2 2005/01/23 15:47:37 printcap Exp $
+ * $Id: Constants.java,v 1.3 2005/02/18 21:12:30 printcap Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -52,12 +52,12 @@ public interface Constants
     public static final short CLOSE = 74;
     
     /** message for SEARCH_RESPONSE ASYNC_MSG */
-    public static final short SEARCH_RESPONSE = 128;
+    public static final short SEARCH_RESPONSE = 92;
     
     /** message for NAME_RESOURCE_LOSS ASYNC_MSG */
-    public static final short NAME_RESOURCE_LOSS = 129;
+    public static final short NAME_RESOURCE_LOSS = 93;
     
     /** message for MESSAGE ASYNC_MSG */
-    public static final short MESSAGE = 130;
+    public static final short MESSAGE = 94;
     
 }

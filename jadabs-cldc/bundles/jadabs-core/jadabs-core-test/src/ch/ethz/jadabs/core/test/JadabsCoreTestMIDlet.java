@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreTestMIDlet.java,v 1.5 2005/02/18 08:58:33 printcap Exp $
+ * $Id: JadabsCoreTestMIDlet.java,v 1.6 2005/02/18 21:12:30 printcap Exp $
  */
 package ch.ethz.jadabs.core.test;
 
@@ -191,7 +191,7 @@ public class JadabsCoreTestMIDlet extends MIDlet
 	            groupService.listen(id, new MicroListener() {
 	                public void handleMessage(MicroMessage message, String listenerId)
 	                {
-	                    LOG.debug("incoming message \""+message.toString()+"\", listenerId="+listenerId);                    
+	                    LOG.debug("incoming message \""+message.toXMLString()+"\", listenerId="+listenerId);                    
 	                }	             
 	            });
             } catch(IOException e) {

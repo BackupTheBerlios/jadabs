@@ -46,7 +46,7 @@
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>
-    	  
+
     	<dependency>
       		<groupId>osgi</groupId>
       		<artifactId>osgi-j2me</artifactId>

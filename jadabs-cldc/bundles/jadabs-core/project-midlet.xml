@@ -74,16 +74,15 @@
 	      	</properties>
 		</dependency>
       
-<!--            		
 		<dependency>
       		<groupId>jadabs</groupId>
-      		<artifactId>jxme-bt-j2me</artifactId>
+      		<artifactId>jxme-tcp-j2me</artifactId>
       		<version>${pom.currentVersion}</version>
       		<properties>
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>        
--->	
+      
     	<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>log4j-j2me</artifactId>
