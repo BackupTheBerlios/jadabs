@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceCoreImpl.java,v 1.3 2005/02/17 23:06:43 printcap Exp $
+ * $Id: MicroGroupServiceCoreImpl.java,v 1.4 2005/02/18 08:58:02 printcap Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -76,6 +76,16 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
         
     }
    
+    /**
+     * Connect to bundle at specified port number
+     * @param port port where bundle has registered on push registry
+     * @throws IOException if bundle cannot be connected
+     */
+    public void connect(int port) throws IOException 
+    {
+        wiring.connect(port);
+    }
+    
     /** 
      * looks up Pipe object given a Pipe ID
      * @param pipeIdString ID as String representation of pipe
@@ -358,10 +368,14 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
             if (namedResource != null) {
                 if (remote) {
                     groupService.remotePublish(namedResource);
+                    LOG.debug("remote publishing '"+namedResource.toString());
                 } else {
                     groupService.publish(namedResource);
+                    LOG.debug("publishing '"+namedResource.toString());
                 }
                 error = false;
+            } else {
+                LOG.error("named resource "+idString+" not found.");
             }
             
             // Prepare reply
