@@ -1,15 +1,19 @@
 /*
  * Created on Dec 9, 2004
  *
- * $Id: LocalWiringConnection.java,v 1.1 2004/12/22 09:35:09 printcap Exp $
+ * $Id: LocalWiringConnection.java,v 1.2 2004/12/27 15:25:03 printcap Exp $
  */
 package ch.ethz.jadabs.core.wiring;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.microedition.io.SocketConnection;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -21,14 +25,17 @@ import javax.microedition.io.SocketConnection;
  */
 public class LocalWiringConnection
 {
+    /** logger to use in this class */
+    private Logger LOG = Logger.getLogger("LocalWiringConnection");
+    
     /** socket this connection runs over */
     private SocketConnection connection;
     
     /** input stream to read from connection */
-    private InputStream in;
+    private DataInputStream in;
     
     /** output stream to write to connection */
-    private OutputStream out;
+    private DataOutputStream out;
     
 
     /**
@@ -43,8 +50,8 @@ public class LocalWiringConnection
     {
         /*@ precondition connection != null @*/
         this.connection = connection;
-        this.in = connection.openInputStream();
-        this.out = connection.openOutputStream();
+        this.in = new DataInputStream(connection.openInputStream());
+        this.out = new DataOutputStream(connection.openOutputStream());
     }
     
     
@@ -60,17 +67,9 @@ public class LocalWiringConnection
     {
         /*@ precondition  b != null && 
                         isConnected()   @*/
-        int length = b.length;
-        byte[] towrite = new byte[length+4];
-        
-        // write length in bigendian 
-        towrite[0] = (byte)(0xff & (length >> 24));
-        towrite[1] = (byte)(0xff & (length >> 16));
-        towrite[2] = (byte)(0xff & (length >> 8));
-        towrite[3] = (byte)(0xff & length);
-        System.arraycopy(b, 0, towrite, 4, length);
-        
-        out.write(towrite);             
+        out.writeInt(b.length);
+        out.write(b, 0, b.length);             
+        out.flush();
         /*@ postcondition b unchanged @*/
     }
     
@@ -86,19 +85,11 @@ public class LocalWiringConnection
         int b, read=0, length = 0;
         
         // read length of message in bytes
-        b = in.read();
-        while (b != -1) {
-            length |= 0xff & b;
-            length = length << 8;
-            b = in.read();
-        }
-        if (b == -1) {
-            // error end of stream is reached 
-            throw new IOException("end of stream reached");
-        }
+        length = in.readInt();
         byte[] received = new byte[length];
         
         // now read byte message 
+        b = 0; 
         while ((read<length) && (b != -1)) {
             b = in.read(received, read, length-read);
             read += b;
@@ -113,7 +104,22 @@ public class LocalWiringConnection
     {
         if (in != null) {
             try {
-                in.close();
+                // FIXME: Workaround for class hierarchy incompatibility between J2ME/J2SE
+                // we need this cast below to trick the Java compiler
+                // When compiling with osgi:install the J2SE bootclasspath
+                // used. Hence DataInputStream inherits from FilterInputStream
+                // with in turn inherits from InputStream. However on CLCD
+                // DataInputStream *directly* extends InputStream. There 
+                // is no FilterInputStream. Since the close() is overwritten 
+                // in FilterInputStream the compiler places an invoke virtual
+                // in the byte code:
+                //
+                //  11: invokevirtual #31; //Method java/io/FilterInputStream.close:()V
+                //
+                // Therefore we get a problem with the preverifer with this class
+                // By statically chaning the type the compiler does not place 
+                // any FilterInputStream stuff into the byte code               
+                ((InputStream)in).close();
             } catch (IOException e) { 
                 // simply ignore 
             } finally {
@@ -122,7 +128,9 @@ public class LocalWiringConnection
         }
         if (out != null) {
             try {
-                out.close();
+                // FIXME: Workaround for class hierarchy incompatibility between J2ME/J2SE
+                // Same as for DataInputStream also applies for DataOutputStream
+                ((OutputStream)out).close();
             } catch (IOException e) {
                 // simply ignore
             } finally {

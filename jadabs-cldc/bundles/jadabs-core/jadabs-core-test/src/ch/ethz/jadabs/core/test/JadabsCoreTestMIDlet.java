@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreTestMIDlet.java,v 1.1 2004/12/22 09:35:09 printcap Exp $
+ * $Id: JadabsCoreTestMIDlet.java,v 1.2 2004/12/27 15:25:03 printcap Exp $
  */
 package ch.ethz.jadabs.core.test;
 
@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import ch.ethz.jadabs.core.wiring.ConnectionNotifee;
 import ch.ethz.jadabs.core.wiring.LocalWiringBundle;
 import ch.ethz.jadabs.core.wiring.LocalWiringConnection;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
@@ -31,7 +32,7 @@ import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
  * @version 1.0
  */
 public class JadabsCoreTestMIDlet extends MIDlet 
-                                  implements CommandListener, BundleActivator
+                                  implements CommandListener, BundleActivator, ConnectionNotifee
 {    
     /** Reference to Log4j window */
     private static Logger LOG;
@@ -53,6 +54,7 @@ public class JadabsCoreTestMIDlet extends MIDlet
     
     /* commands */
     private Command logCmd;
+    private Command wakeupCoreCmd;
     private Command exitCmd;        
     private Command messageCmd;
     private Command sendCmd;
@@ -78,14 +80,16 @@ public class JadabsCoreTestMIDlet extends MIDlet
         osgicontainer.startBundle(new LogActivator());
         LOG = Logger.getLogger("JadabsCoreTestMIDlet");
         osgicontainer.startBundle(this);
-        instance = this;
-        
-         
+        instance = this;  
     }
 
     /** Handle starting the MIDlet */
     public void startApp()
     {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("invoke startApp()");
+        }
+
         if (!alreadyInitialized) {
             initGUI();
         }
@@ -96,16 +100,13 @@ public class JadabsCoreTestMIDlet extends MIDlet
     /** initialize GUI components */
     public void initGUI()
     {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("invoke startApp()");
-        }
-
         // obtain reference to Display singleton
         display = Display.getDisplay(this);        
         
-        messageCmd = new Command("Message", Command.SCREEN, 1);
-        sendCmd = new Command("Send", Command.SCREEN, 2);
-        logCmd = new Command("Log", Command.SCREEN, 3);
+        messageCmd = new Command("Message", Command.SCREEN, 2);
+        sendCmd = new Command("Send", Command.SCREEN, 3);
+        logCmd = new Command("Log", Command.SCREEN, 4);
+        wakeupCoreCmd = new Command("Wakeup Core", Command.SCREEN, 1);
         exitCmd = new Command("Exit", Command.EXIT, 1);
         messageScreen = new MessageScreen(this, new Command[] {
                 sendCmd, logCmd, exitCmd    });
@@ -113,7 +114,7 @@ public class JadabsCoreTestMIDlet extends MIDlet
         Logger.getLogCanvas().setDisplay(display);
         Logger.getLogCanvas().setPreviousScreen(Logger.getLogCanvas());
         Logger.getLogCanvas().setCommandAndListener(new Command[] {
-               messageCmd, exitCmd}, this);          
+               wakeupCoreCmd, messageCmd, exitCmd}, this);          
     }
     
     /** Handle pausing the MIDlet */
@@ -156,19 +157,28 @@ public class JadabsCoreTestMIDlet extends MIDlet
             display.setCurrent(messageScreen);
         } else if (c == logCmd) {
             display.setCurrent(Logger.getLogCanvas());
+        } else if (c == wakeupCoreCmd) {
+            LOG.debug("wake up core...");
+            try {
+                wiring.wakeupCore();
+            } catch(IOException e) {
+                LOG.error("error duing wake up core: "+e);
+            }            
         } else if (c == sendCmd) {
+            display.setCurrent(Logger.getLogCanvas());
             if (wiring.isConnected()) {
                 String msg = messageScreen.getString();
                 byte buffer[] = msg.getBytes();
                 LOG.debug("writing message '"+msg+"'");
-                try {
+                try {                    
                     connection.sendBytes(buffer);
                 } catch(IOException e) {
                     LOG.error("cannot send message!");
-                }
+                }                
             } else {
                 LOG.debug("cannot send message as we are not connected!");
             }
+            LOG.debug("writing done.");            
         } else if (c == exitCmd) {
             quitApp();
         }
@@ -186,20 +196,7 @@ public class JadabsCoreTestMIDlet extends MIDlet
         //ServiceReference sref = bc.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
         //endptsvc = (EndpointService)bc.getService(sref);
         
-        wiring = new LocalWiringBundle(1234);
-        // wakeup core
-//        try {
-//            wiring.wakeupCore();
-//        } catch (IOException e) {
-//            LOG.debug("cannot wakeup core!");
-//        }
-        // now wait for core to connect to us
-        try {
-            wiring.waitforWakeupConnection();
-        } catch(IOException e) {
-            LOG.debug("waitforWakeupConnection failed!");
-        }        
-        connection = wiring.getConnection();
+        wiring = new LocalWiringBundle(1234, this);
     }
 
     /**
@@ -211,5 +208,18 @@ public class JadabsCoreTestMIDlet extends MIDlet
     {
         // remove chat communication servce from service registry 
 //        endptsvc.removeListener("jxmechat");
+    }
+
+    /** 
+     * Invoked when a TCP connection was accepted.
+     * @param connection LocalWiringConnection from this new connection
+     * @see ch.ethz.jadabs.core.wiring.ConnectionNotifee#connectionEstablished(ch.ethz.jadabs.core.wiring.LocalWiringConnection)
+     */
+    public void connectionEstablished(LocalWiringConnection connection)
+    {
+        this.connection = connection;
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("new wiring connection established.");
+        }        
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Created on Dec 9, 2004
  *
- *	$Id: LocalWiringBundle.java,v 1.1 2004/12/22 09:35:09 printcap Exp $
+ *	$Id: LocalWiringBundle.java,v 1.2 2004/12/27 15:25:03 printcap Exp $
  */
 package ch.ethz.jadabs.core.wiring;
 
@@ -45,53 +45,23 @@ public class LocalWiringBundle
     /** state of the connection */
     private boolean connected = false;
     
+    /** listener that gets notified when wakeup call arrives */
+    private ConnectionNotifee notifee;
+    
+    
     /** 
      * Create a new LocalWiringBundle on the listening port 
      * @param port number of listening port 
+     * @param notifee notifee a ConnectionNotifee listener that gets notified 
+     *        when a wakeup connection is established. 
      */
-    public LocalWiringBundle(int port)
+    public LocalWiringBundle(int port, ConnectionNotifee notifee)
     {
-        this.portnumber = port;       
+        this.portnumber = port;
+        this.notifee = notifee;
+        (new Thread(new ConnectorThread())).start();
     }
-    
-    /**
-     * Wait for TCP connection that wakes us up
-     * @throws IOException if something went wrong
-     */
-    public void waitforWakeupConnection() throws IOException 
-    {
-        // Wait for someone to wake us up. 
-        // this basically receives the wakeup
-        // UDP packet, so when receiving it 
-        // we are already up. However we must 
-        // setup a server socket that accepts
-        // the packet otherwise our PushRegistry
-        // entry is removed by the system 
-        // (this at least happens on the Nokia6600)
-        if (serverSocket != null) {
-            try { 
-                serverSocket.close();
-            } catch(IOException e) { 
-                // ignore
-            } finally {
-                // give lousy GC on mobile phones a 
-                // chance to collect object 
-                serverSocket = null;
-            }
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("waitforWakeConnection() called.");
-        }
-        serverSocket = (ServerSocketConnection)Connector.open(
-              "socket//:"+portnumber);
-        SocketConnection c = (SocketConnection)serverSocket.acceptAndOpen();
-        if (logger.isDebugEnabled()) {
-            logger.debug("connection to "+c.getAddress()+" opened and accepted.");
-        }
-        connection = new LocalWiringConnection(c);
-        connected = true;
-    }
-    
+        
     /**
      * Sends Datagram packet to JadabsCore in order to wake it up. 
      */
@@ -142,6 +112,58 @@ public class LocalWiringBundle
                 // permit collection of object 
                 serverSocket = null;
             }
+        }
+    }
+    
+    /** 
+     * This inner class implements the thread that is 
+     * waiting for the core to establish a connection. 
+     */
+    private class ConnectorThread implements Runnable {
+        
+        public void run() {
+            // Wait for someone to wake us up. 
+            // this basically receives the wakeup
+            // UDP packet, so when receiving it 
+            // we are already up. However we must 
+            // setup a server socket that accepts
+            // the packet otherwise our PushRegistry
+            // entry is removed by the system 
+            // (this at least happens on the Nokia6600)
+            if (serverSocket != null) {
+                try { 
+                    serverSocket.close();
+                } catch(IOException e) { 
+                    // ignore
+                } finally {
+                    // give lousy GC on mobile phones a 
+                    // chance to collect object 
+                    serverSocket = null;
+                }
+            }
+            if (logger.isDebugEnabled()) {
+                logger.debug("waitforWakeConnection() called.");
+            }
+            try {
+                serverSocket = (ServerSocketConnection)Connector.open(
+                        "socket://:"+portnumber);
+                SocketConnection c = (SocketConnection)serverSocket.acceptAndOpen();
+                if (logger.isDebugEnabled()) {
+                    logger.debug("connection to "+c.getAddress()+" opened and accepted.");
+                }
+                connection = new LocalWiringConnection(c);
+                connected = true;
+                if (notifee != null) {
+                    notifee.connectionEstablished(connection);
+                }
+            } catch(IOException e) {
+                logger.error("error accepting new connections: "+e);
+                return;
+            } finally {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("listener thread shut down.");
+                }
+            }                    
         }
     }
 }

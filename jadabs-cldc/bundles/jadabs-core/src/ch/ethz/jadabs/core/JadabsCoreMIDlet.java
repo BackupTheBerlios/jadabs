@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreMIDlet.java,v 1.1 2004/12/22 09:35:09 printcap Exp $
+ * $Id: JadabsCoreMIDlet.java,v 1.2 2004/12/27 15:25:03 printcap Exp $
  */
 package ch.ethz.jadabs.core;
 
@@ -81,6 +81,9 @@ public class JadabsCoreMIDlet extends MIDlet
     /** Handle starting the MIDlet */
     public void startApp()
     {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("invoke startApp()");
+        }
         if (!alreadyInitialized) {
             initGUI();
         }
@@ -91,10 +94,6 @@ public class JadabsCoreMIDlet extends MIDlet
     /** initialize GUI components */
     public void initGUI()
     {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("invoke startApp()");
-        }
-
         // obtain reference to Display singleton
         display = Display.getDisplay(this);        
         
@@ -196,13 +195,14 @@ public class JadabsCoreMIDlet extends MIDlet
      */
     private class ConnectionThread implements Runnable {
         
-        /** thead's run body */ 
+        /** thread's run body */ 
         public void run() {
             LOG.debug("connection thread started...");
             try {
                 while (true) {
                     byte buffer[] = connection.receiveBytes();
-                    LOG.debug("message: '"+buffer+"'");
+                    String message = new String(buffer);
+                    LOG.debug("message: '"+message+"'");
                 }
             } catch(IOException e) {
                 LOG.error("IOException occured in ConnectionThread");
@@ -211,4 +211,5 @@ public class JadabsCoreMIDlet extends MIDlet
             }
         }        
     }
+    
 }

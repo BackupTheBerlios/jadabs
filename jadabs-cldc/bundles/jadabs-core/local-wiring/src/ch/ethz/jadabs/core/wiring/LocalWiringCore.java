@@ -1,7 +1,7 @@
 /*
  * Created on Dec 9, 2004
  *
- * $Id: LocalWiringCore.java,v 1.1 2004/12/22 09:35:09 printcap Exp $
+ * $Id: LocalWiringCore.java,v 1.2 2004/12/27 15:25:03 printcap Exp $
  */
 package ch.ethz.jadabs.core.wiring;
 
@@ -41,33 +41,35 @@ public class LocalWiringCore
     /** constructor */
     public LocalWiringCore() 
     {
-        // empty
+        Thread wakeupListener = new Thread(new Runnable() {
+            public void run() {
+                // Wait for someone to wake us up. 
+                // this basically receives the wakeup
+                // UDP packet, so when receiving it 
+                // we are already up. However we must 
+                // setup a server socket that accepts
+                // the packet otherwise our PushRegistry
+                // entry is removed by the system 
+                // (this at least happens on the Nokia6600)                
+                try {
+                    DatagramConnection dc = (DatagramConnection)Connector.open(
+                      "datagram://:"+CORE_WAKEUP_PORT);
+                    Datagram dgrm = dc.newDatagram(DATAGRAM_BUFFER_SIZE);
+                    dc.receive(dgrm);
+                    byte[] buffer = dgrm.getData();
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("CORE_WAKEUP_DGRM received: '"+
+                                new String(buffer)+"'");
+                    }
+                    dc.close();
+                } catch(IOException e) {
+                    logger.error("Error in datagram wakeup listener: "+e);
+                }
+            }
+        });
+        wakeupListener.start();
     }
-    
-    /**
-     * Wait for wakeup datagram 
-     * @throws IOException if something went wrong
-     */
-    public void waitforWakeupMessage() throws IOException 
-    {
-        // Wait for someone to wake us up. 
-        // this basically receives the wakeup
-        // UDP packet, so when receiving it 
-        // we are already up. However we must 
-        // setup a server socket that accepts
-        // the packet otherwise our PushRegistry
-        // entry is removed by the system 
-        // (this at least happens on the Nokia6600)
         
-        DatagramConnection dc = (DatagramConnection)Connector.open(
-              "datagram://:"+CORE_WAKEUP_PORT);
-        Datagram dgrm = dc.newDatagram(DATAGRAM_BUFFER_SIZE);
-        dc.receive(dgrm);
-        byte[] buffer = dgrm.getData();
-        logger.debug("CORE_WAKEUP_DGRM received: '"+buffer+"'");
-        dc.close();
-    }
-    
     /** 
      * Connect to a bundle MIDlet at the specified 
      * port number
