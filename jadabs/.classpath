@@ -27,6 +27,11 @@
 	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/nist-sip-1.2-osgi.jar"/>
 	<classpathentry kind="src" path="bundles/sip/nist-sip-registrar/src"/>
 	<classpathentry kind="src" path="bundles/sip/nist-sip-registrar-gui/src"/>
+	<classpathentry kind="src" path="bundles/sip/nist-sip-parser/src"/>
 	<classpathentry kind="src" path="bundles/sip/nist-sip-messenger/src"/>
+	<classpathentry kind="src" path="bundles/sip/jxme-sip-gw/src"/>
+	<classpathentry kind="src" path="bundles/sip/jxme-sip-gw/test-osgi/src"/>
+	<classpathentry kind="src" path="bundles/mservices/messenger/src"/>
+	<classpathentry kind="src" path="bundles/mservices/messenger/test-osgi/src"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
