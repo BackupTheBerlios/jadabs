@@ -76,13 +76,13 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    private PluginLoaderImpl() {
       infoSources.add(new Repository());
 
-      String starter = PluginLoaderActivator.bc
-            .getProperty("ch.ethz.jadabs.pluginloader.starter");
-
-      if (starter == null)
-         starter = "init.starter";
-      
-      init(starter);
+//      String starter = PluginLoaderActivator.bc
+//            .getProperty("ch.ethz.jadabs.pluginloader.starter");
+//
+//      if (starter == null)
+//         starter = "init.starter";
+//      
+//      init(starter);
       
       // BUNDLE LOADER TEST SECTION
       /*
@@ -120,7 +120,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
     * @param starter <code>String<code> representing the location of the 
     * startup file
     */
-   private void init(String starter) {
+   void init(String starter) {
       String uuid = new String();
       try {
          BufferedReader reader = new BufferedReader(new FileReader(starter));

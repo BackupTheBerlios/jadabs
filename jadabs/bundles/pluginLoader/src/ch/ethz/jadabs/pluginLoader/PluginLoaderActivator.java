@@ -87,7 +87,17 @@ public class PluginLoaderActivator implements BundleActivator
 
         ploader = PluginLoaderImpl.getInstance();
         
-        bc.registerService(PluginLoader.class.getName(),ploader,null);
+        bc.registerService("ch.ethz.jadabs.pluginLoader.api.PluginLoader", ploader,null);
+                
+        String starter = PluginLoaderActivator.bc
+        	.getProperty("ch.ethz.jadabs.pluginloader.starter");
+
+        if (starter == null)
+            starter = "init.starter";
+	  
+        PluginLoaderImpl.getInstance().init(starter);
+        
+        
 
     }
     
