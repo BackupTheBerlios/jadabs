@@ -33,7 +33,8 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    private static Hashtable descriptorCache = new Hashtable();
    private static HashSet loadedPlugins = new HashSet();
    private static Logger LOG = Logger.getLogger(PluginLoaderImpl.class);
-   private String platform;
+   protected static String platform;
+   protected static Scheduler scheduler = new Scheduler();
 
    private PluginLoaderImpl() {
       infoSources.add(new Repository());
@@ -47,7 +48,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       init(starter);
       
       // BUNDLE LOADER TEST SECTION
-      
+      /*
       try {
          PluginLoaderActivator.bloader.loadBundle("jadabs:jxme-udp:0.7.1-SNAPSHOT:obr");
          PluginLoaderActivator.bloader.loadBundle("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr");
@@ -57,11 +58,11 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       }
       System.out.println();
       System.out.println(PluginLoaderActivator.bloader.getDependencyGraph("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr"));
-
+      */
       // PLUGIN LOADER TEST SECTION
       
-      System.out.println();
-      System.out.println(new Repository().getMatchingPlugins("Extension/id:Transport ¦ Container/id:core-osgi-daop,version:0.1.0; NetIface/type:bt-jsr82 ¦ RP"));
+      // System.out.println();
+      // System.out.println(new Repository().getMatchingPlugins("Extension/id:Transport ¦ Container/id:core-osgi-daop,version:0.1.0; NetIface/type:bt-jsr82 ¦ RP"));
 
    }
 
@@ -99,7 +100,17 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#loadPlugin(java.lang.String)
     */
    public void loadPlugin(String uuid) throws Exception {
-      PluginDescriptor pDescr = this.getPluginDescriptor(uuid);
+      scheduler.clear();
+      PluginDescriptor pDescr = this.getPluginDescriptor(uuid);      
+      scheduler.addPlugin(uuid);
+      
+      while (!scheduler.stillToProcess.isEmpty()) {
+         if (LOG.isDebugEnabled())
+            LOG.debug("Scheduler now processes " + scheduler.stillToProcess.get(0));
+         PluginDescriptor providing = getPluginDescriptor((String)scheduler.stillToProcess.remove(0)); 
+      }
+      
+      System.out.println(scheduler);
    }
 
    /**
@@ -144,6 +155,19 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return result.iterator();
    }
 
+   protected static Iterator getMatchingPlugins(String filter) {
+      ArrayList result = new ArrayList();
+      for (Enumeration sources = infoSources.elements(); sources
+            .hasMoreElements();) {
+         InformationSource source = (InformationSource) sources.nextElement();
+         Iterator it = source.getMatchingPlugins(filter);
+         while (it.hasNext()) {
+            result.add(it.next());
+         }
+      }
+      return result.iterator();      
+   }
+   
    private PluginDescriptor getPluginDescriptor(String uuid) {
       PluginDescriptor result = null;
       try {

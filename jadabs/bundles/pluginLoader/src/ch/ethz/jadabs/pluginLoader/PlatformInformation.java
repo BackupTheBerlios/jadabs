@@ -30,10 +30,12 @@ public class PlatformInformation {
 
          for (int type = parser.next(); (type != KXmlParser.END_DOCUMENT); type = parser
                .next()) {
+            if (!(type == KXmlParser.START_TAG)) continue;
             buffer.append("; ");
             if (type == KXmlParser.START_TAG) {
                buffer.append(parser.getName() + "/");
                for (int index = 0; index < parser.getAttributeCount(); index++) {
+                  if (parser.getAttributeName(index).equals("description")) continue;
                   if (index != 0)
                      buffer.append(", ");
                   buffer.append(parser.getAttributeName(index) + ":"
