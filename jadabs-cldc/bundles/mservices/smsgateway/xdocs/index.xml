@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Mobile Services SMS-Gateway</title>
+  </properties>
+
+  <body>
+    <section name="Mobile Services SMS-Gateway">
+	<p>This bundle provides a transparent gateway service for sending short 
+      messages to mobile phones. This service is intended to run on
+      devices that have the Java <a href="http://java.sun.com/products/wma/">Wireless 
+      Messaging API (WMA)</a> implemented. Therefore it is primarily intended to 
+      be used on smart phones. </p>
+    <p>The service provides a simple interface applications use to send short
+      messages. Depending on the environment the device is currently embedded
+      the short message will either be sent directly over the GSM network
+      to the SMSC (SMS Center, see 
+      <a href="http://www.gsmworld.com/technology/glossary.shtml">Mobile Terms and
+      Acronyms</a>) using the Wireless Messaging API or it if available over 
+      an SMTP-SMS-Gateway. Whereas sending the short message over the GSM network
+      is rather expensive there are free SMTP-SMS-Gateway that can be used to 
+      send short messages. An SMTP-SMS-Gateway basically is an SMTP server that is
+      connected to an SMSC. Many network operators provide access to their SMSCs 
+      e.g. for added-value services. The service provider can access the SMSC using 
+      the <a href="http://www.smpp.org/">Short Message Peer-to-Peer Protocol SMPP</a>. A Java implementation
+      is described in <i>Müller R.: "SMPP MBean for J2EE containers". 2002. Technical 
+      Report. Institut für Informatik, Fachhochschule Aargau</i>. The user can send 
+      an appropriately composed email message to the SMTP-SMS-Gateway. The format 
+      depends on the gateway used. For example the SMS service provided by 
+      <a href="http://www.switch.ch/mail/gw-spec.html">SMS service of switch.ch</a> the phone number is 
+      encoded in the email's receiver address. For example if a short message 
+      is to be sent to +41791234567 the email has to be sent to 
+      <code>0041791234567@sms.switch.ch</code>. The email body will then be interpreted
+      as content of the short message.     
+    </p>
+    
+    <p>Since many universities have "free" access to an SMTP-SMS-Gateway short message
+      can be sent for free from within the campus. In order to provide simple yet cheap
+      SMS access the SMS-Gateway service component can be used. It transparently chooses
+      the best way to send the short message. If the device is near an infrastructure node
+      such as a notebook on the campus that has the SMTP-Gateway bundle installed and 
+      is equipped with a Bluetooth adapter, the mobile SMS-Gateway automatically discovers
+      the SMTP-Gateway and transparently switches over to the SMTP-Gateway to send the 
+      short messages using the "free" SMTP-SMS-Gateway. If the devices is brought outside
+      of the communication range of a infrastructure the SMS-Gateway service switches back
+      and uses the GSM network to send to messages. Except for the phone bill the user
+      does not notice anything, as the SMS-Gateway transparently chooses the appropriate
+      channel.  
+     </p>      
+     
+	<p>The SMS-Gateway uses besides the <a href="../osgi-j2me/index.html">OSGi-J2ME container</a>,
+      the <a href="../jxme-osgi-j2me/index.html">JXME-J2ME</a> messaging core and
+      also the <a href="../smsservice/index.html">SMS-Service</a>  to send short messages over 
+      WMA and <a href="../jxme-bt-j2me/index.html">JXME-BT transport</a> and on the 
+      infrastructure device the SMTP-Gateway component bundle.
+   </p>
+
+	<p>In the sequel the architecture and the implementation is described. At the end a
+      short code snippet is given that illustrates how the SMS-Gateway can be used 
+      by an application. </p>
+      
+   <p>See also <a href="apidocs/index.html">JavaDoc</a>.</p>
+   
+   <subsection name="Architecture">
+      <p>The architecture of the SMS-Gateway service is depicted in the figure
+         below. It shows a mobile phone that is connected over Bluetooth to 
+         an infrastructure node, e.g. a notebook on the campus that provides 
+         an SMS-Gateway service. </p>
+   	<img src="images/smsgatewayoverview.jpg"/>   
+      <p>The SMS-Gateway uses the <a href="../smsservice/index.html">SMS-Service</a> 
+         when no connection to an infrastructure node is possible. In this 
+         case the short message is sent over Bluetooth. In order to access
+         the SMTP-Gateway service on the infrastructure over Bluetooth
+			<a href="../jxme-osgi-j2me/index.html">JXME-J2ME</a> messaging core and 
+         <a href="../jxme-bt-j2me/index.html">JXME-BT transport</a> are used.         
+		</p>
+      
+      <p>When SMS-Gateway bundle is activated the SMTP-Discovery background 
+         thread is started. This thread repeatedly sends a <code>DISCOVERY_MESSAGE</code> message
+         to any device it has a Bluetooth connection to. If an SMTP-Gateway is 
+         available it will send a <code>DISCOVERY_MESSAGE_REPLY</code> 
+         back to the SMS-Gateway service on the mobile device. This background 
+         thread periodically sends a <code>DISCOVERY_MESSAGE</code> message. As long
+         as no <code>DISCOVERY_MESSAGE_REPLY</code> message is received the SMS-Gateway
+         assumes that there is no SMTP-Gateway available that can be used to send
+         the short message. Therefore the gateway will send the short messages 
+         over the <a href="../smsservice/index.html">SMS-Service</a> that uses
+         WMA over the GSM network. This flow path is shown with dashed arrow in 
+         the figure above. </p>
+      <p>If a <code>DISCOVERY_MESSAGE</code> is received the gateway will access
+          the SMTP-Gateway by sending a JXME-Message over Bluetooth to the infrastructure
+          host. This path is shown by the solid arrows in the figure above. For the 
+          user this path is preferable since it is less expensive.
+      </p>      
+   </subsection>
+   
+
+   <subsection name="Implementation notes">
+      <p>Then the SMS-Gateway bundle is started it will register itself 
+         in the OSGi container. It it will also register two endpoints
+         (recipients) in Jadabs-JXME: <code>smsgateway</code> and 
+         <code>smtpdiscovery</code>. The first is used by applications
+         and services to send short messages to that have to be forwarded
+         by the SMS-Gateway. The <code>smtpdiscovery</code> endpoint is 
+         used by the SMTP-Gateway on the infrastructure node to send the
+         <code>DISCOVERY_MESSAGE_REPLY</code> message to. </p>
+      
+      <p>The SMTP-discovery background thread is started as soon the
+         SMS-Gateway bundle is started. It periodically (once every 
+         minute) sends a 
+         <code>DISCOVERY_MESSAGE</code> message to the SMTP-Gateway. This
+         message has the following format:
+         </p>
+
+		<table>
+         <tr>
+            <th>Name</th> <th>Value</th> <th>Name-Space</th> <th>MIME-Type</th>
+         </tr>
+         <tr>
+            <td><code>type</code></td> <td><code>"DISCOVERY_MESSAGE"</code> <td><code>Message.JXTA_NAME_SPACE</code></td></td> 
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>
+         <tr>
+            <td><code>replyto</code></td> <td><code>btspp://anybody/smtpdiscovery/</code> <td><code>Message.JXTA_NAME_SPACE</code></td></td> 
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>    
+		</table> 
+      
+		<p>The <code>replyto</code> field contains the URL the 
+         <code>DISCOVERY_MESSAGE_REPLY</code> has to be sent to. This needs to be 
+         specified because JXME does not provide a mechanism for bidirectional message
+         communication. This the application/service's responsibility to provide a
+         mechanism for sending message back in the reverse direction.          
+		</p>
+      
+      <p>If an SMTP-Gateway is available it will send back a <code>DISCOVERY_MESSAGE_REPLY</code>
+      	to the endpoint specified in the <code>replyto</code> field. The reply message 
+         is also a JXME message and has the following structure:
+      </p>
+            
+         	<table>
+         <tr>
+            <th>Name</th> <th>example</th> <th>Name-Space</th> <th>MIME-Type</th>
+         </tr>
+         <tr>
+            <td><code>type</code></td> <td><code>"DISCOVERY_MESSAGE_REPLY"</code> <td><code>Message.JXTA_NAME_SPACE</code></td></td> 
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>
+		</table>  
+      
+      <p>As soon the <code>DISCOVERY_MESSAGE_REPLY</code> is received the SMTP-Gateway
+         will be used. However there is a "lease time" for the SMTP-Gateway 
+         validity (6 minutes), i.e. when no <code>DISCOVERY_MESSAGE_REPLY</code> has 
+         been received for that time, the SMS-Gateway considers the SMTP-Gateway service
+         as no longer available and switches back using the 
+         <a href="../smsservice/index.html">SMS-Service</a> (WMA). Note that the 
+         SMTP-Discovery thread keeps sending <code>DISCOVERY_MESSAGE</code> messages,
+         as the SMTP-Gateway might become available again.         
+         </p>
+     <p>In order to send a short message over the SMTP-SMS Gateway an email address
+       has to be sent to a specific address. The SMS-Gateway is designed to send 
+       messages over SMTP-SMS-Gateways that use the flowing email address format:</p>
+       
+<source>     phone-number@email-address-suffix
+e.g. 0791234567@sms.switch.ch</source>
+
+		<p>Additionally a for the SMTP server the email address of the sender has 
+         to be specified (almost all SMTP server do not allow relaying, thus the sender
+         email address cannot be chosen randomly. It has to be of the domain that 
+         is served by the SMTP Gateway. Both parameters can be set as properties 
+         in the container. (Note if CLDC/MIDP is used the properties can be 
+         set in the JAD file but it has to made sure that these properties are 
+         manually copied into the OSGi container. The properties for the email
+         suffix and the sender address are (with example values):</p>
+         
+<source>ch.ethz.jadabs.mservices.smsgateway.emailsuffix=sms.switch.ch
+ch.ethz.jadabs.mservices.smsgateway.senderaddress=torvalds@transmeta.com</source>
+
+	<p>For sending short messages over the SMS-Gateway service, either the service method
+   <code>sendSM</code> of the class <code>SMSGatewayService</code>. This is the 
+   preferred way when the application and the SMS-Gateway both run on the same 
+   phone. Since there is only one class loader, the methods can be accessed directly 
+   thus minimizing the overhead.</p>
+   
+<source>/** 
+ * Send short message. Add <b>reference</b> to message object
+ * at it the end of the send queue.  
+ * @param msg Message to send
+ */
+public void sendSM(Message msg);</source>   
+
+   <p>of the short message wrapped in a JXME-message can be sent over JXME using the endpoint 
+      service <code>smsgateway</code> the bundle registers on startup. Using an URL
+      as follows (for example for TCP)</p>
+      
+<source>   tcp://smsgatewayhost:1234/smsgateway/</source>      
+	
+   <p>In the variant using the service method and the variant where the endpoint service
+      is used a JXME message needs to be created that encapsulates the short message.
+      The format is as follows:</p>
+   
+     	<table>
+         <tr>
+            <th>Name</th> <th>example</th> <th>Name-Space</th> <th>MIME-Type</th> <th>Description</th>
+         </tr>
+         <tr>
+            <td><code>to</code></td> <td><code>"0791234567"</code> <td><code>Message.JXTA_NAME_SPACE</code></td></td> 
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+            <td>The number of the mobile phone the message has to be sent to.
+               Not for the country prefix (e.g. +41) the plus sign may not be used.
+               For +41  use 0041 instead.
+               </td>
+         </tr>
+         <tr>
+            <td><code>body</code></td> <td><code>"Hello World!"</code> <td><code>Message.JXTA_NAME_SPACE</code></td></td> 
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+            <td>Text of short message (up to 160 characters)</td>
+         </tr>
+		</table>     
+   </subsection>
+   
+   <subsection name="SMS-Gateway HOWTO">
+      <p>In this section a short code snippet is show that illustrates how 
+         the SMS-Gateway can be used from CLDC/MIDP. The bundles have 
+         to be started in the proper order and the application 
+         properties must be copied manually into the OSGi container.
+         This is preferably don in the constructor of the 
+         class that extends MIDlet (i.e. the "main class"). </p>
+         
+<source>public MyMIDlet() {
+
+   // corresponds to the init.xargs descriptor from knopflerfish
+   OSGiContainer osgicontainer = OSGiContainer.Instance();
+   osgicontainer.setProperty("ch.ethz.jadabs.jxme.hostname", 
+   	this.getAppProperty("ch.ethz.jadabs.jxme.hostname"));
+   osgicontainer.setProperty("log4j.priority", 
+   	this.getAppProperty("log4j.priority"));
+   osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer", 
+      this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));
+   osgicontainer.setProperty("ch.ethz.jadabs.mservices.smsgateway.emailsuffix", 
+   	this.getAppProperty("ch.ethz.jadabs.mservices.smsgateway.emailsuffix"));
+	osgicontainer.setProperty("ch.ethz.jadabs.mservices.smsgateway.senderaddress", 
+      this.getAppProperty("ch.ethz.jadabs.mservices.smsgateway.senderaddress"));        
+   
+   // start bundles in the correct order of dependecy
+	osgicontainer.startBundle(new LogActivator());
+   osgicontainer.startBundle(new JxmeActivator());
+   osgicontainer.startBundle(new BTActivator());        
+   osgicontainer.startBundle(new SMSServiceActivator());
+   osgicontainer.startBundle(new SMSGatewayActivator());
+   ...</source>
+         
+   <p>Next the short message can be sent using the service method <code>sendSM</code>.</p>
+   
+<source>   ...
+   // compose JXME message that contains short message
+   Element[] elms = new Element[2];
+   elms[0] = new Element("to", "0791234567".getBytes(), 
+      Message.JXTA_NAME_SPACE, Element.TEXTUTF8_MIME_TYPE);       
+   elms[1] = new Element("body", "Hello World!".getBytes(), 
+      Message.JXTA_NAME_SPACE, Element.TEXTUTF8_MIME_TYPE);
+   Message msg = new Message(elms);
+   
+   // obtain reference to SMS-Gateway service
+   // get SMS Gateway service
+   ServiceReference sref = 
+     bc.getServiceReference("ch.ethz.jadabs.mservices.smsgateway.SMSGateway");
+   SMSGatewayService smsgateway = (SMSGatewayService)bc.getService(sref);       
+   
+   // send message
+   smsgateway.sendSM(msg);
+</source>   
+   
+   </subsection>
+   
+	<subsection name="Building">
+      <p>The SMS-Gateway bundle can be built by the Maven's osgi plugin
+         the <code>smsgateway</code> directory:</p>
+<source>$ pwd
+.../smsgateway
+
+$ maven osgi:install
+...   
+</source> 
+        
+	<p>This creates the <code>smsgateway-0.6.6-SNAPSHOT.jar</code> and installs it in the local
+      Maven repository. 
+   </p>         
+	 </subsection>      
+   </section>   
+  </body>
+</document>

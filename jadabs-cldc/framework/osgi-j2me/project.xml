@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../project.xml</extend>
+
+	<groupId>osgi</groupId>
+	<id>osgi-j2me</id>
+	<name>Jadabs-OSGi-J2ME</name>
+
+	<shortDescription>Jadabs-OSGi-J2ME Container</shortDescription>
+
+  	<dependencies>
+  	
+  	</dependencies>
+
+  
+</project>

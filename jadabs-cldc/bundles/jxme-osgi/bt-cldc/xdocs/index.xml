@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME Bluetooth</title>
+  </properties>
+
+  <body>
+    <section name="JXME Bluetooth Transport">
+      
+      <p>The Jadabs-JXME provides a uniform interface for messaging in a
+         heterogeneous environment. JXME can be used on top of various communication
+         technologies as long as there exists a technology adapter for the corresponding
+         transport layer. This component implements a Bluetooth Transport Layer using 
+         the <a href="http://www.jcp.org/en/jsr/detail?id=82">JSR 82</a> API for direct access to the Bluetooth device. 
+         This bundle can be used in J2SE, CDC and CLDC/MIDP environment. However 
+         it is important that the binaries are build according the target platform as
+         listed the <a href="#building">last section</a>.</p>
+         
+      <p>In sequel the basic architecture of the JXME Bluetooth transport layer 
+         is described.
+         Then the configuration properties are described and a simple 
+         example application is presented. </p>
+      
+      <p>See also <a href="apidocs/index.html">JavaDoc</a>.</p>
+
+<subsection name="Bluetooth Transport Overview">
+      <p>A JXME-BT peer can be used in two different modes of operation:
+         <i>normal peer</i> and <i>rendez-vous peer</i>. These modes are a 
+         consequence of the Bluetooth protocol. Usually a mobile phone is 
+         configured as peer whereas more powerful devices that also have a 
+         other communication interfaces than Bluetooth such as UDP, TCP are
+         configured as rendez-vous peer. The following figure depicts 
+         a communication link between a mobile phone (peer) and a 
+         notebook computer (rendez-vous peer).</p>
+      <img src="../../images/btoverview.jpg"/>
+   
+   	<p>A communication link is setup as follows. (1) The peer (i.e. the 
+         mobile phone) opens a <code>StreamConnectionNotifier</code> using 
+         the URL</p>
+         
+<source>btspp://localhost:UUID;authenticate=false;authorize=false;encrypt=false;name=JxmeBtServer</source>
+
+		<p>where UUID is a 128-bit universal unique number that allows the
+         identification of the service (note the service is not identified by the 
+         name <code>JxmeBtServer</code> but the UUID). The protocol identifier
+         <code>btspp</code> specifies that a <i>RFCOMM</i> link should be used. 
+         The <code>StreamConnectionNotifier</code>
+         has a similar semantics as the <code>ServerSocket</code> in TCP; other peers
+         can establish a connection to a peer that has a connection notifier open. 
+         Once the connection notifier is opened the a service record is entered 
+         into the <i>Service Discovery Database (SDDB)</i> of the 
+         <i>Service Discovery Protocol (SDP)</i>. As soon as the connection notifier 
+         MIDP application can obtain a reference the corresponding service record.
+         In the JXME-BT implementation a further attribute is added to the 
+         service record that specifies that this service belongs to the <i>Public Browse Group</i>.
+         This has the advantage that the service is also displayed by browsing tools
+         such as <a href="http://kde-bluetooth.sourceforge.net">KDE Bluetooth</a>.                    
+      </p>
+      
+      <p>The rendez-vous peer (the notebook in the figure above) does <b>not</b>
+         open an <code>StreamConnectionNotifier</code>. It starts a discovery
+         thread that looks for any Bluetooth devices (2) that are either phones 
+         or computers (by looking at their device class entry from the SDDB). 
+         It then filters out every devices just discovered that do not provide the 
+         JxmeBtServer by consulting their SDDB and looking up the JxmeBtServer 
+         by its UUID. It then establishes a stream connection to all those
+         devices that provide the JxmeBtServer service (3). Once a connection
+         is established it put into the connection pool. A connection between
+         the peers is now established and can be used by the higher JXME layers
+         for the message transport. 
+   	</p>
+</subsection>
+   
+   
+<subsection name="Bluetooth Transport Implementation">
+   <p>As soon as connection is established, i.e. a peer is contacted by 
+      after being discovered by a rendez-vous peer both entities 
+      obtain a <code>StreamConnection</code> this connection is inserted into 
+      the connection pool and a worker thread is started on both ends of the 
+      connection that receives data from the stream and rebuilds the JXME messages.</p>
+
+   <p><b>JXME-Bluetooth message format:</b></p>
+   <p>JXME messages are serialized and encapsulated as payload in a <code>BTTransport</code>
+      message. This message is sent over the <code>StreamConnection</code>. It consists
+      of a header part, payload part (JXME message) and footer part. This low level
+      message format has already been suggested by Daniel Käppeli in his 
+      diploma thesis <a href="http://e-collection.ethbib.ethz.ch/show?type=dipl&amp;nr=107">JXTA over Bluetooth</a>. 
+      The header <code>BT_HEADER</code> has the following format:</p>
+   <table>
+   	<tr><th>Offset</th> <th>Field</th> <th>Type</th> <th>Length</th> 
+          <th>Description</th></tr>
+      <tr><td>0</td> <td><code>PROLOG</code></td> <td><code>char</code></td> 
+          <td>4 bytes</td> <td>synchronisation sequence <code>'++++'</code></td></tr>
+      <tr><td>4</td> <td><code>RECEIVER</code></td> <td><code>hex-string</code></td> 
+          <td>12 bytes</td> <td>hex-string of Bluetooth address of receiving device</td></tr>
+      <tr><td>16</td> <td><code>SENDER</code></td> <td><code>hex-string</code></td> 
+          <td>12 bytes</td> <td>hex-string of Bluetooth address of sending device</td></tr>
+      <tr><td>28</td> <td><code>PAYLOAD_LENGTH</code></td> <td><code>32-bit int</code></td> 
+          <td>4 bytes</td> <td>length of payload data in bytes</td></tr>
+      <tr><td>32</td> <td><code>MULTICAST</code></td> <td><code>char</code></td> 
+          <td>1 byte</td> <td>0x10: multicast message, 0x14: unicast message</td></tr>
+  	</table>      
+
+	<p>The <code>BT_FOOTER</code> consists only of one element; the prolog:</p>  
+  	<table>
+  		<tr><th>Offset</th> <th>Field</th> <th>Type</th> <th>Length</th> 
+          <th>Description</th></tr>
+      <tr><td>0</td> <td><code>EPILOG</code></td> <td><code>char</code></td> 
+          <td>4 bytes</td> <td>synchronisation sequence <code>'----'</code></td></tr>
+   </table>  
+   
+   <p>The <code>++++</code> prolog servers as synchronisation (inband signaling) in
+      the message stream. Whenever the message stream is out of sync e.g. invalid
+      payload length, the receiver can scan for this sequence to regain synchronization. 
+      When a peer receives a message with the <code>MULTICAST</code> field set to
+      <code>0x10</code> (multicast) it resends the message over all links currently
+      in the connection pool except the connection the message was received from.       
+   </p>
+   
+   <p><b>Note:</b> After closer observation the low-level protocol described above
+      might not appear to be appropriate for the use over a <code>StreamConnection</code>.
+      Since an RFCOMM link is used between the peers the sender and receiver 
+      address are given by the endpoints. This format was introduced by
+      Daniel Käppeli with the idea that the BT-Layer should also support 
+      multihop routing (scatternets). It this circumstances the <code>SENDER</code>
+      and <code>RECEIVER</code> address was used to distinguish the sending and receiving 
+      node from the intermediate nodes. Further versions of the BT-Messaging layer 
+      the <code>SENDER</code> and <code>RECEIVER</code> field might be removed.             
+   </p>
+   
+   <p><b>Transport Methods</b> that are provided by the BT transport service:
+      <table>
+         <tr>
+            <th>Method</th> <th>Description</th>
+         </tr>
+         <tr>
+            <td><code>void init(EndpointAddress myURI, Listener listener)</code></td>
+            <td>intialises transport and let address of this endpoint be 
+                <code>myURI</code>. The <code>listener</code> is called
+                when a new message is received that has to be handled by
+                the upper JXME layer.</td>
+			</tr>                
+         <tr>
+				<td><code>void send(Message message, EndpointAddress destURI)</code></td>
+            <td>Send message to the specified endpoint using the BT transport.</td>
+         </tr>
+         
+         <tr>                
+				<td><code>void propagate(Message message)</code></td>
+            <td>Send message over every connection in the connection pool.
+                This is equal to a broadcast over all RFCOMM links.</td>
+         </tr>
+         
+         <tr>                
+				<td><code>EndpointAddress getEndpointAddress();</code></td>
+            <td>Return address of the BT-Transport endpoint. Returns
+                the argument <code>myURI</code> that was used in 
+                <code>init()</code>.</td>
+         </tr>
+         
+         <tr>
+          	<td><code>void stop()</code></td>
+            <td>Shutdown BT transport. Afterwards no further messages 
+                can be sent unless BT transport is reinitialized with
+                <code>init()</code>.</td>
+         </tr>
+      </table>
+   </p>
+</subsection>      
+
+
+<subsection name="Configuration Properties of JXME-BT">
+	<p>The JXME-BT component can be configured by the following properties. When 
+      running on J2ME it has the made sure by the application developer that 
+      the Application properties are copied into the OSGi container.       
+	</p>
+	<table>
+      <tr>
+         <th>Property Name</th> <th>Type</th> <th>Description</th>
+      </tr>
+      <tr>
+         <td><code>ch.ethz.jadabs.jxme.bt.rendezvouspeer</code></td>
+         <td><code>true</code> or <code>false</code></td>
+         <td>determines whether this peer is a "normal peer" or a rendez-vous peer</td>
+      </tr>
+      <tr>
+         <td><code>ch.ethz.jadabs.jxme.hostname</code></td>
+         <td>String</td>
+         <td>Host name used in JXME determines whether this peer is a "normal peer" or a rendez-vous peer</td>
+      </tr>      
+	</table>
+   
+   <p><b>Note:</b> When using JXME-BT on J2ME the <code>ch.ethz.jadabs.jxme.hostname</code> has 
+      to be set accordingly. This is not necessary on J2SE since in this case JXME is able 
+      set the JXME name equal to the name of the local host. However this is not possible on J2ME therefore
+      the host name has to be set explicitly.</p>
+</subsection>
+
+
+<subsection name="How to use JXME-BT">
+   <p>The following code snippet illustrates to setup JXME and in order to 
+      send messages over the BT transport. If the 
+      Knopflerfish OSGi container is used the 
+      <code>jxme-bt-j2se-0.6.6-SNAPSHOT.jar</code> needs to be started 
+      by adding the entry </p>
+      
+<source>-istart   jadabs/jars/jxme-bt-j2se-0.6.6-SNAPSHOT.jar</source>   
+      
+   	<p>to the <code>init.xargs</code> file. </p>
+		<p>         
+      For CLDC/MIDP the procedure is similar except that the OSGi-J2ME 
+      framework has needs to be setup manually, i.e. the Bundles have 
+      to be started explicitly (in the correct dependency order) in 
+      the constructor of the MIDlet class:</p>
+      
+<source>   // Initialize OSGi container
+   OSGiContainer osgicontainer = OSGiContainer.Instance();
+   
+   // copy application properties into container properties
+   osgicontainer.setProperty("ch.ethz.jadabs.jxme.hostname", 
+          this.getAppProperty("ch.ethz.jadabs.jxme.hostname"));
+   osgicontainer.setProperty("log4j.priority", 
+          this.getAppProperty("log4j.priority"));
+   osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer", 
+          this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));
+   
+   // start bundles in the right order 
+   // (mind dependencies among bundles that have to be solved manually)
+   osgicontainer.startBundle(new LogActivator());
+   osgicontainer.startBundle(new JxmeActivator());
+   osgicontainer.startBundle(new BTActivator());</source>      
+
+	<p>The bundle activator of the BT transport registers itself as
+      endpoint therefore Bluetooth can be used over the endpoint service 
+      as soon the BT bundle is started. The following code snippet 
+      sends a message to any host over Bluetooth (e.g. chat) to the
+      <code>fooservice</code> running at the destination:</p>      
+      
+<source>   // get Endpoint service
+   ServiceReference sref = bc.getServiceReference(
+   	"ch.ethz.jadabs.jxme.EndpointService");
+   EndpointService endptsvc = (EndpointService)bc.getService(sref);
+   
+   // create endpoint address of destination 
+   EndpointAddress endpoint = new EndpointAddress("btspp", 
+      "anybody", -1, "fooservice");
+      
+   // compose a simple message
+   Element[] elm = new Element[1];
+   elm[0] = new Element("text", "Hello World!", Message.JXTA_NAME_SPACE);
+   
+   // send message over endpoint service 
+   try {
+   	endptsvc.propagate(elm, endpoint);
+   } catch(IOException e) {
+      LOG.error("cannot send message: "+e.getMessage());
+   }</source>      
+	
+   <p>The BT transport layer at the destination will receive the 
+      message and handle it over to the JXME layer where the JXME
+      message will be delivered to the service <code>fooservice</code>.
+   </p>
+   
+   <p><b>Note:</b> It is not possible to address a specific Bluetooth device because
+      the upper layer are not aware which BT devices, i.e. which 
+      BT addresses are in range. However since the endpoint address
+      format requires a host name the dummy name <code>anybody</code>
+      is used, but this name is completely ignored by the BT layer.
+      Its only purpose is to satisfy the constructor of 
+      <code>EndpointAddress</code>.</p>
+</subsection>
+
+<subsection name="Building JXME-BT">
+<a name="building"></a>
+   <p>As mentioned above JXME-BT can be used both for J2SE and J2ME. However it is 
+      important that the bundle is build for the correct target (i.e. J2ME or J2SE).
+      As for all Jadabs-Bundles Maven can be used. Since there are two different ways
+      how to build JXME-BT there are also two different Maven project files. </p>
+      
+   <p>For building JXME-BT for J2ME the <code>project.xml</code> file can be 
+      used in Maven. Since this is the common case in maven the bundle can be 
+      build with the <code>osgi:install</code> goal from the <code>bundles/jxme-osgi/bt-cldc</code>
+      directory.  </p>
+      
+<source>$ pwd
+ .../jadabs-cldc/bundles/jxme-osgi/bt-cldc
+
+$ maven osgi:install
+...</source>
+      
+  <p>The JAR archive <code>jxme-bt-j2me-0.6.6-SNAPSHOT.jar</code> will be installed 
+   in the local Maven repository.</p>
+
+
+	<p>For building JXME-BT for J2SE the non standard <code>project-j2se.xml</code>
+      file has to be used in Maven. Project descriptor other than the default
+      <code>project.xml</code> can be supplied with the option <code>-file</code></p>
+      
+<source>$ pwd
+ .../jadabs-cldc/bundles/jxme-osgi/bt-cldc
+
+$ maven -p project-j2se.xml osgi:install
+...</source>
+
+	<p>The JAR archive <code></code> for J2SE will then 
+      be installed in the local Maven repository. </p>      
+</subsection>      
+   </section>
+   
+  </body>
+</document>

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Goals</title>
+    <author email="muellren@student.ethz.ch">René Müller</author>
+  </properties>
+
+	<body>
+  	<section name="Jadabs-CLDC Goals">
+		<p>
+			Jadabs-CLDC was developed during the semester work 
+         <i>JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)</i>
+         by René Müller at the <a href="http://www.iks.inf.ethz.ch"></a>Information 
+         and Communication System Group of the 
+         <a href="http://www.ethz.ch">Swiss Federal Institute of Technology (ETH) Zurich</a>.
+		</p>
+      
+      <p>Last year the number of GSM subscribers passed the 1 billion mark 
+         (<a href="http://www.3gsmworldcongress.com/2005/default.asp">3GSM World congress</a>). 
+         If only a small percentage of the mobile phones equipped with a enough
+         processing power and memory to execute small-footprint applications there is 
+         a tremendous number of such called <i>smart phones</i> already in use. The 
+         number on can think of is countless. However the number of applications
+         is still very low. Possible reasons are that the infrastructures require
+         large investments and since the mobile technology belongs to the fastest advancing
+         Information Technology the revenue cannot immediately be foreseen. Therefore
+         many company still hesitate to invest in this technology.                   
+      </p>
+      
+      <p>A solution that circumvents the necessity of having a very expensive 
+         infrastructure (such as a managed network with a global coverage such as
+         GSM) is to build <i>Ad-hoc networks</i>. Today even most of the mid-end
+         mobile phones are equipped with a <a href="http://www.bluetooth.org">Bluetooth</a> interface.
+         Bluetooth can be used to build Ad-hoc networks not only between
+         mobile phones but also devices of different type. In the future device 
+         vendors may also increase the support of <i>scatternets</i> which are a collections
+         of Bluetooth networks that are connected together. Messages in scatternets
+         have to routed over more than one station (hop). The advantage of Bluetooth is 
+         that there is no infrastructure needed, the networks are created ad-hoc. Therefore
+         Bluetooth communication is free. It is thus advisable that devices equipped with
+         Bluetooth interfaces can exchange information.          
+       </p>
+       
+       <p>As the devices are mobile the environment changes often. The the devices
+         have to be adapted as they are moved around. New services or application 
+         should be automatically installed when a device is brought into a new
+         environments. For example when mobile phone is brought into a building 
+         an information system application is automatically installed on the device.
+         The owner can use this applications two query the in-house information system.
+         As soon as the user leaves the building the application is no longer required 
+         and is automatically removed. Todays mobile phones cannot be extended except 
+         with simple games or ring tones. </p>
+      
+      <p>The Jadabs system allows that component bundles can be dynamically 
+         installed and started. <a href="http://wlab.ethz.ch/jadabs">Jadabs</a> is a 
+         dynamic lightweight container for small devices. Combined with the JXME messaging
+         system it can be used to build applications and service for a dynamical 
+         environment as described above. JXME messaging uses a messaging format 
+         that is compatible to <a href="http://spec.jxta.org/nonav/v1.0/docbook/JXTAProtocols.html">JXTA</a>.
+         JXME provides a uniform messaging in a heterogeneous network. 
+      </p>
+      
+      <p>Jadabs and JXME was developed by Andreas Frei from the ETH Zurich. 
+         JXME allows the use of various technology adaptors: </p>
+<img src="images/jadabsoverview.jpg"/>
+
+		<p>JXME provides a uniform messaging system on top of different 
+         communication technologies. A technology is bound to JXME over 
+         a <i>transport layer</i>. TCP and UDP transports are already available.
+         In the semester work a <i>Bluetooth transport layer</i>
+         had to be implemented allowing Bluetooth devices to use JXME.</p>
+         
+      <p>The original Jadabs version cannot be run on CLDC/MIDP because of the
+         limitations imposed by CLDC (connected limited device configuration). 
+         There is no reflection and no dynamic class loading. During the 
+         semester work JXME was ported to CLDC/MIDP and a concept was 
+         developed for porting Jadabs to CLDC/MIDP. </p>
+      
+  	</section>
+	</body>
+</document>

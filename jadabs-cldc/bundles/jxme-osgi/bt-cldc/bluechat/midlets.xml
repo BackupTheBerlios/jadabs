@@ -1,0 +1,14 @@
+<descriptor xmlns="http://wlab.ethz.ch/maven/plugins/maven-antenna-plugin">
+ 
+ 	<suite>BlueChatSuite</suite>
+  	<vendor>www.benhui.net, ETH Zurich</vendor> 
+  	<version>1.0.0</version> 
+  	<midlets>
+  		<midlet class="ch.ethz.jadabs.jxme.bt.btchat.ChatMain" 
+  		        name="BlueChat"/>  		
+  	</midlets>
+  	
+  	<attributes>
+  		<attribute name="Foo" value="foobar"/>
+  	</attributes>
+</descriptor>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<project name="Jadabs">
+    <title>Jadabs-CLDC</title>
+    <body>
+    
+  	<menu name="Overview">
+  		<item name="Goals" 							href="/index.html"/>
+  		<item name="Bluetooth Transport"			href="/intro/bttransport.html"/>
+  		<item name="Smart SMS Gateway"		   href="/intro/smsgateway.html"/>
+  		<item name="MIDP/CLDC Applications"    href="/intro/midpapps.html"/>
+  		
+  		<item name="Getting Started" 				 href="/start/index.html" collapse="true">
+  			<item name="Bootstrap HOWTO" 			 href="/start/bootstrap.html"/>
+  			<item name="Starting SmartMessenger" href="/start/smartmessenger.html"/>
+  		</item>
+  		
+  		<item name="Other Projects"			    href="/intro/otherprojects.html"/>
+  	</menu>
+   
+    <menu name="Sub-Projects">
+		<item name="Overview of project" 		href="/projects-overview.html"/>
+      <item name="Bundles"							href="/bundles.html">
+         <item name="OSGi J2ME" 					href="/multiproject/osgi-j2me/index.html"/>
+	      <item name="JXME J2ME" 					href="/multiproject/jxme-osgi-j2me/index.html"/>
+			<item name="Jadabs Log4 J2ME" 		href="/multiproject/log4j-j2me/index.html"/>
+         <item name="JXME Bluetooth" 			href="/multiproject/jxme-bt-j2me/index.html"/>
+         <item name="SMS Service"            href="/multiproject/smsservice/index.html"/>
+         <item name="SMS Gateway"            href="/multiproject/smsgateway/index.html"/>            
+      </item>
+      
+      <item name="MIDlets"							href="/midlets.html">
+         <item name="SmartMessenger"         href="/multiproject/smartmessenger/index.html"/>
+         <item name="JXME Chat J2ME"         href="/multiproject/jxme-chat/index.html"/>
+         <item name="BlueChat"               href="/multiproject/bluechat/index.html"/>
+         <item name="BlueTooth Test"         href="/multiproject/bttest/index.html"/>
+         <item name="Parallel Test"          href="/multiproject/paralleltest/index.html"/>
+      </item>
+      
+      <item name="J2SE Applications"			href="/j2se-applications.html">
+         <item name="JXME Chat J2SE"         href="/multiproject/jxme-chat-j2se/index.html"/>
+      </item>
+	</menu>
+  	
+    </body>
+</project>

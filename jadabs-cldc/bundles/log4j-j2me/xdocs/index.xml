@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs-Log4j-J2ME</title>
+  </properties>
+
+  <body>
+    <section name="Jadabs-Log4j-J2ME">
+      
+      <p>Logging and debug output for J2ME/MIDP application is 
+         not very trivial. The <code>System.out</code> stream 
+         is defined but not usable in many mobile devices since 
+         there is no console the output can be directed to. Therefore
+         many implementation do not offer the possibility to inspect
+         the system standard output. It is possible that the vendors
+         provided an empty implementation of <code>OutputStream</code>
+         in <code>System.out</code>. </p>
+      
+      <p>Usually the compile-test-debug cycle takes much longer when
+         developing J2ME/MIDP applications than conventional Java
+         application. In order to provide a mechanism for debug 
+         output a considerable amount of work has to be invested 
+         into the application that is being debugged. A debugging
+         aid similar to the Logging mechanism (e.g. Log4J or the 
+         Java Logging API) used in conventional Java application 
+         does help the developer by reducing the number of 
+         necessary compile-test-debug cycles.
+         </p>   
+      
+      <p>The Jadabs-Log4J component is an stripped down implementation of 
+         a logger for CLDC/MIDP that is compatible with
+         <a href="http://logging.apache.org/log4j">Apache's Log4J</a> 
+         to a large extent. It creates a new canvas 
+         (<code>javax.microedition.lcdui.Canvas</code>) the logging messages
+         are written to. 
+      </p>
+      
+      <p>See also <a href="apidocs/index.html">JavaDoc</a>.</p>
+      
+	<subsection name="How to use the Jadabs-Log4J bundle">
+     	<p>The following code snippet illustrates how to initialise the 
+         logger in the MIDlet constructor:</p>
+
+<source>// reference to the logger responsible for this class
+static Logger LOG;   
+   
+/**
+ * constructor of MyMIDlet
+ */
+public MyMIDlet() {   
+   // create OSGi container and set container 
+   // properties from the MIDP application properties
+   OSGiContainer osgicontainer = OSGiContainer.Instance();
+   osgicontainer.setProperty("log4j.priority", this.getAppProperty("log4j.priority"));
+	
+   // start Logger bundle using its activator
+   osgicontainer.startBundle(new LogActivator());
+   
+   // obtain a Logger from the logger factory for this class
+   LOG = Logger.getLogger("MyMIDlet");   
+   ...   
+}</source>
+		
+      <p>Note the different life cycles of a MIDlet. A MIDlet may temporarily 
+         be suspended by calling its <code></code> method and then restarted 
+         by calling the <code>startApp()</code>.  Therefore the OSGi container
+         instance is created in the constructor of the MIDlet class. It it 
+         suggested that every class that uses the logger keeps a static reference
+         to <code>org.apache.log4j.Logger</code>. As soon as the logger is 
+         initialized a logger can be obtained by the Logger factory. This 
+         logger is by all instances of this class. This is the same procedure
+         suggested for Log4J in the 
+         <a href="http://logging.apache.org/log4j/docs/manual.html">short manual</a>. 
+                           
+         After the MIDlet instance is created the calls <code>startApp()</code> then the 
+         GUI can be setup (as suggested in the Java MIDP blue print applications).          
+      </p>      
+<source>public void startApp() {   
+   // obtain reference to Display singleton
+   Display display = Display.getDisplay(this);        
+
+   // create the main display of the MyMIDlet application as usual
+   ...   
+   // set the current display to the main display of the application as usual
+   display.setCurrent(myMainForm);
+
+   // set the display for the logger         
+   Logger.getLogCanvas().setDisplay(display);
+   
+   // set the screen to be display when 'Back' is pressed when 
+   // Logger screen is active causing the logger to switch back to
+   // the main screen
+   Logger.getLogCanvas().setPreviousScreen(myMainForm);   
+   ...</source>      
+	
+	<p>It suggested that a <code>Command</code> is introduced that 
+      displays the Logger-Screen when pressed. This can also be done in
+      <code>startApp()</code>:</p>
+
+<source>   ...
+   // create new a command that will display the logger 
+   Command logCmd = new Command("Log", Command.SCREEN, 1);   
+   
+   // add command to the main form
+   myMainForm.addCommand(log);
+   
+   // set the command handler as usual
+   myMainForm.setCommandListener(this);</source>            
+	
+   <p>The logger screen can be display as any other screen. According the 
+      configuration above provide a method <code>void commandAction(Command c, Displayable d)</code> 
+      in <code>MyMIDlet</code>.</p>
+
+<source>public void commandAction(Command c, Displayable d) {   
+   if (c.getLabel().equals("Log")) {
+      display.setCurrent(Logger.getLogCanvas());
+   }
+   ...
+}</source>      
+
+	<p>Once the Logger has been set up it can easily be used by a class by 
+      just calling the Logger factory. The MIDP architecture has a rather 
+      complicated handling with screens and displays therefore still a 
+      considerable amount of code is required to display the logger screen. </p>
+	<p><b>Example:</b>class <code>Foo</code> is used by <code>MyMIDlet</code>. 
+      It can simply obtain a logger in static constructor:</p>
+<source>class Foo {   
+   /** logger to be used in class Foo */
+    private static Logger LOG = Logger.getLogger("Foo");
+    ...
+}</source>      
+
+	</subsection>      
+   
+   <subsection name="Configuration of the Logger">
+      <p>As in Log4J the logger can customized over <code>log4j.priority</code>.
+         The property determines the logging granularity. The priority can
+         either be <code>DEBUG</code>, <code>INFO</code>, <code>WARN</code>, 
+         <code>ERROR</code> or <code>FATAL</code>. If the logger is used 
+         as described in the section above, i.e. the MIDlet copies the
+         application properties into the OSGi container the logger can
+         directly be configured in the JAD file, e.g.:</p>
+
+<source>log4j.priority: DEBUG</source>         
+
+   </subsection>
+   
+   <subsection name="Differences with Apache's Log4J">
+      <p>Due to the lack of Reflection on J2ME/CLDC this Log4J implementation
+         has a slightly different behaviour than the original version. In 
+         Apache's Log4J a logger can automatically be associated to a class
+         using the <code>.class</code> field.</p>
+<source>public class Foo {
+
+   // Define a static logger variable so that it references the
+   // Logger instance named "Foo".
+   static Logger logger = Logger.getLogger(Foo.class);   
+</source>
+                  
+		<p>This is not supported in CLDC. A class that access the <code>class</code>
+         field cannot be preverified. The <code>getLogger(Class clazz)</code> method from 
+         Apache Log4J is overloaded with <code>getLogger(String name)</code> where
+			<code>name</code> is the fully qualified name of the class. Since there is 
+         no Reflection on CLDC this attribute is only used in the log messages, i.e.
+         the user can supply any value for this attribute. </p>
+   </subsection>
+   </section>
+  </body>
+</document>

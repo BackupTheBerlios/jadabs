@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Bluetooth Test MIDlet</title>
+  </properties>
+
+  <body>
+    <section name="Bluetooth Test MIDlet">
+
+ 	<p>The Bluetooth Test MIDlet can be used to the test various features of 
+      the JSR-82 implementation on concrete mobile devices. It has been
+      used figure out the technical detail that were necessary for 
+      developing the Bluetooth transport layer. 
+      </p>
+      
+   <p>See <a href="apidocs/index.html">JavaDoc</a>.</p>
+   
+   <subsection name="Short manual">
+   <p>When started the application displays the the Logger screen. First the 
+      BT interface has to be initialized by pressing <i>Init BT</i>. During 
+      the initialisation phase the JSR-82 properties of the device are 
+      written to the log window. This helps identifying the device features. 
+      The following properties are displayed for Nokia 6600 smart phone:</p>      
+      
+<source>bluetooth.api.version=1.0
+bluetooth.l2cap.receivedMTU.max=672
+bluetooth.connected.devices.max=7
+bluetooth.connected.inquiry=false
+bluetooth.connected.page=false
+bluetooth.connected.inquiry.scan=false
+bluetooth.connected.page.scan=false
+bluetooth.master.switch=false
+bluetooth.sd.trans.max=1
+bluetooth.sd.attr.receivable.max=65535</source>      
+
+	  <p>Then the device data are displayed:</p>
+     
+<source>Bluetooth Address: 006057BA683C
+Friendly Name: Nokia 6600
+discoverable: GIAC
+service class: 5242880
+major device class: 512
+minor device class: 4</source>     
+
+	<p>By pressing the <i>Start Inquiry</i> the JSR-82 starts the inquiry process
+      and starts looking for other BT devices in range. Whenever a device 
+      is discovered and the method <code>deviceDiscovered(RemoteDevice btdevice, DeviceClass cod)</code> of the <code>DiscoveryListener</code> 
+      interface is called.
+      Note the logger as new devices are discovered. 
+      </p>
+      
+<source>BT device discovered: 000F3D4BEE8D alias mc-rene</source>      
+   
+     <p>After some the discovery process is terminated. Then <code>inquiryCompleted(int discType)</code> 
+      of the listener is called where <code>discType</code> specifies the result of the inquiry:
+      <code>INQUIRY_COMPLETED</code>, <code>INQUIRY_TERMINATED</code> or 
+      <code>INQUIRY_ERROR</code>. The first is used if the process terminated without
+      error, the second when the inquiry process was cancelled by the the user
+      e.g. calling <code>cancelInquiry()</code> the third if the inquiry process failed for 
+      some reason. </p>       
+
+<source>inquiryCompleted: INQUIRY_COMPLETED</source>      
+
+	<p>At this time the discovered devices are cached this cache can be access. By 
+      pressing <i>Retrieve Devices</i> a list of the just discovered devices 
+      from the cache is shown. 
+      </p>
+      
+<source>1 BT device found.
+Device[0]: 000F3D4BEE8D alias mc-rene</source>      
+
+	<p>By pressing <i>Start RFCOMM Service</i> a <code>StreamConnectionNotifier</code>
+      is opened and thus a new entry added to the SDDB (Service Discovery Database). 
+      The mobile phone is now able to accept an RFCOMM link to this service. The 
+      service URL used in the <code>StreamConnectionNotifier</code> is:</p>	
+      
+<source>btspp://localhost:41d53d8182c04f0e8e5cc52cae0415c3;authenticate=false;
+  authorize=false;encrypt=false;name=JxmeBtServer</source>
+
+	<p>A service discovery database can be queried e.g. from a Linux computer running BlueZ stack as 
+      follows:</p>
+      
+<source>$ hcitool scan
+Scanning...
+    00:60:57:BA:68:3C    Nokia 6600
+    
+$ sdptool 00:60:57:BA:68:3C
+Inquiring...
+...
+Service Name: JxmeBtServer
+Service RecHandle: 0x10006
+Service Class ID List:
+  "Error: This is uuid128" (0x41d53d81-82c0-4f0e-8e5c-c52cae0415c3)
+  "Serial Port" (0x1101)
+Protocol Descriptor List:
+  "L2CAP" (0x0100)
+  "RFCOMM" (0x0003)
+    Channel: 4
+Language Base Attr List:
+  code_ISO639: 0x656e
+  encoding:    0x6a
+  base_offset: 0x100</source>      
+  
+	<p>As the output shows the service is listed in the SDDB. An RFCOMM connection can 
+      therefore be established to the service on channel 4. </p>
+      
+<source>$ rfcomm connect 0 00:60:57:BA:68:3C 4
+Connected /dev/bluetooth/rfcomm/0 to 00:60:57:BA:68:3C on channel 4
+Press CTRL-C for hangup
+</source>
+
+	<p>The connected device is also shown in the logger screen on the mobile phone:</p>
+<source>remote device connected 
+  000F3D4BEE8D alias mc-rene</source>   
+   
+	<p>The stream connection notifier can the closed by pressing <i>Stop RFCOMM Service</i>.      
+	</p>  
+   </subsection>
+
+   
+	 <subsection name="Building the MIDlet">
+      <p>The MIDlet can be built using the Maven default goal from 
+         the <code>bttest</code> directory:</p>
+<source>$ pwd
+.../bt-cldc/bttest
+
+$ maven
+...</source>
+         
+	<p>This creates the <code>bttest.jad</code> (Java Application Descriptor) file
+      and the <code>bttest.jar</code> (Java Archive) file in the 
+      <code>target</code> folder. These files can be downloaded to the 
+      mobile devices. </p>         
+	 </subsection>      
+   </section>   
+  </body>
+</document>

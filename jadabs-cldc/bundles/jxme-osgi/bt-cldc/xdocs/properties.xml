@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME Bluetooth</title>
+  </properties>
+
+  <body>
+    <section name="JXME Bluetooth Properties">
+      
+
+	<p>
+	  The JXME-BT component can be configured by the following properties. When 
+      running on J2ME it has the made sure by the application developer that 
+      the Application properties are copied into the OSGi container.       
+	</p>
+	
+	<table>
+      <tr>
+         <th>Property Name</th> <th>Type</th> <th>Description</th>
+      </tr>
+      <tr>
+         <td><code>ch.ethz.jadabs.jxme.bt.rendezvouspeer</code></td>
+         <td><code>true</code> or <code>false</code></td>
+         <td>determines whether this peer is a "normal peer" or a rendez-vous peer</td>
+      </tr>
+      <tr>
+         <td><code>ch.ethz.jadabs.jxme.bt.discoverysleep</code></td>
+         <td>ms</td>
+         <td>Specify the time between two device discovery phases in ms.</td>
+      </tr>
+     
+	</table>
+   
+   <p>
+      <b>Note:</b> When using JXME-BT on J2ME the <code>ch.ethz.jadabs.jxme.peeralias</code> has 
+      to be set accordingly. This is not necessary on J2SE since in this case JXME is able 
+      set the JXME name equal to the name of the local host. However this is not possible on J2ME therefore
+      the host name has to be set explicitly.
+   </p>
+
+
+   </section>
+   
+  </body>
+</document>

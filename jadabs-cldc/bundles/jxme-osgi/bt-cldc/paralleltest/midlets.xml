@@ -1,0 +1,13 @@
+ <descriptor xmlns="http://wlab.ethz.ch/maven/plugins/maven-antenna-plugin">
+ 
+ 	<suite>BT Test</suite>
+  	<vendor>Andreas Frei, Rene Mueller, ETH Zurich</vendor> 
+  	<version>1.0.0</version> 
+  	<midlets>
+  		<midlet class="ch.ethz.jadabs.jxme.paralleltest.FooMIDlet" 
+  		        name="Foo"/>  		
+  		<midlet class="ch.ethz.jadabs.jxme.paralleltest.BarMIDlet" 
+  		        name="Bar"/>  		  		        
+  	</midlets>  	
+
+</descriptor>

@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+  </HEAD>
+  <BODY>
+ 	Smart Messenger MIDlet application that uses the SMS-Gateway component to send short messages.
+   
+   This package contains an Smart Messenger MIDlet application makes use of the 
+   <a href="../../../../../../smsgateway/index.html">SMS-Gateway Service</a>.
+   It provides a simple GUI where the user can enter the phone number the 
+   short message is to be sent to and the message text itself.
+   
+   Because the SMS-Gateway service is used the short message is sent over the
+   cheapest communication channel available, either over the SMTP-SMS-Gateway 
+   if an SMTP-Gateway service is available or over the GSM network (i.e. Wireless
+   Messaging API) of no SMTP-Gateway is available. This all happens transparently 
+   to the user. The Smart Messenger application is in fact not <i>smart</i>
+   since all logic is implemented in the SMS-Gateway component.
+  </BODY>
+</HTML>

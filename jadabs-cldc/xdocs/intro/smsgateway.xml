@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Smart SMS Gateway</title>
+    <author email="muellren@student.ethz.ch">René Müller</author>
+  </properties>
+
+<body>
+	
+	<section name="Smart SMS Gateway">
+      
+  		<p>The SMS Gateway can be used to send short messages. Why is
+         there an a smart SMS Gateway service necessary since sending
+         short messages is nothing extraordinary on mobile phones?
+         The answer is that this service is smart in sense that 
+         it adapts according to the environment. It is considered
+         as an example service for adaptive software components 
+         on smart phones. The SMS Service either uses the GSM
+         network to send the short message using the 
+         <a href="http://java.sun.com/products/wma">Java Wireless Messaging API (WMA)</a> or it 
+         uses an Mail-to-SMS-Gateway server when it is in communication range with
+         another device that provides access to an SMTP-Gateway. Usually using an
+         Mail-to-SMS-Gateway (SMTP-SMS-Gateway) is less expensive than sending the 
+         short message over a GSM network. However it the device is no longer in communication range 
+         with an SMTP-Gateway the SMS-Gateway transparently switches back and uses the 
+         expensive GSM network. This all happens completely transparently for
+         the user. The user does have to reconfigure the device. </p>
+        
+       <p>An architecture overview is depicted in the figure below:</p>
+<img src="../multiproject/smsgateway/images/smsgatewayoverview.jpg" />       
+        
+       <p>The <a href="../multiproject/smsgateway/index.html">SMS-Gateway</a> that provides service uses the 
+         <a href="../multiproject/smsservice/index.html">SMS-Service</a> that sends the short message
+         using WMA (dashed arrows in figure). In order to send an email to the SMTP-SMS-Gateway
+         JXME messaging with the <a href="../multiproject/jxme-bt-j2me/index.html">JXME BT Transport</a> is used 
+         to connect to the infrastructure host that is equipped with a network interface and 
+         a BT interface and  has access to an SMTP-Gateway. Furthermore it must also have
+         a JXME message service and a BT transport layer. Additionally an SMTP-Gateway service must
+         be available on the infrastructure host that can be used to send the email to the 
+         SMTP-SMS-Gateway. This path is shown in figure with solid arrows. </p>
+         
+         <p>For a detail description see the 
+            <a href="../multiproject/smsgateway/index.html">documentation of SMS Gateway</a>.</p>
+   </section>  	   	
+ 	</body>
+</document>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs-CLDC OSGi Bundles</title>
+  </properties>
+
+  <body>
+    <section name="Jadabs-CLDC OSGi Bundles">
+	
+   <p>During the semester work following OSGi bundles have been implemented:</p>
+
+<table>
+	<tr>
+      <td><a href="multiproject/osgi-j2me/index.html">OSGi-J2ME</a></td>
+      <td>OSGi container for CLDC/MIDP devices</td>
+	</tr>   
+   <tr>
+      <td><a href="multiproject/jxme-osgi-j2me/index.html">JXME-J2ME</a></td>
+      <td>Port of JXME to CLDC/MIDP platform</td>
+   </tr>
+   <tr>
+      <td><a href="multiproject/jxme-bt-j2me/index.html">JXME Bluetooth</a></td>
+      <td>Bluetooth Transport for JXME messaging</td>
+   </tr>
+   <tr>
+      <td><a href="multiproject/smsservice/index.html">SMS Service</a></td>
+      <td>JXME endpoint service for Wireless Messaging API</td>
+   </tr>
+   <tr>
+      <td><a href="multiproject/smsgateway/index.html">SMS Gateway</a></td>
+      <td>Smart SMS Gateway service</td>
+   </tr>
+   <tr>
+      <td><a href="multiproject/log4j-j2me/index.html">Log4J-J2ME</a></td>
+      <td>Logger for CLDC/MIDP platform similar to Log4J</td>
+   </tr>  
+</table>   
+     
+   </section>   
+  </body>
+</document>

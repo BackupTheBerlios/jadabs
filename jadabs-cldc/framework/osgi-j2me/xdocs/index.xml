@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs-OSGi Container for J2ME</title>
+  </properties>
+
+  <body>
+    <section name="Jadabs-OSGi Container for J2ME">
+      <p>The <i>Jadabs-OSGi Container for J2ME</i> is a stripped down (read lightweight) 
+         implementation of the 
+   <a href="http://www.osgi.org/osgi_technology/download_specs.asp?section=2#Release_3">OSGi 
+         specification (revision 1.1)</a>. There are some severe restrictions on J2ME
+         that unfortunately prevent a full implementation. The limitations are listed below:</p>
+	<ul>
+      <li>There are no Java properties (e.g. no <code>java.util.Properties</code> class) 
+          except the System-Properties accessible by <code>java.lang.System.getProperty()</code></li>
+      <li>The OSGi Framework API interfaces uses the abstract class <code>java.util.Dictionary</code>
+         to reference service properties. Such a dictionary is then most likely a 
+          <code>java.util.Hashtable</code> which is a subclass of <code>Dictionary</code>.
+         However in J2ME/MIDP there is no <code>java.util.Dictionary</code> and 
+         <code>java.util.Hashtable</code> is a direct subclass of <code>java.lang.Object</code>. 
+         Therefore not only the <code>Dictionary</code> has to be changed into <code>Hashtable</code> in the
+         implementation but also in the API (interfaces).</li>
+       <li>The OSGi Framework API specifies a method <code>File getDataFile(String filename)</code>
+         that returns a <code>File</code> object for the persistent storage area of a
+         Bundle. However on J2ME there is no <code>java.io.File</code> since there is 
+         no file system. A possible solution would be to alter the File into a
+         <code>RecordStore</code> Store, since on MIDP the only 
+         persistent storage area for a MIDlet is the Record Management Store (RMS). 
+         However a simpler solution has been pursued: The method in question was removed
+         from both the implementation and the API since it is not used by Jadabs.</li>
+   </ul>         
+         
+   <p>As described above the original OSGi Framework API, i.e. the interface definitions
+      had to be adapted in order to allow the port to J2ME/MIDP. For this reason the 
+      modified API sources from <code>org.osgi.framework</code> are also 
+      integrated in the osgi-j2me framework folder.</p>
+         
+   <p>See also <a href="apidocs/index.html">JavaDoc</a>.</p>
+    </section>
+  </body>
+</document>

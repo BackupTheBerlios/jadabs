@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Getting Started with Jadabs-CLDC</title>
+    <author email="muellren@student.ethz.ch">Müller René</author>
+  </properties>
+
+  <body>
+    <section name="Getting Started with Jadabs-CLDC">
+      <p>In order to get started with the Jadabs-CLDC bundles developed during
+         the semester work is suggested that the final MIDlet application 
+         <a href="multiproject/smartmessenger/index.html">SmartMessenger</a>
+         application is started first. The application can be used 
+         to verify that the bundles have been correctly built and the 
+         Maven repository is in a consistent state. Following steps must
+         be executed:</p>
+         
+      <ol>
+         <li><a href="bootstrap.html#maven">Install Maven</a> from Apache</li>
+         <li><a href="bootstrap.html#osgi-plugin">Install Maven-OSGi-Plugin</a></li>
+         <li><a href="bootstrap.html#jadabs">Check-out Jadabs from CVS</a></li>
+         <li><a href="bootstrap.html#buildjadabs">Build Jadabs Bundles</a></li>
+         <li><a href="bootstrap.html#jadabscldc">Check-out Jadabs-CLDC from CVS</a></li>
+         <li><a href="bootstrap.html#antenna">Installing Maven-Antenna-Plugin</a></li>
+         <li><a href="bootstrap.html#wtk">Install Java Wireless Toolkit</a></li>
+         <li><a href="bootstrap.html#buildjadabscldc">Build all Jadabs-CLDC</a></li>
+         <li><a href="smartmessenger.html">Install SmartMessenger on mobile phone</a></li>         
+      </ol>
+    </section>
+ </body>
+</document>

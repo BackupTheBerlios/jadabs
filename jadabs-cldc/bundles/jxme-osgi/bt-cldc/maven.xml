@@ -1,0 +1,43 @@
+<project default="osgi:install" 
+	xmlns:maven="jelly:maven"
+	xmlns:jar="jelly:jar"
+	xmlns:j="jelly:core" 
+	xmlns:util="jelly:util" 
+	xmlns:ant="jelly:ant"
+	xmlns:artifact="artifact">
+
+
+  	<!--==================================================================-->
+  	<!-- Properties                                                       -->
+  	<!--==================================================================-->
+	<property name="wtk.home" value="/usr/local/WTK2.1"/>	
+	<property name="wtk.cldc.version" value="1.0"/>
+	<property name="wtk.midp.version" value="1.0"/>	
+	
+	
+  <!--==================================================================-->
+  <!-- Build goals                                                      -->
+  <!--==================================================================-->
+  <preGoal name="java:prepare-filesystem">
+     <echo>PREGOAL java:prepare-filesystem</echo>
+  	  <echo>Since we are compiling both J2SE and J2ME binaries of
+           jxme-bt we need to clean the target folder. Otherwise the class
+           files remain unchanged from the earlier compilation which 
+           prevents the later preverification of the J2ME binary. 
+           Explanation: In J2SE we are compiling agains log4j-osgi (J2SE)
+           which is the OSGi-3rd-party bundle of Apache's Log4J. However
+           on J2ME we are compinging agains log4j-j2me, which is not a 
+           full implementation of Log4J. Therefore there are some classes 
+           missing. When compiling for J2SE the compiler places an
+           invokevirtual of org/apache/log4j/Category.debug directly
+           into the bytecode of BTConnection. Since this class is not 
+           present in the J2ME part and the compiler does not recompile 
+           BTConnection as it already exists the preverification of the
+           jxme-bt-j2me will fail. Therefore the build directory (classes) 
+           has to be removed before compilation, to make sure that the 
+           sources are recompiled. (R. Mueller, 2004-10-14)</echo>
+		<ant:echo message="removing ${maven.build.dest}" />      
+      <ant:delete dir="${maven.build.dest}" />
+  </preGoal>
+  
+</project>

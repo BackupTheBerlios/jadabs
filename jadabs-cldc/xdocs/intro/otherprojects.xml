@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Other Projects</title>
+    <author email="muellren@student.ethz.ch">René Müller</author>
+  </properties>
+
+	<body>
+	
+	<section name="Other projects using Jadabs">
+      <p>The documentation for the original (main version) of 
+         <a href="http://wlab.ethz.ch/jadabs/">Jadabs</a> describes the 
+         contains a list of projects that used Jadabs. </p>
+
+<ul>
+   <li><a href="http://wlab.ethz.ch/jadabs/lab/index.html#Mindstorms-Robots">Mindstorm Robots</a></li>
+   <li><a href="http://wlab.ethz.ch/jadabs/lab/index.html#Multi-Homing">Multi Homing</a></li>
+</ul>         
+         
+      <p>Jadabs-CLDC has not yet been used in any project. But 
+         it will be used in the <a href="http://wlab.ethz.ch/jadabs/students/Labor_WS0405_Ausschreibung.pdf">Distributed Systems 
+         Laboratory WS 04/05 - Mobile Services</a> at the Swiss
+         Federal Institute of Technology. </p>
+         
+  	</section>   	
+   	
+ 	</body>
+</document>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs JXME-BT-Chat for J2SE</title>
+  </properties>
+
+  <body>
+    <section name="Jadabs JXME-BT-Chat for J2SE">
+<p>The Jadabs JXME-BT-Chat for J2SE is the port of a the 
+   <a href="../jxme-chat/index.html">JXME-BT-Chat MIDlet</a> which 
+    is a demo application (test application) for the JXME-BT
+   transport layer that has been developed during the semester work. 
+   This component is a chat client with that uses <code>jxme-bt</code> compiled for J2SE. The 
+   application offers a Swing GUI that provides the necessary
+   functionality for the chat operation.  </p>             
+   
+	<p>Except for the GUI differences this application is identical 
+      with the <a href="../jxme-chat/index.html">JXME-BT-Chat</a> MIDlet.
+      For further information and also a short manual see 
+      the <a href="../jxme-chat/index.html">documentation of the
+      JXME-BT-Chat MIDlet</a>. 
+   </p>   
+      
+   <p>See also <a href="apidocs/index.html">JavaDoc</a>.</p>
+   
+      
+	<subsection name="Building and starting the application the MIDlet">
+      <p>The application can be built using Maven default goal 
+         the <code>chat-j2se</code> directory:</p>
+         
+<source>$ pwd
+.../jxme-chat/chat-j2se
+
+$ maven osgi:install
+...</source>
+
+	<p>This creates the <code>jxme-chat-j2se-0.6.6-SNAPSHOT.jar</code> in the local Maven repository. 
+      The application can be started using the <code>start.sh</code> script 
+      provided in the <code>bin</code> directory of <code>chat-j2se</code>.
+      </p>               
+	 </subsection>      
+   </section>   
+  </body>
+</document>

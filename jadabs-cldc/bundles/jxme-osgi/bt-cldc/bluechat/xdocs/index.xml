@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Ben Hui's BlueChat MIDlet</title>
+  </properties>
+
+  <body>
+    <section name="Ben Hui's BlueChat MIDlet">
+      <p>The 
+      <a href="http://www.benhui.net/modules.php?name=Bluetooth&amp;page=bluechat">BlueChat
+   MIDlet from Ben Hui</a> was used as a reference model and starting point in the 
+   development of the Jadabs Bluetooth Transport Layer. The BlueChat application was 
+   integrated into the Jadabs-CLDC source for educational purpose. The BlueChat MIDlet
+   can easily be build using the 
+   <a href="http://wlab.ethz.ch/plugins/maven-antenna/">Maven-Antenna-Plugin</a>. </p>
+   
+   <p>Apart from some package renaming Ben Hui's code was not altered. Therfore 
+      the BlueChat application from the Jadabs-CLDC does not use Jadabs, JXME or 
+      the JXME-Bluetooth-Layer; it is self consistent. </p>
+      
+   <p>The downloadable JAR and JAD files can be created from the <code>bluechat</code>
+      directory as follows using the Maven default goal:</p>
+      
+<source>$ cd bt-cldc
+$ cd bluechat
+$ maven</source>      
+
+	<p>This creates two files <code>bluechat.jad</code> (the Java Application Descriptor)
+      and the <code>bluechat.jar</code> (the Java Archive).</p>      
+    </section>
+  </body>
+</document>

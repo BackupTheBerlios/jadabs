@@ -1,0 +1,19 @@
+ <descriptor xmlns="http://wlab.ethz.ch/maven/plugins/maven-antenna-plugin">
+ 
+ 	<suite>Smart Messenger</suite>
+  	<vendor>Andreas Frei, Rene Mueller, ETH Zurich</vendor> 
+  	<version>1.0.0</version> 
+  	<midlets>
+  		<midlet class="ch.ethz.jadabs.smartmessenger.SmartMessengerMIDlet" 
+  		        name="Smart SMS"/>  		
+  	</midlets>
+
+   <attributes>
+      <attribute name="ch.ethz.jadabs.jxme.peeralias" value="Nokia6600"/>
+      <attribute name="log4j.priority" value="DEBUG"/>
+      <attribute name="ch.ethz.jadabs.jxme.bt.rendezvouspeer" value="false"/>
+      <attribute name="ch.ethz.jadabs.mservices.smsgateway.emailsuffix" value="sms.switch.ch"/>
+      <attribute name="ch.ethz.jadabs.mservices.smsgateway.senderaddress" value="frei@inf.ethz.ch"/>      
+   </attributes>      
+   
+</descriptor>

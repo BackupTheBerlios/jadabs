@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+  </HEAD>
+  <BODY>
+ 	SMS Gateway that provides a location depended interface for sending short messages.
+
+   
+   This package contains an SMS Gateway whose functionality is to provided an
+   interface to send short message to another mobile phone. This service is location
+   depended, i.e. depending on the location/environment the short message can 
+   be sent over SMTP to an SMTP-SMS-Gateway (which might even be 
+   free of cost). An SMTP Gatway (see Jadabs main tree) can be used to send emails is automatically 
+   discovered using discovery messages sent over JXME. If no SMTP Gateway is available,
+   the  SMS-Gateway uses the the <a href="../../../../../../../smsservice/index.html">SMS-Service</a> which sends the short message over 
+   the Java <a href="http://java.sun.com/products/wma/"></a>Wireless Messaging API (WMA)</a>
+   which is not free of cost (here in Switzerland it is even rather expensive). 
+   
+   This service is an example for a location independent component for mobile devices. 
+  </BODY>
+</HTML>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs JXME-BT-Chat</title>
+  </properties>
+
+  <body>
+    <section name="Jadabs JXME-BT-Chat">
+<p>The Jadabs JXME-BT-Chat is a demo application (test application) for the JXME-BT
+   Transport layer that has been developed during the semester work. This JXME-BT-Chat
+   application is a MIDlet suite that can be downloaded to mobile phones. There exists
+   also a chat client with that uses <code>jxme-bt</code> compiled for J2SE. The 
+   <a href="../jxme-chat-j2se/index.html">Jadabs-Chat-J2SE</a> also has a Swing GUI that provides the necessary
+   functionality for the chat operation. This the sequel the MIDlet version is
+   described. </p>             
+      
+   <p>See also <a href="apidocs/index.html">JavaDoc</a>.</p>
+   
+   <subsection name="Architecture">
+      <p>The JSR-82 architecture imposes some restrictions to the communication 
+         architecture of the peer-to-peer applications that use Bluetooth. 
+         The architecture of the JXME Chat application, as any other application
+         that uses JXME-BT, requires that <i>n-1</i> peers are configured 
+         as <i>normal peers</i> and exactly <i>1</i> is configured as a
+         <code>rendez-vous peer</code>. The function of the rendez-vous peer
+         is to connect (i.e. to invite) the <i>normal peers</i>. In terms
+         of JSR-82 the rendez-vous peer establishes <code>StreamConnections</code>
+         to the <i>normal peer</i> that have a <code>StreamConnectionNotifier</code>
+         opened. </p>
+         
+		<img src="images/jxmebtoverview.jpg"/>
+      
+     	<p>All mobile devices that could be used during during the semester work
+         (Nokia 6600, Sony Ericsson P900) use Symbian OS 7.0 whose JVM does 
+         not allow <i>Paging</i> or even <i>Inquiry</i> or <i>Inquiry Scan</i> when 
+         connected. This can be seen by JSR 82 properties which can be obtained 
+         by <code>LocalDevice.getLocalDevice().getProperty(String key)</code>. 
+         For example for the Nokia 6600: </p>         
+         
+<source>bluetooth.connected.inquiry=false
+bluetooth.connected.page=false
+bluetooth.connected.inquiry.scan=false
+</source>
+
+  		<p>Therefore these devices cannot be used in a configuration as <code>peer3</code>
+         in the figure above. That is to say that a device can have at most one
+         connection. Since neither can connect to another device or accept
+         another connection once it is connected. Furthermore one peer needs
+         to be configured as <i>rendez-vous peer</i>. Right now this is done by 
+         a application property in the JAD file, since there was only one cell phone
+         available during the semester work. The other chat application is a notebook
+         running the J2SE client and thus is configured as <i>rendez-vous peer</i>.
+         </p>      
+         
+       <p>If the JXME-chat application should be used only between two cell phones
+         the JXME-BT transport of one of these devices has to be configured as
+         <i>rendez-vous peer</i>. This setting can be changed in the JAD file:
+         </p>
+<source>ch.ethz.jadabs.jxme.bt.rendezvouspeer: true</source>                     
+   </subsection>
+   
+   <subsection name="Short manual">
+      <p>This section describes how to set up the JXME-Chat between a 
+         Notebook device and mobile phone (see also 
+         <a href="../jxme-chat-j2se/index.html">JXME-Chat-J2SE</a> for 
+         the Java application that runs on the Notebook. The steps described
+         below do not need to be executed in that specific order, however it
+         helps to speed up things a little bit, since for Bluetooth rather
+         long device discovery and service discovery time intervals are used
+         (which cannot be changed). The order listed below ensures that there
+		   are as few "rendez-vous" misses between the devices as possible such 
+         that the connection is established as fast as possible. </p>
+         
+      <ol>
+         <li>Start the JXME chat MIDlet on the smart phone. Press OK
+            to allow the application to access Bluetooth. Enter the 
+            nickname to be used on the phone but do not start 
+            the chat yet. </li>
+         <li>Start the JXME-chat application for J2SE on the notebook using 
+            the <code>start.sh</code> script provided in the <code>bin</code>
+            directory of <code>jxme-chat/chat-j2se</code>.</li>
+			<li>Observe the logging output on the console of the JXME-Chat-J2SE
+            application. Wait until a connection is established: 
+<source> ...
+156  [main] DEBUG BTTransport  - starting BTTransport as a RENDEZ-VOUS PEER
+352  [Thread-0] DEBUG BTDeviceDiscovery  - device discovery started
+10611 [Thread-1] DEBUG BTDeviceDiscovery  - inquiryCompleted()
+10613 [Thread-0] DEBUG BTDeviceDiscovery  - devices found: 1
+10613 [Thread-0] DEBUG BTDeviceDiscovery  - service discovery started
+10613 [Thread-0] DEBUG BTDeviceDiscovery  - Probing BT Device 006057BA683C for JxmeBtService
+11006 [Thread-2] DEBUG BTDeviceDiscovery  - serviceSearchCompleted()
+11212 [Thread-0] DEBUG BTTransport  - adding connection to 006057BA683C into pool.
+11213 [Thread-3] DEBUG BTConnection  - new connection to 006057BA683C</source>           
+
+				Then enter the nick name to be used on for the user at the             
+            notebook and press OK to enter the chat. 
+            </li>            
+            
+          <li>On the phone press <i>Chat</i> (or <i>Chat (Debug)</i> if you 
+            want more debugging output). As soon as the phone user 
+            enter the chat the user at the notebook sees the new user
+            in the chat window. </li>
+            
+			 <li>On the mobile phone the user can enter a chat message 
+            by pressing <i>Write</i>. By choosing <i>Log</i> she can 
+            view the logger screen with the debugging information about 
+            the communication link. </li>            
+          
+          <li>On the notebook the user can send chat chat messages
+            by typing the text into the input field at the top of 
+            the window and pressing <i>Enter</i>. Log messages 
+            are display in the terminal window.</li>
+          
+          <li>When a user leaves the chat the other participant 
+            sees a <i>"xyz has left the chat"</i> message in the 
+            chat window. </li>                  
+      </ol>
+   </subsection>
+   
+
+   <subsection name="Implementation notes">
+      <p>The JXME-Chat application is based on 
+         <a href="http://www.benhui.net/modules.php?name=Bluetooth&amp;page=bluechat">Ben Hui's BlueChat application</a>
+         the only difference is that the direct access to the JSR-82 API
+         has been replaced by the JXME messaging system that make use
+         of the BT transport layer. Additionally the Log4J-J2ME has also 
+         been added to the application this allows that debugging message
+         are displayed properly and do not interfere with the chat messages.          
+      </p>
+      
+		<p>The chat application installs an endpoint listener (recipient) 
+         <code>jxmechat</code>. The JXME-messages are then sent using the 
+         endpoint address </p>      
+         
+<source>endpoint = new EndpointAddress("btspp", "anybody", -1, "jxmechat");</source>          
+
+      <p> to the destination. Here <code>btspp</code> specifies that 
+         the BT transport has to be used, the host field <code>anybody</code>
+         is ignored by the BT layer (basically any attribute can be used).
+         The port number -1 specifies that no port is used on Bluetooth. 
+         <code>jxmechat</code> identifies the destination service the message
+         has to be delivered to. For details see the <a href="../jxme-bt-j2me/index.html">notes about the
+         JXME-BT implementation</a>.</p>
+      <p>    
+         Three different JXME-messages types are used in the 
+         chat <code>join</code>, <code>chat</code> and <code>leave</code>. 
+         The <code>join</code> message is sent to the peers when a new 
+         user enters the chat. It contains the nickname of the user: </p>
+	<table>
+      <tr>
+         <th>Name</th> <th>Value</th> <th>NameSpace</th> <th>Description</th>
+      </tr>
+      <tr>
+	      <td><code>type</code></td> 
+   	   <td><code>"join"</code></td> 
+	      <td><code>Message.JXTA_NAME_SPACE</code></td> 
+	      <td>this is a "joined chat" message</td>
+      </tr>
+      <tr>
+	      <td><code>user</code></td> 
+   	   <td><code>"My Nick"</code></td> 
+	      <td><code>Message.JXTA_NAME_SPACE</code></td> 
+	      <td>nick name of user just entered</td>
+      </tr>
+	</table>     
+      
+      <p>The <code>chat</code> message contains the text and 
+         the name of the user that wrote it. </p>
+   <table>
+      <tr>
+         <th>Name</th> <th>Value</th> <th>NameSpace</th> <th>Description</th>
+      </tr>
+      <tr>
+	      <td><code>type</code></td> 
+   	   <td><code>"chat"</code></td> 
+	      <td><code>Message.JXTA_NAME_SPACE</code></td> 
+	      <td>this is a "chat text" message</td>
+      </tr>
+      <tr>
+	      <td><code>user</code></td> 
+   	   <td><code>"My Nick"</code></td> 
+	      <td><code>Message.JXTA_NAME_SPACE</code></td> 
+	      <td>nick name of user that sent the message</td>
+      </tr>
+      <tr>
+	      <td><code>text</code></td> 
+   	   <td><code>"Hello World!"</code></td> 
+	      <td><code>Message.JXTA_NAME_SPACE</code></td> 
+	      <td>text of the chat message</td>
+      </tr>            
+	</table>     
+      <p>The <code>leave</code> message is sent before a user
+         leaves the chat.</p>
+	<table>
+      <tr>
+         <th>Name</th> <th>Value</th> <th>NameSpace</th> <th>Description</th>
+      </tr>
+      <tr>
+	      <td><code>type</code></td> 
+   	   <td><code>"leave"</code></td> 
+	      <td><code>Message.JXTA_NAME_SPACE</code></td> 
+	      <td>this is a "left chat" message</td>
+      </tr>
+      <tr>
+	      <td><code>user</code></td> 
+   	   <td><code>"My Nick"</code></td> 
+	      <td><code>Message.JXTA_NAME_SPACE</code></td> 
+	      <td>nick name of user just left the chat</td>
+      </tr>
+	</table>     
+         
+      
+   </subsection>
+   
+	<subsection name="Building the MIDlet">
+      <p>The MIDlet can be built using the Maven default goal from 
+         the <code>jxme-chat</code> directory:</p>
+         
+<source>$ pwd
+.../jxme-chat
+
+$ maven
+...</source>
+
+	<p>This creates the <code>jxme-chat.jad</code> (Java Application Descriptor) file
+      and the <code>jxme-chat.jar</code> (Java Archive) file in the 
+      <code>target</code> folder. These files can be downloaded to the 
+      mobile devices. </p>         
+	 </subsection>      
+   </section>   
+  </body>
+</document>

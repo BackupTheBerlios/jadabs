@@ -1,0 +1,22 @@
+-Dch.ethz.jadabs.jxme.hostname=cronus
+-Dlog4j.priority=DEBUG
+-Dch.ethz.jadabs.jxme.bt.rendezvouspeer=true
+-Dorg.knopflerfish.verbosity=6
+-Dorg.knopflerfish.gosg.jars=file:/home/muellerr/.maven/repository/
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.system.export.all_13=false
+#-Dorg.osgi.framework.system.packages=ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
+
+-Dch.ethz.jadabs.jxme.bt.rendezvouspeer=true
+
+-init
+-istart log4j/jars/log4j-1.2.8-osgi.jar
+-install impronto/jars/idev_bluez-1.3-osgi.jar
+-istart  jadabs/jars/jxme-osgi-j2se-0.6.6-SNAPSHOT.jar
+-istart  jadabs/jars/jxme-bt-j2se-0.6.6-SNAPSHOT.jar
+-istart  jadabs/jars/jxme-chat-j2se-0.6.6-SNAPSHOT.jar
+-launch
+
+

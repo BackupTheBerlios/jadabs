@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Bluetooth Transport for JXME</title>
+    <author email="muellren@student.ethz.ch">René Müller</author>
+  </properties>
+
+<body>
+	
+	<section name="Bluetooth Transport for JXME">
+      <p>The JXME messaging system has to be extended by an additional 
+         transport layer for Bluetooth. This is one task of the 
+         semester thesis that has to be accomplished. </p>
+         
+      <p>The architecture of of JXME is illustrated in the figure below:</p>
+<img src="../images/btoverview.jpg"/>
+
+	<p>The chosen architecture results from the properties of Bluetooth.
+      BT transport uses an RFCOMM link between the devices. A BT device 
+      can either be connected as <i>master</i> or connected as <i>slave</i>. 
+      The other state of a device is <i>unconnected</i> (there are other 
+      specified by the Bluetooth specification: parked, hold, sniff). It 
+      is important to understand that the master-slave role is determined 
+      by the connection set. The device that initiates the connection, i.e.
+      the device that <i>pages</i> the other device becomes Bluetooth
+      master whereas the device that is <i>being paged</i> takes
+      the role of a slave. The Bluetooth specification introduces a 
+      mechanism that allows that master-slave role of the devices
+      can be swapped. However this is currently not implemented 
+      on any mobile phone tested (Nokia 6600, Sony-Ericsson P900). 
+      Further only the master can connect more than one device, while 
+      still being the master of the net. If slave A pages another device
+      B then A becomes master. How is this possible while it still has
+      the role of a slave for its master? The answer is that in this 
+      case a scatternet is formed. A Bluetooth device may participate
+      in more than one piconets (thus creating a scatternet). Now 
+      A is slave in the first piconet but master in the second where
+      B is slave. In a scatternet a multi-hop routing is used between
+      the piconets. </p>
+    <p>Unfortunately scatternets are not yet implemented by mobile 
+       phone vendors. Thus for the JXME-BT Layer multi-hop routing
+       is not used since there is only one piconet. Bluetooth
+       access from Java is provided by the <a href="http://www.jcp.org/en/jsr/detail?id=82">JSR-82 API</a>
+       which is implemented by various mobile phone vendors. 
+       The Nokia 6600 and the Sony-Ericsson both use Symbian OS 7.0 OS.
+       The JVM and Bluetooth support is provided by Symbian. Therefore
+       devices other than the two may also use Symbian and thus also 
+       contain JSR-82 support. 
+     </p> 
+     
+   <p>Because of the two roles BT device can take a JXME-BT peer can be 
+      used in two different modes of operation:
+      <i>normal peer</i> and <i>rendez-vous peer</i>. This modes have already
+      been used by Daniel Käppeli in his diploma thesis
+      <a href="http://e-collection.ethbib.ethz.ch/show?type=dipl&amp;nr=107">JXTA over Bluetooth</a>.
+      A rendez-vous peer is represents the node can initiates the connection
+      to one or more normal peers, i.e. it pages the other nodes and thus
+      becomes master in a piconet. This has the advantage that all other 
+      normal peers that are connected to the rendez-vous peer are all 
+      in the same piconet. A rendez-vous node can be considered 
+      as a node that <i>"invites other nodes"</i>. Usually a mobile phone is 
+      configured as peer whereas more powerful devices that also have a 
+      other communication interfaces than Bluetooth such as UDP, TCP are
+      configured as rendez-vous peer. </p>
+      
+   <p>A <i>normal peer</i> open a <code>StreamConnectionNotifier</code>. This 
+      corresponds with a <code>ServerSocket</code> in TCP terminology. A device
+      with an open <code>StreamConnectionNotifier</code> can be paged, by 
+      <i>rendez-vous</i> that opens a <code>StreamConnection</code> to
+      this device. When a <code>StreamConnectionNotifier</code> is opened
+      a <i>Service Record Entry</i> will be inserted into the <i>Service Discovery
+      Database (SDDB)</i> (see (1) in overview figure above). The SDDB is 
+      queried by the <i>rendez-vous peer</i>. </p>
+   <p>(Step (2) in figure) Then rendez-vous peer looks for devices in communication
+      range. This process is called <i>Inquiry Scan</i>. During this process 
+      the BT addresses and the the device class identifier of the devices are
+      obtained. The BT address is later used to page (connect) the devices. The 
+      device class identifier is used to determine the type of the device, e.g.
+      computer, mobile phone, networking device, peripheral device (mouse). 
+      The rendez-vous peer then only considers mobile phones and computers since
+      these are currently the only devices that can run the BT Transport. By
+      filtering out any peripheral device (e.g. mice, keyboards) the discovery
+      process is accelerated. The rendez-vous peer then pages every candidate device 
+      and queries the SDDB of each device for a service record that identifies 
+      the <code>JxmeBtServer</code> service. This identification is done querying for a
+      128 bit universal unique identifier (UUID). Finally an RFCOMM connection is 
+      established to the channel also found in the service record. (this is 
+      step 3 in the figure above). Now a <code>StreamConnection</code> is created
+      on both peers. From this point there rendez-vous peer and the the normal peer
+      are not longer any different. The stream connection is inserted into a
+      connection pool and is used whenever data have to be sent between the peers.       
+   </p>
+   
+   <p>For a more detailed description see the 
+      <a href="../multiproject/jxme-bt-j2me/index.html">documentation of the
+      BT Transport layer</a>.</p>
+   </section>  	   	
+ 	</body>
+</document>

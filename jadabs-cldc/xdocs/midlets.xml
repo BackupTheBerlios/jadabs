@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs-CLDC MIDlet Applications</title>
+  </properties>
+
+  <body>
+    <section name="Jadabs-CLDC MIDlet Applications">
+	
+   <p>During the semester work following CLDC/MIDP MIDlets have been implemented:</p>
+
+<table>
+	<tr>
+      <td><a href="multiproject/smartmessenger/index.html">Smart Messenger</a></td>
+      <td>Application that uses the SMS-Gateway component</td>
+	</tr>   
+   <tr>
+      <td><a href="multiproject/jxme-chat/index.html">JXME-Chat J2ME</a></td>
+      <td>Demo application for JXME BT Transport</td>
+   </tr>
+   <tr>
+      <td><a href="multiproject/bttest/index.html">bttest</a></td>
+      <td>Application for testing the JSR-82 implementation on mobile phones</td>
+   </tr>
+   <tr>
+      <td><a href="multiproject/paralleltest/index.html">paralleltest</a></td>
+      <td>Application for testing whether MIDlets can be executed concurrently</td>
+   </tr>
+</table>      
+
+	<p>Additionally foreign source code has been integrated into the 
+      Jadabs-CLDC tree, just in order to able to build the target
+      with the <a href="http://wlab.ethz.ch/plugins/maven-antenna/">Maven-Antenna-Plugin</a>. </p>
+<table>
+   <tr>
+      <td><a href="multiproject/bluechat/index.html">BlueChat</a></td>
+      <td><a href="http://benhui.net/modules.php?name=Bluetooth&amp;page=bluechat">Ben Hui's BlueChat</a> application</td>
+   </tr>
+</table>         
+
+   </section>   
+  </body>
+</document>

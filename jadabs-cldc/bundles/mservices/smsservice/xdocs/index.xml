@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Mobile Services SMS-Service</title>
+  </properties>
+
+  <body>
+    <section name="Mobile Services SMS-Service">
+	<p>The SMS-Service provides a mechanism for sending short messages from Jadabs-JXME. 
+      The service is basically a wrapper around the 
+      <a href="http://java.sun.com/products/wma/">Java Wireless Messaging API (WMA)</a>. 
+      For details see the two specification requests <a href="http://www.jcp.org/en/jsr/detail?id=120">JSR 120</a> for WMA 1.0 and 
+      <a href="http://www.jcp.org/en/jsr/detail?id=205">JSR 205</a> WMA 2.0. The service uses only
+      features from WMA 1.0. 
+   </p>             
+      
+   <p>See also <a href="apidocs/index.html">JavaDoc</a>.</p>
+         
+   <subsection name="Implementation notes">
+      <p>When the SMS-Service bundle is started it registers itself as a
+         service in the OSGi container. All JXME-messages sent to the destination 
+         service (e.g. recipient) <code>smsservice</code> will be delivered 
+         to the SMS-Service by the JXME system. Additionally for local clients a 
+         service method has been provided that can be used to send messages without
+         using the Jadabs-JXME messaging system (for performance reasons):</p>
+
+<source>/** 
+ * Send short message. Add <b>reference</b> to message object
+ * at it the end of the send queue.  
+ * @param msg message to send
+ */
+public void sendSM(ch.ethz.jadabs.jxme.Message msg);</source>
+
+		<p>The JXME-Message must contain following two mandatory elements: </p>
+
+	<table>
+      <tr>
+         <th>Name</th> <th>Type</th> <th>name space</th> <th>Description</th>
+      </tr>
+      <tr>
+         <td><code>to</code></td>
+         <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         <td><code>Message.JXTA_NAME_SPACE</code></td>
+         <td>phone number to send the message to (e.g. <code>"+4179..."</code>)</td>
+      </tr>
+      <tr>
+         <td><code>body</code></td>
+         <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         <td><code>Message.JXTA_NAME_SPACE</code></td>
+         <td>text of short message (up to 160 characters)</td>
+      </tr>
+	</table>      
+   
+      <p>Since the WMA call <code>MessageConnection.send(..)</code>that 
+         sends the short message is a blocking call a send queue has 
+         been implemented in the SMS-Service that processes the
+         messages to send in order. Note: that the call may block 
+         for a considerable amount of time because whenever the
+         <code>MessageConnection.send(..)</code> is called a
+         user dialog will be displayed asking the user to confirm
+         the sending of the short message. This is a security
+         precaution that is required by JSR 120.                
+      </p>
+   </subsection>
+
+   
+   <subsection name="SMS-Service HOWTO">
+      <p>The following code snippet illustrates how to use the SMS-Service 
+         in a MIDlet application. First the OSGi container and the 
+         necessary bundles have to be initialized manually in the 
+         constructor if the MIDlet. </p>
+         
+<source>public MyMIDlet()
+   // create and initialize OSGi container
+   OSGiContainer osgicontainer = OSGiContainer.Instance();
+   
+   // copy application properties into OSGi container
+   osgicontainer.setProperty("ch.ethz.jadabs.jxme.hostname", 
+      this.getAppProperty("ch.ethz.jadabs.jxme.hostname"));
+   
+   // install and start bundles in specified order
+   osgicontainer.startBundle(new LogActivator());
+   osgicontainer.startBundle(new JxmeActivator());
+   osgicontainer.startBundle(new SMSServiceActivator());
+   ...   
+</source> 
+        
+      <p>Next a short message can be send using the service method
+         directly (in CLDC/MIDP there is only one class loader and the 
+         SMS-Service is a local service relative to the MIDlet):
+      </p>
+      
+<source>   ...
+   // compose message
+   Element[] elms = new Element[2];
+   elms[0] = new Element("to", "+1234567890".getBytes(), 
+                         null, Element.TEXTUTF8_MIME_TYPE);       
+   elms[1] = new Element("body", "Hello World!".getBytes(), 
+                         null, Element.TEXTUTF8_MIME_TYPE);
+   Message msg = new Message(elms);
+   
+   // obtain reference to the SMS-Service
+   ServiceReference  sref = bc.getServiceReference(
+   	"ch.ethz.jadabs.mservices.smsgateway.SMSGateway");
+   SMSGatewayService smsgateway = (SMSGatewayService)bc.getService(sref); 
+      
+   // send message
+   smsservice.sendSM(msg);
+   ...
+</source>   
+   </subsection>
+   
+   
+	<subsection name="Building">
+      <p>The MIDlet can be built using the Maven 
+         the <code>smsservice</code> directory:</p>
+         
+<source>$ pwd
+.../mservices/smsservice
+
+$ maven osgi:install
+...   
+</source>
+         
+	<p>This creates the <code>smsservice-0.6.6-SNAPSHOT.jar</code> file
+      and installs this file into the local Maven repository. </p>         
+	 </subsection>      
+   </section>   
+  </body>
+</document>

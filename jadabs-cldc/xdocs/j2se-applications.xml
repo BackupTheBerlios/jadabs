@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs-CLDC J2SE-Applications</title>
+  </properties>
+
+  <body>
+    <section name="Jadabs-CLDC J2SE-Applications">
+    	<p>CLDC does not imply J2SE but for the JXME-Chat application additionally 
+         a Swing client for J2SE was written. </p>
+         
+<table>
+   <tr>
+      <td><a href="multiproject/jxme-chat-j2se/index.html">JXME-Chat for J2SE</a></td>
+      <td>Swing client for JXME-Chat</td>
+   </tr>
+</table>  
+                 
+   </section>   
+  </body>
+</document>

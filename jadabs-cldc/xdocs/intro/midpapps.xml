@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>CLDC/MIDP Applications</title>
+    <author email="muellren@student.ethz.ch">René Müller</author>
+  </properties>
+
+<body>
+	
+	<section name="CLDC/MIDP Applications">
+  	
+   <p>In J2SE the Knopflerfish OSGi container can dynamically install
+      start and stop bundle components. Using reflection and different
+      class loaders the the components can be dynamically wired. On
+      CLDC/MIDP this is not possible since the CLDC imposes severe
+      restrictions to things are different...</p>
+      
+	<p>Since there is no reflection and no class loader API components 
+      cannot be injected into a MIDlet or MIDlet-suite once it is 
+      installed. Moreover before installing the class files 
+      have to be preverified because the code verification
+      capabilities of CLDC-JVM are very limited. Therefore the 
+      class files have to be preverified "offline" before 
+      installing. </p>      
+      
+<img src="../images/components.jpg"/>
+
+	<p>All component bundles that are required have to be merged 
+      together with the OSGi container classes
+      into one single archive which is then processed by the
+      preverification tool. </p>
+
+<img src="../images/bundlemidlet.jpg"/>   
+
+	<p>This done by collecting all bundle archive the MIDlet
+      has a dependency to. Then the content of these
+      bundles are extracted into a single directory. Next
+      a jar archive is build from the this directory which
+      then will be previerified.</p>
+      
+    <p>Note that since there is only one class space, i.e.
+      class loader per MIDlet suite. The package names
+      of the the component classes and interfaces are
+      no longer separated, as this is the case for Knopflerfish
+      J2EE Beans, or MBeans. Class names in fact can collide, which
+      results in unpredictable runtime errors.</p>
+      
+    <p>The differences between component bundles and the 
+      components that are merged together in a MIDlet-suite
+      is similar to the concept of Kernel-Modules in Linux.
+      Either a feature can be compiled as kernel module, which
+      can dynamically be loaded into and unloaded from
+      the kernel or it can directly be compiled into
+      the kernel image (monolith). </p>
+   </section>  	   	
+ 	</body>
+</document>

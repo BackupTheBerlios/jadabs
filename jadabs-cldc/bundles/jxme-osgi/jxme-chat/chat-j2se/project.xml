@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../../project.xml</extend>
+
+	<groupId>jadabs</groupId>
+	<artifactId>jxme-chat</artifactId>
+	<name>Jadabs-chat-j2se</name>
+
+	<shortDescription>Jadabs-JXME J2SE Chat-Client</shortDescription>
+
+  	<dependencies>
+  	
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+
+      <dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-bt</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>        
+	
+		<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8-osgi</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>j2me</groupId>
+      		<artifactId>btapi</artifactId>
+      		<version>1.0</version>
+		</dependency>
+		
+		
+  	</dependencies>
+
+  
+</project>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Starting SmartMessenger</title>
+    <author email="muellren@student.ethz.ch">René Müller</author>
+  </properties>
+
+	<body>
+	
+	<section name="Starting SmartMessenger">
+	<subsection name="Installing SmartMessenger on the Nokia 6600">
+      <p>The two files <code>smartmessenger.jad</code> (Java Application Descriptor)
+         and <code>smartmessenger.jar</code> can be found after </p>
+         
+<source>maven jadabs:buildall</source>
+
+  		<p>is executed in the target folder: </p>         
+<source>bundles/smartmessenger/target</source>   
+
+		<p>Use KDE Bluetooth and serach the mobile phone.</p>
+<img src="screens/kdebt1.jpg"/>
+		
+      <p>Select the mobile phone.</p>
+
+<img src="screens/kdebt2.jpg"/>
+
+		<p>Open <i>OBEX File Transfer</i> and copy the JAD and JAR file into this 
+         folder by drag and drop.</p>
+
+<img src="screens/kdebt3.jpg"/>
+      
+      <p>One mobile phone open the messaging application. Two new entries 
+         appear one for each file. Select the JAD file and install the 
+         MIDlet-suite. It is important that the JAD file is selected 
+         be cause it contains important properties that are needed
+         by the MIDlet. When choosing the JAD the content from the JAR will automatically 
+         installed too. However if instead the JAR is installed the necessary
+         properties will not be installed and the application will not work.</p>      
+	</subsection>      
+      
+   <subsection name="Starting SmartMessenger">
+      <p>Before starting the MIDlet make sure that Bluetooth is enabled on the mobile phone.</p>
+      <p>A detailed manual for the SmartMessenger application can be found in the 
+        <a href="../multiproject/smartmessenger/index.html#manual">Documentation of the SmartMessenger</a>.</p>
+   </subsection>   
+  	</section>   	
+   	
+ 	</body>
+</document>

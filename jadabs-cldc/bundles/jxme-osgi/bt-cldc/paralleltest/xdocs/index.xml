@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Parallel Test MIDlets</title>
+  </properties>
+
+  <body>
+    <section name="Parallel Test MIDlets">
+
+ 	<p>The two midlets <code>Foo</code> and <code>Bar</code> are bundled 
+      together into a single MIDlet-suite <code>paralleltest</code>. 
+      These MIDlets can be used to verify if multiple MIDlets can 
+      run at the same time and furthermore whether the MIDlets 
+      can run conncurrently, i.e. whether the MIDlets keep running 
+      even if they are moved to the background.</p>
+      
+   <p>See <a href="apidocs/index.html">JavaDoc</a>.</p>
+   
+   <subsection name="Short manual">
+   <p>First launch the Foo MIDlet. Observe the incrementing counter value. 
+      Remember the counter value when you flip back to the main menu by pressing </p>  
+<img src="images/nokiabutton.jpg"/>      
+      
+<p>on the Nokia 6600 and start the Bar MIDlet. Notice that the Bar 
+   MIDlet also contains a counter. Observe the counter value. Then press
+   the button for 2 seconds </p>      
+   
+<img src="images/nokiabutton.jpg"/>
+   
+<p>again and select the Foo MIDlet. Notice that Foo's counter value has increased.
+   Thus the MIDlet has been running in the background. Change back to 
+   the Bar MIDlet and also notice that the counter value increased. </p>   
+   </subsection>
+
+   
+	 <subsection name="Building the MIDlet-suite">
+      <p>The MIDlet-suite can be built using the Maven default goal from 
+         the <code>paralleltest</code> directory:</p>
+         
+<source>$ pwd
+.../bt-cldc/paralleltest
+
+$ maven
+...</source>       
+  
+	<p>This creates the <code>paralleltest.jad</code> (Java Application Descriptor) file
+      and the <code>paralleltest.jar</code> (Java Archive) file in the 
+      <code>target</code> folder. These files can be downloaded to the 
+      mobile devices. </p>         
+	 </subsection>      
+   </section>   
+  </body>
+</document>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+      <pomVersion>3</pomVersion>
+  
+      <name>Jadabs-CLDC</name>
+      <artifactId>jadabs-cldc</artifactId>
+      <currentVersion>0.7.0</currentVersion>
+  
+      <organization>
+        <name>ETHZ-IKS</name>
+        <url>http://www.iks.inf.ethz.ch</url>
+        <logo>/images/logo_ethz_iks.jpg</logo>
+      </organization>
+      
+      <!--
+      <logo>/images/logo_jadabs.gif</logo>
+      -->
+      <inceptionYear>2004</inceptionYear>
+      <package>ch.ethz.jadabs</package>
+    
+      <shortDescription>Jadabs-CLDC - Java ADhoc Application BootStrap for CLDC</shortDescription>
+    
+      <url>http://jadabs.berlios.de</url>
+
+      <siteAddress>shell.berlios.de</siteAddress>
+      <siteDirectory>
+        /home/groups/jadabs/htdocs/jadabs-cldc
+      </siteDirectory>
+  
+      <repository>
+        <!--
+        <connection>
+          scm:cvs:ext:afrei@cvs.jadabs.berlios.de:/cvsroot/jadabs:jadabs
+        </connection>
+        -->
+      </repository>
+
+      <developers>
+
+        <developer>
+          <name>Andreas Frei</name>
+          <id>andfrei</id>
+          <email>frei_inf.ethz.ch</email>
+          <roles>
+            <role>Creator</role>
+            <role>Java Developer</role>
+    		<role>Release Manager</role>
+          </roles>
+          <organization>ETHZ</organization>
+        </developer>
+        
+        <developer>
+          <name>Daniel Kaeppeli</name>
+          <id>daniel</id>
+          <email>daniel_kaeppe.li</email>
+          <roles>
+            <role>Bluetooth developer</role>
+            <role>Distributed Junit</role>
+          </roles>
+          <organization></organization>
+        </developer>
+            
+        <developer>
+            <name>René Müller</name>
+            <id>muellren</id>
+            <email>muellren_student.ethz.ch</email>
+            <roles>
+                <role>J2ME/MIDP, Bluetooth developer</role>
+                <role>XDocs Expert</role>
+            </roles>
+            <organization>ETHZ</organization>
+        </developer>
+    
+    </developers>
+
+    <dependencies>
+    
+    	<dependency>
+      		<groupId>impronto</groupId>
+      		<artifactId>idev_bluez</artifactId>
+      		<version>1.3-osgi</version>
+		</dependency>
+		
+    </dependencies>
+
+  <build>
+
+    <sourceDirectory>${basedir}/src/</sourceDirectory>
+
+    <unitTestSourceDirectory>${basedir}/test/src</unitTestSourceDirectory>
+    
+     <resources>
+     </resources>
+     
+  </build>
+  
+  <reports>
+  	<report>maven-javadoc-plugin</report>
+<!--   
+  	<report>maven-changes-plugin</report>
+  	<report>maven-changelog-plugin</report>
+  	<report>maven-file-activity-plugin</report>
+  	<report>maven-developer-activity-plugin</report>
+ -->
+  </reports>
+  
+</project>

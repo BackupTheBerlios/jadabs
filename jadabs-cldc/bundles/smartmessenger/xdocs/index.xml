@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Smart Messenger MIDlet application</title>
+  </properties>
+
+  <body>
+    <section name="Smart Messenger MIDlet application">
+	<p>
+      The Smart Messenger MIDlet application can be used to send sort 
+      message from a mobile phone. But in contrast to the native
+      messaging application that can be used on mobile phones to 
+      sending short messages the Smart Messenger does not always 
+      use the expensive GSM network to send the messages. If the 
+      mobile device is brought into the vicinity of a infrastructure 
+      node (such as a notebook) which is also equipped with a Bluetooth interface and 
+      has the SMTP-Gateway Service installed it sends the short message
+      over a preconfigured SMTP-SMS-Gateway (such as <code>sms.switch.ch</code>). 
+      In many cases this SMTP-SMS-Gateway can be used for free (at least for 
+      a certain number of messages per month/day). </p>
+    <p>The Smart Messenger is basically only a small MIDlet application that 
+		 provides a simple GUI where the user can enter the phone number the 
+       short message is to be sent to and the message text itself. The Smart 
+       Messenger directly uses the 
+	    <a href="../smsgateway/index.html">SMS-Gateway Service</a>
+       that transparently forwards the messages either over WMA or over the 
+       SMTP-SMS-Gateway. The Smart Messenger Application does not implement any
+       logic for delivering the short messages. This logic is encapsulated in the 
+  	    SMS-Gateway Service. Thus the name <i>Smart Messenger</i> is somewhat 
+       misleading. In fact the Smart Messenger actually rather dump, it is the 
+       SMS-Gateway Service component that has the smart logic implemented. </p>
+       
+    <p>An overview of a possible setup for the Smart Messenger is shown below:</p>
+    
+		<img src="images/smartmessengeroverview.jpg"/>
+	<p>See the documentation of the <a href="../smsgateway/index.html">SMS-Gateway Service</a>
+      for more details about the architecture and implementation of sub system that 
+      is responsible for the sending of the short messages.       
+	</p>
+   
+   <p>In the sequel the configuration properties of the Smart Messenger are described. Then
+      a short manual is presented that illustrates how the Smart Messenger can be used 
+      together with a infrastructure node. </p>
+
+	<subsection name="Configuration of the MIDlet">
+      <p>The Smart Message Application uses six different bundle components. 
+         Even though the messenger application itself is very simple the components
+         it uses are very complex. They are not yet able to automatically
+         deduce the correct configuration, i.e. which the SMTP-SMS-Gateway
+         has to be used, have to be configured according to the
+         environment setting.                
+      </p>
+      <p>The Smart Messenger MIDlet-suite can be customized by the following 
+         application properties:         
+      </p>
+      
+	<table>
+   	<tr>
+         <th>Application Property Key</th> <th>Value (example)</th>
+      </tr>
+      <tr>
+         <td><code>ch.ethz.jadabs.jxme.hostname</code></td>
+         <td><code>Buggy Phone</code></td>
+      </tr>
+      <tr>
+         <td><code>ch.ethz.jadabs.jxme.bt.rendezvouspeer</code></td>
+         <td><code>false</code></td>         
+      </tr>
+      <tr>
+         <td><code>ch.ethz.jadabs.mservices.smsgateway.emailsuffix</code></td>
+         <td><code>sms.switch.ch</code></td>
+      </tr>
+      <tr>
+         <td><code>ch.ethz.jadabs.mservices.smsgateway.senderaddress</code></td>
+         <td><code>torvalds@transmeta.com</code></td>
+      </tr>
+      <tr>
+         <td><code>log4j.priority</code></td>
+         <td><code>DEBUG</code></td>
+      </tr>
+   </table>
+
+	<p>
+      <code>ch.ethz.jadabs.jxme.hostname</code> sets the JXME peername that is used 
+      for this device. This is not used on J2SE since JXME is 
+      able to obtain the peername from the name of the local host using
+      <code>InteAddress.getLocalHost().getHostName()</code>. However
+      <code>InetAddress</code> is not available on CLDC/MIDP. Thus 
+      the peer name has to be specified explicitly.      
+	</p>
+   
+   <p>
+      <code>ch.ethz.jadabs.jxme.bt.rendezvouspeer</code> sets the 
+      operation mode for JXME BT Transport. Since the SMS-Gateway will connect to 
+      an infrastructure node which is most probably a rather 
+      powerful device (e.g. a notebook) which is also equipped with a fixed 
+      network interface the infrastructure node will be operated as 
+      <i>rendez-vous peer</i>. Therefore the device running the 
+      Smart Messenger application has to be configured as <i>normal peer</i>.       
+   </p>
+   
+   <p>
+      <code>ch.ethz.jadabs.mservices.smsgateway.emailsuffix</code> sets the
+      email suffix that is appended to the phone number string 
+      to obtain the email address used for contacting the SMTP-SMS-Gateway. 
+      (e.g. for sending a short message to 0791234567 the email will sent to
+      07912345678@sms.switch.ch,
+   </p>
+   
+   <p>
+      <code>ch.ethz.jadabs.mservices.smsgateway.senderaddress</code> sets the
+      sender address that the email to the SMTP-SMS Gateway is sent from.
+      <b>Note</b> that since most SMTP server do not allow relaying, the 
+      sender address cannot be chosen randomly, it must lie in the 
+      domain served by the SMTP server.
+   </p>
+   
+   <p>
+      <code>log4j.priority</code> determines the granularity 
+      (in Apache's Log4J the term Priority is used) level of the Logger. 
+      Possible values are <code>DEBUG</code>, <code>INFO</code>, <code>WARN</code>,
+     <code>ERROR</code> and <code>FATAL</code>.
+   </p>
+   
+   <p>These properties can be edited in the JAD file 
+      (<code>smartmessenger.jad</code>) with a text editor without 
+      recompiling or rebuilding the MIDlet-suite. Java Descriptor example: </p>
+      
+<source>MIDlet-Jar-URL: smartmessenger.jar
+MIDlet-Jar-Size: 78705
+MIDlet-Name: Smart Messenger
+MIDlet-Vendor: Andreas Frei, Rene Mueller, ETH Zurich
+MIDlet-Version: 1.0.0
+MIDlet-1: Smart Messenger, , ch.ethz.jadabs.smartmessenger.SmartMessengerMIDlet
+ch.ethz.jadabs.jxme.hostname: Buggy Phone
+log4j.priority: DEBUG
+ch.ethz.jadabs.jxme.bt.rendezvouspeer: false
+ch.ethz.jadabs.mservices.smsgateway.emailsuffix: sms.switch.ch
+ch.ethz.jadabs.mservices.smsgateway.senderaddress: torvalds@transmeta.com</source>
+
+	<p>The last five lines are application properties that can be edited. 
+      <b>Note:</b> This changes are lost as soon as the MIDlet-suite is 
+      rebuilt by Maven. In order to permanently change the setting edit the 
+      <code>midlets.xml</code> file, that is processed by the 
+      <a href="http://wlab.ethz.ch/plugins/maven-antenna/">Maven-Antenna-Plugin</a>. 
+      The corresponding section of the <code>midlets.xml</code> is: </p>
+      
+<source><![CDATA[<attributes>
+  <attribute name="ch.ethz.jadabs.jxme.hostname" 
+             value="Buggy Phone"/>
+  <attribute name="log4j.priority" 
+             value="DEBUG"/>
+  <attribute name="ch.ethz.jadabs.jxme.bt.rendezvouspeer" 
+             value="false"/>
+  <attribute name="ch.ethz.jadabs.mservices.smsgateway.emailsuffix" 
+             value="sms.switch.ch"/>
+  <attribute name="ch.ethz.jadabs.mservices.smsgateway.senderaddress" 
+             value="torvalds@transmeta"/>      
+</attributes>]]></source>      
+   </subsection>      
+
+	<a name="manual"></a>
+   <subsection name="Short Manual">
+      <ol>
+         <li>Start the Knopflerfish environment on the <i>infrastructure node</i> (e.g.
+            a notebook) that has access to the SMTP-Server. For the configuration
+            of the SMTP-Gateway service see the the documentation in 
+            <a href="http://wlab.ethz.ch/jadabs/">Jadabs</a>.
+<source>$ cd bt-smtp
+$ sh start.sh </source></li>
+              
+         <li>Start the Smart Messenger MIDlet on the smart phone. Allow the 
+            Smart Messenger to use the Bluetooth interface, by pressing 
+            Yes when asked. Select <i>Log</i> to display the Logger view.</li>         
+         <li>Wait until the two peers meet each other, i.e. until a connection is
+            added. This can be seen from a log entry similar to:
+<source>new connection of 000F3D4BEE8D
+Waiting for connections.</source>           </li>         
+         <li>Wait until the SMS-Gateway service has discovered the SMTP-Gateway 
+            on the infrastructure node. 
+<source>DISCOVERY_REPLY_MESSAGE received, SMTPGateway is available.</source>            </li>
+         <li>Press <i>Back</i> to leave the Logger screen and return to the 
+            "Settings" screen. Enter the phone number the short message has 
+            to be sent to e.g. 0791234567.</li>
+         <li>Press <i>Message</i> and enter the text for the short message.</li>                           
+         <li>Press <i>Send</i> to send the short message via SMS-Gateway.</li>
+		</ol>
+      
+      <p>If step 1 is omitted, the Smart Messenger will send the short message
+         using the .  <b>Note</b> this might be expensive, so don't be surprised
+         when you receive your monthly phone bill ;-) . </p>
+   </subsection>      
+   
+	<subsection name="Building the MIDlet-suite">
+      <p>The Smart-Messenger MIDlet-suite can be built by the Maven default goal from
+         the <code>smartmessenger</code> directory:</p>
+         
+<source>$ pwd
+.../smartmessenger
+
+$ maven
+...</source>         
+
+	<p>This creates the <code>smartmessenger.jad</code> (Java Application Descriptor) 
+      and the <code>smartmessenger.jar</code> (Java Archive) in the <code>target</code>
+      directory of <code>smartmessenger</code> sub-project directory. These two 
+      files can then be downloaded to the mobile phone. Note: That on the Nokia 6600
+      and the Sony-Ericsson P900 both files can be installed by selecting them 
+      in the Symbian Messaging Application. However <b>never</b> select the 
+      JAR file! <b>Always</b> use the JAD file. Since the JAD file contains important 
+      Application properties that are used to configure the bundles such as
+      (BT transport, Log4J, SMS-Gateway, etc.). These properties are only listed 
+      in the JAD file. By selecting the JAD file these properties are also installed
+      along the the content from the JAR. However if only the JAR is selected only 
+      the content of the JAR is installed, thus the important properties are missing
+      and the application cannot be used at all!
+      Maven repository. 
+   </p>         
+	 </subsection>      
+   </section>   
+  </body>
+</document>

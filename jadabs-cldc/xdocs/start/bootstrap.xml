@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Bootstrap HOWTO</title>
+    <author email="muellren@student.ethz.ch">René Müller</author>
+  </properties>
+
+<body>
+	
+	<section name="Bootstrap HOWTO">
+  	<p>This section describes the steps that are necessary to setup a
+      development working environment for Jadabs-CLDC.</p>
+      
+   <a name="maven"></a>
+	<subsection name="Install Maven from Apache">      
+      <p>Download the current binaries for maven from <a href="http://maven.apache.org">maven.apache.org</a>.
+         This guide assumes that <code>maven-1.0.tar.bz2</code> is used. Untar the content from the archive
+         an set the <code>MAVEN_HOME</code> <code>PATH</code> environment variable accordingly. </p>
+<source>$ cd
+$ tar xfj maven-1.0.tar.bz2 -C ~
+$ export MAVEN_HOME=~/maven-1.0
+$ export PATH=$MAVEN_HOME/bin:$PATH
+</source> 
+		<p>It is recommended that the environment variables are set e.g. in <code>.bashrc</code>.
+         Next initialize the Maven repository which will be located in <code>~/.maven</code>. And 
+         check if Maven can be executed</p>
+<source>$ $MAVEN_HOME/bin/installrepo.sh ~/.maven/repository
+$ maven -v 
+ __  __
+|  \/  |__ _Apache__ ___
+| |\/| / _` \ V / -_) ' \  ~ intelligent projects ~
+|_|  |_\__,_|\_/\___|_||_|  v. 1.0
+</source>	
+	</subsection>
+
+   <a name="osgi-plugin"></a>
+	<subsection name="Install Maven-OSGi-Plugin">      
+      <p>The Maven-OSGi-Plugin can automatically be installed by Maven.</p>
+<source>$ maven \
+   -Dmaven.repo.remote=http://wlab.ethz.ch/maven/repository,http://ibiblio.org/maven \
+   -DgroupId=maven -DartifactId=maven-osgi-plugin -Dversion=0.3.1 \
+   plugin:download</source>      
+	</subsection>
+      
+   <a name="jadabs"></a>
+	<subsection name="Check-out Jadabs from CVS">      
+      <p>In the sequel it is assumed that Jadabs is check-out using the command line tool.
+         However it is recommended that the sources are checked from the Eclipse CVS tool.
+         This has the advantage that the Eclipse can be used for version control. </p>
+<source>$ mkdir ~/workspace
+$ cd ~/workspace 
+$ export CVSROOT=iksgst3@iks2.ethz.ch:/afs/ethz.ch/inf/proj/wlab/cvsmaster
+$ export CVS_RSH=ssh
+$ cvs -z9 co jadabs</source>         
+	</subsection>
+   
+   <a name="buildjadabs"></a>
+	<subsection name="Build Jadabs Bundles">      
+      <p>Maven can be used to build all bundles from Jadabs. The required thirdparty
+         bundles are automatically downloaded during the build process.</p>      
+<source>$ cd ~/workspace/jadabs
+$ maven jadabs:buildall</source>      
+	</subsection>
+   
+   <a name="jadabscldc"></a>
+	<subsection name="Check-out Jadabs-CLDC from CVS"> 
+      <p>With the <code>CVSROOT</code> and <code>CVS_RSH</code> still set check out
+         Jadabs-CLDC from CVS.</p>
+         
+<source>$ cvs -z9 co jadabs-cldc</source>         
+	</subsection>
+
+   <a name="antenna"></a>
+	<subsection name="Installing Maven-Antenna-Plugin"> 
+      <p>Like the Maven-OSGi-Plugin the Antenna-Plugin can be installed 
+         automatically using Maven. The Antenna-Plugin creates the 
+         JAR and JAD files required for CLDC/MIDP devices.</p>
+         
+<source>$ maven \
+  -Dmaven.repo.remote=http://wlab.ethz.ch/maven/repository                    \
+  -DgroupId=maven -DartifactId=maven-antenna-plugin -Dversion=0.9.12-SNAPSHOT \
+  plugin:download </source>         
+	</subsection>
+   
+   <a name="wtk"></a>
+   <subsection name="Install Java Wireless Toolkit">
+      <p>Since Antenna uses the class files and the preverifier from the 
+         Wireless Toolkit download the 
+         <a href="http://java.sun.com/products/j2mewtoolkit/download-2_1.html">WTK2.1 from Sun</a>
+         an install the toolkit in <code>/usr/local/WTK2.1</code>. 
+      </p>
+   </subsection>
+
+   <a name="buildjadabscldc"></a>
+	<subsection name="Build all Jadabs-CLDC">      
+      <p>All bundles and MIDlet from Jadabs-CLDC can be built by Maven:</p>
+<source>$ cd ~workspace/jadabs-cldc 
+$ maven jadabs:buildall</source>      
+	</subsection>   
+
+   </section>  	   	
+ 	</body>
+</document>

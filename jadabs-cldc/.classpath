@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="bundles/mservices/smsservice/src"/>
+	<classpathentry kind="src" path="framework/osgi-j2me/src"/>
+	<classpathentry kind="src" path="bundles/mservices/smsgateway/src"/>
+	<classpathentry kind="src" path="bundles/smartmessenger/src"/>
+	<classpathentry kind="src" path="bundles/jxme-osgi/jxme-chat/src"/>
+	<classpathentry kind="src" path="bundles/jxme-osgi/bt-cldc/paralleltest/src"/>
+	<classpathentry kind="src" path="bundles/jxme-osgi/bt-cldc/src"/>
+	<classpathentry kind="src" path="bundles/jxme-osgi/bt-cldc/bttest/src"/>
+	<classpathentry kind="src" path="bundles/jxme-osgi/bt-cldc/bluechat/src"/>
+	<classpathentry kind="src" path="bundles/log4j-j2me/src"/>
+	<classpathentry kind="var" path="MAVEN_REPO/junit/jars/junit-3.8.1.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/impronto/jars/idev_bluez-1.3-osgi.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/nanoxml/jars/nanoxml-lite-2.2.3.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/log4j/jars/log4j-1.2.8-osgi.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/j2me/jars/midpapi-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="/usr/local/WTK2.1/lib/cldcapi10.jar"/>
+	<classpathentry exported="true" kind="lib" path="/usr/local/WTK2.1/lib/midpapi20.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/java/jars/javamail-all-1.3.1-osgi.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/j2me/jars/wma-1.1.jar"/>
+	<classpathentry kind="src" path="/jadabs"/>
+	<classpathentry kind="output" path="build"/>
+</classpath>
