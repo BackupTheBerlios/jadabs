@@ -37,9 +37,9 @@ public class MatchItem {
       } else if (obj instanceof MatchItem) {
          MatchItem elem = (MatchItem)obj;
          if (!name.equals(elem.name)) return false;
-         for (Enumeration en = elem.properties.keys(); en.hasMoreElements(); ) {
+         for (Enumeration en = properties.keys(); en.hasMoreElements(); ) {
             String key = (String)en.nextElement();
-            if (!elem.properties.get(key).equals(properties.get(key))) return false;
+            if (!properties.get(key).equals(elem.properties.get(key))) return false;
          }
          return true;
       } 

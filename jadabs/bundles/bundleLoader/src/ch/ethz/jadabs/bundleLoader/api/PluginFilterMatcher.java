@@ -55,9 +55,7 @@ public abstract class PluginFilterMatcher {
       } catch (Exception e) {
          e.printStackTrace();
          return false;
-      }
-      
-      
+      }           
    }
    
    
