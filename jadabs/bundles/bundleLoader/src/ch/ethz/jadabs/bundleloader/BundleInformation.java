@@ -63,7 +63,7 @@ public class BundleInformation extends ServiceAdvertisement
             filename = BundleLoaderActivator.repository + File.separator + group + File.separator + "jars"
                     + File.separator + bundle + "-" + version + ".jar";
             
-            File obrfile = new File(BundleLoaderActivator.repository + File.separator + group + File.separator + "obr"
+            File obrfile = new File(BundleLoaderActivator.repository + File.separator + group + File.separator + "obrs"
                     + File.separator + bundle + "-" + version + ".obr");
             
             reader = new FileReader(obrfile);
@@ -166,7 +166,7 @@ public class BundleInformation extends ServiceAdvertisement
 
             filename = BundleLoaderActivator.repository + File.separator + group + File.separator + "jars"
                     + File.separator + bundle + "-" + version + ".jar";
-            reader = new FileReader(BundleLoaderActivator.repository + File.separator + group + File.separator + "obr"
+            reader = new FileReader(BundleLoaderActivator.repository + File.separator + group + File.separator + "obrs"
                     + File.separator + bundle + "-" + version + ".obr");
             parser.setInput(reader);
             parseOBR();

@@ -8,6 +8,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import ch.ethz.jadabs.http.HttpDaemon;
+
 
 /**
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
@@ -56,6 +58,9 @@ public class BundleLoaderActivator implements BundleActivator
 		sysBundles.add(new String("osgi-framework-1.2"));
 		// this is a hack
 		sysBundles.add(new String("log4j-cdc-0.7.1-SNAPSHOT"));
+		
+		// start a http daemon to answer bundle loader requests
+		new HttpDaemon(new BundleLoaderHandler()).start();
 		
 		// instanciate BundleLoader, register and start
 		BundleLoaderActivator.bundleLoader = new BundleLoaderImpl(sysBundles);
