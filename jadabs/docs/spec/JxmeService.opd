@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<OSGiPlugin 
+<OSGiServicePlugin 
 	id="ch.ethz.jadabs.jxme"
 	name="Jxme-OSGi"
 	version="0.1.0"
@@ -18,10 +18,10 @@
         service="ch.ethz.jadab.jxme.EndpointService"
     />
 
-    <PluginActivatorBundle
+    <ServiceActivatorBundle
         bundle-name="jxme-osgi"
         bundle-version="0.7.1-SNAPSHOT"
         bundle-group="jadabs"
     />
 
-</OSGiPlugin>
+</OSGiServicePlugin>

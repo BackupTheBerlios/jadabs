@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<OSGiPlugin 
+<OSGiServicePlugin 
 	id="ch.ethz.jadabs.jxme.bt"
 	name="Jxme-BT"
 	version="0.1.0"
@@ -28,4 +28,4 @@
         bundle-group="jadabs"
     />
 
-</OSGiPlugin>
+</OSGiServicePlugin>

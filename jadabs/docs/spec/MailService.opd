@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<OSGiPlugin 
+<OSGiServicePlugin
 	id="ch.ethz.jadabs.mservices.smtpgw"
 	name="SMTPGateway"
 	version="0.1.0"
@@ -31,10 +31,10 @@
         description="provides service for sending emails"
     />
 
-    <PluginActivatorBundle
+    <ServiceActivatorBundle
         bundle-impl-name="smtpgw"
         bundle-impl-version="0.7.1-SNAPSHOT"
         bundle-impl-group="mservices"
     />
 
-</OSGiPlugin>
+</OSGiServicePlugin>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<OSGiPlugin 
+<OSGiServicePlugin
 	id="ch.ethz.jadabs.jxme.udp"
 	name="UDPService"
 	version="0.1.0"
@@ -23,10 +23,10 @@
         java-service="ch.ethz.jadab.jxme.udp.UDPTransport"
     />
     
-    <PluginActivatorBundle
+    <ServiceActivatorBundle
         bundle-name="jxme-udp"
         bundle-version="0.7.1-SNAPSHOT"
         bundle-group="jadabs"
     />
 
-</OSGiPlugin>
+</OSGiServicePlugin>

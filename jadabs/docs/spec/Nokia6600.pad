@@ -8,8 +8,6 @@
 	
     <Property name="processor" value="xyz" />
     <Property name="display" value="150x200" />
-    <Property name="vm" value="j2me/midp" />
-    <Property name="vm-version" value="1.0.1" />
     
     <OSGiContainer id="j2me-osgi"/>
 
