@@ -1,4 +1,4 @@
-$Id: messageformats.txt,v 1.3 2005/02/17 13:40:05 printcap Exp $
+$Id: messageformats.txt,v 1.4 2005/02/17 15:52:20 printcap Exp $
 
 Message-Format between Jadabs-Bundle and Jadabs-Core-Entity
 -----------------------------------------------------------
@@ -429,7 +429,6 @@ MESSAGE_ASYNC_MSG:
    9:      pipeID string               UTF String
   ..:      message string              UTF String 
   ..:      listener ID string          UTF String 
-  ..:      resource ID string          UTF String
 
 
 
@@ -446,7 +445,7 @@ RESOLVE_REQUEST:
    4:      request type  (RESOVLE)           short
    6:      message length (in bytes)         short
    8:      pipe ID string                    UTF String
-  ..:      timeout                           int
+  ..:      timeout (in milliseconds)         int
    
 RESOLVE_REPLY:
  offset    field                              type 
