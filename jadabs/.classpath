@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="bundles/bundleLoader/src"/>
+	<classpathentry kind="src" path="bundles/bundleLoader/remoteLoader/src"/>
+	<classpathentry kind="src" path="bundles/serviceManager/src"/>
 	<classpathentry kind="src" path="bundles/commons/concurrent/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/impl/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/impl/test/src"/>
@@ -13,7 +15,7 @@
 	<classpathentry kind="src" path="bundles/remotefw/api/src"/>
 	<classpathentry kind="src" path="bundles/remotefw/impl/src"/>
 	<classpathentry kind="src" path="bundles/remotefw/shellplugin/src"/>
-	<classpathentry kind="src" path="bundles/shell/src"/>	
+	<classpathentry kind="src" path="bundles/shell/src"/>
 	<classpathentry kind="src" path="bundles/mservices/smtpgw/src"/>
 	<classpathentry kind="src" path="bundles/mservices/smtpgw/test-direct/src"/>
 	<classpathentry kind="src" path="bundles/mservices/smtpgw/test-tcp/src"/>
