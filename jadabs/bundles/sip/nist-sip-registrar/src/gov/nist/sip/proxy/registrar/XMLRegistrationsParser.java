@@ -62,11 +62,7 @@ public class XMLRegistrationsParser extends DefaultHandler
             saxParser.setFeature("http://xml.org/sax/features/validation", true);
             // parse the xml specification for the event tags.
 
-            // load from bundle
-            String file = "bundle://" + ProxyActivator.bc.getBundle().getBundleId() + ":0" + fileLocation;
-            URL fileurl = new URL(file);
-
-            saxParser.parse(fileurl.toString());
+            saxParser.parse(fileLocation);
 
         } catch (SAXParseException spe)
         {

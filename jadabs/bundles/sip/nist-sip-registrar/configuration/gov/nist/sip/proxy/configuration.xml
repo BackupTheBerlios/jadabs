@@ -42,13 +42,13 @@ enable="false"
 enable="false"
 method="digest"
 class_file="gov.nist.sip.proxy.authentication.DigestServerAuthenticationMethod"
-passwords_file="/gov/nist/sip/proxy/configuration/passwords.xml"
+passwords_file="./configuration/gov/nist/sip/proxy/passwords.xml"
 />
 
 <REGISTRATIONS 
 enable="true"
 expires_time="3600"
-registrations_file="/gov/nist/sip/proxy/configuration/registrations.xml"
+registrations_file="./configuration/gov/nist/sip/proxy/registrations.xml"
 />
 
 </CONFIGURATION> 

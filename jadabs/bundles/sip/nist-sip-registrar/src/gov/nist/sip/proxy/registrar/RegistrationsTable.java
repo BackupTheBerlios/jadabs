@@ -43,6 +43,8 @@ public class RegistrationsTable
 
     protected Hashtable expiresTaskTable;
 
+    protected Vector reglisteners = new Vector();
+    
     /** Creates new RegistrationTable */
     public RegistrationsTable(Registrar registrar)
     {
@@ -181,7 +183,7 @@ public class RegistrationsTable
         ProxyDebug.println("RegistrationsTable, addRegistration(), registration " + " added for the key: " + key);
 
         printRegistrations();
-        updateGUI(registration, false);
+        updateRegistration(registration, false);
     }
 
     protected void addRegistration(Registration registration) throws Exception
@@ -213,7 +215,7 @@ public class RegistrationsTable
 
         printRegistrations();
 
-        updateGUI(registration, false);
+        updateRegistration(registration, false);
     }
 
     public synchronized void removeRegistration(String key)
@@ -221,7 +223,7 @@ public class RegistrationsTable
         ProxyDebug.println("RegistrationsTable, removeRegistration(), " + " registration removed" + " for the key: "
                 + key);
         Registration registration = (Registration) registrations.get(key);
-        updateGUI(registration, true);
+        updateRegistration(registration, true);
         registrations.remove(key);
         printRegistrations();
         //updateGUI(registration,true);
@@ -385,14 +387,26 @@ public class RegistrationsTable
         return retval.toString();
     }
 
-    public void updateGUI(Registration registration, boolean toRemove)
+    public void addRegistrationListener(RegistrationListener listener)
     {
-        //        if (registrar.gui!=null) {
-        //            registrar.gui.updateRegistration(registration,toRemove);
-        //        }
-        //        else {
-        ProxyDebug.println("DEBUG, not gui to update");
-        //        }
+        reglisteners.add(listener);
+    }
+    
+    public void removeRegistrationListener(RegistrationListener listener)
+    {
+        reglisteners.remove(listener);
+    }
+    
+    protected void updateRegistration(Registration registration, boolean toRemove)
+    {
+        
+        for (Enumeration en = reglisteners.elements(); en.hasMoreElements();)
+        {
+            RegistrationListener reglistener = (RegistrationListener)en.nextElement();
+            
+            reglistener.updateRegistration(registration, toRemove);
+        }
+
     }
 
 }

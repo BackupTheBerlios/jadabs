@@ -103,22 +103,22 @@ public class ProxyLauncher extends JFrame
 
     protected static Color buttonBackGroundColor = new Color(186, 175, 175);
 
-    public ProxyLauncher(String configFile)
+    public ProxyLauncher()
     {
         super("NIST-SIP proxy interface");
         System.out.println("Initialisation Proxy Interface");
 
         try
         {
-            if (configFile == null)
-            {
-                throw new Exception("ERROR, specify the configuration file on the" + " command line.");
-            } else
-                configurationFile = configFile;
+//            if (configFile == null)
+//            {
+//                throw new Exception("ERROR, specify the configuration file on the" + " command line.");
+//            } else
+//                configurationFile = configFile;
 
             // First thing to do, get the configurations.
-            proxy = (Proxy)ProxyLauncherActivator.proxy;
-//            proxy = new Proxy(configurationFile);
+            proxy = (Proxy) ProxyGUIActivator.proxyadmin.proxy;
+            //            proxy = new Proxy(configurationFile);
 
             listenerProxy = new ListenerProxy(this);
             initComponents();
@@ -148,9 +148,10 @@ public class ProxyLauncher extends JFrame
 
     public String getConfigurationFile()
     {
-        return configurationFile;
+        return ProxyGUIActivator.proxyadmin.configfile;
     }
 
+    
     public Configuration getConfiguration()
     {
         if (proxy != null)
@@ -297,11 +298,23 @@ public class ProxyLauncher extends JFrame
         // row, column, gap, gap
         secondPanel.setLayout(new GridLayout(1, 2, 5, 5));
 
-        proxyButton = new JButton("Start the proxy");
+        proxyButton = new JButton();
+        
+        if (ProxyGUIActivator.proxyadmin.PROXY_STARTED)
+        {
+            proxyButton.setBackground(new Color(51, 153, 255));
+            proxyButton.setText("Stop the proxy");
+        }
+        else
+        {
+            proxyButton.setText("Start the proxy");
+            proxyButton.setBackground(buttonBackGroundColor);
+        }
+        
         proxyButton.setToolTipText("Please, start/stop the proxy!!!");
         proxyButton.setFont(new Font("Dialog", 1, 14));
         proxyButton.setFocusPainted(false);
-        proxyButton.setBackground(buttonBackGroundColor);
+        
         proxyButton.setBorder(buttonBorder);
         proxyButton.setVerticalAlignment(AbstractButton.CENTER);
         proxyButton.setHorizontalAlignment(AbstractButton.CENTER);
@@ -374,21 +387,21 @@ public class ProxyLauncher extends JFrame
     /** ********** The main method: to launch the proxy ************ */
     /** ********************************************************************* */
 
-    public static void main(String args[])
-    {
-        try
-        {
-            // the Proxy:
-            String confFile = (String) args[1];
-            ProxyLauncher proxyLauncher = new ProxyLauncher(confFile);
-            //proxyLauncher.start();
-            ProxyDebug.println("Proxy ready to work");
-        } catch (Exception e)
-        {
-            System.out.println("ERROR: Set the configuration file flag: " + "USE: -cf configuration_file_location.xml");
-            System.out.println("ERROR, the proxy can not be started, " + " exception raised:\n");
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String args[])
+//    {
+//        try
+//        {
+//            // the Proxy:
+//            String confFile = (String) args[1];
+//            ProxyLauncher proxyLauncher = new ProxyLauncher(confFile);
+//            //proxyLauncher.start();
+//            ProxyDebug.println("Proxy ready to work");
+//        } catch (Exception e)
+//        {
+//            System.out.println("ERROR: Set the configuration file flag: " + "USE: -cf configuration_file_location.xml");
+//            System.out.println("ERROR, the proxy can not be started, " + " exception raised:\n");
+//            e.printStackTrace();
+//        }
+//    }
 
 }

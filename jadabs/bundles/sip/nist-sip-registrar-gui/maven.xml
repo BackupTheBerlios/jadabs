@@ -19,7 +19,9 @@
 		<ant:copy todir="${basedir}/target/classes/gov/nist/sip/proxy/gui/images">
 			<ant:fileset dir="${basedir}/src/gov/nist/sip/proxy/gui/images" includes="**" />
 		</ant:copy>
-		
+		<ant:copy todir="${basedir}/target/classes/gov/nist/sip/proxy/gui/">
+			<ant:fileset dir="${basedir}/src/gov/nist/sip/proxy/gui/" includes="*.txt" />
+		</ant:copy>
 		
   </postGoal>
   

@@ -56,13 +56,9 @@ public class XMLAuthenticationParser extends DefaultHandler
             factory.setValidating(true);
             SAXParser saxParser = factory.newSAXParser();
 
-            //            file = fileLocation;
+            file = fileLocation;
 
-            // load from bundle
-            String file = "bundle://" + ProxyActivator.bc.getBundle().getBundleId() + ":0" + fileLocation;
-            URL fileurl = new URL(file);
-
-            saxParser.parse(fileurl.toString(), this);
+            saxParser.parse(file, this);
         } catch (SAXParseException spe)
         {
             spe.printStackTrace();

@@ -90,10 +90,6 @@ public class Proxy implements SipListener
 
     protected ResponseForwarding responseForwarding;
 
-    public Proxy()
-    {
-
-    }
 
     public RequestForwarding getRequestForwarding()
     {

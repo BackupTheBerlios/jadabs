@@ -22,21 +22,21 @@ public class ListenerProxy
 
     protected HelpBox helpBox;
 
-    protected boolean PROXY_STARTED;
+//    protected boolean PROXY_STARTED;
 
     protected Process rmiregistryProcess;
 
     //    protected TracesViewer tracesViewer;
 
-    public boolean isProxyStarted()
-    {
-        return PROXY_STARTED;
-    }
+//    public boolean isProxyStarted()
+//    {
+//        return PROXY_STARTED;
+//    }
 
     public ListenerProxy(ProxyLauncher proxyLauncher)
     {
         this.proxyLauncher = proxyLauncher;
-        PROXY_STARTED = false;
+//        PROXY_STARTED = false;
 
         try
         {
@@ -116,24 +116,29 @@ public class ListenerProxy
     {
         try
         {
-            if (!PROXY_STARTED)
+            if (!ProxyGUIActivator.proxyadmin.PROXY_STARTED)
             {
                 ProxyDebug.println("\n*****************************************************\n");
                 // First thing to do, get the configurations.
-                Proxy proxy = new Proxy(proxyLauncher.getConfigurationFile());
+                // af
+//                ProxyGUIActivator.proxyadmin.proxy = new Proxy(proxyLauncher.getConfigurationFile());
+                
+                Proxy proxy = ProxyGUIActivator.proxyadmin.startProxy(null);
+                
                 proxyLauncher.setProxy(proxy);
                 Registrar registrar = proxy.getRegistrar();
                 if (registrar != null)
                 {
                     ProxyDebug.println("DEBUG, GUI chained to the registrar");
-//                    registrar.setRegistrationsList(proxyLauncher.registrationsList);
+                    //                    registrar.setRegistrationsList(proxyLauncher.registrationsList);
                 }
 
                 if (proxy.getConfiguration() != null && proxy.getConfiguration().isValidConfiguration())
                 {
-                    proxy.start();
-
-                    PROXY_STARTED = true;
+//                    proxy.start();
+//
+//                    ProxyGUIActivator.proxyadmin.PROXY_STARTED = true;
+                    
                     proxyLauncher.proxyButton.setBackground(new Color(51, 153, 255));
                     proxyLauncher.proxyButton.setText("Stop the proxy");
 
@@ -157,8 +162,10 @@ public class ListenerProxy
         {
             ProxyDebug.println("\n*****************************************************\n");
             ProxyDebug.println("Stopping the proxy");
-            PROXY_STARTED = false;
-
+//            PROXY_STARTED = false;
+            
+            ProxyGUIActivator.proxyadmin.stopProxy();
+            
             proxyLauncher.proxyButton.setBackground(ProxyLauncher.buttonBackGroundColor);
             proxyLauncher.proxyButton.setText("Start the proxy");
 
@@ -200,11 +207,11 @@ public class ListenerProxy
         try
         {
 
-            if (!PROXY_STARTED)
-            {
-                new AlertFrame("ERROR: Start the proxy before viewing the traces!", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+//            if (!PROXY_STARTED)
+//            {
+//                new AlertFrame("ERROR: Start the proxy before viewing the traces!", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
 
             //            if (tracesViewer != null)
             //            {

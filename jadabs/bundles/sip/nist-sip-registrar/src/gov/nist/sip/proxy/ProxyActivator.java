@@ -17,7 +17,7 @@ public class ProxyActivator implements BundleActivator
 
     public static BundleContext bc;
     
-    Proxy proxy;
+    ProxyAdmin proxyadmin;
     
     /*
      * (non-Javadoc)
@@ -29,8 +29,14 @@ public class ProxyActivator implements BundleActivator
 
         ProxyActivator.bc = bc;
 
-        final String configfile = "bundle://" + ProxyActivator.bc.getBundle().getBundleId() + ":0"
-        + "/gov/nist/sip/proxy/configuration/configuration.xml";
+        final String configfile = "./configuration/gov/nist/sip/proxy/configuration.xml";
+        
+        
+        proxyadmin = new ProxyAdmin();
+        
+        // register the proxyadmin
+        ProxyActivator.bc.registerService(ProxyAdmin.class.getName(), 
+                proxyadmin, null);        
 
         Thread thread = new Thread()
         {
@@ -39,12 +45,8 @@ public class ProxyActivator implements BundleActivator
             {
                 try
                 {
-
-                    proxy = new Proxy(configfile);
-                    proxy.start();
-                    ProxyDebug.println("Proxy ready to work");
                     
-                    ProxyActivator.bc.registerService(Proxy.class.getName(), proxy, null);
+                    proxyadmin.startProxy(configfile);
                     
                 } catch (Exception e)
                 {
@@ -66,9 +68,9 @@ public class ProxyActivator implements BundleActivator
      * 
      * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
      */
-    public void stop(BundleContext arg0) throws Exception
+    public void stop(BundleContext bc) throws Exception
     {
-        proxy.stop();
+        proxyadmin.stopProxy();
     }
 
 }

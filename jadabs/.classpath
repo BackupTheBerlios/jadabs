@@ -23,10 +23,10 @@
 	<classpathentry kind="var" path="MAVEN_REPO/xstream/jars/xstream-1.0.1-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/osgi/jars/osgi-framework-1.2.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/swt/jars/swt-3.0RC1-osgi.jar"/>
-	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/sip-api-1.1.jar"/>
-	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/nist-sip-1.2.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/sip-api-1.1-osgi.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/nist-sip-1.2-osgi.jar"/>
 	<classpathentry kind="src" path="bundles/sip/nist-sip-registrar/src"/>
-	<classpathentry kind="src" path="bundles/sip/nist-sip-messenger/src"/>
 	<classpathentry kind="src" path="bundles/sip/nist-sip-registrar-gui/src"/>
+	<classpathentry kind="src" path="bundles/sip/nist-sip-messenger/src"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

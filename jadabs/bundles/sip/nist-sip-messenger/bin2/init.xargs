@@ -17,21 +17,12 @@
 -init
 
 -initlevel 1
--install   sip/jars/sip-api-1.1-osgi.jar
+-istart    sip/jars/sip-api-1.1-osgi.jar
 -install   sip/jars/nist-sip-1.2-osgi.jar
+-istart    sip/jars/nist-sip-messenger-0.7.0-SNAPSHOT.jar
 
--initlevel 2
--install   sip/jars/nist-sip-registrar-0.7.0-SNAPSHOT.jar
-
--initlevel 3
--install   sip/jars/nist-sip-registrar-gui-0.7.0-SNAPSHOT.jar
-
-
-
--startlevel 4
+-startlevel 1
 
 -launch
--start 1
--start 2
--start 3
--start 4
+
+

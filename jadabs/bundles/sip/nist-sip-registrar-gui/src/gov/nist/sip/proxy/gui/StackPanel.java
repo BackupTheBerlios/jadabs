@@ -76,7 +76,11 @@ public class StackPanel extends JPanel
         {
             Configuration configuration = proxyLauncher.getConfiguration();
             if (configuration == null)
+            {
+                
+                System.out.println("configuration is null");
                 return;
+            }
             if (configuration.stackName != null)
                 proxyStackNameTextField.setText(configuration.stackName);
             if (configuration.stackIPAddress != null)

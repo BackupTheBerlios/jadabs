@@ -34,7 +34,7 @@ public class HelpBox extends Dialog
 
     Button ok;
 
-//    File helpFile;
+    //    File helpFile;
     String helpFile;
 
     /** Creates new HelpBox */
@@ -44,7 +44,7 @@ public class HelpBox extends Dialog
         try
         {
 
-//            helpFile = new File("/gov/nist/sip/proxy/gui/helpProxy.txt");
+            //            helpFile = new File("/gov/nist/sip/proxy/gui/helpProxy.txt");
             helpFile = "/gov/nist/sip/proxy/gui/helpProxy.txt";
             this.setLayout(new BorderLayout());
             this.setBackground(Color.lightGray);
@@ -84,7 +84,8 @@ public class HelpBox extends Dialog
             // fill the help box.
 
             InputStream inhelpfile = getClass().getResourceAsStream(helpFile);
-//            BufferedReader buffReader = new BufferedReader(new InputStreamReader(new FileInputStream(helpFile)));
+            //            BufferedReader buffReader = new BufferedReader(new
+            // InputStreamReader(new FileInputStream(helpFile)));
             BufferedReader buffReader = new BufferedReader(new InputStreamReader(inhelpfile));
             String line = null;
 

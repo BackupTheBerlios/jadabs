@@ -8,6 +8,7 @@ package gov.nist.sip.proxy.gui;
 
 import gov.nist.sip.proxy.registrar.Registrar;
 import gov.nist.sip.proxy.registrar.Registration;
+import gov.nist.sip.proxy.registrar.RegistrationListener;
 import gov.nist.sip.proxy.registrar.RegistrationsTable;
 
 import java.util.Enumeration;
@@ -21,7 +22,7 @@ import javax.swing.JList;
  * @author deruelle
  * @version 1.0
  */
-public class RegistrationsList extends JList
+public class RegistrationsList extends JList implements RegistrationListener
 {
 
     protected DefaultListModel list;
@@ -36,6 +37,12 @@ public class RegistrationsList extends JList
         this.setModel(list);
 
         list.addElement("(empty)");
+        
+        //add registrationlistener to registrationstable
+        ProxyGUIActivator.proxyadmin.proxy.getRegistrar().
+        	getRegistrationsTable().addRegistrationListener(this);
+        
+        uploadRegistrations(ProxyGUIActivator.proxyadmin.proxy.getRegistrar());
 
     }
 
@@ -68,6 +75,8 @@ public class RegistrationsList extends JList
     public void updateRegistration(Registration registration, boolean toRemove)
     {
 
+        System.out.println("called update Registration");
+        
         if (registration != null)
         {
             String key = registration.getKey(); // key=="sip:user@domain"
@@ -121,6 +130,9 @@ public class RegistrationsList extends JList
     {
         list.removeAllElements();
         list.addElement("(empty)");
+        
+        ProxyGUIActivator.proxyadmin.proxy.getRegistrar().
+    		getRegistrationsTable().removeRegistrationListener(this);
     }
 
 }
