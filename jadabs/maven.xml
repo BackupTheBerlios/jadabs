@@ -211,17 +211,17 @@
 		
 		<!-- generate the full distribution -->
 		<ant:gzip
-      		zipfile="${maven.dist.dir}/${jadabs.dist.name}-full.tar.gz"
-      		src="${maven.dist.dir}/${jadabs.dist.name}-full.tar"
+      		zipfile="${maven.dist.dir}/${jadabs.dist.name}-kf.tar.gz"
+      		src="${maven.dist.dir}/${jadabs.dist.name}-kf.tar"
     	/>
-    	<ant:delete file="${maven.dist.dir}/${jadabs.dist.name}-full.tar"/>
+    	<ant:delete file="${maven.dist.dir}/${jadabs.dist.name}-kf.tar"/>
 		
 		<!-- generate the full-prose distribution -->
 		<ant:gzip
-      		zipfile="${maven.dist.dir}/${jadabs.dist.name}-fullprose.tar.gz"
-      		src="${maven.dist.dir}/${jadabs.dist.name}-fullprose.tar"
+      		zipfile="${maven.dist.dir}/${jadabs.dist.name}-kf-prose.tar.gz"
+      		src="${maven.dist.dir}/${jadabs.dist.name}-kf-prose.tar"
     	/>
-    	<ant:delete file="${maven.dist.dir}/${jadabs.dist.name}-fullprose.tar"/>
+    	<ant:delete file="${maven.dist.dir}/${jadabs.dist.name}-full-prose.tar"/>
     	
 		<!-- Create a zip file 
     	<ant:zip zipfile="${maven.dist.dir}/${jadabs.dist.name}.zip">
