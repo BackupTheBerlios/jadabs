@@ -2,19 +2,20 @@
 
 <OSGiPlugin 
 	id="ch.ethz.jadabs.jxme"
-	name="Jxme"
+	name="Jxme-OSGi"
 	version="0.1.0"
 	description=""
 	provider-name="ETHZ-IKS">
 	
-	<Extension-Point
-	    id="Extension/PeerNetwork"
-	    service="ch.ethz.jadabs.jxme.PeerNetwork" 	       	    
-	/>
 	
 	<Extension
-	    id="GroupService"
-        service="ch.ethz.jadab.jxme.services.GroupService"
+	    id="PeerNetwork"
+        service="ch.ethz.jadab.jxme.PeerNetwork"
+    />
+
+	<Extension
+	    id="EndpointService"
+        service="ch.ethz.jadab.jxme.EndpointService"
     />
 
     <PluginActivatorBundle

@@ -2,7 +2,7 @@
 
 <OSGiPlugin 
 	id="ch.ethz.jadabs.jxme.bt"
-	name="BTService"
+	name="Jxme-BT"
 	version="0.1.0"
 	description=""
 	provider-name="ETHZ-IKS">
