@@ -4,6 +4,12 @@
  */
 package ch.ethz.jadabs.servicemanager.micro.ui;
 
+import java.io.IOException;
+
+import javax.microedition.io.ConnectionNotFoundException;
+import javax.microedition.io.Connector;
+import javax.microedition.io.Datagram;
+import javax.microedition.io.DatagramConnection;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -16,18 +22,21 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import ch.ethz.jadabs.servicemanager.ServiceReference;
 import ch.ethz.jadabs.jxme.JxmeActivator;
+import ch.ethz.jadabs.jxme.bt.BTActivator;
 import ch.ethz.jadabs.jxme.services.impl.ServiceActivator;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
+import ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener;
+import ch.ethz.jadabs.servicemanager.ServiceManager;
 import ch.ethz.jadabs.servicemanager.micro.ServiceManagerActivator;
-import ch.ethz.jadabs.servicemanager.micro.ServiceReferenceImpl;
 
 /**
  * @author andfrei
  * 
  */
 public class ServiceManagerMIDlet extends MIDlet 
-	implements CommandListener, BundleActivator
+	implements CommandListener, BundleActivator, ServiceAdvertisementListener
 {    
     /** Reference to Log4j window */
     private static Logger LOG;
@@ -43,6 +52,7 @@ public class ServiceManagerMIDlet extends MIDlet
     /** display of this midlet application */
     private Display display;   
     
+    private ServiceManager serviceManager;
     
     /* commands */
     private Command logCmd;
@@ -52,10 +62,8 @@ public class ServiceManagerMIDlet extends MIDlet
     private Command sendCmd;
     private Command detailCmd;
     private Command installCmd;
-    
-    private Command addCmd;
-    private Command rmCmd;
-       
+    private Command startCmd;
+          
     
     /** Constructor */
     public ServiceManagerMIDlet()
@@ -71,12 +79,12 @@ public class ServiceManagerMIDlet extends MIDlet
                 this.getAppProperty("log4j.priority"));
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer",
                 this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));      
-        
+                
         	// install and start bundles
         osgicontainer.startBundle(new LogActivator());
         osgicontainer.startBundle(new JxmeActivator());
-//      osgicontainer.startBundle(new BTActivator());   
-        osgicontainer.startBundle(new ServiceActivator());
+        osgicontainer.startBundle(new BTActivator());   
+        osgicontainer.startBundle(new ServiceActivator());      
         osgicontainer.startBundle(new ServiceManagerActivator());     
         osgicontainer.startBundle(this);
         
@@ -101,15 +109,14 @@ public class ServiceManagerMIDlet extends MIDlet
         // Service List View commands
         detailCmd = new Command("Details", Command.ITEM, 1);
         installCmd = new Command("Install", Command.ITEM, 2);
-        
-        addCmd = new Command("Add", Command.ITEM, 3);
-        rmCmd = new Command("Remove", Command.ITEM, 4);
+
+        startCmd = new Command("Start", Command.ITEM, 3);
         
 //        settingsForm = new SettingsForm(this, new Command[] { 
 //                	logCmd, exitCmd});
         
         serviceListView = new ServiceListView(this, new Command[]{
-                logCmd, exitCmd, detailCmd, installCmd, addCmd, rmCmd});
+                logCmd, exitCmd, detailCmd, installCmd, startCmd});
         
         display.setCurrent(serviceListView);
         
@@ -136,10 +143,11 @@ public class ServiceManagerMIDlet extends MIDlet
      */
     public void start(BundleContext bc)
     {
-//        // get Endpoint service
-//        ServiceReference sref = bc.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
-//        endptsvc = (EndpointService)bc.getService(sref);
-                      
+        // get ServiceManager service
+        org.osgi.framework.ServiceReference sref = bc.getServiceReference("ch.ethz.jadabs.servicemanager.ServiceManager");
+        serviceManager = (ServiceManager)bc.getService(sref);
+        
+        serviceManager.addServiceAdvertisementListener(this);
     }
 
     /**
@@ -165,18 +173,7 @@ public class ServiceManagerMIDlet extends MIDlet
         instance = null;
         display = null;
     }
-    
-    public void sendMessage(String phoneNumber, String message) 
-    {
-//        LOG.debug("going to send message.");
-//        Element[] elms = new Element[2];
-//        elms[0] = new Element("to", phoneNumber.getBytes(), 
-//                               null, Element.TEXTUTF8_MIME_TYPE);       
-//        elms[1] = new Element("body", message.getBytes(), 
-//                               null, Element.TEXTUTF8_MIME_TYPE);
-//        Message msg = new Message(elms);
-//        smsgateway.sendSM(msg);
-    }
+       
     
     /**
      * Handle user action from SmartMessenger application
@@ -204,18 +201,31 @@ public class ServiceManagerMIDlet extends MIDlet
         }
         else if (c == installCmd)
         {
-            LOG.debug("install:" + serviceListView.getSelectedIndex());
+            ServiceReference sref = serviceListView.getSelectedServiceReference();
+            
+            LOG.debug("install:" + sref.getDownloadURL());
+            
+            installOTAService(sref);
         }
-        else if (c == addCmd)
+        else if (c == startCmd)
         {
-            serviceListView.addService(new ServiceReferenceImpl(
-                    "jadabs","testsvc","0.3.4"));
+            
+            ServiceReference sref = serviceListView.getSelectedServiceReference();
+            
+            LOG.debug("start:" + sref.getName());
+            
+            startOTAService(sref);
         }
-        else if (c == rmCmd)
-        {
-            serviceListView.removeService(
-                    serviceListView.getSelectedIndex());
-        }
+//        else if (c == addCmd)
+//        {
+//            serviceListView.addService(new ServiceReferenceImpl(
+//                    "jadabs","testsvc","0.3.4"));
+//        }
+//        else if (c == rmCmd)
+//        {
+//            serviceListView.removeService(
+//                    serviceListView.getSelectedIndex());
+//        }
 //        } 
 //            else if (c == sendCmd) {            
 //            String phoneNumber = settingsForm.getPhoneNumber();
@@ -230,4 +240,48 @@ public class ServiceManagerMIDlet extends MIDlet
             quitApp();
         }
     }
+    
+    private void installOTAService(ServiceReference sref)
+    {
+        String url = sref.getDownloadURL();
+        
+        try{
+            this.platformRequest(url);
+        } catch (ConnectionNotFoundException e) {
+            LOG.error("could not install: "+url);               
+        }
+    }
+    
+    private void startOTAService(ServiceReference sref)
+    {
+        String port = sref.getProperty("port");
+        String localURL = "datagram://127.0.0.1:"+port;
+       
+        
+        DatagramConnection conn = null;
+        try {
+            conn = (DatagramConnection)Connector.open(localURL);
+            byte[] data = "Wakeup Polly!".getBytes();
+            Datagram dgrm = conn.newDatagram(data, data.length);
+            conn.send(dgrm);
+        } catch (IOException e) {
+            LOG.error("cannot open datagram socket in server mode: "+e);
+        } finally {
+            if (conn != null) {
+                try { conn.close(); } catch (Exception e) { }
+            }
+        } 
+    }
+    
+    public void foundService(ch.ethz.jadabs.servicemanager.ServiceReference sref)
+    {
+       serviceListView.foundService(sref);
+    }
+  
+    
+    public void removedService(ch.ethz.jadabs.servicemanager.ServiceReference sref)
+    {
+        serviceListView.removedService(sref);
+    }
+
 }

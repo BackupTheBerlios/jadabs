@@ -10,7 +10,7 @@
 
    <attributes>
       <attribute name="ch.ethz.jadabs.jxme.peeralias" value="Nokia6600"/>
-      <attribute name="log4j.priority" value="DEBUG"/>
+      <attribute name="log4j.priority" value="INFO"/>
       <attribute name="ch.ethz.jadabs.jxme.bt.rendezvouspeer" value="false"/>
     </attributes>      
    

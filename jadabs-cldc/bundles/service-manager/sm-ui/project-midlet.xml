@@ -48,7 +48,7 @@
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>
-<!--      
+     
 		<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>jxme-bt-j2me</artifactId>
@@ -57,16 +57,7 @@
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>        
-		
-		     	<dependency>
-      		<groupId>j2me</groupId>
-      		<artifactId>wma</artifactId>
-      		<version>1.1</version>
-      		<properties>
-      			<dependencyType>runtime</dependencyType>
-      		</properties>
-		</dependency>			
-      		
+   		
 		<dependency>
       		<groupId>j2me</groupId>
       		<artifactId>btapi</artifactId>
@@ -76,7 +67,7 @@
       		</properties>
 		</dependency>
 		
--->	
+
     	<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>log4j-j2me</artifactId>

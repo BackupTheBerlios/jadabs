@@ -14,26 +14,30 @@ import ch.ethz.jadabs.servicemanager.ServiceReference;
 public class ServiceReferenceImpl implements ServiceReference
 {
 
-    private String group;
-    private String name;
-    private String version;
-    private String peer;
-    private String provider;
+    protected String group;
+    protected String name;
+    protected String version;
+    protected String peer;
+    protected String provider;
+    protected String durl;
+    protected String port;
     
-    
-    public ServiceReferenceImpl(String group, String name, String version)
+    public ServiceReferenceImpl(String uuid)
     {
-        this(group, name, version, null, null);
+        this(uuid, null, null);
     }
     
-    public ServiceReferenceImpl(String group, String name, String version, 
-            String peer, String provider)
+    public ServiceReferenceImpl(String id, String peer, String provider)
     {
-        this.group = group;
-        this.name = name;
-        this.version = version;
         this.peer = peer;
         this.provider = provider;
+        
+        group = id.substring(0,id.indexOf(":"));
+        id = id.substring(id.indexOf(":")+1);
+        name = id.substring(0,id.indexOf(":"));
+        id = id.substring(id.indexOf(":")+1);
+        version = id.substring(0,id.indexOf(":"));
+    
     }
     
     
@@ -60,13 +64,6 @@ public class ServiceReferenceImpl implements ServiceReference
 
     /*
      */
-    public String getPeer()
-    {
-        return peer;
-    }
-
-    /*
-     */
     public String getID()
     {
         return group+":"+name+":"+version+":";
@@ -82,5 +79,23 @@ public class ServiceReferenceImpl implements ServiceReference
     public String getProvider()
     {
         return provider;
+    }
+    
+    public String getPeer()
+    {
+        return peer;
+    }
+    
+    public String getDownloadURL()
+    {
+        return durl;
+    }
+    
+    public String getProperty(String name)
+    {
+        if (name.equals("port"))
+            return port;
+        else
+            return null;
     }
 }

@@ -96,6 +96,7 @@
       <ant:echo message="Building MIDlets..."/>
    		<maven:reactor basedir="${basedir}"
          includes="bundles/**/project-midlet.xml"
+         excludes=""
          goals="antenna:OSGiBundle"
          banner="Building MIDlets"
 			ignoreFailures="false"/>         
