@@ -124,7 +124,20 @@ public class Scheduler {
     * @return
     */
    protected Iterator getIterator() {
-      ArrayList sortedSchedules = Collections.list(schedules.elements());      
+       
+       // not JVM 1.3 compatible
+//     ArrayList sortedSchedules = Collections.list(schedules.elements()); 
+      
+       
+       // JVM 1.3 compatible
+       ArrayList sortedSchedules = new ArrayList();
+       
+       for(Enumeration en = schedules.elements(); en.hasMoreElements();)
+       {
+           sortedSchedules.add(en.nextElement());
+       }
+       
+
       return sortedSchedules.iterator();
    }
    
@@ -134,7 +147,19 @@ public class Scheduler {
    public String toString() {
       StringBuffer buffer = new StringBuffer();
       buffer.append("Schedules: \n");
-      ArrayList sortedSchedules = Collections.list(schedules.elements());
+      
+      // not JVM 1.3 compatible
+//    ArrayList sortedSchedules = Collections.list(schedules.elements()); 
+     
+      
+      // JVM 1.3 compatible
+      ArrayList sortedSchedules = new ArrayList();
+      
+      for(Enumeration en = schedules.elements(); en.hasMoreElements();)
+      {
+          sortedSchedules.add(en.nextElement());
+      }
+      
       Collections.sort(sortedSchedules, new ScheduleComparator());
       for (Iterator existingSchedules = sortedSchedules.iterator(); existingSchedules.hasNext();) {
          ArrayList schedule = (ArrayList)existingSchedules.next();

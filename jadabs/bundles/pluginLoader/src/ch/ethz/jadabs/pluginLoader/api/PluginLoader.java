@@ -54,6 +54,16 @@ public interface PluginLoader extends Loader {
    public void loadPlugin(String uuid) throws Exception;
    
    /**
+    * Checks first if plugin matches and then loads it.
+    * 
+    * @param uuid
+    * @param in
+    * @return
+    * @throws Exception
+    */
+   public boolean loadPluginIfMatches(String uuid, InputStream in) throws Exception;
+   
+   /**
     * Unload a plugin
     * @param uuid Uuid of the Plugin
     * @throws Exception

@@ -54,6 +54,7 @@ import ch.ethz.jadabs.bundleLoader.Repository;
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.LoaderListener;
 import ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher;
+import ch.ethz.jadabs.bundleLoader.api.Utilities;
 import ch.ethz.jadabs.pluginLoader.api.PluginLoader;
 
 /**
@@ -139,6 +140,17 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    }
 
    
+   public boolean loadPluginIfMatches(String uuid, InputStream in) throws Exception
+   {
+       if (matches(in, " ¦ " + platform + " ¦ " + "PRO"))
+       {
+           loadPlugin(uuid);
+           return true;
+       }
+       else
+           return false;
+   }
+   
    /**
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#loadPlugin(java.lang.String)
     */
@@ -182,7 +194,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    public void unloadPlugin(String uuid) throws Exception {
       PluginDescriptor descr = getPluginDescriptor(uuid);
       Bundle[] bundles = PluginLoaderActivator.bc.getBundles();
-      String[] parts = uuid.split(":");
+      String[] parts = Utilities.split(uuid,":");
       String filename = parts[2] + "-" + parts[3] + ".jar";
       
       for (int i=0; i<bundles.length; i++) {

@@ -3,6 +3,8 @@
  */
 package ch.ethz.jadabs.bundleLoader.api;
 
+import java.util.StringTokenizer;
+
 /**
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
@@ -68,4 +70,18 @@ public class Utilities {
       }
       return sep;
    }
+   
+   public static String[] split(String attr, String split)
+   {
+       	String printArgs = "";
+		StringTokenizer argSplitter = new StringTokenizer(attr, split);
+		String[] args = new String[argSplitter.countTokens()];
+		int i = 0;
+		while(argSplitter.hasMoreTokens()) {
+			args[i++] = argSplitter.nextToken();
+		}
+		
+		return args;
+   }
+   
 }

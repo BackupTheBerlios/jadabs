@@ -126,7 +126,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
             if (locked.booleanValue())
                this.wait();
          } catch (Exception e) {
-            LOG.error(e.getStackTrace());
+            LOG.error(e);
          }
          locked = Boolean.TRUE;
 
@@ -182,7 +182,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
             if (locked.booleanValue())
                this.wait();
          } catch (Exception e) {
-            LOG.error(e.getStackTrace());
+            LOG.error(e);
          }
          locked = Boolean.TRUE;
 

@@ -38,6 +38,7 @@ package ch.ethz.jadabs.bundleLoader;
 import java.io.File;
 
 import ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler;
+import ch.ethz.jadabs.bundleLoader.api.Utilities;
 import ch.ethz.jadabs.http.HttpSocket;
 
 
@@ -64,7 +65,7 @@ public class BundleLoaderHandler implements HttpRequestHandler {
          String uuid = request.file.substring(8);
 
          try {
-            String[] args = uuid.split(":");
+            String[] args = Utilities.split(uuid, ":");
             String group = args[0];
             String name = args[1];
             String version = args[2];
@@ -85,7 +86,7 @@ public class BundleLoaderHandler implements HttpRequestHandler {
          String uuid = request.file.substring(8);
 
          try {
-            String[] args = uuid.split(":");
+            String[] args = Utilities.split(uuid, ":");
             String group = args[0];
             String name = args[1];
             String version = args[2];

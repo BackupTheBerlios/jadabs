@@ -44,6 +44,7 @@ import org.apache.log4j.Logger;
 
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher;
+import ch.ethz.jadabs.bundleLoader.api.Utilities;
 import ch.ethz.jadabs.http.HttpSocket;
 
 /**
@@ -66,7 +67,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
     * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#retrieveInformation(java.lang.String)
     */
    public InputStream retrieveInformation(String uuid) {
-      String[] args = uuid.split(":");
+      String[] args = Utilities.split(uuid, ":");
       String group = args[0];
       String name = args[1];
       String version = args[2];
@@ -95,7 +96,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
     * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#retrieveInformation(java.lang.String, java.lang.String)
     */
    public InputStream retrieveInformation(String uuid, String source) {
-      String[] args = uuid.split(":");
+      String[] args = Utilities.split(uuid, ":");
       String group = args[0];
       String name = args[1];
       String version = args[2];
@@ -161,7 +162,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
       private int index;
       
       public PluginIterator(String data) {
-         plugins = data.split("#####");
+         plugins = Utilities.split(data,"#####");
          index = 0;
       }
 

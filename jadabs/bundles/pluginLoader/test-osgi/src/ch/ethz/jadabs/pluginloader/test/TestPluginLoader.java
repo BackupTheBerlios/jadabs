@@ -55,7 +55,7 @@ public class TestPluginLoader implements BundleActivator
         		"Platform/id:mservices.wlab.ethz.ch, " +
         			"name:mservices, version:0.1.0, provider-name:ETHZ-IKS; " +
         			"Property/name:processor, value:armv4l; " +
-        		"Property/name:os, value:linux; " +
+        		"Property/name:os, value:i386; " +
         		"Property/name:display, value:no; " +
         		"Property/name:vm, value:cdc/fp; " +
         		"Property/name:vm-version, value:1.0.1; " +
@@ -73,7 +73,7 @@ public class TestPluginLoader implements BundleActivator
         filters.add(" ¦ Platform/id:mservices.wlab.ethz.ch, " +
         			"name:mservices, version:0.1.0, provider-name:ETHZ-IKS; " +
         			"Property/name:processor, value:armv4l; " +
-        		"Property/name:os, value:linux; " +
+        		"Property/name:os, value:i386; " +
         		"Property/name:display, value:no; " +
         		"Property/name:vm, value:cdc/fp; " +
         		"Property/name:vm-version, value:1.0.1; " +
@@ -88,10 +88,11 @@ public class TestPluginLoader implements BundleActivator
         
            
         filters.add(" ¦ Property/name:vm, value:cdc/fp; " +
-    		"Property/name:vm-version, value:1.3; " +
-    		"OSGiContainer/id:osgi; "+
-    		"OSGiContainer/id:core-osgi-daop " +
-    		" ¦ RP");
+                "Property/name:os, value:i386; " +
+                "Property/name:vm-version, value:1.3; " +
+                "OSGiContainer/id:osgi; "+
+                "OSGiContainer/id:core-osgi-daop " +
+    			" ¦ PROV");
         
         filters.add(" ¦ Platform/id:nokia6600.wlab.ethz.ch, " +
     			"name:nokia6600, version:0.1.0, provider-name:ETHZ-IKS; " +

@@ -48,6 +48,7 @@ import org.apache.log4j.Logger;
 
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher;
+import ch.ethz.jadabs.bundleLoader.api.Utilities;
 
 /**
  * Manages the Repository and provides an <code>InformationSource</code>
@@ -68,7 +69,7 @@ public class Repository extends PluginFilterMatcher implements InformationSource
     */
    public InputStream retrieveInformation(String uuid) {
       try {
-         String[] args = uuid.split(":");
+         String[] args = Utilities.split(uuid, ":");
          String group = args[0];
          String name = args[1];
          String version = args[2];

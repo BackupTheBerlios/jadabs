@@ -81,14 +81,19 @@ public class BundleDescriptor extends Descriptor {
       
       // fetch input stream from obr file
       InputStream instream = BundleLoaderActivator.bundleLoader.fetchInformation(uuid, this);      
-      parser.setInput(new InputStreamReader(instream));
-      // parse obr file
-      parseOBR();
-      if (! uuid.equals(group + ":" + name + ":" + version + ":obr"))
-         throw new Exception("OBR file corrupted. Could not create BundleDescriptor");
-      
-      if (LOG.isDebugEnabled()) 
-         LOG.debug("Created new BundleDescriptor " + uuid);
+      if (instream != null)
+      {
+	      parser.setInput(new InputStreamReader(instream));
+	      // parse obr file
+	      parseOBR();
+	      if (! uuid.equals(group + ":" + name + ":" + version + ":obr"))
+	         throw new Exception("OBR file corrupted. Could not create BundleDescriptor");
+	      
+	      if (LOG.isDebugEnabled()) 
+	         LOG.debug("Created new BundleDescriptor " + uuid);
+      }
+      else
+          LOG.warn("could not read information: "+ uuid);
    }
 
    /**

@@ -52,11 +52,11 @@ public class MatchItem {
     * of these clauses separated by ";".  
     */
    public MatchItem(String filterPart) {
-      String[] parts = filterPart.split("/");
+      String[] parts = Utilities.split(filterPart,"/");
       this.name = parts[0].trim();
-      String[] props = parts[1].split(",");
+      String[] props = Utilities.split(parts[1],",");
       for (int index = 0; index < props.length; index++) {
-         parts = props[index].split(":");
+         parts = Utilities.split(props[index],":");
          properties.put(parts[0].trim(), parts[1].trim());
       }      
    }
