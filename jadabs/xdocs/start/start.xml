@@ -259,6 +259,7 @@ win32> runpeer.bat <configuration>
           	<td>Mobile Phones with the platform specified, tested on:
           	     <ul>
             		<li>Nokia 6600</li>
+            		<li>Ericsson P910i</li>
             	</ul>          	 
           	 </td>
           	<td>J2ME/CLDC1.0, MIDP1.0, JSR-82 (BT-API)</td>
@@ -267,7 +268,7 @@ win32> runpeer.bat <configuration>
             		<li>Jxme-BT, Chat, SmartSMS</li>
             	</ul>
             </td>
-            <td><a href="http://wlab.ethz.ch/jadabs-cldc/">see for more details</a></td>
+            <td><a href="http://jadabs.berlios.de/jadabs-cldc/">see for more details</a></td>
           </tr>
           
         </table>

@@ -15,7 +15,7 @@
   	<links>
   		<item name="BerliOS" 						href="https://developer.berlios.de/projects/jadabs"/>
   		<item name="Jadabs-CLDC" 					href="http://jadabs.berlios.de/jadabs-cldc/"/>
-  		<item name="OSGi-Repository" 				href="http://osgirepo.berlios.de"/>
+  		<item name="OSGi-Repository" 				href="http://osgirepo.berlios.de/maven/repository"/>
   		<item name="Maven-OSGi-Plugin" 				href="http://mavenosgiplugin.berlios.de"/>
 <!--  		<item name="PDF Documentation" 				href="/jadabs.pdf" img="/images/pdf.gif"/>-->
   	</links>

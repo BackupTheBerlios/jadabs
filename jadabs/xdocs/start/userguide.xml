@@ -248,7 +248,7 @@ public AOPServiceProvider implements BundleActivator
 			<a href="http://maven.apache.org">maven</a> to compile
 			and generate our projects.
 			We are working on the 
-			<a href="../../plugins/maven-osgi/">maven-osgi-plugin</a>
+			<a href="http://mavenosgiplugin.berlios.de">maven-osgi-plugin</a>
 			which takes from you the burden of coding all the
 			nasty manifest and dependencies things.
 		</p>

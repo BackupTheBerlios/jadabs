@@ -23,7 +23,7 @@
    
    <p>
         We are using an OSGi plugin for maven to build the bundles. Download the
-        <a href="http://wlab.ethz.ch/plugins/maven-osgi/install.html">maven-osgi-plugin</a> 
+        <a href="http://mavenosgiplugin.berlios.de/install.html">maven-osgi-plugin</a> 
         as described.
    </p>
    

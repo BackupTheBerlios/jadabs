@@ -22,7 +22,7 @@
 		lead to a restart of a running component.
 	</p>
 	<p>
-		On the <a href="download.html">download</a> page different
+		On the <a href="start.html">download</a> page different
 		AOP configurations are supported.
 		Following we discuss how we support the two AOP types static and
 		dynamic.
@@ -42,7 +42,7 @@
 		</p>
 		<p>
 			For nodes with VMs running on the normal VM the dynamic AOP approach
-			from Prose can be included.
+			from <a href="http://prose.ethz.ch">PROSE</a> can be included.
 		</p>
  		</subsection>
  
