@@ -93,7 +93,7 @@ win32> runpeer.bat <configuration>
           
           <tr>
           <td>minimal</td>
-          <td>init (default for all)</td>
+          <td>init.xargs (default for all)</td>
           <td>OSGi/dAOP, JXME, RemoteFW</td>
             <td>
               <p>
@@ -109,7 +109,7 @@ win32> runpeer.bat <configuration>
                     
           <tr>
           <td>full</td>
-          <td>init-gui-linux, init-gui-win32</td>
+          <td>init-gui-linux.xargs, init-gui-win32.xargs</td>
           <td>OSGi/dAOP, JXME, RemoteFW, MainGUI</td>
             <td>
               <p>
@@ -125,7 +125,7 @@ win32> runpeer.bat <configuration>
           
           <tr>
           <td>full</td>
-          <td>init-kf</td>
+          <td>init-kf.xargs</td>
           <td>OSGi/dAOP, JXME, RemoteFW, all Knopflerfish Bundles</td>
             <td>
               <p>
@@ -139,9 +139,9 @@ win32> runpeer.bat <configuration>
           <td>full-prose</td>
           <td>
               <ul>
-                  <li>init prose</li>
-                  <li>init-kf prose</li>
-                  <li>init-gui-linux prose</li>
+                  <li>init.xargs prose</li>
+                  <li>init-kf.xargs prose</li>
+                  <li>init-gui-linux.xargs prose</li>
               </ul>
           </td>
           <td>OSGi/dAOP/Prose, JXME, RemoteFW, all Knopflerfish Bundles</td>

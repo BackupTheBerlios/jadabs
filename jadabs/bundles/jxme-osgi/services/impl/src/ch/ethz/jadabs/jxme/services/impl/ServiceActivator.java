@@ -80,8 +80,8 @@ public class ServiceActivator implements BundleActivator
         groupService = GroupServiceImpl.createInstance(peer, group, resServ, pipeService);
 
         // register GroupService
-        bc.registerService(new String[]{
-                "ch.ethz.jadabs.jxme.services.GroupService","WorldPeerGroup"},
+        bc.registerService(
+                "ch.ethz.jadabs.jxme.services.GroupService",
                 groupService, null);
                 
         // Also publish this Peer and the PeerGroup on the network

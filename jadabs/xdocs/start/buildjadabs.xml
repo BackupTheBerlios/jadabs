@@ -28,10 +28,8 @@
    </p>
    
    <p>
-   		Checkout Jadabs from the wlab/cvsmaster
-<source><![CDATA[
-> cvs co jadabs
-]]></source>  
+   		Checkout Jadabs from 
+   		<a href="https://developer.berlios.de/cvs/?group_id=2534">CVS - BerliOS</a>
    </p>
    
    	<p>
@@ -48,14 +46,12 @@
 	
 	<section name="Build distribution">
 	<p>
-		To build a distribution you need first to checkout the maven repository
-		which contains some more bundles from Knopflerfish into the workspace.
+		To build a distribution compile first jadabs with maven you will then
+		get all required additional bundles stored in .maven/repository.
 		This will create a directory like jadabs/jadabs-x.x.x.
 		Packaged files are stored in jadabs/target/distributions.
 	</p>
 <source><![CDATA[
-> cd workspace
-> cvs co maven
 > cd jadabs
 > maven jadabs:dist
 ]]></source> 

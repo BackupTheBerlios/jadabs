@@ -19,6 +19,16 @@
       </p>    
     </section>
     
+    <release version="0.7.1" date="2004-11-25" description="fixes, PPC-gui">
+		<action dev="andfrei" type="add">
+      		Several fixes for RemoteFW, a PocketPC-GUI version, notification
+      		for appearing and disappearing nodes.
+      	</action>
+      	<action dev="andfrei" type="add">
+      		Added startup script for j9 on PocketPC.
+      	</action>
+    </release>
+    
     <release version="0.7.0" date="2004-11-08" description="released to open source">
 		<action dev="andfrei" type="add">
       		We released this project to the open source community hosted by

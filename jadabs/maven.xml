@@ -255,8 +255,13 @@
 			<ant:fileset dir="${jadabs.releases.dir}/" includes="*.gz"/>
 	</ant:copy>
   	
-  	<attainGoal name="multiproject:site"/>
+  	<attainGoal name="jadabs:docu"/>
   	<attainGoal name="site:deploy" />
+  </goal>
+  
+  <goal name="jadabs:docu">
+    <attainGoal name="multiproject:site"/>
+    <!--<attainGoal name="pdf"/>-->
   </goal>
   
   

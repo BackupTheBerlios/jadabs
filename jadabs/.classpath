@@ -34,5 +34,6 @@
 	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/sip-api-1.1-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/nist-sip-1.2-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/swt/jars/swt-3.0.1-ppc.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/kobjects/jars/ksoap2-2.0.1-osgi.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

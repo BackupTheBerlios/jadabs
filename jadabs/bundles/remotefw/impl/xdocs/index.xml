@@ -14,6 +14,20 @@
   <body>
     <section name="OSGi-RemoteFramework Implementation">
     
+    	 <subsection name="Exported OSGi-Services">
+      	
+			<table>
+	          <tr><th>Service/Class</th><th>Registration</th><th>Description</th></tr>
+	          
+	          <tr>
+	          	<td>FrameworkManager</td>
+	          	<td>ch.ethz.jadabs.remotefw.FrameworkManager</td>
+	          	<td></td>
+	          </tr>
+	                    
+	      	</table>
+      	
+      	</subsection>
       
     </section>
   </body>

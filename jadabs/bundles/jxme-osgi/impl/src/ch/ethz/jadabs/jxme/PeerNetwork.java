@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: PeerNetwork.java,v 1.2 2004/11/19 08:16:36 afrei Exp $
+ * $Id: PeerNetwork.java,v 1.3 2004/11/25 19:03:50 afrei Exp $
  *
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -66,7 +66,7 @@ import org.apache.log4j.Logger;
  * This class is the first class instatiated by the application. Any application
  * that wants to become a JXME peer creates a singleton object of this class.
  * Doing so creates the Peer, the default PeerGroup and provides a default
- * GroupService to the application. Also the new Peer and the PeerGroup are
+ * EndpointService to the application. Also the new Peer and the PeerGroup are
  * advertised on the network.
  */
 public class PeerNetwork

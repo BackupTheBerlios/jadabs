@@ -13,26 +13,76 @@
 
   <body>
     <section name="JXME-OSGi">
-      	<subsection name="Properties">
-		<table>
-          <tr><th>property</th><th>default</th><th>description</th></tr>
+    
+    	<subsection name="Overview">
+    	<p>
+    		For the communication layer we use a peer to peer concept as
+    		proposed in <a href="http://www.jxta.org">JXTA</a>. Due to its
+    		large footprint JXTA cannot be run on small devices like a PDA
+    		or a mobile phone. A proposed smaller implemenation by the JXTA
+    		community is known as <a href="http://jxme.jxta.org">JXME</a>.
+    	</p>
+    	<p>
+    		With this JXME-OSGi package we have taken over code and ideas by
+    		the JXME project and revised it to use it in a container
+    		like OSGi. Furthermore, the original code has been devided into
+    		a core package and a service API and service Impl package. The
+    		hardcoded network layer has been disassembled and supports now
+    		different pluggable network implementation.
+    	</p>
+    	<p>
+    		Currently JXME-OSGi nor JXME is fully message compatible with
+    		a JXTA node. A proxy or gateway is still needed which connects
+    		the JXME communities with the JXTA community.
+    	</p>
+    	</subsection>
+    
+      	
+     	<subsection name="Properties">
+      	
+			<table>
+	          <tr><th>Property</th><th>Default</th><th>Description</th></tr>
+	          
+	          <tr>
+	          	<td>ch.ethz.jadabs.jxme.defaultgroup</td>
+	          	<td>PeerNetworkGroup</td>
+	          	<td>Name of the Default WorldPeerGroup.</td>
+	          </tr>
+	          
+	          <tr>
+	          	<td>ch.ethz.jadabs.jxme.peeralias</td>
+	          	<td>${HOSTNAME}</td>
+	          	<td>specify this peeralias if you are running several
+	          	jadabs instances on the same machine.</td>
+	          </tr>
+	                    
+	      	</table>
+      	
+      	</subsection>
+      
+	  	<subsection name="Exported OSGi-Services">
+	  
+	      	<table>
+	          <tr><th>Properties</th><th>Class</th><th>Description</th></tr>
+	          
+	          <tr>
+	          	<td>ch.ethz.jadabs.jxme.PeerNetwork</td>
+	          	<td>PeerNetwork</td>
+	          	<td>To get the Peer and PeerGroup.</td>
+	          </tr>
+	
+	          <tr>
+	          	<td>ch.ethz.jadabs.jxme.EndpointService</td>
+	          	<td>EndpointService</td>
+	          	<td>Abstract socket layer, sends broadcasts and unicast messages.</td>
+	          </tr>
+	                              
+	      	</table>
+	      	
+	      </subsection>
           
-          <tr>
-          	<td>ch.ethz.jadabs.jxme.defaultgroup</td>
-          	<td>PeerNetworkGroup</td>
-          	<td>Name of the Default WorldPeerGroup.</td>
-          </tr>
-          
-          <tr>
-          	<td>ch.ethz.jadabs.jxme.peeralias</td>
-          	<td>${HOSTNAME}</td>
-          	<td>specify this peeralias if you are running several
-          	jadabs instances on the same machine.</td>
-          </tr>
-                    
-      </table>
-      </subsection>
       
     </section>
+    
   </body>
 </document>

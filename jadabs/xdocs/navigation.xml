@@ -50,7 +50,7 @@
 			<item name="JXME-Services-Impl"			href="/multiproject/jxme-services-impl/index.html" />
 			<item name="JXME UDP"					href="/multiproject/jxme-udp/index.html" />	
 			<item name="JXME TCP" 					href="/multiproject/jxme-tcp/index.html"/>
-			<item name="JXME BT" 					href="/multiproject/jxme-bt/index.html"/>
+<!--			<item name="JXME BT" 					href="/multiproject/jxme-bt/index.html"/> -->
 		</item>
 		<item name="RemoteFW API" 			    href="/multiproject/remotefw-api/index.html"/>
 		<item name="RemoteFW Impl"				href="/multiproject/remotefw-impl/index.html" />

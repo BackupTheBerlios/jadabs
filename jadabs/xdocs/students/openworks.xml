@@ -40,23 +40,6 @@
 		</p>
 		</subsection>
 		
-		<subsection name="SIPHoc Turning a Symbian based mobile phone into a VoIP-peer using Bluetooth/SIP">
-		<p>
-			Currently, most mobile phones are equipped with more than one 
-			networking interface, like i.e. Bluetooth. One could imagine 
-			the phone to be smart and always choose the cheapest possible 
-			way to call a given user. As an example the mobile phone could 
-			use the existing Bluetooth connection to tunnel voice traffic 
-			through the internet whenever the remote device is connected to 
-			the internet.
-		</p>
-		<p>
-		    Proposal (<a href="http://wlab.ethz.ch/qos/students/voicetunnel.pdf">pdf</a>)
-		</p>
-		<img src="voicetunnel.gif" alt="voicetunnel" width="500" />
-
-		</subsection>	
-
 		</section>
 		
  </body>
