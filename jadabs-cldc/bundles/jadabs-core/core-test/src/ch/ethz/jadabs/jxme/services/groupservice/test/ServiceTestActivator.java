@@ -1,4 +1,4 @@
-/* $Id: ServiceTestActivator.java,v 1.2 2005/04/03 16:42:21 printcap Exp $
+/* $Id: ServiceTestActivator.java,v 1.3 2005/04/04 11:02:04 printcap Exp $
  * Created on Feb 18, 2005
  *
  */
@@ -52,6 +52,11 @@ public class ServiceTestActivator implements BundleActivator, Listener
         // obtain reference to pipe
         String pipeName = bc.getProperty("ch.ethz.jadabs.jxme.services.groupservice.test.pipe");
         LOG.debug("pipeName: "+pipeName);
+        
+        
+        LOG.debug("sleeping...");
+        Thread.sleep(30000);
+        LOG.debug("woke up again.");
         
         groupService.remoteSearch(NamedResource.PIPE, "Name", "", 1, new DiscoveryListener() {
             public void handleSearchResponse(NamedResource namedResource)

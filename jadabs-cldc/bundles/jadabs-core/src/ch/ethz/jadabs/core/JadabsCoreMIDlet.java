@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreMIDlet.java,v 1.5 2005/04/03 16:42:21 printcap Exp $
+ * $Id: JadabsCoreMIDlet.java,v 1.6 2005/04/04 11:02:04 printcap Exp $
  */
 package ch.ethz.jadabs.core;
 
@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import ch.ethz.jadabs.jxme.JxmeActivator;
 import ch.ethz.jadabs.jxme.bt.BTActivator;
 import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreActivator;
 import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreImpl;
@@ -75,7 +76,7 @@ public class JadabsCoreMIDlet extends MIDlet
         LOG = Logger.getLogger("ch.ethz.jadabs.core.JadabsCoreMIDlet");        
         
         // now bring up the entire Jxme stuff
-        //osgicontainer.startBundle(new JxmeActivator());
+        osgicontainer.startBundle(new JxmeActivator());
         
         // for Bluetooth transport
         osgicontainer.startBundle(new BTActivator());
