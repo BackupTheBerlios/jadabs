@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreTestMIDlet.java,v 1.3 2005/02/17 17:29:17 printcap Exp $
+ * $Id: JadabsCoreTestMIDlet.java,v 1.4 2005/02/17 23:06:43 printcap Exp $
  */
 package ch.ethz.jadabs.core.test;
 
@@ -18,10 +18,13 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import ch.ethz.jadabs.core.wiring.ConnectionNotifee;
-import ch.ethz.jadabs.core.wiring.LocalWiringBundle;
-import ch.ethz.jadabs.core.wiring.LocalWiringConnection;
-import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreActivator;
+import ch.ethz.jadabs.jxme.NamedResource;
+import ch.ethz.jadabs.jxme.Pipe;
+import ch.ethz.jadabs.jxme.microservices.MicroElement;
+import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceBundleActivator;
+import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceBundleImpl;
+import ch.ethz.jadabs.jxme.microservices.MicroListener;
+import ch.ethz.jadabs.jxme.microservices.MicroMessage;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
 
 
@@ -33,7 +36,7 @@ import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
  * @version 1.0
  */
 public class JadabsCoreTestMIDlet extends MIDlet 
-                                  implements CommandListener, BundleActivator, ConnectionNotifee
+                                  implements CommandListener, BundleActivator
 {    
     /** Reference to Log4j window */
     private static Logger LOG;
@@ -56,16 +59,21 @@ public class JadabsCoreTestMIDlet extends MIDlet
     /* commands */
     private Command logCmd;
     private Command wakeupCoreCmd;
+    private Command createPipe;
+    private Command addListener;
+    private Command closePipe;
     private Command exitCmd;        
     private Command messageCmd;
     private Command sendCmd;
     
-    /** local wiring interface */
-    private LocalWiringBundle wiring;
+    /** the MigroGroupServiceBundle servce object */
+    private MicroGroupServiceBundleImpl groupService;
     
-    /** local wiring connection */
-    private LocalWiringConnection connection;
+    /** the name of the pipe */
+    private final String PIPE_NAME = "testpipe";
     
+    /** ID of the pipe */
+    private String id;
     
     
     /** Constructor */
@@ -78,9 +86,15 @@ public class JadabsCoreTestMIDlet extends MIDlet
         osgicontainer.setProperty("log4j.priority", this.getAppProperty("log4j.priority"));
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer", 
                                   this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));
+        osgicontainer.setProperty("ch.ethz.jadabs.microservices.bundleport", 
+                                  this.getAppProperty("ch.ethz.jadabs.microservices.bundleport"));
         osgicontainer.startBundle(new LogActivator());
-        osgicontainer.startBundle(new MicroGroupServiceCoreActivator());
-        LOG = Logger.getLogger("JadabsCoreTestMIDlet");
+        LOG = Logger.getLogger("ch.ethz.jadabs.core.test.JadabsCoreTestMIDlet");
+        
+        MicroGroupServiceBundleActivator mgsActivator = new MicroGroupServiceBundleActivator();        
+        osgicontainer.startBundle(mgsActivator);
+        groupService = mgsActivator.getService();
+        
         osgicontainer.startBundle(this);
         instance = this;  
     }
@@ -109,6 +123,9 @@ public class JadabsCoreTestMIDlet extends MIDlet
         sendCmd = new Command("Send", Command.SCREEN, 3);
         logCmd = new Command("Log", Command.SCREEN, 4);
         wakeupCoreCmd = new Command("Wakeup Core", Command.SCREEN, 1);
+        createPipe = new Command("Create Pipe", Command.SCREEN, 5);
+        addListener = new Command("Add Listener", Command.SCREEN, 6);
+        closePipe = new Command("Close Pipe", Command.SCREEN, 7);
         exitCmd = new Command("Exit", Command.EXIT, 1);
         messageScreen = new MessageScreen(this, new Command[] {
                 sendCmd, logCmd, exitCmd    });
@@ -116,7 +133,7 @@ public class JadabsCoreTestMIDlet extends MIDlet
         Logger.getLogCanvas().setDisplay(display);
         Logger.getLogCanvas().setPreviousScreen(Logger.getLogCanvas());
         Logger.getLogCanvas().setCommandAndListener(new Command[] {
-               wakeupCoreCmd, messageCmd, exitCmd}, this);          
+               wakeupCoreCmd, messageCmd, exitCmd, createPipe, addListener, closePipe}, this);          
     }
     
     /** Handle pausing the MIDlet */
@@ -161,26 +178,45 @@ public class JadabsCoreTestMIDlet extends MIDlet
             display.setCurrent(Logger.getLogCanvas());
         } else if (c == wakeupCoreCmd) {
             LOG.debug("wake up core...");
+            groupService.wakeupCore();                   
+        } else if (c == createPipe) {
+            LOG.debug("create pipe "+PIPE_NAME+"...");
+            id = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:02", Pipe.UNICAST);
+            LOG.debug("pipe with id:"+id);
+        } else if (c == addListener) {
+            LOG.debug("add listener to pipe "+id+".");
             try {
-                wiring.wakeupCore();
+	            groupService.listen(id, new MicroListener() {
+	                public void handleMessage(MicroMessage message, String listenerId)
+	                {
+	                    LOG.debug("incoming message \""+message.toString()+"\", listenerId="+listenerId);                    
+	                }	             
+	            });
             } catch(IOException e) {
-                LOG.error("error duing wake up core: "+e);
-            }            
+               LOG.error("Error while registering listener to pipe '"+id+"': "+e.getMessage());
+            }
+        } else if (c == closePipe) {
+            LOG.debug("closing pipe "+id+" (removing listener)");
+            try {
+                groupService.close(id);
+            } catch(IOException e) {
+                LOG.error("Error while closing pipe '"+id+"': "+e.getMessage());
+            }
         } else if (c == sendCmd) {
             display.setCurrent(Logger.getLogCanvas());
-            if (wiring.isConnected()) {
-                String msg = messageScreen.getString();
-                byte buffer[] = msg.getBytes();
-                LOG.debug("writing message '"+msg+"'");
-                try {                    
-                    connection.sendBytes(buffer);
-                } catch(IOException e) {
-                    LOG.error("cannot send message!");
-                }                
-            } else {
-                LOG.debug("cannot send message as we are not connected!");
+            String msg = messageScreen.getString();
+            
+            MicroElement elms[] = new MicroElement[1];
+            elms[0] = new MicroElement("text", msg, "jxta");
+            MicroMessage message = new MicroMessage(elms);
+            
+            LOG.debug("sending JXTA message over pipe.");
+            try {
+                groupService.send(id, message);
+            } catch(IOException e) {
+                LOG.error("Error while sending JXTA message: "+e.getMessage());
             }
-            LOG.debug("writing done.");            
+            LOG.debug("sending done.");            
         } else if (c == exitCmd) {
             quitApp();
         }
@@ -197,8 +233,6 @@ public class JadabsCoreTestMIDlet extends MIDlet
         // get Endpoint service
         //ServiceReference sref = bc.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
         //endptsvc = (EndpointService)bc.getService(sref);
-        
-        wiring = new LocalWiringBundle(1234, this);
     }
 
     /**
@@ -210,18 +244,5 @@ public class JadabsCoreTestMIDlet extends MIDlet
     {
         // remove chat communication servce from service registry 
 //        endptsvc.removeListener("jxmechat");
-    }
-
-    /** 
-     * Invoked when a TCP connection was accepted.
-     * @param connection LocalWiringConnection from this new connection
-     * @see ch.ethz.jadabs.core.wiring.ConnectionNotifee#connectionEstablished(ch.ethz.jadabs.core.wiring.LocalWiringConnection)
-     */
-    public void connectionEstablished(LocalWiringConnection connection)
-    {
-        this.connection = connection;
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("new wiring connection established.");
-        }        
     }
 }

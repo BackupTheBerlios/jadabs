@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceBundleImpl.java,v 1.4 2005/02/17 17:29:16 printcap Exp $
+ * $Id: MicroGroupServiceBundleImpl.java,v 1.5 2005/02/17 23:06:43 printcap Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -160,8 +160,8 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             myRequest = nextSequenceNumber++;
             try {
                 out.writeShort(myRequest);
-                out.writeShort(Constants.PUBLISH_REMOTE);
                 out.writeShort(groupNumber);
+                out.writeShort(Constants.PUBLISH_REMOTE);
                 out.writeShort(0);		// dummy length
                 out.writeUTF(resourceType);
                 out.writeUTF(resourceName);
@@ -685,8 +685,8 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             myRequest = nextSequenceNumber++;
             try {
                 out.writeShort(myRequest);
-                out.writeShort(Constants.SEND);
                 out.writeShort(groupNumber);
+                out.writeShort(Constants.SEND);
                 out.writeShort(0);		// dummy length
                 out.writeUTF(pipeID);
                 data.write(out);
@@ -739,8 +739,8 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             myRequest = nextSequenceNumber++;
             try {
                 out.writeShort(myRequest);
-                out.writeShort(Constants.LISTEN);
                 out.writeShort(groupNumber);
+                out.writeShort(Constants.LISTEN);
                 out.writeShort(0);		// dummy length
                 out.writeUTF(pipeID);
                 out.close();

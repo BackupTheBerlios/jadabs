@@ -1,7 +1,7 @@
 /*
  * Created on Dec 9, 2004
  *
- * $Id: LocalWiringCore.java,v 1.3 2005/02/17 17:29:17 printcap Exp $
+ * $Id: LocalWiringCore.java,v 1.4 2005/02/17 23:06:43 printcap Exp $
  */
 package ch.ethz.jadabs.core.wiring;
 
@@ -39,7 +39,7 @@ public class LocalWiringCore
     private static final int CORE_WAKEUP_PORT = 4444; 
     
     /** buffer space to be allocated for wakeup datagram */
-    private static final int DATAGRAM_BUFFER_SIZE = 15;
+    private static final int DATAGRAM_BUFFER_SIZE = 256;
     
     /** flag indicating thread(s) that wiring core is shut down */
     private boolean aborted = false;

@@ -11,7 +11,12 @@
 	<shortDescription>Jadabs-OSGi-J2ME Container</shortDescription>
 
   	<dependencies>
-  	
+      <dependency>
+         <groupId>j2me</groupId>
+         <artifactId>midpapi</artifactId>
+         <version>2.0</version>
+      </dependency>
+
   	</dependencies>
 
   

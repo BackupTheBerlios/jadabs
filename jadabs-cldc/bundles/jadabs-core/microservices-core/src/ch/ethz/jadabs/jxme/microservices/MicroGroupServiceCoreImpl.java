@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceCoreImpl.java,v 1.2 2005/02/17 17:29:17 printcap Exp $
+ * $Id: MicroGroupServiceCoreImpl.java,v 1.3 2005/02/17 23:06:43 printcap Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -224,6 +224,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
                     short groupNumber = din.readShort();
                     short requestType = din.readShort();
                     short messageLength = din.readShort();
+                    System.out.println("requestType = "+requestType);
                     
                     // read rest of message and dispatch according to the request type
                     switch (requestType) {                    
@@ -286,8 +287,8 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
                     // SEND request
                     case Constants.SEND:
                         String pipeIdString = din.readUTF();
-                    		String messageString = din.readUTF();
-                    		dispatchSend(requestNumber, groupNumber, pipeIdString, messageString);
+                    		Message mm = Message.read(din);
+                    		dispatchSend(requestNumber, groupNumber, pipeIdString, mm);
                         break;
                     
                     // LISTEN request
@@ -498,6 +499,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
 	            try {
 	                groupService.listen(pipe, new GroupServiceListener(requestNumber, groupNumber, 
 	                                             pipeIdString, connection));
+	                LOG.debug("Listener added to Pipe "+pipeIdString);
 	                error = false;
 	            } catch (IOException e) {
 	            	LOG.error("Cannot register listener to pipe "+pipeIdString);
@@ -533,9 +535,9 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
          * @param requestNumber sequence number vale of this request
          * @param groupNumber internal group identifier
          * @param pipeIdString JXTA ID string of pipe where the message is sent with 
-         * @param messageString serialized JXTA message 
+         * @param message JXTA message 
          */
-        public void dispatchSend(short requestNumber, short groupNumber, String pipeIdString, String messageString)
+        public void dispatchSend(short requestNumber, short groupNumber, String pipeIdString, Message message)
         {
             boolean error = true;
             Pipe pipe = lookupPipeByID(pipeIdString);            
@@ -543,13 +545,12 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
                 LOG.error("Pipe with ID '"+pipeIdString+"' not found.");                
             } else {
 	            try {
-	                DataInputStream din = new DataInputStream(new ByteArrayInputStream(messageString.getBytes()));
-	                Message message = Message.read(din);
-	                din.close();
 	                groupService.send(pipe, message);
+	                LOG.debug("sending message over pipe");
 	                error = false;
 	            } catch(IOException e) {
-	                LOG.error("groupservice: cannot send massage over pipe");                
+	                LOG.error("groupservice: cannot send massage over pipe '"+pipe.toString()+"'");
+	                e.printStackTrace();
 	            }
             }
             
@@ -609,6 +610,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
             NamedResource res = groupService.create(resourceType, resourceName, new ID(precookedIdString), argument);            
             if (res != null) {
 					jxtaId = res.getID().toString();
+					LOG.debug("Pipe created with ID "+jxtaId);
 					CacheItem item = new CacheItem();
 					item.refCount++;
 					item.res = res;
