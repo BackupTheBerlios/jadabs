@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../project.xml</extend>
+
+	<groupId>jadabs</groupId>
+	<id>microservices-bundle</id>
+	<name>MicroServices Bundle (Stub)</name>
+
+	<shortDescription>Micro GroupService Stub (for bundles)</shortDescription>	
+  	<dependencies>  
+		<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+
+      <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>local-wiring</artifactId>
+            <version>${pom.currentVersion}</version>
+      </dependency>
+
+      <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>microservices-common</artifactId>
+            <version>${pom.currentVersion}</version>
+      </dependency>
+
+      <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>jxme-osgi-j2me</artifactId>
+            <version>${pom.currentVersion}</version>
+      </dependency>
+                 
+      <dependency>
+         <groupId>jadabs</groupId>
+         <artifactId>log4j-j2me</artifactId>
+         <version>${pom.currentVersion}</version>         
+      </dependency>
+
+		<dependency>
+      	<groupId>j2me</groupId>
+      	<artifactId>midpapi</artifactId>
+      	<version>2.0</version>
+		</dependency>
+      
+      <dependency>
+      	<groupId>j2me</groupId>
+      	<artifactId>cldcapi</artifactId>
+      	<version>1.0</version>
+		</dependency>	      
+  	</dependencies>  
+</project>
