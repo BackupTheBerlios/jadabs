@@ -21,8 +21,8 @@
   
 	  	<dependency>
 			<groupId>osgi</groupId>
-			<artifactId>framework</artifactId>
-			<version>1.3.0-aop</version>
+			<artifactId>osgi-framework</artifactId>
+			<version>1.2</version>
 		</dependency>
 	
 		<dependency>
