@@ -1,0 +1,491 @@
+$Id: messageformats.txt,v 1.1 2005/01/23 13:02:11 printcap Exp $
+
+Message-Format between Jadabs-Bundle and Jadabs-Core-Entity
+-----------------------------------------------------------
+Rene Mueller, January 23, 2005
+
+
+1. GENERAL FORMAT
+=================
+The communication mechanism between the Jadabs-Bundle 
+and the Jadabs-Core enity uses SYNCHRONOUS and 
+ASYNCHRONOUS communication. 
+
+SYNCHRONOUS (example publishRemote):
+------------------------------------
+
+BUNDLE    -- Request(Req#, publishRemote, param) -->   CORE
+  |                                                      |
+wait                                                   process
+  |                                                      |
+BUNDLE   <-- Reply(Req#, publishRemote, result) --     CORE
+
+
+ASYNCHRONOUS (example remoteSearch):
+------------------------------------
+
+BUNDLE    -- Request(Req#, remoteSearch, param) -->    CORE
+  |                                                      |
+wait                                                  process
+  |                                                      |
+BUNDLE   <-- Reply(Req#, remoteSearch, ack) --         CORE  
+  |                                                      |
+continue                                              continue 
+  |                                                      |
+ ...                                                    ...
+  |                                                      |
+BUNDLE   <-- AsyncMsg(Req#, searchResponse, param) --  CORE
+  |                                                      |
+ ...                                                    ...
+  |                                                      |
+BUNDLE   <-- AsyncMsg(Req#, nmdResourceLoss, param) -- CORE
+
+
+
+All REQUEST messages that are sent from the Bundle to the Core entity
+have the following format (network order assumed):
+
+REQUEST:
+ offset    field                      type 
+ -----------------------------------------------------------
+   0:      request number             short 
+   2:      group number (internally)  short 
+   4:      request type               short 
+   6:      message length (in bytes)  short
+   8:..    type dependend data        request type depended
+
+REPLY:
+ offset    field                      type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)  boolean
+   1:      request number             short 
+   3:      group number (internally)  short 
+   5:      request type               short 
+   7:      error or exception occured boolean
+   8:      message length (in bytes)  short
+  10:..    type dependend data        request type depended
+
+ASYNC_MSG:
+ offset    field                      type 
+ -----------------------------------------------------------
+   0:      is a reply message (false) boolean
+   1:      request number             short 
+           (reqeust that requested
+            messages of such kind)    
+   3:      group number (internally)  short 
+   5:      async   type               short 
+   7:      message length (in bytes)  short
+   9:..    type dependend data        request type depended
+
+
+2. SPECIFIED MESSAGE TYPES 
+==========================
+
+Request Types:
+--------------
+   Constant     Value     Method
+--------------------------------------
+PUBLISH         64        publish
+PUBLISH_REMOTE  65        publishRemote
+LOCAL_SEARCH    66        localSearch
+REMOTE_SEARCH   67        remoteSearch
+CANCEL_SEARCH   68        cancelSearch
+CREATE          69        create
+JOIN            70        join
+SEND            71        send 
+LISTEN          72        listen
+RESOLVE         73        resolve
+CLOSE           74        close
+
+AsyncMsg Types:
+---------------
+   Constant        Value     Listener Interface      Method
+-------------------------------------------------------------------------
+SEARCH_RESPONSE    128       MicroDiscoveryListener  handleSearchResponse
+NAME_RESOURCE_LOSS 129       MicroDiscoveryListener  handleResourceLoss
+MESSAGE            130       MicroListenerr          handleMessage 
+
+
+3. SPECIFICATION OF MESSAGES
+============================
+
+3.1. publish 
+------------
+Method: void publish(String resourceType, String resourceName, String
+                     stringID);
+Publishing a resource in the network using the resolver service into the 
+local cache.
+
+PUBLISH_REQUEST:
+ offset    field                      type 
+ -----------------------------------------------------------
+   0:      request number             short 
+   2:      group number (internally)  short 
+   4:      request type  (PUBLISH)    short 
+   6:      message length (in bytes)  short
+   8:      resource type              UTF String
+  ..:      resource name              UTF Name
+  ..:      ID string                  UTF String
+
+PUSLISH_REPLY:
+ offset    field                      type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)  boolean
+   1:      request number             short 
+   3:      group number (internally)  short
+   5:      request type (PUBLISH)     short 
+   7:      error or exception occured boolean
+   8:      message length (in bytes)  short
+
+
+
+3.2  remotePublish
+------------------
+Method: void remotePublish(String resourceType, String resourceName, 
+                           String stringID);
+Publishing a resource in the network using the resolver service by
+sending an advertisement message.
+
+REMOTE_PUBLISH_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      request type  (REMOTE_PUBLISH)    short 
+   4:      group number (internally)         short 
+   6:      message length (in bytes)         short
+   8:      resource type                     UTF String
+  ..:      resource name                     UTF String
+  ..:      ID string                         UTF String
+
+REMOTE_PUSLISH_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short
+   5:      request type (REMOTE_PUBLISH)      short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+
+
+
+3.3. localSearch
+----------------
+Method:  String[] localSearch(String type, String attribute, 
+                              String value, int threshold);
+Search for Peers, Groups, Pipes or Content resources defined by
+Applications in local cache.
+
+LOCAL_SEARCH_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      group number (internally)         short 
+   4:      request type  (LOCAL_SEARCH)      short 
+   6:      message length (in bytes)         short
+   8:      resource type                     UTF String
+  ..:      resource attribute                UTF String
+  ..:      value                             UTF String
+  ..:      threshold                         int 
+
+LOCAL_SERACH_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short 
+   5:      request type (LOCAL_SEARCH)        short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+  10:      number of items found              short
+  12:      string item[0]                     UTF String
+  ..:      string item[1]                     UTF String
+  ..:                                         UTF String
+
+
+
+3.4. remoteSearch 
+-----------------
+Method: remoteSearch(String type, String attribute, String value, int
+            threshold, MicroDiscoveryListener listener)
+                  throws IOException;
+Search for Peers, Groups, Pipes or Content resources defined by
+Applications first in local cache, if not found a query will be
+propagated to the neighbor peers. This method returns before any,
+item could be found. One each item found lateron an asynchronous
+message is sent from the code to the bundle.
+
+REMOTE_SEARCH_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      group number (internally)         short 
+   4:      request type  (REMOTE_SEARCH)     short 
+   6:      message length (in bytes)         short
+   8:      resource type                     UTF String
+  ..:      resource attribute                UTF String
+  ..:      value                             UTF String
+  ..:      threshold                         int 
+
+REMOTE_SERACH_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short
+   5:      request type (REMOTE_SEARCH)       short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+
+In oder to call the handleSearchResponse and handleNamedResourceLoss
+method of the supplied MicroDiscoveryListener instance, asynchronous
+messages are used. These messages are sent by the Jadabs-Core when 
+the corresponding events occur. 
+
+SEARCH_ASYNC_MSG:
+ offset    field                       type 
+ ------------------------------------------------------------
+   0:      is a reply message (false)  boolean
+   1:      request number              short 
+           (reqeust that requested
+            messages of such kind)    
+   3:      group number (internally)   short
+   5:      async type (SEARCH_REPONSE) short 
+   7:      message length (in bytes)   short
+   9:      resource type               UTF String
+  ..:      resource name               UTF String
+  ..:      resource ID string          UTF String
+
+NAMED_RESOURCE_LOSS_ASYNC_MSG:
+ offset    field                             type 
+ ------------------------------------------------------------
+   0:      is a reply message (false)        boolean
+   1:      request number                    short 
+           (reqeust that requested
+            messages of such kind)    
+   3:      group number (internally)         short         
+   5:      async type (NAMED_RESOURCE_LOSS)  short 
+   7:      message length (in bytes)         short
+   9:      resource type                     UTF String
+  ..:      resource name                     UTF String
+  ..:      resource ID string                UTF String
+
+
+
+3.5. cancelSearch
+-----------------
+Method: void cancelSearch(MicroDiscoveryListener listener);
+Cancel search and unregister specified listener 
+
+CANCEL_SEARCH_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      group number (internally)         short 
+   4:      request type  (CANCEL_SEARCH)     short 
+   6:      message length (in bytes)         short
+
+CANCEL_SEARCH_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short 
+   5:      request type (CANCEL_SEARCH)       short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+
+
+
+3.6. create 
+-----------
+Method: String create(String resourceType, String resourceName, 
+                      String precookedID, String arg);
+Create and publish a named resource
+
+CREATE_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      group number (internally)         short
+   4:      request type  (CREATE)            short
+   6:      message length (in bytes)         short
+   8:      resource type                     UTF String
+  ..:      resource name                     UTF String
+  ..:      precookedID string                UTF String
+  ..:      argument string                   UTF String
+   
+CREATE_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short 
+   5:      request type (CREATE)              short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+  10:      JXTA-ID String                     UTF String
+
+
+
+3.7. join
+---------
+Method: MicroGroupService join(String groupID, String password);
+Join a peer group and publishes peer's advertisement in the peer group.
+
+JOIN_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      group number (internally)         short 
+   4:      request type  (JOIN)              short
+   6:      message length (in bytes)         short
+   8:      group ID string                   UTF String
+  ..:      password string                   UTF String
+   
+JOIN_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short 
+   5:      request type (JOIN)                short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+  10:      group number (internally) of       short 
+           newly joined group
+
+
+
+3.8. send
+---------
+Method:  void send(String pipeID, MicroMessage data) throws IOException;
+Send data to the specified Pipe.
+
+SEND_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      group number (internally)         short
+   4:      request type  (SEND)              short
+   6:      message length (in bytes)         short
+   8:      pipe ID string                   UTF String
+  ..:      message string                   UTF String
+   
+SEND_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short 
+   5:      request type (SEND)                short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+
+
+
+3.9. listen
+-----------
+Method: void listen(String pipeID, MicroListener listener) 
+               throws IOException;
+Register a listener for the pipe and start listening on the pipe.
+This method returns after installing the listener. This listener
+is called whenever a corresponding message is received.
+
+LISTEN_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      group number (internally)         short 
+   4:      request type  (LISTEN)            short 
+   6:      message length (in bytes)         short
+   8:      pipe ID string                    UTF String
+
+LISTEN_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short 
+   5:      request type (LISTEN)              short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+
+
+In oder to call the handleSearchResponse and handleNamedResourceLoss
+method of the supplied MicroDiscoveryListener instance, asynchronous
+messages are used. These messages are sent by the Jadabs-Core when 
+the corresponding events occur. 
+
+SEARCH_ASYNC_MSG:
+ offset    field                       type 
+ ------------------------------------------------------------
+   0:      is a reply message (false)  boolean
+   1:      request number              short 
+           (reqeust that requested
+            messages of such kind)    
+   3:      gruop number (internally)   short 
+   5:      async type (SEARCH_REPONSE) short 
+   7:      message length (in bytes)   short
+   9:      resource type               UTF String
+  ..:      resource name               UTF String
+  ..:      resource ID string          UTF String
+
+
+
+3.10. resolve
+-------------
+Method: boolean resolve(String pipeID, int timeout) throws IOException;
+Resolves an output pipe.
+
+RESOLVE_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      group number (internally)         short 
+   4:      request type  (RESOVLE)           short
+   6:      message length (in bytes)         short
+   8:      pipe ID string                    UTF String
+  ..:      timeout                           int
+   
+RESOLVE_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short 
+   5:      request type (RESOLVE)             short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+  10:      could be resolved? (true/false)    boolean
+
+
+
+3.11. close
+-----------
+Method: void close(String stringID) throws IOException;
+Close a resource such as input Pipe. It removes any listeners added.
+
+CLOSE_REQUEST:
+ offset    field                             type 
+ -----------------------------------------------------------
+   0:      request number                    short 
+   2:      group number (internally)         short 
+   4:      request type  (CLOSE)             short
+   6:      message length (in bytes)         short
+   8:      pipe ID string                    UTF String
+   
+CLOSE_REPLY:
+ offset    field                              type 
+ -----------------------------------------------------------
+   0:      is a reply message (true)          boolean
+   1:      request number                     short 
+   3:      group number (internally)          short 
+   5:      request type (CLOSE)               short 
+   7:      error or exception occured         boolean
+   8:      message length (in bytes)          short
+
+
+
+--
+RM 2005-01-23
