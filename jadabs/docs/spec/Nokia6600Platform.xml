@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OSGiPlatform 
+	id="ipaq1.wlab.ethz.ch"
+	name="iPAQ1"
+	version="0.1.0"
+	provider-name="ETHZ-IKS">
+	
+	<DeviceConfiguration>
+	    <Property name="processor" value="xyz" />
+	    <Property name="display" value="150x200" />
+	    <Property name="vm" value="j2me/midp" />
+	    <Property name="vm-version" value="1.0.1" />
+	</DeviceConfiguration>
+	
+	<OSGiContainer>
+	    <Property name="configuration" value="j2me-osgi"/>
+	    <Property name="configuration-version" value="0.1.0"/>
+	</OSGiContainer>
+	
+</OSGiPlatform>

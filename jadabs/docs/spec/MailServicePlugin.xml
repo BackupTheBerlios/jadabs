@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OSGiPlugin 
+	id="ch.ethz.jadabs.mservices.smtpgw"
+	name="SMTPGateway"
+	version="0.1.0"
+	description=""
+	provider-name="ETHZ-IKS">
+	
+    
+    <Configuration>
+    
+        <property
+            name="ch.ethz.jadabs.mservices.smtpgw.smtphost"
+            value="mail.student.ethz.ch" />
+            
+    </Configuration>
+    
+	<Extension-Point
+	    id="Internet"
+	    description="requires connection to smtphost"
+	/>
+	
+	<Extension-Point
+	    id="EndpointService"
+	    service="ch.ethz.jadabs.jxme.EndpointService"
+	    description="requires connection to Jxme Layer"
+	/>
+	
+	<Extension
+	    id="SMTPGatewayService"
+        service="ch.ethz.jadab.mservices.smtpgw.SMTPGatewayService"
+        description="provides service for sending emails"
+    />
+
+    <PluginActivatorBundle
+        bundle-impl-name="smtpgw"
+        bundle-impl-version="0.7.1-SNAPSHOT"
+        bundle-impl-group="mservices"
+    />
+
+</OSGiPlugin>

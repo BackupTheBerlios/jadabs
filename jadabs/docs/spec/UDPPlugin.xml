@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OSGiPlugin 
+	id="ch.ethz.jadabs.jxme.udp"
+	name="UDPService"
+	version="0.1.0"
+	description=""
+	provider-name="ETHZ-IKS">
+	
+	<Extension-Point
+	    id="wlan"
+        description="requires connection to wlan card"
+	/>
+	
+	<Extension-Point
+	    id="PeerNetwork"
+	    java-service="ch.ethz.jadabs.jxme.PeerNetwork,
+	        ch.ethz.jadabs.jxmeEndpointService">
+	        
+	    <Bundle-Impl
+    	    bundle-name="jxme-osgi"
+    	    bundle-version="0.7.1-SNAPSHOT"
+    	    bundle-group="jadabs"
+    	/>
+    	
+	</Extension-Point>
+	
+	<Extension
+	    id="UDPTransport"
+        java-service="ch.ethz.jadab.jxme.udp.UDPTransport"
+    />
+    
+    <PluginActivatorBundle
+        bundle-name="jxme-udp"
+        bundle-version="0.7.1-SNAPSHOT"
+        bundle-group="jadabs"
+    />
+
+</OSGiPlugin>

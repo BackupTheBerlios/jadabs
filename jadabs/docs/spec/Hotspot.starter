@@ -1,0 +1,24 @@
+
+# iPAQ UDP/BT HotSpot
+-useplatform Hotspot-Platform.xml
+
+#
+# runlevel 1 should already be started through the init.xargs
+# with the local bundleloader and shell 
+#
+#-runlevel 1
+# local bundleloader
+#-istart  LocalBundleLoaderPlugin-0.1.0.xml
+#-istart  LocalShellPlugin-0.1.0.xml
+
+-runlevel 2
+# use the jxme layer for RemoteBundleLoader
+-istart   UDPPlugin-0.1.0.xml
+-istart   JxmePlugin-0.1.0.xml
+-istart   GroupServicePlugin-0.1.0.xml
+-istart   RemoteBundleLoader-0.1.0.xml
+
+
+-runlevel 3
+# start the MailService on this hotspot
+-istart   MailServicePlugin-0.1.0.xml

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OSGiPlugin 
+	id="ch.ethz.jadabs.jxme.udp"
+	name="UDPService"
+	version="0.1.0"
+	description=""
+	provider-name="ETHZ-IKS">
+	
+	<Extension-Point
+	    id="PeerNetwork"
+	    service="ch.ethz.jadabs.jxme.PeerNetwork,
+	        ch.ethz.jadabs.jxmeEndpointService" >
+	    
+	</Extension-Point>
+	
+	<Extension
+	    id="UDPTransport"
+        service="ch.ethz.jadab.jxme.udp.UDPTransport"
+    />
+    
+    <PluginActivatorBundle
+        bundle-impl-name="jxme-udp"
+        bundle-impl-version="0.7.1-SNAPSHOT"
+        bundle-impl-group="jadabs"
+    />
+
+</OSGiPlugin>
