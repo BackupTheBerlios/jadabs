@@ -69,7 +69,7 @@ public class BundleLoader implements IBundleLoader, BundleListener
 
       } catch (Exception e) {
 //         e.printStackTrace();
-         LOG.error("could not load, or parse the startup.xml", e);
+         LOG.error("could not load or parse the startup.xml", e);
       }
    }
 
@@ -93,7 +93,7 @@ public class BundleLoader implements IBundleLoader, BundleListener
     * @throws BundleException
     * @throws FileNotFoundException
     */
-   private static void install() throws BundleException, FileNotFoundException {
+   private void install() throws BundleException, FileNotFoundException {
 
       // in case we have lazy fetching, bundles must be downloaded now
       if (BundleLoader.fetchPolicy == BundleLoader.Lazy) {
@@ -111,18 +111,9 @@ public class BundleLoader implements IBundleLoader, BundleListener
          Bundle bundle = BundleLoaderActivator.bc.installBundle(file.getName(),
                fin);
          System.out.println("installed " + location);
-         try {
-            bundle.start();
-         } catch (BundleException be) {
-            System.out.println("Error starting bundle " + location);
-            if (be.getNestedException() == null) {
-               System.out.println("Exception: ");
-               be.printStackTrace();
-            } else {
-               System.out.println("Nested exception: ");
-               be.getNestedException().printStackTrace();
-            }
-         }
+
+         new BundleStarter(bundle).start();            
+
       }
 
       // clear queue
@@ -355,4 +346,29 @@ public class BundleLoader implements IBundleLoader, BundleListener
       return installedBundles;
    }
 
+   public class BundleStarter extends Thread {
+      Bundle bundle;
+      
+      public BundleStarter(Bundle bundle) {
+         this.bundle = bundle;
+      }
+
+      /**
+       * @see java.lang.Runnable#run()
+       */
+      public void run() {
+         try {
+            bundle.start();
+         } catch (BundleException be) {
+            System.out.println("Error starting bundle " + bundle.getLocation());
+            if (be.getNestedException() == null) {
+               System.out.println("Exception: ");
+               be.printStackTrace();
+            } else {
+               System.out.println("Nested exception: ");
+               be.getNestedException().printStackTrace();
+            }
+         }         
+      }
+   }
 }

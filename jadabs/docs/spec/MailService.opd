@@ -16,7 +16,7 @@
     </Configuration>
     
 	<Extension-Point
-	    id="Platform/NetworkIface/internet"
+	    id="Platform/NetIface/internet"
 	    description="requires connection to smtphost"
 	/>
 	
@@ -33,9 +33,9 @@
     />
 
     <ServiceActivatorBundle
-        bundle-impl-name="smtpgw"
-        bundle-impl-version="0.7.1-SNAPSHOT"
-        bundle-impl-group="mservices"
+        bundle-name="smtpgw"
+        bundle-version="0.7.1-SNAPSHOT"
+        bundle-group="mservices"
     />
 
 </OSGiServicePlugin>

@@ -28,7 +28,7 @@
         service="ch.ethz.jadab.jxme.udp.BTTransport"
     />
     
-    <PluginActivatorBundle
+    <ServiceActivatorBundle
         bundle-name="jxme-bt"
         bundle-version="0.7.1-SNAPSHOT"
         bundle-group="jadabs"

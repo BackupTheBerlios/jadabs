@@ -93,6 +93,7 @@ public class PluginLoaderActivator implements BundleActivator
             LOG.debug("peername is " + peerName);
 
         ploader = new PluginLoader();
+        ploader.start();
         
         b_context.registerService(IPluginLoader.class.getName(),ploader,null);
 

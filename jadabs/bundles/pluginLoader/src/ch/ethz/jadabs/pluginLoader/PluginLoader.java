@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
 import java.util.Vector;
@@ -22,16 +23,18 @@ import ch.ethz.jadabs.pluginLoader.fileFilters.*;
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
-public class PluginLoader implements IPluginLoader {
+public class PluginLoader extends Thread implements IPluginLoader {
    private KXmlParser parser;
    private OSGiPlugin currentPlugin;
    private Hashtable registeredPlugins = new Hashtable();
    private Hashtable extensions = new Hashtable();
    private LinkedList pluginSchedule = new LinkedList();
    private Platform platform;
-   
 
-   public PluginLoader() {
+   public PluginLoader() {   
+   }
+
+   public void run() {
       // load starter
       File dir = new File("." + File.separatorChar + "plugins");
       File[] files = dir.listFiles(new StarterFilter());
@@ -42,10 +45,11 @@ public class PluginLoader implements IPluginLoader {
             String line;
             while ((line = reader.readLine()) != null) {
                if (line.startsWith("-usepad")) {
-                  System.out.println("Opening " + "." + File.separatorChar + "plugins" + 
-                        File.separatorChar + line.substring(7).trim());
-                  File padfile = new File("." + File.separatorChar + "plugins" + 
-                        File.separatorChar + line.substring(7).trim());
+                  System.out.println("Opening " + "." + File.separatorChar
+                        + "plugins" + File.separatorChar
+                        + line.substring(7).trim());
+                  File padfile = new File("." + File.separatorChar + "plugins"
+                        + File.separatorChar + line.substring(7).trim());
                   parser = new KXmlParser();
 
                   FileReader padreader = new FileReader(padfile);
@@ -82,21 +86,38 @@ public class PluginLoader implements IPluginLoader {
             parser = null;
             reader = null;
          }
-         if (PluginLoaderActivator.LOG.isDebugEnabled()) 
+         if (PluginLoaderActivator.LOG.isDebugEnabled())
             PluginLoaderActivator.LOG.debug(extensions);
-
       }
 
+      // TEST STARTS HERE
       OSGiPlugin pl = (OSGiPlugin) registeredPlugins
-            .get("Jxme-BT::ch.ethz.jadabs.jxme.bt");
+            .get("SMTPGateway::ch.ethz.jadabs.mservices.smtpgw");
       try {
          resolvePlugin(pl);
       } catch (Exception e) {
          e.printStackTrace();
       }
-      
+
       System.out.println(pluginSchedule);
 
+      loadScheduledPlugins();
+      // TEST ENDS HERE
+   }
+   
+   private void loadScheduledPlugins() {
+      OSGiPlugin plugin;
+      for (Iterator it = pluginSchedule.iterator(); it.hasNext();) {
+         plugin = (OSGiPlugin) it.next();
+         System.out.println("LOADING BUNDLE " + plugin.getActivator());
+         try {
+            PluginLoaderActivator.bloader.load(plugin.getActivator().getName(),
+                  plugin.getActivator().getGroup(), plugin.getActivator()
+                        .getVersion());
+         } catch (Exception err) {
+            err.printStackTrace();
+         }
+      }
    }
 
    public void registerPlugin(File file) {
@@ -132,27 +153,28 @@ public class PluginLoader implements IPluginLoader {
       }
 
    }
-   
+
    private void processPlatformAttributes(Stack stack) {
 
       if (stack.peek().equals("Platform")) {
-         platform = new Platform(parser.getAttributeValue(null, "id"),
-               parser.getAttributeValue(null, "name"), parser
-                     .getAttributeValue(null, "version"), parser                     
-                     .getAttributeValue(null, "provider"));
+         platform = new Platform(parser.getAttributeValue(null, "id"), parser
+               .getAttributeValue(null, "name"), parser.getAttributeValue(null,
+               "version"), parser.getAttributeValue(null, "provider"));
       } else if (stack.peek().equals("Property")) {
-         platform.setProperty(parser.getAttributeValue(null, "name"), parser.getAttributeValue(null, "value"));
-         System.out.println("ADDED PROPERTY " + parser.getAttributeValue(null, "name"));
+         platform.setProperty(parser.getAttributeValue(null, "name"), parser
+               .getAttributeValue(null, "value"));
+         System.out.println("ADDED PROPERTY "
+               + parser.getAttributeValue(null, "name"));
       } else if (stack.peek().equals("NetIface")) {
-         NetIface iface = new NetIface(parser
-               .getAttributeValue(null, "type"), parser.getAttributeValue(null,
-               "connection"), parser.getAttributeValue(null, "configuration"), 
-               parser.getAttributeValue(null, "name"), 
-               parser.getAttributeValue(null, "essid"), 
-               parser.getAttributeValue(null, "mode"), 
-               parser.getAttributeValue(null, "iface"), 
-               parser.getAttributeValue(null, "ip"), 
-               parser.getAttributeValue(null, "description"));
+         NetIface iface = new NetIface(parser.getAttributeValue(null, "type"),
+               parser.getAttributeValue(null, "connection"), parser
+                     .getAttributeValue(null, "configuration"), parser
+                     .getAttributeValue(null, "name"), parser
+                     .getAttributeValue(null, "essid"), parser
+                     .getAttributeValue(null, "mode"), parser
+                     .getAttributeValue(null, "iface"), parser
+                     .getAttributeValue(null, "ip"), parser.getAttributeValue(
+                     null, "description"));
          platform.addNetIface(iface);
          extensions.put(iface.toString(), new Vector());
          System.out.println("ADDED EXTENSION " + iface.toString());
@@ -196,9 +218,13 @@ public class PluginLoader implements IPluginLoader {
          currentPlugin.addExtensionPoint(new ExtensionPoint(parser
                .getAttributeValue(null, "id"), parser.getAttributeValue(null,
                "service"), parser.getAttributeValue(null, "description")));
-      } else if (stack.peek().equals("PluginActivatorBundle")) {
-         if (PluginLoaderActivator.LOG.isDebugEnabled()) 
+      } else if (stack.peek().equals("ServiceActivatorBundle")) {
+         if (PluginLoaderActivator.LOG.isDebugEnabled())
             PluginLoaderActivator.LOG.debug(currentPlugin);
+         currentPlugin.setActivator(new ActivatorBundle(parser
+               .getAttributeValue(null, "bundle-name"), parser
+               .getAttributeValue(null, "bundle-group"), parser
+               .getAttributeValue(null, "bundle-version")));
       } else if (stack.peek().equals("Configuration")) {
          // TODO: implement configuration
 
@@ -206,7 +232,7 @@ public class PluginLoader implements IPluginLoader {
    }
 
    private void registerPlugin(OSGiPlugin plugin) {
-      if (PluginLoaderActivator.LOG.isDebugEnabled()) 
+      if (PluginLoaderActivator.LOG.isDebugEnabled())
          PluginLoaderActivator.LOG.debug("registering " + plugin.getName());
       registeredPlugins.put(plugin.getName(), plugin);
       for (Enumeration en = plugin.getExtensions(); en.hasMoreElements();) {

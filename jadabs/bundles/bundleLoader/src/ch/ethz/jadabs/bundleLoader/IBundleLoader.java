@@ -10,16 +10,11 @@ public interface IBundleLoader {
 
 	/**
 	 * 
-	 */
-	public abstract void start();
-
-	/**
-	 * 
 	 * @param name
 	 * @param group
 	 * @param version	
 	 * @throws Exception
 	 */
-	public abstract void load(String name, String group, String version)
+	public void load(String name, String group, String version)
 			throws Exception;
 }

@@ -16,6 +16,7 @@ public class OSGiPlugin {
    private String version;
    private String description;
    private String provider;
+   private ActivatorBundle activator;
    private Vector extensions = new Vector();
    private Vector extensionPoints = new Vector();
    
@@ -27,19 +28,27 @@ public class OSGiPlugin {
       this.provider = provider;
    }
    
-   public void addExtension(Extension ext) {
+   protected void setActivator(ActivatorBundle activator) {
+      this.activator = activator;
+   }
+   
+   protected ActivatorBundle getActivator() {
+      return activator;
+   }
+   
+   protected void addExtension(Extension ext) {
       extensions.add(ext);
    }
 
-   public Enumeration getExtensions() {
+   protected Enumeration getExtensions() {
       return extensions.elements();
    }
     
-   public void addExtensionPoint(ExtensionPoint extp) {
+   protected void addExtensionPoint(ExtensionPoint extp) {
       extensionPoints.add(extp);
    }
    
-   public Enumeration getExtensionPoints() {
+   protected Enumeration getExtensionPoints() {
       return extensionPoints.elements();
    }
    
@@ -61,5 +70,5 @@ public class OSGiPlugin {
 
       return buffer.toString();
    }
-      
+        
 }
