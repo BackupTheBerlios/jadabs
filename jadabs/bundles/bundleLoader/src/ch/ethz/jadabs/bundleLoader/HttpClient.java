@@ -36,7 +36,6 @@
 package ch.ethz.jadabs.bundleLoader;
 
 import java.io.*;
-import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
@@ -45,6 +44,7 @@ import org.apache.log4j.Logger;
 
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher;
+import ch.ethz.jadabs.http.HttpSocket;
 
 /**
  * 
@@ -54,8 +54,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
    private Vector knownHosts;
    private static Logger LOG = Logger.getLogger(HttpClient.class);
 
-   // FIXME: This is still a draft
-   
+
    public HttpClient() {
       //TODO: read property or file and build up list of known hosts
       
@@ -76,19 +75,17 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
       for (Enumeration hosts = knownHosts.elements(); hosts.hasMoreElements(); ) {
          try {
             String host = (String)hosts.nextElement();
-            Socket clientSocket = new Socket(host, 9278);
+            HttpSocket clientSocket = new HttpSocket(host, 9278);
 
-            DataOutputStream outbound = new DataOutputStream(
-                  clientSocket.getOutputStream() );
-            BufferedReader inbound = new BufferedReader(
-                  new InputStreamReader(clientSocket.getInputStream()) );
+            clientSocket.get("/get" + type + "/" + uuid);
+            clientSocket.request();
 
-            outbound.writeBytes("GET " + "/get" + type + "/" + uuid +  " HTTP/1.0\r\n\r\n");
-
-            //TODO: Finish here ...
+            return new ByteArrayInputStream(clientSocket.data.getBytes());
+            
          } catch (Exception e) {
-            // best efford strategy
+            e.printStackTrace();
          }
+        
       }
             
       return null;
@@ -98,15 +95,48 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
     * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#retrieveInformation(java.lang.String, java.lang.String)
     */
    public InputStream retrieveInformation(String uuid, String source) {
-      // TODO Auto-generated method stub
-      return null;
+      String[] args = uuid.split(":");
+      String group = args[0];
+      String name = args[1];
+      String version = args[2];
+      String type = args[3];
+
+     try {
+        HttpSocket clientSocket = new HttpSocket(source, 9278);
+
+        clientSocket.get("/get" + type + "/" + uuid);
+        clientSocket.request();
+
+        return new ByteArrayInputStream(clientSocket.data.getBytes());
+           
+     } catch (Exception e) {
+        e.printStackTrace();
+     }
+     
+     return null;
    }
 
    /**
     * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#getMatchingPlugins(java.lang.String)
     */
    public Iterator getMatchingPlugins(String filter) {
-      // TODO Auto-generated method stub
+
+      for (Enumeration hosts = knownHosts.elements(); hosts.hasMoreElements(); ) {
+         try {
+            String host = (String)hosts.nextElement();
+            HttpSocket clientSocket = new HttpSocket(host, 9278);
+
+            clientSocket.get("/match" + "/" + filter);
+            clientSocket.request();
+
+            return new PluginIterator(clientSocket.data);
+            
+         } catch (Exception e) {
+            e.printStackTrace();
+         }
+        
+      }
+            
       return null;
    }
 
@@ -123,6 +153,38 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
     */
    protected void error(String str) {
       LOG.error(str);
+   }  
+
+   
+   public class PluginIterator implements Iterator {
+      private String[] plugins;
+      private int index;
+      
+      public PluginIterator(String data) {
+         plugins = data.split("#####");
+         index = 0;
+      }
+
+      /**
+       * @see java.util.Iterator#remove()
+       */
+      public void remove() {
+         // It is optional, we don't need it so we leave it unimplemented         
+      }
+
+      /**
+       * @see java.util.Iterator#hasNext()
+       */
+      public boolean hasNext() {
+         return (index < plugins.length);
+      }
+
+      /**
+       * @see java.util.Iterator#next()
+       */
+      public Object next() {
+         return new ByteArrayInputStream(plugins[index].getBytes());
+      }            
    }
    
 }

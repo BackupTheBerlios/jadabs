@@ -76,30 +76,15 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    private PluginLoaderImpl() {
       infoSources.add(new Repository());
 
-//      String starter = PluginLoaderActivator.bc
-//            .getProperty("ch.ethz.jadabs.pluginloader.starter");
-//
-//      if (starter == null)
-//         starter = "init.starter";
-//      
-//      init(starter);
+      // Register a PluginLoaderHandler at httpDaemon
+      PluginLoaderActivator.bloader.registerRequestHandler(new PluginLoaderHandler());
+      
       
       // BUNDLE LOADER TEST SECTION
       /*
-      try {
-         PluginLoaderActivator.bloader.loadBundle("jadabs:jxme-udp:0.7.1-SNAPSHOT:obr");
-         PluginLoaderActivator.bloader.loadBundle("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr");
-         PluginLoaderActivator.bloader.loadBundle("jadabs:remotefw-impl:0.7.1-SNAPSHOT:obr");
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
       System.out.println();
       System.out.println(PluginLoaderActivator.bloader.getDependencyGraph("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr"));
       */
-      // PLUGIN LOADER TEST SECTION
-      
-      // System.out.println();
-      // System.out.println(new Repository().getMatchingPlugins("Extension/id:Transport ¦ Container/id:core-osgi-daop,version:0.1.0; NetIface/type:bt-jsr82 ¦ RP"));
 
    }
 

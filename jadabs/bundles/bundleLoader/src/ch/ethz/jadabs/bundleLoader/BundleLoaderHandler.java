@@ -61,15 +61,14 @@ public class BundleLoaderHandler implements HttpRequestHandler {
          return true;
       } 
       if (request.file.startsWith("/getobr/")) {
-         String id = request.file.substring(8);
-         System.out.println(id);
+         String uuid = request.file.substring(8);
+
          try {
-            String group = id.substring(0, id.indexOf(":"));
-            id = id.substring(id.indexOf(":") + 1);
-            String name = id.substring(0, id.indexOf(":"));
-            id = id.substring(id.indexOf(":") + 1);
-            String version = id.substring(0, id.indexOf(":"));
-            String rest = id.substring(id.indexOf(":") + 1);
+            String[] args = uuid.split(":");
+            String group = args[0];
+            String name = args[1];
+            String version = args[2];
+            String type = args[3];
 
             File repofile = new File(repolocation.substring(5) + group
                   + File.separatorChar + "obrs" + File.separatorChar + name
@@ -83,15 +82,14 @@ public class BundleLoaderHandler implements HttpRequestHandler {
          return true;
       }
       if (request.file.startsWith("/getjar/")) {
-         String id = request.file.substring(8);
-         System.out.println(id);
+         String uuid = request.file.substring(8);
+
          try {
-            String group = id.substring(0, id.indexOf(":"));
-            id = id.substring(id.indexOf(":") + 1);
-            String name = id.substring(0, id.indexOf(":"));
-            id = id.substring(id.indexOf(":") + 1);
-            String version = id.substring(0, id.indexOf(":"));
-            String rest = id.substring(id.indexOf(":") + 1);
+            String[] args = uuid.split(":");
+            String group = args[0];
+            String name = args[1];
+            String version = args[2];
+            String type = args[3];
 
             File repofile = new File(repolocation.substring(5) + group
                   + File.separatorChar + "jars" + File.separatorChar + name
@@ -102,14 +100,6 @@ public class BundleLoaderHandler implements HttpRequestHandler {
             e.printStackTrace();
             request.send404();            
          }
-         return true;
-      }
-      if (request.file.startsWith("/test")) {
-         request.sendString("<test>Hallo Welt</test>", "text/xml");
-         return true;
-      } 
-      if (request.file.startsWith("/error")) {
-         request.send404();
          return true;
       }
       return false;

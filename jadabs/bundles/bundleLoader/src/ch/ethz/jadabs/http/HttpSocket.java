@@ -36,6 +36,7 @@
 package ch.ethz.jadabs.http;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -43,8 +44,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ProtocolException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
+
+import ch.ethz.jadabs.bundleLoader.api.Utilities;
 
 /**
  * Http based implementation of a <code>Socket</code> 
@@ -58,18 +62,24 @@ public class HttpSocket extends Socket {
    public String file = null;
    public Hashtable headerValues = new Hashtable();
 
+   public String data;
+
    /**
     * Constructor 
     */
    public HttpSocket() {
       super();
    }
+   
+   public HttpSocket(String host, int port) throws UnknownHostException, IOException {
+      super(host, port);
+   }
 
    /**
     * Returns the http request
     * @throws Exception
     */
-   public void getRequest() throws Exception {
+   public void request() throws Exception {
       try {
 
          fromClient = new BufferedReader(
@@ -78,13 +88,48 @@ public class HttpSocket extends Socket {
          String reqhdr = readHeader(fromClient);
 
          parseHeader(reqhdr);
+         
+         StringBuffer buffer = new StringBuffer();
+         while (fromClient.ready()) {
+            buffer.append(fromClient.readLine());
+         }
+         
+         data = buffer.toString();
+         
       } catch (IOException ioe) {
          if (fromClient != null)
             fromClient.close();
          throw ioe;
       }
    }
+   
+   /**
+    * Send a http GET request
+    * @param request
+    * @throws IOException
+    */
+   public void get(String request) throws IOException {
+      DataOutputStream outbound = new DataOutputStream(
+            getOutputStream() );
 
+      outbound.writeBytes("GET " + request +  " HTTP/1.0\r\n\r\n");
+      outbound.flush();
+   }
+   
+   /**
+    * Send a http POST request
+    * @param request
+    * @throws IOException
+    */
+   public void post(String request) throws IOException {
+      DataOutputStream outbound = new DataOutputStream(
+            getOutputStream() );
+
+      outbound.writeBytes("POST " + request +  " HTTP/1.0\r\n\r\n");
+      outbound.flush();
+   }
+
+   
    /**
     * Read the http header
     * @param input 
@@ -108,8 +153,9 @@ public class HttpSocket extends Socket {
       return command;
    }
 
+   
    /**
-    * 
+    * Parse the http header
     * @param reqhdr
     * @throws IOException
     * @throws ProtocolException
@@ -121,7 +167,7 @@ public class HttpSocket extends Socket {
 
       StringTokenizer members = new StringTokenizer(currentLine, " \t");
       method = members.nextToken();
-      file = members.nextToken();
+      file = Utilities.unescape(members.nextToken());
 
       version = members.nextToken();
 
@@ -141,7 +187,7 @@ public class HttpSocket extends Socket {
    }
 
    /**
-    * add a name / value pair 
+    * Add a name / value pair 
     * @param name
     * @param value
     */
@@ -150,7 +196,7 @@ public class HttpSocket extends Socket {
    }
 
    /**
-    * send a 404 (not found) to the client    
+    * Send a 404 (not found)    
     */
    public void send404() {
       OutputStream toClient = null;
@@ -172,8 +218,9 @@ public class HttpSocket extends Socket {
       }
    }
 
+   
    /**
-    * send a file back to the client
+    * Send a file via http
     * @param file the file to be send
     * @param MimeType the mime type as <code>String</code>
     * @param extraHdr additional header fields, can be null
@@ -215,8 +262,9 @@ public class HttpSocket extends Socket {
       }
    }
 
+   
    /**
-    * send a string back to the client
+    * Send a string 
     * @param data the <code>String</code> to be send
     * @param MimeType the mime type
     */

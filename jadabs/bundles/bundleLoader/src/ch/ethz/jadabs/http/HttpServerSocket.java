@@ -60,14 +60,14 @@ public class HttpServerSocket extends ServerSocket
      */
     public Socket accept () throws IOException
     {
-        HttpSocket s = new HttpSocket();
-        implAccept(s);
+        HttpSocket socket = new HttpSocket();
+        implAccept(socket);
         try {
-           s.getRequest();
+           socket.request();
         } catch (Exception e) {
            e.printStackTrace();
         }
-        return s;
+        return socket;
     }
     
 }
