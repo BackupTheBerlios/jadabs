@@ -49,7 +49,6 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 
-import ch.ethz.jadabs.bundleLoader.HttpClient;
 import ch.ethz.jadabs.bundleLoader.Repository;
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.LoaderListener;
@@ -79,19 +78,10 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
     */
    private PluginLoaderImpl() {
       infoSources.add(new Repository());
-      /*
-      try {
-         HttpClient client = new HttpClient();
-         if (client != null)
-            registerInformationSource(client);
-      } catch (Exception e) {
-      	e.printStackTrace();
-      }
-      */
       
       // Register a PluginLoaderHandler at httpDaemon
       PluginLoaderActivator.bloader.registerRequestHandler(new PluginLoaderHandler());      
-      
+          
    }
 
    
@@ -135,7 +125,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
          LOG.error(e.getMessage());
          e.printStackTrace();
          LOG.error("Loading of Plugin " + uuid + " failed.");
-      }
+      }            
       
    }
 

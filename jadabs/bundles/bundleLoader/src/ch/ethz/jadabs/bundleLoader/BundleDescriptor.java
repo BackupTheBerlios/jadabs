@@ -213,16 +213,5 @@ public class BundleDescriptor extends Descriptor {
       } 
       return false;
    }
-   
-   
-   protected void setLevel(int level) {
-      // System.out.println("SET LEVEL TO " + level);
-      this.level = level;
-   }
-   
-   
-   protected int getLevel() {
-      //System.out.println("REQUESTED LEVEL " + level);
-      return level;
-   }
+      
 }

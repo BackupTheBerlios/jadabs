@@ -136,7 +136,10 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
             LOG.error(e);
          }
          locked = Boolean.TRUE;
-
+         
+         // TODO: REMOVE DEBUG
+         // System.out.println("IN CRITICAL SECTION");
+         
          if (LOG.isDebugEnabled())
             LOG.debug("loading " + uuid + " ...");
          BundleDescriptor bdescr = getBundleDescriptor(uuid);
@@ -164,6 +167,9 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
          }
 
+         // TODO: REMOVE DEBUG
+         // System.out.println("LEAVING CRITICAL SECTION");
+         
          // open semaphore
          locked = Boolean.FALSE;
          locked.notifyAll();
@@ -178,7 +184,9 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
    public String getDependencyGraph(String uuid) {
       // FIXME: still a bit buggy for large graphs ...
       LinkedList list = new LinkedList();
+      LinkedList levels = new LinkedList();
       list.add(getBundleDescriptor(uuid));
+      levels.add(new Integer(0));
 
       synchronized (locked) {
 
@@ -193,6 +201,9 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          }
          locked = Boolean.TRUE;
 
+         // TODO: REMOVE DEBUG
+         // System.out.println("IN CRITICAL SECTION GRAPH");
+
          do {
             int index;
 
@@ -201,27 +212,26 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
                ;
 
             BundleDescriptor current = (BundleDescriptor) list.get(index);
-
+            Integer currentLevel = (Integer) levels.get(index);
+            
             // all are processed, exit loop
             if (current.processed)
                break;
 
             int offset = 1;
-            int childLevel = current.getLevel() + 1;
-
-            System.out.println(current + " has Dependencies: ");
+            int childLevel = currentLevel.intValue() + 1;                        
+            
             for (Enumeration deps = current.dependencies.elements(); deps
                   .hasMoreElements();) {
                String depUuid = (String) deps.nextElement();
-               System.out.println("\t" + depUuid);
+
                BundleDescriptor dep = getBundleDescriptor(depUuid);
-               System.out.println("\t old level: " + dep.getLevel()
-                     + ", new level: " + childLevel);
-               dep.setLevel(childLevel);
+                              
                if (dep.dependencies.isEmpty())
                   dep.processed = true;
                list.add(index + offset, dep);
-
+               levels.add(index + offset, new Integer(childLevel));
+               
                offset++;
             }
             System.out.println();
@@ -230,10 +240,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
          } while (true);
 
-         for (Iterator iter = list.iterator(); iter.hasNext();) {
-            BundleDescriptor current = (BundleDescriptor) iter.next();
-            System.out.println(current + " hat Level " + current.getLevel());
-         }
 
          // and now make a XML document from the list
 
@@ -245,16 +251,17 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          int level = -1;
 
          while (!list.isEmpty()) {
-            BundleDescriptor current = (BundleDescriptor) list.removeFirst();
-
-            for (int dif = level; dif >= current.getLevel(); dif--) {
+            BundleDescriptor current = (BundleDescriptor) list.removeFirst();           
+            int cur = ((Integer) levels.removeFirst()).intValue();
+            
+            for (int dif = level; dif >= cur; dif--) {
                buffer.append(Utilities.tabs(dif) + "</bundle>\n");
             }
 
-            buffer.append(Utilities.tabs(current.getLevel())
+            buffer.append(Utilities.tabs(cur)
                   + "<bundle uuid=\"" + current.toString() + "\">\n");
 
-            level = current.getLevel();
+            level = cur;
 
          }
 
@@ -264,6 +271,9 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
          buffer.append("</dependency-graph>\n");
 
+         // TODO: REMOVE DEBUG
+         // System.out.println("LEAVING CRITICAL SECTION GRAPH");
+         
          // open semaphore
          locked = Boolean.FALSE;
          locked.notifyAll();
@@ -316,7 +326,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
       if (result != null) {
          result.processed = false;
-         result.setLevel(0);
       }
       return result;
    }

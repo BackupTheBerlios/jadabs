@@ -71,14 +71,12 @@ public class HttpClient extends PluginFilterMatcher implements
          clientSocket = new HttpSocket(host, 9278);
          canWS = true;
       } catch (Exception e) {
-      }
-      ;
+      }      
       try {
          clientSocket = new HttpSocket(host, 80);
          canHTTP = true;
       } catch (Exception e) {
-      }
-      ;
+      }      
 
       if (clientSocket == null) {
          throw new Exception("Could not open socket ...");
@@ -116,7 +114,7 @@ public class HttpClient extends PluginFilterMatcher implements
             try {
                HttpSocket clientSocket = new HttpSocket(host, 80);
 
-               clientSocket.get("/twiki/repository.xml");
+               clientSocket.get("/repository.xml");
                clientSocket.request();
 
                StringTokenizer tokenizer = new StringTokenizer(clientSocket.data);
