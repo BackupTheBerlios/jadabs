@@ -44,7 +44,6 @@ import org.osgi.framework.ServiceReference;
 
 import ch.ethz.iks.jadabs.maingui.SwtManager;
 import ch.ethz.jadabs.bundleloader.BundleLoader;
-import ch.ethz.jadabs.jxme.Pipe;
 import ch.ethz.jadabs.jxme.services.GroupService;
 import ch.ethz.jadabs.pluginloader.PluginLoader;
 import ch.ethz.jadabs.remotefw.FrameworkManager;

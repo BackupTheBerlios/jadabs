@@ -39,7 +39,6 @@ package ch.ethz.jadabs.remotefw.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -56,10 +55,7 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.ServiceReference;
 
-//import JSX.ObjIn;
-//import JSX.ObjOut;
 import JSX.ObjectReader;
-
 import ch.ethz.jadabs.jxme.DiscoveryListener;
 import ch.ethz.jadabs.jxme.Element;
 import ch.ethz.jadabs.jxme.EndpointAddress;

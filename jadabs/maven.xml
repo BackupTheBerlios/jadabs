@@ -292,9 +292,21 @@
   <!-- utility to clean the subprojects and local target                -->
   <!--==================================================================-->    
   
+   <goal name="jadabs:clean">
+      <ant:echo message="Building Bundles..."/>
+		<maven:reactor basedir="${basedir}"
+				includes="bundles/**/project.xml,bundles/**/project-j2se.xml,bundles/**/project-midlet.xml"
+            	excludes=""
+				goals="clean"
+				banner="Clean: Removing Target"
+				ignoreFailures="false"/>
+	</goal>
+  
+  <!--
   <goal name="jadabs:clean" prereqs="clean">
   	<attainGoal name="multiproject:clean" />
   </goal>
+  -->
   
   <!-- 
   		Remove also the jadabs-x.x.x, attention you may delete some of

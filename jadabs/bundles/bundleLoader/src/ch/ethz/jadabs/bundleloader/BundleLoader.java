@@ -20,6 +20,8 @@ public interface BundleLoader {
 	public void load(String name, String group, String version)
 			throws Exception;
 	
+	public BundleInformation getBundleInfo(String id);
+	
 	/**
 	 * 
 	 * @param bl

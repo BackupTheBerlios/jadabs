@@ -66,8 +66,7 @@ import ch.ethz.jadabs.remotefw.BundleInfo;
 import ch.ethz.jadabs.remotefw.BundleInfoListener;
 import ch.ethz.jadabs.remotefw.Framework;
 import ch.ethz.jadabs.remotefw.RemoteFrameworkListener;
-import ch.ethz.jadabs.servicemanager.ServiceListener;
-import ch.ethz.jadabs.servicemanager.ServiceManager;
+import ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener;
 import ch.ethz.jadabs.servicemanager.ServiceReference;
 
 /**
@@ -77,7 +76,7 @@ import ch.ethz.jadabs.servicemanager.ServiceReference;
  * please visit www.cloudgarden.com for details.
  */
 public class MainComposite extends Composite 
-	implements RemoteFrameworkListener, BundleInfoListener,  ServiceListener
+	implements RemoteFrameworkListener, BundleInfoListener,  ServiceAdvertisementListener
 {
 
     private static Logger LOG = Logger.getLogger(MainComposite.class.getName());
@@ -453,7 +452,7 @@ public class MainComposite extends Composite
                 else
                 {
                     //TODO: should be changed to register only once
-                    Activator.serviceManager.getServices(null, this);
+                    Activator.serviceManager.getServiceAdvertisements(null, this);
                 }
                 
                 
@@ -519,7 +518,7 @@ public class MainComposite extends Composite
                 else
                 {
                     //TODO: should be changed to register only once
-                    Activator.serviceManager.getServices("|OBR,A", this);
+                    Activator.serviceManager.getServiceAdvertisements("|OBR,A", this);
                 }
             }
             

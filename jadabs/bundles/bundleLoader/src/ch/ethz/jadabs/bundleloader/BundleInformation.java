@@ -4,17 +4,22 @@ package ch.ethz.jadabs.bundleloader;
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.kxml2.io.*;
+import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 public class BundleInformation extends ServiceAdvertisement
@@ -38,6 +43,9 @@ public class BundleInformation extends ServiceAdvertisement
 
     private KXmlParser parser;
 
+    /** location of the cached jar file */
+    private String cachedFilePath;
+    
     private BundleInformation()
     {
 
@@ -182,6 +190,19 @@ public class BundleInformation extends ServiceAdvertisement
 
     }
 
+    public byte[] getBundleCode() throws IOException
+    {
+
+        //TODO return code also from memory, hack suppose its in a file
+        return read2list(new File(filename));
+
+    }
+    
+    public void setBundleCacheLocation(String cachedFilePath)
+    {
+        this.cachedFilePath = cachedFilePath;
+    }
+    
     /**
      * 
      * @throws XmlPullParserException
@@ -337,6 +358,61 @@ public class BundleInformation extends ServiceAdvertisement
         return;
     }
 
+    /**
+     * Reads a file storing intermediate data into a list. Fast method.
+     * 
+     * @param file
+     *            the file to be read
+     * @return a file data
+     */
+    public static byte[] read2list(File file) throws IOException
+    {
+        InputStream in = null;
+        byte[] buf = null; // output buffer
+        int bufLen = 20000 * 1024;
+        try
+        {
+            in = new BufferedInputStream(new FileInputStream(file));
+            buf = new byte[bufLen];
+            byte[] tmp = null;
+            int len = 0;
+            List data = new ArrayList(24); // keeps peaces of data
+            while ((len = in.read(buf, 0, bufLen)) != -1)
+            {
+                tmp = new byte[len];
+                System.arraycopy(buf, 0, tmp, 0, len); // still need to do copy
+                data.add(tmp);
+            }
+            /*
+             * This part os optional. This method could return a List data for
+             * further processing, etc.
+             */
+            len = 0;
+            if (data.size() == 1)
+                return (byte[]) data.get(0);
+            for (int i = 0; i < data.size(); i++)
+                len += ((byte[]) data.get(i)).length;
+            buf = new byte[len]; // final output buffer
+            len = 0;
+            for (int i = 0; i < data.size(); i++)
+            { // fill with data
+                tmp = (byte[]) data.get(i);
+                System.arraycopy(tmp, 0, buf, len, tmp.length);
+                len += tmp.length;
+            }
+        } finally
+        {
+            if (in != null)
+                try
+                {
+                    in.close();
+                } catch (Exception e)
+                {
+                }
+        }
+        return buf;
+    }
+    
     /**
      *  
      */

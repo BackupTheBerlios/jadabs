@@ -13,10 +13,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import org.xmlpull.v1.XmlPullParserException;
 import org.apache.log4j.Logger;
 import org.kxml2.io.KXmlParser;
-import org.osgi.framework.*;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.BundleListener;
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * 
@@ -414,6 +417,11 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
     public Enumeration getBundleAdvertisements()
     {
         return binfos.elements();
+    }
+    
+    public BundleInformation getBundleInfo(String id)
+    {
+        return (BundleInformation)binfos.get(id);
     }
     
     public class BundleStarter extends Thread

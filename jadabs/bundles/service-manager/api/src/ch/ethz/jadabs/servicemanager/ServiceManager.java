@@ -4,7 +4,6 @@
  */
 package ch.ethz.jadabs.servicemanager;
 
-import ch.ethz.jadabs.jxme.Pipe;
 
 
 /**
@@ -35,7 +34,7 @@ public interface ServiceManager
      * @param serviceListener
      * @return
      */
-    boolean getServices(String filter, ServiceListener serviceListener);
+    boolean getServiceAdvertisements(String filter, ServiceAdvertisementListener serviceListener);
     
     /**
      * Remove Service Listener, which has been added to the internal
@@ -43,7 +42,7 @@ public interface ServiceManager
      * 
      * @param serviceListener
      */
-    public void removeListener(ServiceListener serviceListener);
+    public void removeListener(ServiceAdvertisementListener serviceListener);
     
     /**
      * Add providing service which can be found by other ServiceManagers.
@@ -71,7 +70,8 @@ public interface ServiceManager
      * @param uuid
      * @return
      */
-    boolean getService(String fromPeer, ServiceReference sref);
+    boolean getService(String fromPeer, ServiceReference sref, ServiceListener listener);
+    
     
     /**
      * Install and Start service on a remote Peer.

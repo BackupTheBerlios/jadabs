@@ -1,8 +1,9 @@
 package ch.ethz.jadabs.bundleloader;
 
 
-import java.util.Vector;
 import java.io.File;
+import java.util.Vector;
+
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;

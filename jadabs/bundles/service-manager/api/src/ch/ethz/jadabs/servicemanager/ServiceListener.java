@@ -1,5 +1,5 @@
 /*
- * Created on Jan 31, 2005
+ * Created on Feb 8, 2005
  *
  */
 package ch.ethz.jadabs.servicemanager;
@@ -11,6 +11,6 @@ package ch.ethz.jadabs.servicemanager;
  */
 public interface ServiceListener
 {
-    
-    void foundService(ServiceReference serviceAdv);
+
+    void receivedService(ServiceReference sref);
 }

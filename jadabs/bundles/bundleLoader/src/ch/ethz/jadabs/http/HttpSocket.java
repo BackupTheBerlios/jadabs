@@ -1,7 +1,10 @@
 package ch.ethz.jadabs.http;
 
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ProtocolException;
+import java.net.Socket;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 

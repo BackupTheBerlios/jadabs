@@ -51,7 +51,7 @@
  *
  *  This license is based on the BSD license adopted by the Apache Foundation.
  *
- *  $Id: Cache.java,v 1.3 2004/12/20 21:25:33 afrei Exp $
+ *  $Id: Cache.java,v 1.4 2005/02/09 07:40:59 afrei Exp $
  */
 
 package ch.ethz.jadabs.jxme.services.impl;
@@ -59,7 +59,6 @@ package ch.ethz.jadabs.jxme.services.impl;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.LinkedList;
-//import java.util.Random;
 
 import org.apache.log4j.Logger;
 

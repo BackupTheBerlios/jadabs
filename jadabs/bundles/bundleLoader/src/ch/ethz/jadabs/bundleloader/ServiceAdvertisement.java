@@ -121,6 +121,24 @@ public abstract class ServiceAdvertisement
 	    return null;
 	}
 	
+	public static String getGroup(String id)
+	{
+        String group = id.substring(0,id.indexOf(":"));
+        
+        return group;
+	}
+	
+	public static String getFileName(String id)
+	{
+        String group = id.substring(0,id.indexOf(":"));
+        id = id.substring(id.indexOf(":")+1);
+        String name = id.substring(0,id.indexOf(":"));
+        id = id.substring(id.indexOf(":")+1);
+        String version = id.substring(0,id.indexOf(":"));
+        String rest = id.substring(id.indexOf(":")+1);
+
+        return name + "-" + version + "." + rest;
+	}
 	
     /**
      * Implement this with an addition fourth element in the id,
@@ -138,5 +156,6 @@ public abstract class ServiceAdvertisement
      * @return
      */
     public abstract boolean matches(String filter);
+    
     
 }

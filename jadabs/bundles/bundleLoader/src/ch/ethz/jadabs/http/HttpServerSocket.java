@@ -1,8 +1,8 @@
 package ch.ethz.jadabs.http;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.io.IOException;
 
 public class HttpServerSocket extends ServerSocket 
 {

@@ -26,6 +26,7 @@ import ch.ethz.jadabs.jxme.Listener;
 import ch.ethz.jadabs.jxme.Message;
 import ch.ethz.jadabs.jxme.NamedResource;
 import ch.ethz.jadabs.pluginloader.OSGiPlugin;
+import ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener;
 import ch.ethz.jadabs.servicemanager.ServiceListener;
 import ch.ethz.jadabs.servicemanager.ServiceManager;
 import ch.ethz.jadabs.servicemanager.ServiceReference;
@@ -46,11 +47,17 @@ public class ServiceManagerImpl implements ServiceManager, Listener
     public static String SERVICE_REQ = "svcreq";
     public static String SERVICE_ACK = "svcack";
     
+    /** Jar Service Types */
+    public static String JAR_REQ = "jarreq";
+    public static String JAR_ACK = "jarack";
+    
     /** Service Information */
     public static String SERVICE_ADV = "svcadv";
     public static String SERVICE_ID = "svcid";
     
     public static String SERVICE_FILTER = "svcfil";
+    
+    public static String SERVICE_CODE = "svccode";
     
     /** Service Running or Providing type */
     public static String SERVICE_RP_TYPE = "rptype";
@@ -65,8 +72,14 @@ public class ServiceManagerImpl implements ServiceManager, Listener
     private static String SERVICE_OBR = "OBR";
     
     //  [(String filter,Set sync(HashSet(ServiceListener))]
-    private Hashtable serviceListeners = new Hashtable(); 
+    private Hashtable serviceAdvListeners = new Hashtable(); 
         
+    /** Service Listener */
+    // [(String id, ServiceListener)]
+    private Hashtable mapId2SvcListener = new Hashtable();
+    private Hashtable mapId2SvcReference = new Hashtable();
+  
+    
     /** Local repository cache */
     private String repoCacheDirDefault = "./repocache/";
     private File repoCacheDir;
@@ -94,32 +107,32 @@ public class ServiceManagerImpl implements ServiceManager, Listener
                 
     }
     
-    public void removeListener(ServiceListener serviceListener)
+    public void removeListener(ServiceAdvertisementListener serviceListener)
     {       
-        for(Iterator it = serviceListeners.values().iterator();it.hasNext();)
+        for(Iterator it = serviceAdvListeners.values().iterator();it.hasNext();)
         {
             Set s = (Set)it.next();
             
             for (Iterator sit = s.iterator(); sit.hasNext();)
             {
-                ServiceListener slistener = (ServiceListener)sit.next();
+                ServiceAdvertisementListener slistener = (ServiceAdvertisementListener)sit.next();
                 if (slistener.equals(serviceListener))
                     s.remove(slistener);
             }
             
             if (s.isEmpty())
-                serviceListeners.remove(s);
+                serviceAdvListeners.remove(s);
         }
         
     }
     
     
     // add filter, listener: could be duplicate
-    private void addListener(String filter, ServiceListener serviceListener)
+    private void addListener(String filter, ServiceAdvertisementListener serviceListener)
     {
-        if (serviceListeners.contains(filter))
+        if (serviceAdvListeners.contains(filter))
         {
-            Set set = (Set)serviceListeners.get(filter);
+            Set set = (Set)serviceAdvListeners.get(filter);
             
             set.add(serviceListener);
         }
@@ -127,17 +140,17 @@ public class ServiceManagerImpl implements ServiceManager, Listener
         {
             Set s = Collections.synchronizedSet(new HashSet());
             s.add(serviceListener);
-            serviceListeners.put(filter, s);
+            serviceAdvListeners.put(filter, s);
         }
     }
     
     private void notifyListeners(String filter, ServiceReference sref)
     {
-        Set s = (Set)serviceListeners.get(filter);
+        Set s = (Set)serviceAdvListeners.get(filter);
         
         for (Iterator it = s.iterator(); it.hasNext(); )
         {
-            ServiceListener slistener = (ServiceListener)it.next();
+            ServiceAdvertisementListener slistener = (ServiceAdvertisementListener)it.next();
             
             slistener.foundService(sref);
         }
@@ -149,7 +162,7 @@ public class ServiceManagerImpl implements ServiceManager, Listener
      * 
      * In case filter is null default is: "|OPD,OBR,A"
      */
-    public boolean getServices(String filter, ServiceListener serviceListener)
+    public boolean getServiceAdvertisements(String filter, ServiceAdvertisementListener serviceListener)
     {
         if (filter == null)
             filter = FILTER_DEFAULT;
@@ -180,8 +193,37 @@ public class ServiceManagerImpl implements ServiceManager, Listener
 
     /*
      */
-    public boolean getService(String fromPeer, ServiceReference sref)
+    public boolean getService(String fromPeer, ServiceReference sref, ServiceListener listener)
     {
+        // save servicelistener for the givcen sref id
+        mapId2SvcListener.put(sref.getID(), listener);
+        mapId2SvcReference.put(sref.getID(), sref);
+        
+        // send out request
+        Element[] elm = new Element[2];
+        if (fromPeer != null)
+        {
+            elm = new Element[3];
+            elm[2] = new Element(SERVICE_PEER, fromPeer, Message.JXTA_NAME_SPACE);
+        }
+        
+        elm[0] = new Element(SERVICE_TYPE, JAR_REQ, Message.JXTA_NAME_SPACE);
+        elm[1] = new Element(SERVICE_FILTER, sref.getID(), Message.JXTA_NAME_SPACE);
+                
+        try
+        {
+            LOG.debug("send servicemanager message");
+            
+            ServiceManagerActivator.groupService.send(
+                    ServiceManagerActivator.groupPipe, 
+                    new Message(elm));
+            
+        } catch (IOException e)
+        {
+            LOG.debug("error in sending message");
+            return false;
+        }
+        
         return false;
     }
 
@@ -312,7 +354,70 @@ public class ServiceManagerImpl implements ServiceManager, Listener
             notifyListeners(filter, sref);
             
         }
-        
+    		// JAR-Request
+        else if (type.equals(JAR_REQ))
+        {
+            String peer = new String(msg.getElement(SERVICE_PEER).getData());
+            
+            if (peer.equals(ServiceManagerActivator.peername))
+            {
+                String id = new String(msg.getElement(SERVICE_ID).getData());
+                
+                BundleInformation binfo = ServiceManagerActivator.bundleLoader.getBundleInfo(id);
+                
+	            try
+	            {
+	                // append file data
+	                //byte[] data = getBytesFromFile(file);
+	                byte[] data = binfo.getBundleCode();
+	                
+	                LOG.debug("file data size:"+data.length);
+	                
+	                Element[] elms = new Element[3];
+	                
+	                elms[0] = new Element(SERVICE_TYPE, 
+	                        JAR_ACK, 
+	                        Message.JXTA_NAME_SPACE);
+	                elms[1] = new Element(SERVICE_ID, 
+	                        id, Message.JXTA_NAME_SPACE);
+	                elms[2] = new Element(SERVICE_CODE, 
+	                        data, Message.JXTA_NAME_SPACE, Element.TEXTUTF8_MIME_TYPE);
+	
+			        try
+			        {                    
+			            ServiceManagerActivator.groupService.send(ServiceManagerActivator.groupPipe, new Message(elms));
+			        } catch (IOException e)
+			        {
+			            LOG.debug("error in sending message");
+			        }
+			        
+	            } catch (IOException ioe)
+	            {
+	                LOG.error("couldn't append File to Event", ioe);
+	            }
+            }
+        }
+        	// JAR-Ack
+        else if (type.equals(JAR_ACK))
+        {
+	        byte[] data = msg.getElement(SERVICE_CODE).getData();
+	        String id = new String(msg.getElement(SERVICE_ID).getData());
+	
+	        BundleInformation binfo = ServiceManagerActivator.bundleLoader.getBundleInfo(id);
+	        
+	        saveJarInCache(data, id, binfo);
+	        
+	        // TODO call bundleloader for the received bundle
+	        
+	        ServiceListener svcListener = (ServiceListener)mapId2SvcListener.remove(id);
+	        ServiceReference sref = (ServiceReference)mapId2SvcReference.remove(id);
+	        
+	        svcListener.receivedService(sref);
+	        
+//	        ByteArrayInputStream bin = new ByteArrayInputStream(data);
+//	        bc.installBundle(filename, bin);
+	
+        }
     }
 
     private void matchAndSendServiceAdvertisement(Enumeration en, String rptype, String filter, String service)
@@ -354,6 +459,45 @@ public class ServiceManagerImpl implements ServiceManager, Listener
             }
         
         }
+    }
+    
+    private void saveJarInCache(byte[] data, String id, BundleInformation binfo)
+    {
+        String group = id.substring(0,id.indexOf(":"));
+        id = id.substring(id.indexOf(":")+1);
+        String name = id.substring(0,id.indexOf(":"));
+        id = id.substring(id.indexOf(":")+1);
+        String version = id.substring(0,id.indexOf(":"));
+        
+        String filename = name + "-" + version + ".jar";
+        
+        
+        String absfilepath = repoCacheDir.getAbsolutePath() + File.separatorChar +
+        	group + File.separatorChar + "jars" + File.separatorChar +
+        	filename;
+        
+        // set filepath in BundleInformation
+        binfo.setBundleCacheLocation(absfilepath);
+        
+	    File file = new File(absfilepath);
+	    FileOutputStream fo;
+        try
+        {
+            fo = new FileOutputStream(file);
+            
+            fo.write(data);
+    	    fo.close();
+        } catch (FileNotFoundException e)
+        {
+            LOG.error("could not create file outputstream: ",e);
+        } catch (IOException e)
+        {
+            LOG.error("could not write file:",e);
+        }
+	
+//	    RandomAccessFile raf = new RandomAccessFile(filename, "rw");
+//	    raf.write(data);
+
     }
     
     private void saveServiceAdvInCache(ServiceAdvertisement sref)
@@ -401,8 +545,6 @@ public class ServiceManagerImpl implements ServiceManager, Listener
             LOG.error("error in writing file");
         }
 
-        
-        
     }
     
     /*
