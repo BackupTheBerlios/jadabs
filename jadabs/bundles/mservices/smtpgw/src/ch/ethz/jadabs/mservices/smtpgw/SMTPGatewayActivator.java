@@ -33,7 +33,7 @@
  * 
  * Created on Jul 21, 2004
  * 
- * $Id: SMTPGatewayActivator.java,v 1.1 2004/11/08 07:30:35 afrei Exp $
+ * $Id: SMTPGatewayActivator.java,v 1.2 2004/12/17 16:20:47 afrei Exp $
  */
 package ch.ethz.jadabs.mservices.smtpgw;
 
@@ -67,7 +67,9 @@ public class SMTPGatewayActivator implements BundleActivator
         
         // register SMPTGateway
         smtpgw = new SMTPGatewayService();
-        SMTPGatewayActivator.bc.registerService(SMTPGatewayService.class.getName(), smtpgw, null);
+        SMTPGatewayActivator.bc.registerService(
+                SMTPGatewayService.class.getName(), 
+                smtpgw, null);
 
         // register SMTPGateway in EndpointService
         ServiceReference sref = bc.getServiceReference(EndpointService.class.getName());
@@ -82,7 +84,6 @@ public class SMTPGatewayActivator implements BundleActivator
      */
     public void stop(BundleContext bc) throws Exception
     {
-        // Rene: Andreas, what is this supposed to do?
-        //Thread.currentThread().setContextClassLoader(oldLoader);
+        
     }
 }
