@@ -311,4 +311,13 @@ public class ServiceManagerActivator extends Thread
             }
         }
     }
+
+    /* (non-Javadoc)
+     * @see ch.ethz.jadabs.servicemanager.ServiceManager#addProvidingService(java.lang.String)
+     */
+    public void addProvidingService(String uuid)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

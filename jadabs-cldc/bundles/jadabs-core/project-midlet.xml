@@ -11,6 +11,7 @@
 	<shortDescription>Jadabs-Core Component for J2ME-JXME</shortDescription>
 
   	<dependencies>  	
+<!--   
       <dependency>
             <groupId>jadabs</groupId>
             <artifactId>microservices-common</artifactId>
@@ -19,7 +20,7 @@
                <midlet>true</midlet>
             </properties>
       </dependency>
-      
+ -->     
       <dependency>
             <groupId>jadabs</groupId>
             <artifactId>microservices-core</artifactId>
@@ -73,7 +74,7 @@
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>
-      
+ <!--     
 		<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>jxme-tcp-j2me</artifactId>
@@ -82,7 +83,16 @@
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>        
-      
+ -->     
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-bt-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>        
+
     	<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>log4j-j2me</artifactId>

@@ -31,20 +31,14 @@
 
       <dependency>
       		<groupId>jadabs</groupId>
-      		<artifactId>jxme-services-j2me</artifactId>
+      		<artifactId>jxme-services-impl</artifactId>
       		<version>${pom.currentVersion}</version>
-      		<properties>
-	      		<midlet>true</midlet>  
-	      	</properties>
 		</dependency>
       
 		<dependency>
       		<groupId>jadabs</groupId>
-      		<artifactId>jxme-tcp-j2me</artifactId>
+      		<artifactId>jxme-tcp</artifactId>
       		<version>${pom.currentVersion}</version>
-      		<properties>
-	      		<midlet>true</midlet>  
-	      	</properties>
 		</dependency>        
       
     	<dependency>

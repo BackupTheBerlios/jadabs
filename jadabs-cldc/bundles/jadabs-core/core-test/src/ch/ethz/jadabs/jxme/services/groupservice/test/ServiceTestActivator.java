@@ -1,4 +1,4 @@
-/* $Id: ServiceTestActivator.java,v 1.1 2005/02/18 21:12:30 printcap Exp $
+/* $Id: ServiceTestActivator.java,v 1.2 2005/04/03 16:42:21 printcap Exp $
  * Created on Feb 18, 2005
  *
  */
@@ -16,6 +16,7 @@ import ch.ethz.jadabs.jxme.Element;
 import ch.ethz.jadabs.jxme.Listener;
 import ch.ethz.jadabs.jxme.Message;
 import ch.ethz.jadabs.jxme.NamedResource;
+import ch.ethz.jadabs.jxme.Peer;
 import ch.ethz.jadabs.jxme.Pipe;
 import ch.ethz.jadabs.jxme.services.GroupService;
 
@@ -50,20 +51,34 @@ public class ServiceTestActivator implements BundleActivator, Listener
         
         // obtain reference to pipe
         String pipeName = bc.getProperty("ch.ethz.jadabs.jxme.services.groupservice.test.pipe");
-                
+        LOG.debug("pipeName: "+pipeName);
+        
         groupService.remoteSearch(NamedResource.PIPE, "Name", "", 1, new DiscoveryListener() {
             public void handleSearchResponse(NamedResource namedResource)
             {
-                LOG.debug("Named Resource found: "+namedResource);                
+                LOG.debug("Named Resource found: "+namedResource);
+                if (namedResource instanceof Pipe) {
+                    LOG.debug("pipe resource found.");
+                    Pipe pipe = (Pipe)namedResource;
+                    try {
+                        groupService.resolve(pipe, 100000);
+                        Element[] elems = new Element[] {
+                                new Element("message","Hello World!",Message.JXTA_NAME_SPACE)
+                        };
+                        LOG.debug("sending 'Hello World!' message");
+                        groupService.send(pipe, new Message(elems));                        
+                    } catch(IOException e) {
+                        e.printStackTrace();
+                    }
+                } else if (namedResource instanceof Peer) {
+                    LOG.debug("peer resource found.");
+                }
             }
 
             public void handleNamedResourceLoss(NamedResource namedResource)
             {
-                // TODO Auto-generated method stub
-                
-            }
-            
-            
+                LOG.debug("handle named resource loss called.");                
+            }                        
         });
                 
     }

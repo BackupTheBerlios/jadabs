@@ -6,8 +6,12 @@
 #-xargs props.xargs
 
 #-Dch.ethz.jadabs.starter=BundleService.starter
--Dch.ethz.jadabs.jxme.tcp.port=2120
-
+-Dch.ethz.jadabs.jxme.tcp.port=9002
+-Dch.ethz.jadabs.jxme.seedURIs=tcp://192.168.1.36:9001
+-Dch.ethz.jadabs.jxme.peeralias=peer2
+-Dch.ethz.jadabs.jxme.services.groupservice.test.pipe=urn:jxta:uuid-0:1:04
+-Dch.ethz.jadabs.jxme.bt.rendezvouspeer=true
+-Dch.ethz.jadabs.jxme.bt.discoverysleep=3000
 # load bin1 specifics
 
 # initialize bundles
@@ -22,7 +26,13 @@
 
 
 -install  	jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar
--install  	jadabs/jars/jxme-tcp-0.7.1-SNAPSHOT.jar
+# for TCP transport
+#-install  	jadabs/jars/jxme-tcp-0.7.1-SNAPSHOT.jar
+
+# for Bluetooth transport
+-install    impronto/jars/idev_bluez-1.3-osgi.jar
+-install  	jadabs/jars/jxme-bt-0.7.1-SNAPSHOT.jar
+
 -install  	jadabs/jars/jxme-services-api-0.7.1-SNAPSHOT.jar
 -install  	jadabs/jars/jxme-services-impl-0.7.1-SNAPSHOT.jar
 -install    jadabs/jars/jadabs-core-groupservice-test-0.7.1-SNAPSHOT.jar
@@ -32,6 +42,11 @@
 -launch
 
 -start    jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar
--start    jadabs/jars/jxme-tcp-0.7.1-SNAPSHOT.jar
+# for TCP transport 
+#-start    jadabs/jars/jxme-tcp-0.7.1-SNAPSHOT.jar
+
+# for Bluetooth transport
+-start    jadabs/jars/jxme-bt-0.7.1-SNAPSHOT.jar
+
 -start    jadabs/jars/jxme-services-impl-0.7.1-SNAPSHOT.jar
 -start    jadabs/jars/jadabs-core-groupservice-test-0.7.1-SNAPSHOT.jar

@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="bundles/jadabs-core/microservices-bundle/src"/>
 	<classpathentry kind="src" path="bundles/jadabs-core/core-test/src"/>
-	<classpathentry kind="src" path="bundles/jxme-osgi/tcp-cldc/src"/>
 	<classpathentry kind="src" path="bundles/jadabs-core/microservices-bundle/testmidlet/src"/>
 	<classpathentry kind="src" path="bundles/jadabs-core/microservices-common/src"/>
 	<classpathentry kind="src" path="bundles/jadabs-core/microservices-core/src"/>
@@ -14,8 +13,9 @@
 	<classpathentry kind="src" path="bundles/mservices/smsgateway/src"/>
 	<classpathentry kind="src" path="bundles/smartmessenger/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/jxme-chat/src"/>
-	<classpathentry kind="src" path="bundles/jxme-osgi/bt-cldc/paralleltest/src"/>
+	<classpathentry kind="src" path="bundles/jxme-osgi/tcp-cldc/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/bt-cldc/src"/>
+	<classpathentry kind="src" path="bundles/jxme-osgi/bt-cldc/paralleltest/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/bt-cldc/bttest/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/bt-cldc/bluechat/src"/>
 	<classpathentry kind="src" path="bundles/log4j-j2me/src"/>

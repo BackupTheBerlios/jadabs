@@ -9,9 +9,13 @@
   	</midlets>
 
    <attributes>
-      <attribute name="ch.ethz.jadabs.jxme.peeralias" value="Nokia6600"/>
-      <attribute name="ch.ethz.jadabs.jxme.tcp.port" value="2121"/>
+      <attribute name="ch.ethz.jadabs.jxme.peeralias" value="peer1"/>
+      <attribute name="ch.ethz.jadabs.jxme.tcp.port" value="9001"/>
+      <attribute name="ch.ethz.jadabs.jxme.seedURIs" value="tcp://192.168.1.36:9002"/>
+      
       <attribute name="log4j.priority" value="DEBUG"/>
+      <attribute name="ch.ethz.jadabs.jxme.hostname" value="peer1"/>
+      <attribute name="ch.ethz.jadabs.jxme.bt.rendezvouspeer" value="false"/>
       <attribute name="MIDlet-Push-1" value="datagram://:4444, ch.ethz.jadabs.core.JadabsCoreMIDlet, 127.0.0.1"/>
 
    </attributes>      

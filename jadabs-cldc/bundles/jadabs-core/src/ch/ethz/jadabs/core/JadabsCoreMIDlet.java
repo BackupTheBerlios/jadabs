@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreMIDlet.java,v 1.4 2005/02/18 21:12:30 printcap Exp $
+ * $Id: JadabsCoreMIDlet.java,v 1.5 2005/04/03 16:42:21 printcap Exp $
  */
 package ch.ethz.jadabs.core;
 
@@ -16,11 +16,10 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import ch.ethz.jadabs.jxme.JxmeActivator;
+import ch.ethz.jadabs.jxme.bt.BTActivator;
 import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreActivator;
 import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreImpl;
 import ch.ethz.jadabs.jxme.services.impl.ServiceActivator;
-import ch.ethz.jadabs.jxme.tcp.cldc.TCPActivator;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
 
 /**
@@ -65,13 +64,24 @@ public class JadabsCoreMIDlet extends MIDlet
         osgicontainer.setProperty("log4j.priority", this.getAppProperty("log4j.priority"));
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.tcp.port", 
                                   this.getAppProperty("ch.ethz.jadabs.jxme.tcp.port"));
+        osgicontainer.setProperty("ch.ethz.jadabs.jxme.seedURIs", 
+                this.getAppProperty("ch.ethz.jadabs.jxme.seedURIs"));
+        osgicontainer.setProperty("ch.ethz.jadabs.jxme.hostname", 
+                this.getAppProperty("ch.ethz.jadabs.jxme.hostname"));
+        osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer",
+                this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));
         
         osgicontainer.startBundle(new LogActivator());
         LOG = Logger.getLogger("ch.ethz.jadabs.core.JadabsCoreMIDlet");        
         
         // now bring up the entire Jxme stuff
-        osgicontainer.startBundle(new JxmeActivator());
-        osgicontainer.startBundle(new TCPActivator());
+        //osgicontainer.startBundle(new JxmeActivator());
+        
+        // for Bluetooth transport
+        osgicontainer.startBundle(new BTActivator());
+        
+        // for TCP transport
+        //osgicontainer.startBundle(new TCPActivator());
         osgicontainer.startBundle(new ServiceActivator());
         
         // finally start the micro group service 
