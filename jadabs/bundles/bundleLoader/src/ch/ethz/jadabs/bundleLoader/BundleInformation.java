@@ -56,6 +56,48 @@ public class BundleInformation {
 		}
 		
 	}
+	
+	public BundleInformation(String uuid) throws Exception {		
+		int firstSep = uuid.indexOf(":");
+		if (firstSep < 0) {
+			throw new Exception("illegal bundle uuid");
+		}
+		int secSep = uuid.substring(firstSep + 1).indexOf(":");
+		if (secSep < 0) {
+			throw new Exception("illegal bundle uuid");
+		}
+		secSep += firstSep + 1;
+		int thirdSep = uuid.substring(secSep + 1).indexOf(":");
+		if (thirdSep < 0) {
+			throw new Exception("illegal bundle uuid");
+		}
+		thirdSep += secSep + 1;  
+
+		String bundle = uuid.substring(firstSep + 1, secSep);
+		String group = uuid.substring(0, firstSep);
+		String version = uuid.substring(secSep + 1, thirdSep);
+
+		parser = new KXmlParser();
+		FileReader reader;
+		
+		try {
+			if (BundleLoader.fetchPolicy == BundleLoader.Eager) {
+				BundleLoader.loadBundle(bundle, group, version);
+			}
+			
+			filename = BundleLoader.repository + File.separator + group + File.separator + "jars" + File.separator + bundle + "-" + version + ".jar";
+			reader = new FileReader(BundleLoader.repository + File.separator + group + File.separator + "obr" + File.separator + bundle + "-" + version + ".obr");
+			parser.setInput(reader);
+			parseOBR();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			parser=null;
+			reader=null;			
+		}
+
+	}
 
 	/**
 	 * 
@@ -69,9 +111,9 @@ public class BundleInformation {
 		for (int type = parser.next(); (type != KXmlParser.END_DOCUMENT); type = parser
 				.next()) {
 			if (type == KXmlParser.START_TAG) {
-				if (parser.getName().equals("dependencies")) {
-					buildSchedule();
-				}
+				// if (parser.getName().equals("dependencies")) {
+				// 	buildSchedule();
+				// }
 				stack.push(parser.getName());
 			}
 			if (type == KXmlParser.END_TAG) {
@@ -101,7 +143,7 @@ public class BundleInformation {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	private void processElement(Stack stack) throws XmlPullParserException,
+	private void processElement(Stack stack) throws XmlPullParserException, 
 			IOException {		
 		if (stack.peek().equals("bundle-name")) {
 			this.bundleName = parser.getText().trim();
@@ -119,6 +161,15 @@ public class BundleInformation {
 			this.bundleDocURL = parser.getText().trim();
 		} else if (stack.peek().equals("bundle-checksum")) {
 			this.bundleChecksum = parser.getText().trim();
+		} else if (stack.peek().equals("dependency-uuid")) {
+			String uuid = parser.getText().trim();
+			try {
+				BundleInformation dependency = new BundleInformation(uuid);
+				bundleDependencies.add(dependency);
+			} catch (Exception e) {
+				System.out.println("malformed bundle uuid: " + uuid);
+				e.printStackTrace();
+			}			
 		}
 	}
 	
@@ -157,7 +208,9 @@ public class BundleInformation {
 					bundlegroup = parser.getText();
 					// DEBUG one line
 					// System.out.println("bundle-group: " + bundlegroup);
-				}
+				} else if (tagname.equals("dependency-uuid")) {
+					// TODO: do it
+				}				
 				if (bundlename != null && bundleversion != null && bundlegroup != null) {
 					BundleInformation dependency = new BundleInformation(bundlename, bundlegroup, bundleversion);
 					bundleDependencies.add(dependency);

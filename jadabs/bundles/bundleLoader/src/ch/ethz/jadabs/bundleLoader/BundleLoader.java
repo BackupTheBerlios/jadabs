@@ -24,7 +24,7 @@ import org.osgi.framework.*;
  */
 
 public class BundleLoader implements IBundleLoader {
-	protected static final String repository = "/home/rjan/.maven/repository"; 
+	protected static String repository; 
 	private static HashSet availableBundles = new HashSet();
 	private static HashSet systemBundles = new HashSet();
 	private static LinkedList installationQueue = new LinkedList(); 
@@ -39,6 +39,9 @@ public class BundleLoader implements IBundleLoader {
 	 * @param sysBundles
 	 */
 	public BundleLoader(Collection sysBundles) {
+		String loc = BundleLoaderActivator.bc.getBundle().getLocation();
+		repository = loc.substring(loc.indexOf(":"), loc.indexOf("jadabs") - 1);		
+		
 		systemBundles.addAll(sysBundles);
 	}
 	

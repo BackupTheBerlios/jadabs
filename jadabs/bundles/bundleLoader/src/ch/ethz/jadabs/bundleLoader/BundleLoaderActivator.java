@@ -23,8 +23,10 @@ public class BundleLoaderActivator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext bc) throws Exception {
-		System.out.println("BundleLoader starting ...");
+		System.out.println("BundleLoader starting ...");			
 		BundleLoaderActivator.bc = bc;
+		
+		System.out.println(bc.getBundle().getLocation());
 
 		// register all system bundles
 		Bundle [] bundles = BundleLoaderActivator.bc.getBundles();
