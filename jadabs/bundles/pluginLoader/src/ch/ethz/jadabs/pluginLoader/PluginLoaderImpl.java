@@ -130,12 +130,6 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
          LOG.error(e.getMessage());
          LOG.error("Loading of Plugin " + uuid + " failed.");
       }
-      // BUNDLE LOADER TEST SECTION
-      
-      System.out.println();
-      System.out.println();
-      System.out.println();
-      // System.out.println(PluginLoaderActivator.bloader.getDependencyGraph("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr"));
       
    }
 

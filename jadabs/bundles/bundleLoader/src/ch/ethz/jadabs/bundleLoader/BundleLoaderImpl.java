@@ -96,7 +96,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
    }
 
-   
    /**
     * Singleton, get implementation
     * 
@@ -108,7 +107,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return me;
    }
 
-   
    /**
     * Load a bundle together with all dependencies.
     * 
@@ -165,7 +163,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
-   
    /**
     * Get the dependency graph of a given bundle
     * 
@@ -176,82 +173,98 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       LinkedList list = new LinkedList();
       list.add(getBundleDescriptor(uuid));
 
-      do {
-         int index;
+      synchronized (locked) {
 
-         for (index = 0; index < list.size() - 1
-               && ((BundleDescriptor) list.get(index)).processed; index++)
-            ;
-
-         BundleDescriptor current = (BundleDescriptor) list.get(index);
-
-         // all are processed, exit loop
-         if (current.processed)
-            break;
-
-         int offset = 1;
-         int childLevel = current.getLevel() + 1;
-
-         System.out.println(current + " has Dependencies: ");
-         for (Enumeration deps = current.dependencies.elements(); deps
-               .hasMoreElements();) {
-            String depUuid = (String) deps.nextElement();
-            System.out.println("\t" + depUuid);
-            BundleDescriptor dep = getBundleDescriptor(depUuid);
-            System.out.println("\t old level: " + dep.getLevel()
-                  + ", new level: " + childLevel);
-            dep.setLevel(childLevel);
-            if (dep.dependencies.isEmpty())
-               dep.processed = true;
-            list.add(index + offset, dep);
-
-            offset++;
+         // semaphore, only one schedule at once,
+         // to keep the system state constant during
+         // resolvation and scheduling
+         try {
+            if (locked.booleanValue())
+               this.wait();
+         } catch (Exception e) {
+            LOG.error(e.getStackTrace());
          }
-         System.out.println();
+         locked = Boolean.TRUE;
 
-         current.processed = true;
+         do {
+            int index;
 
-      } while (true);
+            for (index = 0; index < list.size() - 1
+                  && ((BundleDescriptor) list.get(index)).processed; index++)
+               ;
 
-      for (Iterator iter = list.iterator(); iter.hasNext();) {
-         BundleDescriptor current = (BundleDescriptor) iter.next();
-         System.out.println(current + " hat Level " + current.getLevel());
-      }
+            BundleDescriptor current = (BundleDescriptor) list.get(index);
 
-      // and now make a XML document from the list
+            // all are processed, exit loop
+            if (current.processed)
+               break;
 
-      Stack stack = new Stack();
-      StringBuffer buffer = new StringBuffer();
-      buffer.append("<dependency-graph>\n");
+            int offset = 1;
+            int childLevel = current.getLevel() + 1;
 
-      String sep = new String();
-      int level = -1;
+            System.out.println(current + " has Dependencies: ");
+            for (Enumeration deps = current.dependencies.elements(); deps
+                  .hasMoreElements();) {
+               String depUuid = (String) deps.nextElement();
+               System.out.println("\t" + depUuid);
+               BundleDescriptor dep = getBundleDescriptor(depUuid);
+               System.out.println("\t old level: " + dep.getLevel()
+                     + ", new level: " + childLevel);
+               dep.setLevel(childLevel);
+               if (dep.dependencies.isEmpty())
+                  dep.processed = true;
+               list.add(index + offset, dep);
 
-      while (!list.isEmpty()) {
-         BundleDescriptor current = (BundleDescriptor) list.removeFirst();
+               offset++;
+            }
+            System.out.println();
 
-         for (int dif = level; dif >= current.getLevel(); dif--) {
-            buffer.append(Utilities.tabs(dif) + "</bundle>\n");
+            current.processed = true;
+
+         } while (true);
+
+         for (Iterator iter = list.iterator(); iter.hasNext();) {
+            BundleDescriptor current = (BundleDescriptor) iter.next();
+            System.out.println(current + " hat Level " + current.getLevel());
          }
 
-         buffer.append(Utilities.tabs(current.getLevel()) + "<bundle uuid=\""
-               + current.toString() + "\">\n");
+         // and now make a XML document from the list
 
-         level = current.getLevel();
+         Stack stack = new Stack();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append("<dependency-graph>\n");
 
+         String sep = new String();
+         int level = -1;
+
+         while (!list.isEmpty()) {
+            BundleDescriptor current = (BundleDescriptor) list.removeFirst();
+
+            for (int dif = level; dif >= current.getLevel(); dif--) {
+               buffer.append(Utilities.tabs(dif) + "</bundle>\n");
+            }
+
+            buffer.append(Utilities.tabs(current.getLevel())
+                  + "<bundle uuid=\"" + current.toString() + "\">\n");
+
+            level = current.getLevel();
+
+         }
+
+         for (int dif = 0; dif <= level; dif++) {
+            buffer.append(Utilities.tabs(level - dif) + "</bundle>\n");
+         }
+
+         buffer.append("</dependency-graph>\n");
+
+         // open semaphore
+         locked = Boolean.FALSE;
+         locked.notifyAll();
+         return buffer.toString();
       }
-
-      for (int dif = 0; dif <= level; dif++) {
-         buffer.append(Utilities.tabs(level - dif) + "</bundle>\n");
-      }
-
-      buffer.append("</dependency-graph>\n");
-
-      return buffer.toString();
 
    }
 
-   
    /**
     * Get a list of all currently installed bundles
     * 
@@ -261,7 +274,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return loadedBundles.iterator();
    }
 
-   
    /**
     * Get a bundle descriptor. Either, the <code>BundleDescriptor</code> still
     * exists, that means the <code>WeakReference</code> has not been broken up
@@ -302,7 +314,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
-   
    /**
     * Builds up a schedule for a given bundle.
     * 
@@ -391,7 +402,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return installationQueue;
    }
 
-   
    /**
     * Register a request handler at the <code>HttpDaemon</code>
     * 
@@ -401,7 +411,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       BundleLoaderActivator.httpDaemon.addRequestHandler(handler);
    }
 
-   
    /**
     * Unregister a request handler at the <code>HttpDaemon</code>
     * 
@@ -411,7 +420,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       BundleLoaderActivator.httpDaemon.removeRequestHandler(handler);
    }
 
-   
    /**
     * Register an <code>InformationSource</code> to be used when fetching
     * bundle jars or obrs.
@@ -423,7 +431,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          infoSources.add(infoSources);
    }
 
-   
    /**
     * Unregister an <code>InformationSource</code>
     * 
@@ -433,7 +440,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       infoSources.remove(infoSource);
    }
 
-   
    /**
     * Fetch Information like bundle jars or obrs using all registered
     * <code>InformationSources<code>
@@ -463,7 +469,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
-   
    /**
     * Fetch Information like bundle jars or obrs using all registered
     * <code>InformationSources<code>
@@ -486,7 +491,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
-   
    /**
     * Register a <code>LoaderListener</code>
     * 
@@ -497,7 +501,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          loaderListeners.add(listener);
    }
 
-   
    /**
     * Unregister a <code>LoaderListener</code>
     * 
@@ -507,7 +510,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       loaderListeners.remove(listener);
    }
 
-   
    /**
     * Notifies all registered <code>LoaderListeners</code> that the state of a
     * bundle has changed.
@@ -524,7 +526,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
-   
    /**
     * Called by framework, if a bundle state has changed.
     * 
@@ -561,7 +562,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
-   
    /**
     * Get a obr uuid from a bundle jar filename
     * 
