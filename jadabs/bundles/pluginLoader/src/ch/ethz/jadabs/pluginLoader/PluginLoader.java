@@ -31,6 +31,10 @@ public class PluginLoader extends Thread implements IPluginLoader {
    private LinkedList pluginSchedule = new LinkedList();
    private Platform platform;
 
+   /**
+    * 
+    * @see java.lang.Runnable#run()
+    */
    public void run() {
       // load starter
       File dir = new File("." + File.separatorChar + "plugins");
@@ -55,6 +59,10 @@ public class PluginLoader extends Thread implements IPluginLoader {
                   parsePlatform();
                   parser = null;
                   padreader = null;
+               } else if (line.startsWith("-startopd")) {
+                  String id = line.substring(9).trim();
+                  System.out.println("Starting Plugin " + id);
+                  // TODO: Get OSGiBundle, resolve it and start it.
                }
             }
          } catch (Exception err) {

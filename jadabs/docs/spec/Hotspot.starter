@@ -15,9 +15,9 @@
 
 -runlevel 2
 # use the jxme layer for RemoteBundleLoader
--startopd   jadabs:jxme-osgi:0.7.1-SNAPSHOT:
--startopd   jadabs:jxme-udp:0.7.1-SNAPSHOT:
--startopd   jadabs:jxme-services:0.7.1-SNAPSHOT:
+#-startopd   jadabs:jxme-osgi:0.7.1-SNAPSHOT:
+#-startopd   jadabs:jxme-udp:0.7.1-SNAPSHOT:
+#-startopd   jadabs:jxme-services:0.7.1-SNAPSHOT:
 
 -runlevel 3
 # start the MailService on this hotspot

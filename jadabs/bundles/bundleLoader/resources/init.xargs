@@ -5,7 +5,6 @@
 -Dorg.knopflerfish.verbosity=0
 
 -Dorg.knopflerfish.gosg.jars=file:./../.maven/repository/
-#-Dorg.knopflerfish.gosg.jars=file:./repository/
 -Dorg.knopflerfish.framework.debug.packages=false
 -Dorg.knopflerfish.framework.debug.errors=true
 -Dorg.knopflerfish.framework.debug.classloader=false

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../../project.xml</extend>
+
+  	<groupId>jadabs</groupId>
+  	<id>remoteLoader</id>
+  	<name>Jadabs Remote BundleLoader</name>
+
+  	<shortDescription>Jadabs Remote BundleLoader</shortDescription>
+
+	<properties>
+		<osgi.import.service></osgi.import.service>		
+	</properties>
+	
+	
+  	<dependencies>
+
+        <dependency>
+            <groupId>osgi</groupId>
+            <artifactId>osgi-framework</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+		<dependency>
+	        <groupId>jadabs</groupId>
+	        <artifactId>jxme-osgi</artifactId>
+	        <version>${pom.currentVersion}</version>
+	    </dependency>
+	
+		<dependency>
+	        <groupId>jadabs</groupId>
+	        <artifactId>jxme-services-api</artifactId>
+	        <version>${pom.currentVersion}</version>
+	    </dependency>
+	    		
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>log4j-cdc</artifactId>
+			<version>${pom.currentVersion}</version>
+		</dependency>
+				
+  	</dependencies>
+  
+</project>
