@@ -78,11 +78,15 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
     */
    private PluginLoaderImpl() {
       infoSources.add(new Repository());
+      /*
       try {
-         registerInformationSource(new HttpClient());
+         HttpClient client = new HttpClient();
+         if (client != null)
+            registerInformationSource(client);
       } catch (Exception e) {
-         // don't care
+      	e.printStackTrace();
       }
+      */
       
       // Register a PluginLoaderHandler at httpDaemon
       PluginLoaderActivator.bloader.registerRequestHandler(new PluginLoaderHandler());      
@@ -128,6 +132,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
          }
       } catch (Exception e) {
          LOG.error(e.getMessage());
+         e.printStackTrace();
          LOG.error("Loading of Plugin " + uuid + " failed.");
       }
       
