@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreTestMIDlet.java,v 1.4 2005/02/17 23:06:43 printcap Exp $
+ * $Id: JadabsCoreTestMIDlet.java,v 1.5 2005/02/18 08:58:33 printcap Exp $
  */
 package ch.ethz.jadabs.core.test;
 
@@ -123,7 +123,7 @@ public class JadabsCoreTestMIDlet extends MIDlet
         sendCmd = new Command("Send", Command.SCREEN, 3);
         logCmd = new Command("Log", Command.SCREEN, 4);
         wakeupCoreCmd = new Command("Wakeup Core", Command.SCREEN, 1);
-        createPipe = new Command("Create Pipe", Command.SCREEN, 5);
+        createPipe = new Command("Create Pipe, Publish", Command.SCREEN, 5);
         addListener = new Command("Add Listener", Command.SCREEN, 6);
         closePipe = new Command("Close Pipe", Command.SCREEN, 7);
         exitCmd = new Command("Exit", Command.EXIT, 1);
@@ -181,8 +181,10 @@ public class JadabsCoreTestMIDlet extends MIDlet
             groupService.wakeupCore();                   
         } else if (c == createPipe) {
             LOG.debug("create pipe "+PIPE_NAME+"...");
-            id = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:02", Pipe.UNICAST);
-            LOG.debug("pipe with id:"+id);
+            id = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:04", Pipe.PROPAGATE);
+            LOG.debug("pipe with id:"+id+" created.");
+            groupService.publish(NamedResource.PIPE, PIPE_NAME, id);
+            LOG.debug("pipe "+id+" published.");            
         } else if (c == addListener) {
             LOG.debug("add listener to pipe "+id+".");
             try {
