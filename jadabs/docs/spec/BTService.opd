@@ -23,6 +23,11 @@
         service="ch.ethz.jadab.jxme.udp.BTTransport"
     />
     
+    <Extension
+	    id="Transport"
+        service="ch.ethz.jadab.jxme.udp.BTTransport"
+    />
+    
     <PluginActivatorBundle
         bundle-name="jxme-bt"
         bundle-version="0.7.1-SNAPSHOT"

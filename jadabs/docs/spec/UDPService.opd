@@ -20,6 +20,11 @@
 	/>
 	
 	<Extension
+	    id="Transport"
+        java-service="ch.ethz.jadab.jxme.udp.UDPTransport"
+    />
+    
+    <Extension
 	    id="UDPTransport"
         java-service="ch.ethz.jadab.jxme.udp.UDPTransport"
     />

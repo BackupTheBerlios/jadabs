@@ -47,6 +47,10 @@
         iface="hci0"
         description="for BT/JSR-82 Connections"
      />
-    	
+    
+    <NetIface
+    	type="internet"
+    	ext-type="wlan/managed"
+    />
 	
 </Platform>
