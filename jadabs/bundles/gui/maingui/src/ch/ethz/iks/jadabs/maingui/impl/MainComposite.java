@@ -424,6 +424,7 @@ public class MainComposite extends Composite
             
             if (titem.getText().equals(ITEM_SERVICE_NAME))
             {
+                System.out.println("called getservices");
                 TreeItem pitem = titem.getParentItem();
                 
 	            // get Bundles for the selection
@@ -490,6 +491,8 @@ public class MainComposite extends Composite
             }
             else if (titem.getText().equals(ITEM_PROVIDED_BUNDLES))
             {
+                System.out.println("called get bundles-available");
+                
                 TreeItem pitem = titem.getParentItem();
                 
 	            // get Bundles for the selection

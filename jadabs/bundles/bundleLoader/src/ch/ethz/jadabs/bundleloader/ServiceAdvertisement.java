@@ -79,7 +79,7 @@ public abstract class ServiceAdvertisement
             }
             
             adv = sb.toString();
-            
+                        
             br.close();
             
         } catch (FileNotFoundException e)

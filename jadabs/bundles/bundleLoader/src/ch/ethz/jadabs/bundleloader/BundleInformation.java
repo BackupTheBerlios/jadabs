@@ -74,12 +74,61 @@ public class BundleInformation extends ServiceAdvertisement
             File obrfile = new File(BundleLoaderActivator.repository + File.separator + group + File.separator + "obrs"
                     + File.separator + bundle + "-" + version + ".obr");
             
+            System.out.println("created Binfo: "+obrfile);
+            
             reader = new FileReader(obrfile);
             parser.setInput(reader);
             parseOBR();
             
             setAdvertisement(obrfile);
 
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            parser = null;
+            reader = null;
+        }
+
+    }
+    
+    public BundleInformation(String uuid) throws Exception
+    {
+        int firstSep = uuid.indexOf(":");
+        if (firstSep < 0) { throw new Exception("illegal bundle uuid"); }
+        int secSep = uuid.substring(firstSep + 1).indexOf(":");
+        if (secSep < 0) { throw new Exception("illegal bundle uuid"); }
+        secSep += firstSep + 1;
+        int thirdSep = uuid.substring(secSep + 1).indexOf(":");
+        if (thirdSep < 0) { throw new Exception("illegal bundle uuid"); }
+        thirdSep += secSep + 1;
+
+        String bundle = uuid.substring(firstSep + 1, secSep);
+        String group = uuid.substring(0, firstSep);
+        String version = uuid.substring(secSep + 1, thirdSep);
+
+        parser = new KXmlParser();
+        FileReader reader;
+
+        try
+        {
+            if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Eager)
+            {
+                BundleLoaderImpl.loadBundle(bundle, group, version);
+            }
+
+            filename = BundleLoaderActivator.repository + File.separator + group + File.separator + "jars"
+                    + File.separator + bundle + "-" + version + ".jar";
+            File obrfile = new File(BundleLoaderActivator.repository + File.separator + group + File.separator + "obrs"
+                    + File.separator + bundle + "-" + version + ".obr");
+            
+            reader = new FileReader(obrfile);
+            parser.setInput(reader);
+            parseOBR();
+
+            setAdvertisement(obrfile);
+            
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -147,48 +196,6 @@ public class BundleInformation extends ServiceAdvertisement
         return newbinfo;
     }
 
-    public BundleInformation(String uuid) throws Exception
-    {
-        int firstSep = uuid.indexOf(":");
-        if (firstSep < 0) { throw new Exception("illegal bundle uuid"); }
-        int secSep = uuid.substring(firstSep + 1).indexOf(":");
-        if (secSep < 0) { throw new Exception("illegal bundle uuid"); }
-        secSep += firstSep + 1;
-        int thirdSep = uuid.substring(secSep + 1).indexOf(":");
-        if (thirdSep < 0) { throw new Exception("illegal bundle uuid"); }
-        thirdSep += secSep + 1;
-
-        String bundle = uuid.substring(firstSep + 1, secSep);
-        String group = uuid.substring(0, firstSep);
-        String version = uuid.substring(secSep + 1, thirdSep);
-
-        parser = new KXmlParser();
-        FileReader reader;
-
-        try
-        {
-            if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Eager)
-            {
-                BundleLoaderImpl.loadBundle(bundle, group, version);
-            }
-
-            filename = BundleLoaderActivator.repository + File.separator + group + File.separator + "jars"
-                    + File.separator + bundle + "-" + version + ".jar";
-            reader = new FileReader(BundleLoaderActivator.repository + File.separator + group + File.separator + "obrs"
-                    + File.separator + bundle + "-" + version + ".obr");
-            parser.setInput(reader);
-            parseOBR();
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        } finally
-        {
-            parser = null;
-            reader = null;
-        }
-
-    }
 
     public byte[] getBundleCode() throws IOException
     {

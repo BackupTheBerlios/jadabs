@@ -150,7 +150,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
             File file = new File(location);
             FileInputStream fin = new FileInputStream(file);
             Bundle bundle = BundleLoaderActivator.bc.installBundle(file.getName(), fin);
-            LOG.debug("installed " + location);
+            System.out.println("installed " + location);
 
             binfos.put(binf.getID(), binf);
 
