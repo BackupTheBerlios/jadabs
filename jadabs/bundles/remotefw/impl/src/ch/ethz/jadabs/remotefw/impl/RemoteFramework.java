@@ -343,6 +343,7 @@ public class RemoteFramework implements Framework
      */
     public void addBundleInfoListener(BundleInfoListener bl)
     {
+        System.out.println("Bundleinfolistener added");
         bundleinfolisteners.add(bl);
     }
 
@@ -361,7 +362,7 @@ public class RemoteFramework implements Framework
      * 
      * @param binfo
      */
-    protected void bundleChanged(BundleInfo binfo)
+    protected synchronized void bundleChanged(BundleInfo binfo)
     {
 
         for (Enumeration en = bundleinfolisteners.elements(); en.hasMoreElements();)
@@ -375,13 +376,17 @@ public class RemoteFramework implements Framework
      * Initiate all bundles changed
      *
      */
-    protected void allBundlesChanged(Vector bundleinfos)
+    protected synchronized void allBundlesChanged(Vector bundleinfos)
     {
+        System.out.println("allbundleschanged event");
+        
         for(Enumeration en = bundleinfos.elements(); en.hasMoreElements();)
         {
             BundleInfo binfo = (BundleInfo)en.nextElement();
             bundles.put(new Long(binfo.bid), binfo);         
         }
+        
+        System.out.println("bundleinfolisteners: "+bundleinfolisteners.size());
         
         for (Enumeration en = bundleinfolisteners.elements(); en.hasMoreElements();)
         {

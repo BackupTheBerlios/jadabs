@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: GroupService.java,v 1.3 2005/01/26 15:58:21 afrei Exp $
+ * $Id: GroupService.java,v 1.4 2005/01/28 08:31:22 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -165,6 +165,17 @@ public interface GroupService extends Listener
      */
     public NamedResource create(String resourceType, String resourceName, ID precookedID, String arg);
 
+    
+    /** 
+     * Create GroupPipe, which does not require a remote lookup.
+     * The pipeID should be unique in that group.
+     * 
+     * @param pipeName
+     * @param pipeID
+     * @return
+     */
+    public Pipe createGroupPipe(String pipeName, long pipeID);
+    
     /**
      * Join a peer group and publishes peer's advertisement in the peer group.
      * 

@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: GroupServiceImpl.java,v 1.3 2005/01/26 15:58:20 afrei Exp $
+ * $Id: GroupServiceImpl.java,v 1.4 2005/01/28 08:31:22 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -304,6 +304,17 @@ public class GroupServiceImpl extends Service implements GroupService
         return resource;
     }
 
+    public Pipe createGroupPipe(String pipeName, long pipeID)
+    {
+        ID gmPipeID = new ID(myGroup.getID(),
+                pipeID, Pipe.PIPE);
+        
+        return new Pipe(pipeName, gmPipeID, 
+                myGroup.getID(), Pipe.PROPAGATE);
+        
+    }
+
+    
     /**
      * Join a peer group and publishes peer's advertisement in the peer group.
      * 

@@ -274,7 +274,6 @@ public class FrameworkManagerActivator
         EndpointAddress endptaddr;
         try
         {
-            
             endptaddr = new EndpointAddress(
                     urilist[0], FrameworkManagerActivator.ENDPOINT_SVC_NAME, null);
 
@@ -298,14 +297,19 @@ public class FrameworkManagerActivator
      */
     public void handleSearchResponse(NamedResource namedResource)
     {
-        LOG.info("handleSearchResponse: " + namedResource.getName());
         
-        Framework rframework = new RemoteFramework(namedResource);
-        frameworks.put(namedResource.getName(), rframework);
-
-        for (Enumeration en = listeners.elements(); en.hasMoreElements();)
+        if (!frameworks.containsKey(namedResource.getName()))
         {
-            ((RemoteFrameworkListener) en.nextElement()).enterFrameworkEvent(rframework);
+            LOG.info("handleSearchResponse: " + namedResource.getName());
+            
+            Framework rframework = new RemoteFramework(namedResource);
+        
+	        frameworks.put(namedResource.getName(), rframework);
+	
+	        for (Enumeration en = listeners.elements(); en.hasMoreElements();)
+	        {
+	            ((RemoteFrameworkListener) en.nextElement()).enterFrameworkEvent(rframework);
+	        }
         }
     }
     
@@ -390,7 +394,6 @@ public class FrameworkManagerActivator
      */
     public void handleMessage(Message message, String listenerId)
     {
-        // TODO Auto-generated method stub
         
 //        LOG.debug("got framework message: "+message.toXMLString());
         

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../../../project.xml</extend>
+
+	<groupId>jadabs</groupId>
+	<id>jxme-services-test</id>
+	<name>JXME-Services Test</name>
+
+	<shortDescription>JXME-Services Test</shortDescription>
+
+	<properties>
+		<osgi.bundle.category>jxme-test</osgi.bundle.category>
+	</properties>
+	
+  	<dependencies>
+  	
+  	    <dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8-osgi</version>
+		</dependency>
+		
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-services-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+  	</dependencies>
+
+  
+</project>

@@ -31,7 +31,7 @@
 #-initlevel 1
 -install  swt/jars/swt-3.0RC1-linux-osgi.jar
 -install  jsx/jars/jsx-osgi-2.2.3.8.jar
--install  java/jars/javamail-all-1.3.1-osgi.jar
+#-install  java/jars/javamail-all-1.3.1-osgi.jar
 -install  log4j/jars/log4j-1.2.8-osgi.jar
 #-install  jadabs/jars/log4j-cdc-0.7.1-SNAPSHOT.jar
 -install  jadabs/jars/concurrent-0.7.1-SNAPSHOT.jar
