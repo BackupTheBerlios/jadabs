@@ -34,7 +34,8 @@ public class BundleLoaderActivator implements BundleActivator
 		BundleLoaderActivator.bc = bc;
 				
 		String location = BundleLoaderActivator.bc.getBundle().getLocation();
-	    repository = location.substring(location.indexOf(":")+1, location.indexOf("jadabs") - 1);
+//	    System.out.println("location: "+location);
+		repository = location.substring(location.indexOf(":")+1, location.indexOf("jadabs") - 1);
 	    	    
 		// register all system bundles
 		Bundle [] bundles = BundleLoaderActivator.bc.getBundles();

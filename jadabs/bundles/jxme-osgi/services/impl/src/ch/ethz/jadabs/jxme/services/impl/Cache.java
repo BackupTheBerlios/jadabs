@@ -51,14 +51,14 @@
  *
  *  This license is based on the BSD license adopted by the Apache Foundation.
  *
- *  $Id: Cache.java,v 1.4 2005/02/09 07:40:59 afrei Exp $
+ *  $Id: Cache.java,v 1.5 2005/02/13 12:36:26 afrei Exp $
  */
 
 package ch.ethz.jadabs.jxme.services.impl;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.LinkedList;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
@@ -331,7 +331,7 @@ class Cache
             en = otherTable.elements();
         }
 
-        LinkedList resList = new LinkedList();
+        Vector resList = new Vector();
         if (en != null)
         {
             while (en.hasMoreElements())
@@ -350,15 +350,21 @@ class Cache
                         (groupId == null || res.getID().getGroupID().equals(groupId))
                         && !res.getID().equals(reqpeerId))
                 {
-                    resList.add((NamedResource) res);
+                    resList.addElement((NamedResource) res);
                     LOG.debug("found " + (NamedResource) res);
                 }
             }
         }
-        Object[] oar = resList.toArray();
-        NamedResource[] nrar = new NamedResource[oar.length];
-        for (int i = 0; i < oar.length; i++)
-            nrar[i] = (NamedResource) oar[i];
+        
+//        Object[] oar = resList.toArray();
+//        int arsize = resList.size();
+//        Object[] oar
+        
+        NamedResource[] nrar = new NamedResource[resList.size()];
+        for (int i = 0; i < resList.size(); i++)
+        {
+            nrar[i] = (NamedResource) resList.elementAt(i);
+        }
         return (NamedResource[]) nrar;
     }
 

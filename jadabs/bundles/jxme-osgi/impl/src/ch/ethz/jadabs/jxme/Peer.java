@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: Peer.java,v 1.4 2005/01/26 15:58:21 afrei Exp $
+ * $Id: Peer.java,v 1.5 2005/02/13 12:36:26 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -167,9 +167,20 @@ public final class Peer extends NamedResource
     public synchronized Element[] advertisement(String attr, String value, String id, String threshold)
     {        
         int numAttr = this.attributes.size();
-        int URIsize = getURIList().length;
+        
+        int URIsize = 0;
+        int elmsize;
+    	if (getURIList() != null)
+    	{
+    	    URIsize = getURIList().length;
+    	    elmsize = numAttr + URIsize + 8 - 1;
+    	}
+    	else
+    	    elmsize = numAttr + 8;
+        	
         String numURI = String.valueOf(URIsize);
-        Element[] elm = new Element[numAttr + URIsize + 8 - 1]; // -1, dont count attributes Element from URITAG
+//        System.out.println("size: "+elmsize);
+        Element[] elm = new Element[elmsize]; // -1, dont count attributes Element from URITAG
         
         elm[0] = new Element(Message.MESSAGE_TYPE_TAG, Message.REQUEST_RESOLVE, Message.JXTA_NAME_SPACE);
         elm[1] = new Element(Message.TYPE_TAG, NamedResource.PEER, Message.JXTA_NAME_SPACE);
@@ -208,6 +219,7 @@ public final class Peer extends NamedResource
             }
             else
             {
+//                System.out.println("index: "+ndx+", tag: "+tag+","+((String)dataobj).getBytes());
                 elm[ndx] = new Element(tag, ((String)dataobj).getBytes(), Message.JXTA_NAME_SPACE, null);
                 ndx = ndx + 1;
             }

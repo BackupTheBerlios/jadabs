@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: ResolverService.java,v 1.4 2005/01/26 15:58:20 afrei Exp $
+ * $Id: ResolverService.java,v 1.5 2005/02/13 12:36:26 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -428,8 +428,14 @@ public class ResolverService extends Service implements Runnable, Listener
         
 	    //if resource not found in local cache
 	    String requestId = getNextRequestId();
+	    
+	    int urisize =0;
 	    EndpointAddress[] myURIs = peer.getURIList();
-	    Element[] elm = new Element[9 + myURIs.length];
+	    
+	    if (myURIs != null)
+	        urisize = myURIs.length;
+	    
+	    Element[] elm = new Element[9 + urisize];
 	    //Element[] elm = new Element[9];
 	                                
 	
@@ -452,12 +458,15 @@ public class ResolverService extends Service implements Runnable, Listener
 	    elm[8] = new Element(Message.HOPCOUNT_TAG, Integer.toString(DEFAULT_HOP_COUNT), 
 	            Message.JXTA_NAME_SPACE);
 	
-	    for (int i = 0; i < myURIs.length; i++)
+	    if (urisize > 0)
 	    {
-	        EndpointAddress uri = myURIs[i];
-	        uri = new EndpointAddress(uri, serviceName, serviceHandler);
-	        elm[9 + i] = new Element(NamedResource.URITAG + String.valueOf(i), uri.toString().getBytes(),
-	                Message.JXTA_NAME_SPACE, null);
+		    for (int i = 0; i < myURIs.length; i++)
+		    {
+		        EndpointAddress uri = myURIs[i];
+		        uri = new EndpointAddress(uri, serviceName, serviceHandler);
+		        elm[9 + i] = new Element(NamedResource.URITAG + String.valueOf(i), uri.toString().getBytes(),
+		                Message.JXTA_NAME_SPACE, null);
+		    }
 	    }
 	    
 	    send(elm, serviceHandler);
