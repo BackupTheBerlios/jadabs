@@ -1,4 +1,36 @@
 /*
+ * Copyright (c) 2003-2005, Jadabs project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above
+ *   copyright notice, this list of conditions and the following
+ *   disclaimer in the documentation and/or other materials
+ *   provided with the distribution.
+ *
+ * - Neither the name of the Jadabs project nor the names of its
+ *   contributors may be used to endorse or promote products derived
+ *   from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
  * Created on 14-Feb-2005
  */
 package ch.ethz.jadabs.bundleLoader;
@@ -28,7 +60,6 @@ import ch.ethz.jadabs.bundleLoader.api.LoaderListener;
 /**
  * BundleLoader Implementation, resolves dependencies of a bundle, builds up a
  * schedule for a bundle and loads the schedule.
- * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 public class BundleLoaderImpl implements BundleLoader, BundleListener {
@@ -39,7 +70,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
    private static Vector infoSources = new Vector();
    private Vector loaderListeners = new Vector();
    private static Boolean locked = Boolean.FALSE;
-
+   
    /**
     * Singleton, hidden constructor
     */
@@ -63,6 +94,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
    }
 
+   
    /**
     * Singleton, get implementation
     * 
@@ -74,12 +106,13 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return me;
    }
 
+   
    /**
     * Load a bundle together with all dependencies.
     * 
     * @param uuid
-    *           of the desired bundle, as uuid of the matching obr, e.g.
-    *           jadabs:remotefw-impl:0.7.1-SNAPSHOT:obr
+    *           Uuid of the desired bundle, as uuid of the matching obr, e.g.
+    *           <code>jadabs:remotefw-impl:0.7.1-SNAPSHOT:obr</code>
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#loadBundle(java.lang.String)
     */
    public void loadBundle(String uuid) throws Exception {
@@ -132,7 +165,9 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
+   
    /**
+    * Get the dependency graph of a given bundle
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#getDependencyGraph(java.lang.String)
     */
    public String getDependencyGraph(String uuid) {
@@ -201,6 +236,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
    
    /**
+    * Get a list of all currently installed bundles
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#getInstalledBundles()
     */
    public Iterator getInstalledBundles() {
@@ -208,6 +244,15 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
    }
 
    
+   /**
+    * Get a bundle descriptor. Either, the <code>BundleDescriptor</code>
+    * still exists, that means the <code>WeakReference</code> has not been
+    * broken up by the garbage collector due to memory shortness. Or if the
+    * Reference points to <code>null</code>, a new <code>BundleDescriptor</code>
+    * will be build and returned. 
+    * @param uuid Uuid of the obr file. 
+    * @return A <code>BundleDescriptor</code> for the given uuid. 
+    */
    private BundleDescriptor getBundleDescriptor(String uuid) {
       BundleDescriptor result = null;
       try {
@@ -237,6 +282,14 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
+   
+   /**
+    * Builds up a schedule for a given bundle.
+    * @param initial <code>BundleDescriptor</code> of the 
+    * bundle that is to be loaded. The schedule consists of the
+    * uuid of the bundle itself and the uuid of the closure of all dependencies.  
+    * @return <code>LinkedList</code> representing a schedule for the bundle. 
+    */
    private LinkedList buildSchedule(BundleDescriptor initial) {
       LinkedList installationQueue = new LinkedList();
       HashSet queuedBundles = new HashSet();
@@ -316,21 +369,28 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return installationQueue;
    }
 
+   
    /**
+    * Register a request handler at the <code>HttpDaemon</code>
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#registerRequestHandler(ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler)
     */
    public void registerRequestHandler(HttpRequestHandler handler) {
-      // TODO Auto-generated method stub
+      BundleLoaderActivator.httpDaemon.addRequestHandler(handler);
    }
 
+   
    /**
+    * Unregister a request handler at the <code>HttpDaemon</code>
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#unregisterRequestHandler(ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler)
     */
    public void unregisterRequestHandler(HttpRequestHandler handler) {
-      // TODO Auto-generated method stub
+      BundleLoaderActivator.httpDaemon.removeRequestHandler(handler);
    }
 
+   
    /**
+    * Register an <code>InformationSource</code> to be used when fetching
+    * bundle jars or obrs.
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#registerInformationSource(ch.ethz.jadabs.bundleLoader.api.InformationSource)
     */
    public void registerInformationSource(InformationSource infoSource) {
@@ -339,6 +399,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
    }
 
    /**
+    * Unregister an <code>InformationSource</code>
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#unregisterInformationSource(ch.ethz.jadabs.bundleLoader.api.InformationSource)
     */
    public void unregisterInformationSource(InformationSource infoSource) {
@@ -346,6 +407,16 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
    }
 
    
+   /**
+    * Fetch Information like bundle jars or obrs using all registered <code>InformationSources<code>
+    * @param uuid Uuid of the requested information. 
+    * @param location If the <code>InformationSource</code> supports directed search, 
+    *        the location is used as primary search location, e.g. the <code>HttpClient</code> 
+    *        supports a URL as location.  
+    * @param requestor A reference to the requestor, this is important, if the requestor
+    *        is itself an <code>InformationSource</code>. Used to avoid cycles. 
+    * @return <code>InputStream</code> to the found information or <code>null</code>.
+    */
    protected InputStream fetchInformation(String uuid, String location, Object requestor) {
       InputStream result = null;
       for (Enumeration sources = infoSources.elements(); sources.hasMoreElements();) {
@@ -363,6 +434,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
 
    /**
+    * Fetch Information like bundle jars or obrs using all registered <code>InformationSources<code>
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#getInformation(java.lang.String, java.lang.Object)
     */
    public InputStream fetchInformation(String uuid, Object requestor) {
@@ -382,6 +454,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
    
    /**
+    * Register a <code>LoaderListener</code>
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#registerLoaderListener(ch.ethz.jadabs.bundleLoader.api.LoaderListener)
     */
    public void registerLoaderListener(LoaderListener listener) {
@@ -389,13 +462,22 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          loaderListeners.add(listener);
    }
 
+   
    /**
+    * Unregister a <code>LoaderListener</code>
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#unregisterLoaderListener(ch.ethz.jadabs.bundleLoader.api.LoaderListener)
     */
    public void unregisterLoaderListener(LoaderListener listener) {
       loaderListeners.remove(listener);
    }
 
+   
+   /**
+    * Notifies all registered <code>LoaderListeners</code> that the state
+    * of a bundle has changed.  
+    * @param uuid Uuid of the bundle that changed
+    * @param type New bundle state. 
+    */
    private void notifyListeners(String uuid, int type) {
       for (Enumeration listeners = loaderListeners.elements(); listeners
             .hasMoreElements();) {
@@ -403,7 +485,9 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
+   
    /**
+    * Called by framework, if a bundle state has changed. 
     * @see org.osgi.framework.BundleListener#bundleChanged(org.osgi.framework.BundleEvent)
     */
    public void bundleChanged(BundleEvent bevent) {
@@ -437,16 +521,27 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
-   private String location2uuid(String loc) {
+   
+   /**
+    * Get a obr uuid from a bundle jar filename
+    * @param loc bundle jar filename
+    * @return obr uuid
+    */
+   private static String location2uuid(String loc) {
       int pos = loc.lastIndexOf(File.separatorChar);
 
       if (pos > -1) {
          String filename = loc.substring(pos + 1);
-         int pos2 = filename.indexOf(".jar");
+         int pos2 = filename.indexOf(".opd");
          if (pos2 > -1) {
             filename = filename.substring(0, pos2);
          }
          pos2 = filename.indexOf("-");
+         while (!Character.isDigit(filename.charAt(pos2+1))) {
+            int next = filename.substring(pos2+1).indexOf("-");
+            if (next == -1) return null;
+            pos2 +=next+1;
+         }
          String name = filename.substring(0, pos2);
          String version = filename.substring(pos2 + 1);
 

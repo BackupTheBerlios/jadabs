@@ -1,3 +1,38 @@
+/*
+ * Copyright (c) 2003-2005, Jadabs project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above
+ *   copyright notice, this list of conditions and the following
+ *   disclaimer in the documentation and/or other materials
+ *   provided with the distribution.
+ *
+ * - Neither the name of the Jadabs project nor the names of its
+ *   contributors may be used to endorse or promote products derived
+ *   from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Created on 2-Feb-2005
+ */
 package ch.ethz.jadabs.http;
 
 import java.io.BufferedReader;
@@ -11,6 +46,10 @@ import java.net.Socket;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+/**
+ * Http based implementation of a <code>Socket</code> 
+ * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
+ */
 public class HttpSocket extends Socket {
    protected BufferedReader fromClient = null;
 
@@ -19,11 +58,18 @@ public class HttpSocket extends Socket {
    public String file = null;
    public Hashtable headerValues = new Hashtable();
 
-   HttpSocket() {
+   /**
+    * Constructor 
+    */
+   public HttpSocket() {
       super();
    }
 
-   public void getRequest() throws IOException, ProtocolException {
+   /**
+    * Returns the http request
+    * @throws Exception
+    */
+   public void getRequest() throws Exception {
       try {
 
          fromClient = new BufferedReader(
@@ -31,7 +77,7 @@ public class HttpSocket extends Socket {
 
          String reqhdr = readHeader(fromClient);
 
-         parseReqHdr(reqhdr);
+         parseHeader(reqhdr);
       } catch (IOException ioe) {
          if (fromClient != null)
             fromClient.close();
@@ -39,16 +85,22 @@ public class HttpSocket extends Socket {
       }
    }
 
-   private String readHeader(BufferedReader is) throws IOException {
+   /**
+    * Read the http header
+    * @param input 
+    * @return
+    * @throws IOException
+    */
+   private String readHeader(BufferedReader input) throws IOException {
       String command;
       String line;
 
-      if ((command = is.readLine()) == null)
+      if ((command = input.readLine()) == null)
          command = "";
       command += "\n";
 
       if (command.indexOf("HTTP/") != -1) {
-         while ((line = is.readLine()) != null && !line.equals(""))
+         while ((line = input.readLine()) != null && !line.equals(""))
             command += line + "\n";
       } else {
          throw new IOException();
@@ -56,7 +108,13 @@ public class HttpSocket extends Socket {
       return command;
    }
 
-   private void parseReqHdr(String reqhdr) throws IOException,
+   /**
+    * 
+    * @param reqhdr
+    * @throws IOException
+    * @throws ProtocolException
+    */
+   private void parseHeader(String reqhdr) throws IOException,
          ProtocolException {
       StringTokenizer lines = new StringTokenizer(reqhdr, "\r\n");
       String currentLine = lines.nextToken();
@@ -82,10 +140,18 @@ public class HttpSocket extends Socket {
       }
    }
 
+   /**
+    * add a name / value pair 
+    * @param name
+    * @param value
+    */
    private void addNameValue(String name, String value) {
       headerValues.put(name, value);
    }
 
+   /**
+    * send a 404 (not found) to the client    
+    */
    public void send404() {
       OutputStream toClient = null;
 
@@ -106,6 +172,12 @@ public class HttpSocket extends Socket {
       }
    }
 
+   /**
+    * send a file back to the client
+    * @param file the file to be send
+    * @param MimeType the mime type as <code>String</code>
+    * @param extraHdr additional header fields, can be null
+    */
    public void sendFile(File file, String MimeType, String extraHdr) {
       OutputStream toClient = null;
       
@@ -143,6 +215,11 @@ public class HttpSocket extends Socket {
       }
    }
 
+   /**
+    * send a string back to the client
+    * @param data the <code>String</code> to be send
+    * @param MimeType the mime type
+    */
    public void sendString(String data, String MimeType) {
       OutputStream toClient = null;
 

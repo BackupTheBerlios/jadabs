@@ -1,4 +1,36 @@
 /*
+ * Copyright (c) 2003-2005, Jadabs project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above
+ *   copyright notice, this list of conditions and the following
+ *   disclaimer in the documentation and/or other materials
+ *   provided with the distribution.
+ *
+ * - Neither the name of the Jadabs project nor the names of its
+ *   contributors may be used to endorse or promote products derived
+ *   from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
  * Created on 15-Feb-2005
  */
 package ch.ethz.jadabs.pluginLoader;
@@ -22,7 +54,9 @@ import ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher;
 import ch.ethz.jadabs.pluginLoader.api.PluginLoader;
 
 /**
- * 
+ * Plugin Loader loads plugins by resolving all extensionPoints of the plugin 
+ * and finding other plugins, that are suitable for the platform and provide 
+ * the extensions to finally load the plugin.  
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 public class PluginLoaderImpl extends PluginFilterMatcher implements
@@ -36,6 +70,9 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    protected static String platform;
    protected static Scheduler scheduler = new Scheduler();
 
+   /**
+    * Singleton, hidden constructor    
+    */
    private PluginLoaderImpl() {
       infoSources.add(new Repository());
 
@@ -66,12 +103,23 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
 
    }
 
+   
+   /**
+    * Singleton
+    * @return PluginLoaderImpl
+    */
    public static PluginLoaderImpl getInstance() {
       if (me == null)
          me = new PluginLoaderImpl();
       return me;
    }
 
+   /**
+    * Initialisation method, reads the starter file and starts the startup plugins. 
+    * Also starts the parsing of the platform information file.
+    * @param starter <code>String<code> representing the location of the 
+    * startup file
+    */
    private void init(String starter) {
       String uuid = new String();
       try {
@@ -173,6 +221,12 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return result.iterator();
    }
 
+   /**
+    * Static version to be called by PluginDescriptions
+    * @param filter
+    * @return
+    * @throws Exception
+    */
    protected static Iterator getMatchingPlugins(String filter) throws Exception {
       ArrayList result = new ArrayList();
       for (Enumeration sources = infoSources.elements(); sources
@@ -186,6 +240,14 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return result.iterator();      
    }
    
+   /**
+    * Get a <code>PluginDescription</code>, either the cached version by weak
+    * reference, or creates a new instance, if there is no cached version or the 
+    * cached version has been collected in the meantime.   
+    * @param uuid Uuid of the plugin.
+    * @return PluginDescriptor
+    * @throws Exception
+    */
    private PluginDescriptor getPluginDescriptor(String uuid) throws Exception {
       PluginDescriptor result = null;
          WeakReference ref = (WeakReference) descriptorCache.get(uuid);
@@ -206,6 +268,12 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return result;
    }
 
+   /**
+    * Same as in BundleLoader, but only used to fetch opds
+    * @param uuid Uuid of the opd
+    * @param requestor self reference
+    * @return InputStream to the opd or null if not found
+    */
    protected static InputStream fetchInformation(String uuid, Object requestor) {
       InputStream result = null;
       for (Enumeration sources = infoSources.elements(); sources.hasMoreElements();) {
@@ -268,8 +336,4 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
 
    }
    
-   private String opd2obr(String opd) {
-      return opd.substring(0,opd.length()-3) + "obr"; 
-   }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2004, Jadabs project
+ * Copyright (c) 2003-2005, Jadabs project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@ import ch.ethz.jadabs.pluginLoader.api.PluginLoader;
 
 
 /**
- * PluginLoaderActivator
+ * Activator of the PluginLoader
  * @author rjan
  */
 public class PluginLoaderActivator implements BundleActivator
@@ -61,8 +61,7 @@ public class PluginLoaderActivator implements BundleActivator
     
     
     /**
-     * start the bundle, this method is called by the OSGi implementation.
-     * 
+     * start the bundle, this method is called by the OSGi framework
      * @param bc the bundle context of the OSGi framework.
      * @throws Exception
      */
@@ -93,10 +92,8 @@ public class PluginLoaderActivator implements BundleActivator
     }
     
     /**
-     * stops the bundle, this method is called by the OSGi implementation.
-     * 
-     * @param bc
-     *            the bundle context of the OSGi framework.
+     * stops the bundle, this method is called by the OSGi framework.
+     * @param bc the bundle context of the OSGi framework.
      * @throws Exception
      */
     public void stop(BundleContext bc) throws Exception
