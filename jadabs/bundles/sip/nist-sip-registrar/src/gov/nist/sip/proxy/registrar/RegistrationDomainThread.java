@@ -118,7 +118,7 @@ public class RegistrationDomainThread implements Runnable
             SipURI fromURI = addressFactory.createSipURI(null, domain.from);
             //  fromURI.setPort(lp.getPort());
             Address fromAddress = addressFactory.createAddress(fromURI);
-            String fromTag = proxyUtilities.generateTag();
+            String fromTag = ProxyUtilities.generateTag();
             FromHeader fromHeader = headerFactory.createFromHeader(fromAddress, fromTag);
 
             //  Via header

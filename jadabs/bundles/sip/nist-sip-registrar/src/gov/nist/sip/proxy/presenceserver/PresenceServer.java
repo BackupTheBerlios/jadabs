@@ -210,14 +210,14 @@ public class PresenceServer
             Response response = messageFactory.createResponse(responseCode, request);
 
             //add SIP-ETag header
-            Header eTag = headerFactory.createHeader("Sip-ETag", proxy.getProxyUtilities().generateTag());
+            Header eTag = headerFactory.createHeader("Sip-ETag", ProxyUtilities.generateTag());
             response.addHeader(eTag);
 
             //Add tag-parameter to To-header
             ToHeader toHeader = (ToHeader) response.getHeader(ToHeader.NAME);
             if (toHeader.getTag() == null)
             {
-                toHeader.setTag(proxy.getProxyUtilities().generateTag());
+                toHeader.setTag(ProxyUtilities.generateTag());
                 response.setHeader(toHeader);
             }
             if (serverTransaction != null)

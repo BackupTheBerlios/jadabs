@@ -5,14 +5,12 @@
  *******************************************************************************/
 package gov.nist.sip.proxy.authentication;
 
-import gov.nist.sip.proxy.ProxyActivator;
 import gov.nist.sip.proxy.ProxyDebug;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.Vector;
 
 import javax.xml.parsers.SAXParser;

@@ -6,11 +6,9 @@
 package gov.nist.sip.proxy.registrar;
 
 import gov.nist.sip.proxy.Proxy;
-import gov.nist.sip.proxy.ProxyActivator;
 import gov.nist.sip.proxy.ProxyDebug;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Vector;
 
 import javax.sip.address.Address;

@@ -4,7 +4,6 @@
  */
 package gov.nist.sip.proxy.gui;
 
-import gov.nist.sip.proxy.ProxyActivator;
 import gov.nist.sip.proxy.ProxyAdmin;
 import gov.nist.sip.proxy.ProxyDebug;
 

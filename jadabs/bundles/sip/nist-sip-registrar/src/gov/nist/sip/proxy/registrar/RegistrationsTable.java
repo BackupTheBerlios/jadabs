@@ -150,10 +150,10 @@ public class RegistrationsTable
         if (expiresHeader != null)
         {
             expiresTimeHeader = expiresHeader.getExpires();
-            if (expiresTimeHeader > registrar.EXPIRES_TIME_MAX || expiresTimeHeader < registrar.EXPIRES_TIME_MIN)
-                expiresTimeHeader = registrar.EXPIRES_TIME_MAX;
+            if (expiresTimeHeader > Registrar.EXPIRES_TIME_MAX || expiresTimeHeader < Registrar.EXPIRES_TIME_MIN)
+                expiresTimeHeader = Registrar.EXPIRES_TIME_MAX;
         } else
-            expiresTimeHeader = registrar.EXPIRES_TIME_MAX;
+            expiresTimeHeader = Registrar.EXPIRES_TIME_MAX;
 
         for (int i = 0; i < contacts.size(); i++)
         {
@@ -203,7 +203,7 @@ public class RegistrationsTable
             ContactHeader contactHeader = (ContactHeader) contacts.elementAt(i);
             if (contactHeader.getExpires() == -1)
             {
-                contactHeader.setExpires(registrar.EXPIRES_TIME_MAX);
+                contactHeader.setExpires(Registrar.EXPIRES_TIME_MAX);
             }
 
             startTimer(key, contactHeader.getExpires(), contactHeader);
@@ -253,7 +253,7 @@ public class RegistrationsTable
         Vector contacts = Registrar.getContactHeaders(request);
         Registration registration = (Registration) registrations.get(key);
 
-        int expiresTime = registrar.EXPIRES_TIME_MAX;
+        int expiresTime = Registrar.EXPIRES_TIME_MAX;
         for (int i = 0; i < contacts.size(); i++)
         {
             ContactHeader contactHeader = (ContactHeader) contacts.elementAt(i);
@@ -274,8 +274,8 @@ public class RegistrationsTable
                 removeContact(key, contactHeader);
             } else
             {
-                if (expiresTime > registrar.EXPIRES_TIME_MAX || expiresTime < registrar.EXPIRES_TIME_MIN)
-                    expiresTime = registrar.EXPIRES_TIME_MAX;
+                if (expiresTime > Registrar.EXPIRES_TIME_MAX || expiresTime < Registrar.EXPIRES_TIME_MIN)
+                    expiresTime = Registrar.EXPIRES_TIME_MAX;
                 contactHeader.setExpires(expiresTime);
 
                 if (registration.hasContactHeader(contactHeader))
@@ -284,7 +284,7 @@ public class RegistrationsTable
                     registration.addContactHeader(contactHeader);
 
                 startTimer(key, expiresTime, contactHeader);
-                expiresTime = registrar.EXPIRES_TIME_MAX;
+                expiresTime = Registrar.EXPIRES_TIME_MAX;
 
             }
 
