@@ -71,6 +71,9 @@
       		<groupId>j2me</groupId>
       		<artifactId>wma</artifactId>
       		<version>1.1</version>
+      		<properties>
+      			<dependencyType>runtime</dependencyType>
+      		</properties>
 		</dependency>			
       
 		<dependency>

@@ -10,10 +10,10 @@
   	<!--==================================================================-->
   	<!-- Properties                                                       -->
   	<!--==================================================================-->
-	<property name="wtk.home" value="/usr/local/WTK2.1"/>	
+	<!-- <property name="wtk.home" value="/usr/local/WTK2.1"/>
 	<property name="wtk.cldc.version" value="1.0"/>
 	<property name="wtk.midp.version" value="1.0"/>	
-	
+	-->
 	
   <!--==================================================================-->
   <!-- Build goals                                                      -->
@@ -22,6 +22,7 @@
       <attainGoal name="clean"/>
       <attainGoal name="antenna"/>
   </goal>
+  
   <preGoal name="antenna:WtkPackage">
   	  <echo>BEGIN PREGOAL antenna:WtkPackage</echo>
      <echo>Putting together OSGi bundles...</echo>
@@ -41,9 +42,5 @@
   	  <echo>END PREGOAL antenna:WtkPackage</echo>     
   </preGoal>
 
-  <goal name="bluechat:clean">
-  	  <ant:delete dir="${build.dir}" />
-	  <ant:delete dir="${dist.dir}" />
-  </goal>
   
 </project>

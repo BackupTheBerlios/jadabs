@@ -85,8 +85,8 @@
 	<goal name="jadabs:buildbundles">
       <ant:echo message="Building Bundles..."/>
 		<maven:reactor basedir="${basedir}"
-				includes="bundles/**/project.xml,bundles/jxme-osgi/bt-cldc/project-j2se.xml,framework/**/project.xml"
-            	excludes="bundles/jxme-osgi/bt-cldc/bluechat/project.xml,bundles/jxme-osgi/bt-cldc/bttest/project.xml,bundles/jxme-osgi/bt-cldc/paralleltest/project.xml,bundles/jxme-osgi/jxme-chat/project.xml,bundles/smartmessenger/project.xml"
+				includes="bundles/**/project.xml,bundles/**/project-j2se.xml"
+            	excludes=""
 				goals="osgi:install"
 				banner="Building Bundles"
 				ignoreFailures="false"/>
@@ -95,7 +95,7 @@
    <goal name="jadabs:buildmidlets">
       <ant:echo message="Building MIDlets..."/>
    		<maven:reactor basedir="${basedir}"
-         includes="bundles/jxme-osgi/bt-cldc/bluechat/project.xml,bundles/jxme-osgi/bt-cldc/bttest/project.xml,bundles/jxme-osgi/bt-cldc/paralleltest/project.xml,bundles/jxme-osgi/jxme-chat/project.xml,bundles/smartmessenger/project.xml"
+         includes="bundles/**/project-midlet.xml"
          goals="antenna"
          banner="Building MIDlets"
 			ignoreFailures="false"/>         

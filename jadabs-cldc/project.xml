@@ -6,7 +6,7 @@
   
       <name>Jadabs-CLDC</name>
       <artifactId>jadabs-cldc</artifactId>
-      <currentVersion>0.7.0</currentVersion>
+      <currentVersion>0.7.0-SNAPSHOT</currentVersion>
   
       <organization>
         <name>ETHZ-IKS</name>

@@ -10,10 +10,11 @@
   	<!--==================================================================-->
   	<!-- Properties                                                       -->
   	<!--==================================================================-->
-	<property name="wtk.home" value="/usr/local/WTK2.1"/>	
+	<!-- <property name="wtk.home" value="/usr/local/WTK2.1"/> 
+	<property name="wtk.home" value="C:\\WTK22"/>		
 	<property name="wtk.cldc.version" value="1.0"/>
-	<property name="wtk.midp.version" value="1.0"/>	
-	
+	<property name="wtk.midp.version" value="1.0"/>
+	-->
 	
   <!--==================================================================-->
   <!-- Build goals                                                      -->
