@@ -17,8 +17,8 @@
 -init
 
 -initlevel 1
--install   sip/jars/sip-api-1.1.jar
--istart   sip/jars/nist-sip-1.2.jar
+-install   sip/jars/sip-api-1.1-osgi.jar
+-istart   sip/jars/nist-sip-1.2-osgi.jar
 -istart   sip/jars/nist-sip-registrar-0.7.0-SNAPSHOT.jar
 
 -startlevel 1

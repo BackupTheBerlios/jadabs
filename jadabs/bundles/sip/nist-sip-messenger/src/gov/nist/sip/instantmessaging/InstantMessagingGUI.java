@@ -874,18 +874,10 @@ public class InstantMessagingGUI extends JFrame implements BundleActivator
     {
         InstantMessagingGUI.bc = bc;
 
-        //        final String configfile =
-        //            "bundle://" + bc.getBundle().getBundleId() + ":0" +
-        //            "/gov/nist/sip/instantmessaging/configuration/im.properties";
-
+        
         final String configfile = "/gov/nist/sip/instantmessaging/configuration/im.properties";
 
-        //         InputStream inconfig =
-        //            getClass()
-        //             .getResourceAsStream("/gov/nist/sip/instantmessaging/configuration/im.properties");
-
-        //        final ClassLoader classLoader = getClass().getClassLoader();
-
+        
         Thread thread = new Thread()
         {
 
@@ -920,7 +912,7 @@ public class InstantMessagingGUI extends JFrame implements BundleActivator
      */
     public void stop(BundleContext arg0) throws Exception
     {
-        // TODO Auto-generated method stub
+        stop();
 
     }
 
