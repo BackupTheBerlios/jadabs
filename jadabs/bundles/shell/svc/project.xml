@@ -43,6 +43,12 @@
             <version>1.2.8-osgi</version>
         </dependency>
         
+        <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>bundleLoader</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        
 	</dependencies>  
 	
 </project>
