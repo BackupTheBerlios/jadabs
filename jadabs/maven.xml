@@ -69,12 +69,16 @@
 	</goal>
 
 	<goal name="jadabs:buildbundles">
+		<j:set var="goal" value="osgi:install"/>
+		<attainGoal name="multiproject:goal" />
+	<!--
 		<maven:reactor basedir="${basedir}"
 				includes="bundles/**/project.xml"
-				excludes="bundles/shell/**,old/**"
+				excludes="bundles/sip/**,bundles/shell/**,old/**"
 				goals="osgi:install"
 				banner="Building"
 				ignoreFailures="false"/>
+	-->
 	</goal>
 
   <!--==================================================================-->
