@@ -1,0 +1,18 @@
+ <descriptor xmlns="http://wlab.ethz.ch/maven/plugins/maven-antenna-plugin">
+ 
+ 	<suite>Jadabs Core Test MIDlet</suite>
+  	<vendor>Andreas Frei, Rene Mueller, ETH Zurich</vendor> 
+  	<version>1.0.0</version> 
+  	<midlets>
+  		<midlet class="ch.ethz.jadabs.core.test.JadabsCoreTestMIDlet" 
+  		        name="Jadabs-Core-Test"/>  		
+  	</midlets>
+
+   <attributes>
+      <attribute name="ch.ethz.jadabs.jxme.peeralias" value="Nokia6600"/>
+      <attribute name="log4j.priority" value="DEBUG"/>
+      <attribute name="ch.ethz.jadabs.jxme.bt.rendezvouspeer" value="false"/>
+      <attribute name="MIDlet-Push-1" value="socket://:1234, ch.ethz.jadabs.core.test.JadabsCoreTestMIDlet, 127.0.0.1"/>
+   </attributes>      
+   
+</descriptor>

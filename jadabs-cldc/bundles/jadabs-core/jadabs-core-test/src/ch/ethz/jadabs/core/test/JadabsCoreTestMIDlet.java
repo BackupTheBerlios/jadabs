@@ -1,12 +1,12 @@
 /* 
- * Created on Aug 4, 2004
+ * Created on Dec 9th, 2004
  * 
- * $Id: SmartMessengerMIDlet.java,v 1.2 2004/12/22 09:35:09 printcap Exp $
+ * $Id: JadabsCoreTestMIDlet.java,v 1.1 2004/12/22 09:35:09 printcap Exp $
  */
-package ch.ethz.jadabs.smartmessenger;
+package ch.ethz.jadabs.core.test;
 
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
+import java.io.IOException;
+
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -17,58 +17,56 @@ import org.apache.log4j.LogActivator;
 import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 
-import ch.ethz.jadabs.jxme.Element;
-import ch.ethz.jadabs.jxme.EndpointService;
-import ch.ethz.jadabs.jxme.JxmeActivator;
-import ch.ethz.jadabs.jxme.Message;
-import ch.ethz.jadabs.jxme.bt.BTActivator;
-import ch.ethz.jadabs.mservices.smsgateway.SMSGatewayActivator;
-import ch.ethz.jadabs.mservices.smsgateway.SMSGatewayService;
-import ch.ethz.jadabs.mservices.smsservice.SMSServiceActivator;
+import ch.ethz.jadabs.core.wiring.LocalWiringBundle;
+import ch.ethz.jadabs.core.wiring.LocalWiringConnection;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
 
+
 /**
- * This is the MIDlet class of the SmartMessenger application.
+ * This is the Test MIDlet class that makes use of Jadabs-Core which 
+ * is installed on the mobile device. 
  * 
  * @author Ren&eacute; M&uuml;ller
  * @version 1.0
  */
-public class SmartMessengerMIDlet extends MIDlet 
+public class JadabsCoreTestMIDlet extends MIDlet 
                                   implements CommandListener, BundleActivator
 {    
     /** Reference to Log4j window */
     private static Logger LOG;
     
+    /** set to true if MIDlet-GUI was already initialized */
+    private boolean alreadyInitialized = false;
+    
     /** shared static variables */
-    private SmartMessengerMIDlet instance;
+    private JadabsCoreTestMIDlet instance;
 
     /** display of this midlet application */
     private Display display;   
     
-    /** Reference to the settings form */
-    private SettingsForm settingsForm;
+    /** Reference to the end-point service */
+    // private EndpointService endptsvc;
     
     /** Refernce to the message field */
     private MessageScreen messageScreen;
     
-    /** Reference to the end-point service */
-    private EndpointService endptsvc;
-    
-    /** Reference to SMS Gateway instance */
-    private SMSGatewayService smsgateway;
-    
     /* commands */
-    private Command messageCmd;
-    private Command settingsCmd;
-    private Command sendCmd;
     private Command logCmd;
     private Command exitCmd;        
+    private Command messageCmd;
+    private Command sendCmd;
     
-
+    /** local wiring interface */
+    private LocalWiringBundle wiring;
+    
+    /** local wiring connection */
+    private LocalWiringConnection connection;
+    
+    
+    
     /** Constructor */
-    public SmartMessengerMIDlet()
+    public JadabsCoreTestMIDlet()
     {        
         // do some initialization stuff
         // this corresponds to the init.xargs descriptor from knopflerfish
@@ -77,23 +75,26 @@ public class SmartMessengerMIDlet extends MIDlet
         osgicontainer.setProperty("log4j.priority", this.getAppProperty("log4j.priority"));
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer", 
                                   this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));
-        osgicontainer.setProperty("ch.ethz.jadabs.mservices.smsgateway.emailsuffix", 
-                this.getAppProperty("ch.ethz.jadabs.mservices.smsgateway.emailsuffix"));
-        osgicontainer.setProperty("ch.ethz.jadabs.mservices.smsgateway.senderaddress", 
-                this.getAppProperty("ch.ethz.jadabs.mservices.smsgateway.senderaddress"));        
         osgicontainer.startBundle(new LogActivator());
-        osgicontainer.startBundle(new JxmeActivator());
-        osgicontainer.startBundle(new BTActivator());        
-        osgicontainer.startBundle(new SMSServiceActivator());
-        osgicontainer.startBundle(new SMSGatewayActivator());
-        
+        LOG = Logger.getLogger("JadabsCoreTestMIDlet");
         osgicontainer.startBundle(this);
         instance = this;
-        LOG = Logger.getLogger("SmartMessengerMIDlet");
+        
+         
     }
 
     /** Handle starting the MIDlet */
     public void startApp()
+    {
+        if (!alreadyInitialized) {
+            initGUI();
+        }
+        display.setCurrent(Logger.getLogCanvas());
+        alreadyInitialized = true;        
+    }
+
+    /** initialize GUI components */
+    public void initGUI()
     {
         if (LOG.isDebugEnabled()) {
             LOG.debug("invoke startApp()");
@@ -103,21 +104,18 @@ public class SmartMessengerMIDlet extends MIDlet
         display = Display.getDisplay(this);        
         
         messageCmd = new Command("Message", Command.SCREEN, 1);
-        settingsCmd = new Command("Settings", Command.SCREEN, 1);
         sendCmd = new Command("Send", Command.SCREEN, 2);
         logCmd = new Command("Log", Command.SCREEN, 3);
         exitCmd = new Command("Exit", Command.EXIT, 1);
-        
-        settingsForm = new SettingsForm(this, new Command[] {messageCmd, 
-                	sendCmd, logCmd, exitCmd});
-        messageScreen = new MessageScreen(this, new Command[] {settingsCmd,
-                	sendCmd, logCmd, exitCmd});
-        display.setCurrent(settingsForm);
+        messageScreen = new MessageScreen(this, new Command[] {
+                sendCmd, logCmd, exitCmd    });
         
         Logger.getLogCanvas().setDisplay(display);
-        Logger.getLogCanvas().setPreviousScreen(settingsForm);        
+        Logger.getLogCanvas().setPreviousScreen(Logger.getLogCanvas());
+        Logger.getLogCanvas().setCommandAndListener(new Command[] {
+               messageCmd, exitCmd}, this);          
     }
-
+    
     /** Handle pausing the MIDlet */
     public void pauseApp()
     {
@@ -153,40 +151,29 @@ public class SmartMessengerMIDlet extends MIDlet
      *            GUI display object that triggered the command
      */
     public void commandAction(Command c, Displayable d)
-    {
+    {   
         if (c == messageCmd) {
             display.setCurrent(messageScreen);
-        } else if (c == settingsCmd) {
-            display.setCurrent(settingsForm);
         } else if (c == logCmd) {
-            Logger.getLogCanvas().setPreviousScreen(d);
             display.setCurrent(Logger.getLogCanvas());
-        } else if (c == sendCmd) {            
-            String phoneNumber = settingsForm.getPhoneNumber();
-            Alert alert = new Alert("Information",
-                        "Sending message to "+phoneNumber+".", null,
-                        AlertType.WARNING);
-            alert.setTimeout(Alert.FOREVER);                                
-            display.setCurrent(alert, d);
-            sendMessage(phoneNumber, messageScreen.getString());            
+        } else if (c == sendCmd) {
+            if (wiring.isConnected()) {
+                String msg = messageScreen.getString();
+                byte buffer[] = msg.getBytes();
+                LOG.debug("writing message '"+msg+"'");
+                try {
+                    connection.sendBytes(buffer);
+                } catch(IOException e) {
+                    LOG.error("cannot send message!");
+                }
+            } else {
+                LOG.debug("cannot send message as we are not connected!");
+            }
         } else if (c == exitCmd) {
             quitApp();
         }
     }
-         
-    
-    public void sendMessage(String phoneNumber, String message) 
-    {
-        LOG.debug("going to send message.");
-        Element[] elms = new Element[2];
-        elms[0] = new Element("to", phoneNumber.getBytes(), 
-                               null, Element.TEXTUTF8_MIME_TYPE);       
-        elms[1] = new Element("body", message.getBytes(), 
-                               null, Element.TEXTUTF8_MIME_TYPE);
-        Message msg = new Message(elms);
-        smsgateway.sendSM(msg);
-    }
-    
+             
     
     /**
      * Called by the OSGi container when this bundle is started.
@@ -196,12 +183,23 @@ public class SmartMessengerMIDlet extends MIDlet
     public void start(BundleContext bc)
     {
         // get Endpoint service
-        ServiceReference sref = bc.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
-        endptsvc = (EndpointService)bc.getService(sref);
+        //ServiceReference sref = bc.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
+        //endptsvc = (EndpointService)bc.getService(sref);
         
-        // get SMS Gateway service
-        sref = bc.getServiceReference("ch.ethz.jadabs.mservices.smsgateway.SMSGateway");
-        smsgateway = (SMSGatewayService)bc.getService(sref);                
+        wiring = new LocalWiringBundle(1234);
+        // wakeup core
+//        try {
+//            wiring.wakeupCore();
+//        } catch (IOException e) {
+//            LOG.debug("cannot wakeup core!");
+//        }
+        // now wait for core to connect to us
+        try {
+            wiring.waitforWakeupConnection();
+        } catch(IOException e) {
+            LOG.debug("waitforWakeupConnection failed!");
+        }        
+        connection = wiring.getConnection();
     }
 
     /**
