@@ -1,5 +1,5 @@
-/**
- * $Id: EndpointService.java,v 1.3 2005/01/19 10:00:05 afrei Exp $
+/*
+ * $Id: EndpointService.java,v 1.4 2005/02/18 15:00:44 printcap Exp $
  *
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
