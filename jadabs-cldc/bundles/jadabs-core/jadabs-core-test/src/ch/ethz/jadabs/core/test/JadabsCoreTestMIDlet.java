@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreTestMIDlet.java,v 1.2 2004/12/27 15:25:03 printcap Exp $
+ * $Id: JadabsCoreTestMIDlet.java,v 1.3 2005/02/17 17:29:17 printcap Exp $
  */
 package ch.ethz.jadabs.core.test;
 
@@ -21,6 +21,7 @@ import org.osgi.framework.BundleContext;
 import ch.ethz.jadabs.core.wiring.ConnectionNotifee;
 import ch.ethz.jadabs.core.wiring.LocalWiringBundle;
 import ch.ethz.jadabs.core.wiring.LocalWiringConnection;
+import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreActivator;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
 
 
@@ -78,6 +79,7 @@ public class JadabsCoreTestMIDlet extends MIDlet
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer", 
                                   this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));
         osgicontainer.startBundle(new LogActivator());
+        osgicontainer.startBundle(new MicroGroupServiceCoreActivator());
         LOG = Logger.getLogger("JadabsCoreTestMIDlet");
         osgicontainer.startBundle(this);
         instance = this;  

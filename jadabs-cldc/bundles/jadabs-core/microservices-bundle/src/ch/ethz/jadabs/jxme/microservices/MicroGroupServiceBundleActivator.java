@@ -39,4 +39,12 @@ public class MicroGroupServiceBundleActivator implements BundleActivator
         // get GC a change to collect the object 
         service = null;
     }
+    
+    /**
+     * Return the service object of the MicroGroupService 
+     * @return service object of this bundle 
+     */
+    public MicroGroupServiceBundleImpl getService() {
+        return service;
+    }
 }

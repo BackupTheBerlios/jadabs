@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreMIDlet.java,v 1.2 2004/12/27 15:25:03 printcap Exp $
+ * $Id: JadabsCoreMIDlet.java,v 1.3 2005/02/17 17:29:17 printcap Exp $
  */
 package ch.ethz.jadabs.core;
 
@@ -18,8 +18,10 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import ch.ethz.jadabs.core.wiring.LocalWiringConnection;
-import ch.ethz.jadabs.core.wiring.LocalWiringCore;
+import ch.ethz.jadabs.jxme.JxmeActivator;
+import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreActivator;
+import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreImpl;
+import ch.ethz.jadabs.jxme.services.impl.ServiceActivator;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
 
 /**
@@ -51,12 +53,8 @@ public class JadabsCoreMIDlet extends MIDlet
     private Command exitCmd;    
     private Command connectCmd;
     
-    /** reference to the wiring interface */
-    private LocalWiringCore wiring;
-    
-    /** reference to connection to bundle */
-    private LocalWiringConnection connection;
-    
+    /** a reference to the core component of the MicroGroup Service */
+    private MicroGroupServiceCoreImpl microGroupServiceCore;  
 
     /** Constructor */
     public JadabsCoreMIDlet()
@@ -69,13 +67,20 @@ public class JadabsCoreMIDlet extends MIDlet
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer", 
                                   this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));
         osgicontainer.startBundle(new LogActivator());
-        //osgicontainer.startBundle(new JxmeActivator());
-        //osgicontainer.startBundle(new BTActivator());
+        LOG = Logger.getLogger("ch.ethz.jadabs.core.JadabsCoreMIDlet");        
         
+        // now bring up the entire Jxme stuff
+        osgicontainer.startBundle(new JxmeActivator());
+        osgicontainer.startBundle(new ServiceActivator());
+        
+        // finally start the micro group service 
+        MicroGroupServiceCoreActivator mgsActivator = new MicroGroupServiceCoreActivator();
+        osgicontainer.startBundle(mgsActivator);
+        microGroupServiceCore = mgsActivator.getService();
+        
+        // dependend bundles started now we "fire up" ourselves
         osgicontainer.startBundle(this);
-        instance = this;
-        LOG = Logger.getLogger("JadabsCoreMIDlet");
-        wiring = new LocalWiringCore();
+        instance = this;               
     }
 
     /** Handle starting the MIDlet */
@@ -149,17 +154,17 @@ public class JadabsCoreMIDlet extends MIDlet
     public void commandAction(Command c, Displayable d)
     {   
         if (c == connectCmd) {
-            int port = 1234;
-            LOG.debug("connecting on port "+port);
-            try {
-                connection = wiring.connect(port);
-                Thread connectionThread = new Thread(new ConnectionThread());
-                connectionThread.start();
-            } catch(IOException e) {
-                LOG.error("cannot connect to port "+port+
-                          " on local loopback interface.");
-            }
-            
+//            int port = 1234;
+//            LOG.debug("connecting on port "+port);
+//            try {
+//                connection = wiring.connect(port);
+//                Thread connectionThread = new Thread(new ConnectionThread());
+//                connectionThread.start();
+//            } catch(IOException e) {
+//                LOG.error("cannot connect to port "+port+
+//                          " on local loopback interface.");
+//            }
+//            
         } else if (c == exitCmd) {
             quitApp();
         }
@@ -189,27 +194,5 @@ public class JadabsCoreMIDlet extends MIDlet
 //        endptsvc.removeListener("jxmechat");
     }
     
-    
-    /**
-     * Thread that runs the connection
-     */
-    private class ConnectionThread implements Runnable {
-        
-        /** thread's run body */ 
-        public void run() {
-            LOG.debug("connection thread started...");
-            try {
-                while (true) {
-                    byte buffer[] = connection.receiveBytes();
-                    String message = new String(buffer);
-                    LOG.debug("message: '"+message+"'");
-                }
-            } catch(IOException e) {
-                LOG.error("IOException occured in ConnectionThread");
-            } finally {
-                connection.close();
-            }
-        }        
-    }
     
 }

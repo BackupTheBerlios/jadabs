@@ -11,6 +11,23 @@
 	<shortDescription>Jadabs-Core Component for J2ME-JXME</shortDescription>
 
   	<dependencies>  	
+      <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>microservices-common</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+               <midlet>true</midlet>
+            </properties>
+      </dependency>
+      
+      <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>microservices-core</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+               <midlet>true</midlet>
+            </properties>
+      </dependency>
 
   		<dependency>
       		<groupId>jadabs</groupId>
@@ -29,7 +46,7 @@
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>
-<!--
+
       <dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>jxme-osgi-j2me</artifactId>
@@ -38,7 +55,26 @@
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>
-            		
+
+      <dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-services-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+
+      <dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-services-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+      
+<!--            		
 		<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>jxme-bt-j2me</artifactId>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="bundles/jadabs-core/microservices-bundle/src"/>
+	<classpathentry kind="src" path="bundles/jadabs-core/microservices-bundle/testmidlet/src"/>
 	<classpathentry kind="src" path="bundles/jadabs-core/microservices-common/src"/>
 	<classpathentry kind="src" path="bundles/jadabs-core/microservices-core/src"/>
 	<classpathentry kind="src" path="bundles/jadabs-core/jadabs-core-test/src"/>

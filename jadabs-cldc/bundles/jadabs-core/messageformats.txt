@@ -1,4 +1,4 @@
-$Id: messageformats.txt,v 1.4 2005/02/17 15:52:20 printcap Exp $
+$Id: messageformats.txt,v 1.5 2005/02/17 17:29:17 printcap Exp $
 
 Message-Format between Jadabs-Bundle and Jadabs-Core-Entity
 -----------------------------------------------------------
@@ -236,6 +236,7 @@ REMOTE_SERACH_REPLY:
    5:      request type (REMOTE_SEARCH)       short 
    7:      error or exception occured         boolean
    8:      message length (in bytes)          short
+  10:      search handle (ID for the search)  int
 
 In oder to call the handleSearchResponse and handleNamedResourceLoss
 method of the supplied MicroDiscoveryListener instance, asynchronous
@@ -252,7 +253,8 @@ SEARCH_ASYNC_MSG:
    3:      group number (internally)   short
    5:      async type (SEARCH_REPONSE) short 
    7:      message length (in bytes)   short
-   9:      resource type               UTF String
+   9:      search handle (ID for the search)  int   
+  13:      resource type               UTF String
   ..:      resource name               UTF String
   ..:      resource ID string          UTF String
 
@@ -266,7 +268,8 @@ NAMED_RESOURCE_LOSS_ASYNC_MSG:
    3:      group number (internally)         short         
    5:      async type (NAMED_RESOURCE_LOSS)  short 
    7:      message length (in bytes)         short
-   9:      resource type                     UTF String
+   9:      search handle (ID for the search) int
+  13:      resource type                     UTF String
   ..:      resource name                     UTF String
   ..:      resource ID string                UTF String
 
@@ -284,6 +287,7 @@ CANCEL_SEARCH_REQUEST:
    2:      group number (internally)         short 
    4:      request type  (CANCEL_SEARCH)     short 
    6:      message length (in bytes)         short
+   8:      search handle (ID for the serach) int
 
 CANCEL_SEARCH_REPLY:
  offset    field                              type 
@@ -488,3 +492,4 @@ CLOSE_REPLY:
 
 --
 RM 2005-01-23
+(modified 2005-02-17)

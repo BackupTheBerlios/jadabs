@@ -5,10 +5,10 @@
 	<extend>${basedir}/../../../project.xml</extend>
 
 	<groupId>jadabs</groupId>
-	<id>microservices-bundle</id>
+	<id>microservices-core</id>
 	<name>MicroServices Bundle (Stub)</name>
 
-	<shortDescription>Micro GroupService Stub (for bundles)</shortDescription>	
+	<shortDescription>Micro GroupService Core (proxy)</shortDescription>	
   	<dependencies>  
 		<dependency>
       		<groupId>osgi</groupId>
@@ -33,7 +33,19 @@
             <artifactId>jxme-osgi-j2me</artifactId>
             <version>${pom.currentVersion}</version>
       </dependency>
-                 
+            
+      <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>jxme-services-api</artifactId>
+            <version>${pom.currentVersion}</version>
+      </dependency>
+
+      <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>jxme-services-j2me</artifactId>
+            <version>${pom.currentVersion}</version>
+      </dependency>
+            
       <dependency>
          <groupId>jadabs</groupId>
          <artifactId>log4j-j2me</artifactId>

@@ -1,10 +1,12 @@
 /*
  * Created on Dec 9, 2004
  *
- *	$Id: LocalWiringBundle.java,v 1.2 2004/12/27 15:25:03 printcap Exp $
+ *	$Id: LocalWiringBundle.java,v 1.3 2005/02/17 17:29:17 printcap Exp $
  */
 package ch.ethz.jadabs.core.wiring;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 import javax.microedition.io.Connector;
@@ -32,6 +34,9 @@ public class LocalWiringBundle
     
     /** logger to be used */
     private static Logger logger = Logger.getLogger("LocalWiringCore");
+    
+    /** magic cookie used in wakeup packet */
+    private static String MAGIC_WAKEUP_COOKIE = "Wake up Polly!";
     
     /** listening port for TCP-connection */
     private int portnumber;
@@ -69,7 +74,17 @@ public class LocalWiringBundle
     {
         DatagramConnection dc = (DatagramConnection)
         		Connector.open("datagram://127.0.0.1:"+CORE_WAKEUP_PORT);
-        byte[] buffer = "Wake up Polly!".getBytes();
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream(bout);
+        
+        // send magic wake up cookie
+        dout.writeUTF(MAGIC_WAKEUP_COOKIE);
+        
+        // send port number for later reconnect
+        dout.writeInt(portnumber);
+        dout.close();
+        bout.close();
+        byte[] buffer = bout.toByteArray(); 
         Datagram dgrm = dc.newDatagram(buffer, buffer.length);
         dc.send(dgrm);
     }

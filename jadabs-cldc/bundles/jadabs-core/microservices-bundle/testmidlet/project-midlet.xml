@@ -2,15 +2,16 @@
 
 <project>
 
-	<extend>${basedir}/../../../project.xml</extend>
+	<extend>${basedir}/../../../../project.xml</extend>
 
 	<groupId>jadabs</groupId>
-	<artifactId>jadabs-core-test</artifactId>
-	<name>Jadabs-Core Test</name>
+	<artifactId>microservices-bundle-test</artifactId>
+	<name>Jadabs Micro-Groupservice Bundle Test</name>
 
-	<shortDescription>Jadabs-Core Test MIDlet for J2ME-JXME</shortDescription>
+	<shortDescription>Jadabs Micro-Groupservice Bundle Test</shortDescription>
 
   	<dependencies>  	
+  		
   		<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>microservices-common</artifactId>
@@ -19,16 +20,16 @@
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>
-
-  		<dependency>
+  	
+  	  	<dependency>
       		<groupId>jadabs</groupId>
-      		<artifactId>microservices-core</artifactId>
+      		<artifactId>microservices-bundle</artifactId>
       		<version>${pom.currentVersion}</version>
       		<properties>
 	      		<midlet>true</midlet>  
 	      	</properties>
 		</dependency>
-
+  	
   		<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>local-wiring</artifactId>
@@ -61,16 +62,6 @@
       		<artifactId>midpapi</artifactId>
       		<version>2.0</version>
 		</dependency>	
-		
-		<dependency>
-      		<groupId>j2me</groupId>
-      		<artifactId>btapi</artifactId>
-      		<version>1.0</version>
-      		<properties>
-      			<dependencyType>runtime</dependencyType>
-      		</properties>
-		</dependency>
-
 		
   	</dependencies>  
 </project>

@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceBundleImpl.java,v 1.3 2005/01/23 15:47:37 printcap Exp $
+ * $Id: MicroGroupServiceBundleImpl.java,v 1.4 2005/02/17 17:29:16 printcap Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -30,7 +30,7 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
                            ConnectionNotifee
 {
     /** Apache Log4J logger to be used in the MicroGroupServiceBundleImpl */
-    private static Logger LOG = Logger.getLogger("MicroGroupServiceBundleImpl");
+    private static Logger LOG = Logger.getLogger("ch.ethz.jadabs.jxme.microservices.MicroGroupServiceBundleImpl");
     
     /** the wiring protocol to connect to the core */
     private LocalWiringBundle wiring;
@@ -76,7 +76,7 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             LOG.fatal("Listening port 'ch.ethz.jadsbs.microservices.bundleport' invalid or not specified.");
             return;
         }
-        wiring = new LocalWiringBundle(port, this); 
+        wiring = new LocalWiringBundle(port, this);         
         registeredMicroDiscoveryListeners = new Hashtable();
         registeredMircoListeners = new Hashtable();
     }       
@@ -371,8 +371,8 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
                     connection.wait();
                 } catch (InterruptedException e) { }
             }
-            response = responseData;
-            // also notify dispatcher thread
+            response = responseData;            
+            // also notify dispatcher thread                        
             connection.notifyAll();
             requestResponse = -1;
         }
@@ -401,8 +401,10 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             LOG.error(error);
             throw new IOException(error);
          }          
+         int searchHandle = din.readInt();
+         
          // register listener associated with this request 
-         registeredMicroDiscoveryListeners.put(new Integer(myRequest), listener);
+         registeredMicroDiscoveryListeners.put(new Integer(searchHandle), listener);
     }
 
     /** 
@@ -412,6 +414,23 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
      */
     public void cancelSearch(MicroDiscoveryListener listener)
     {
+        // find listener locally 
+        // (this is really ugly but on J2ME/MIDP there does not appear to exist a better solution)
+        Enumeration keys= registeredMicroDiscoveryListeners.keys();
+        Integer key = null; 
+        boolean found = false;
+        while (keys.hasMoreElements() && !found) {
+            key = (Integer)keys.nextElement();
+            if (registeredMicroDiscoveryListeners.get(key) == listener) {
+                found = true;
+            }
+        }
+        if (!found) {
+            LOG.debug("cancelSearch listener not registered.");
+            return;
+        }
+        int search_handle = key.intValue();
+        
         //  prepare message and sent it
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(bout);
@@ -419,10 +438,11 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
         synchronized(connection) {
             myRequest = nextSequenceNumber++;
             try {
-                out.writeShort(myRequest);
-                out.writeShort(Constants.CANCEL_SEARCH);
+                out.writeShort(myRequest);                
                 out.writeShort(groupNumber);
+                out.writeShort(Constants.CANCEL_SEARCH);
                 out.writeShort(0);		// dummy length
+                out.writeInt(search_handle);
                 out.close();
                 bout.close();
                 byte[] array = bout.toByteArray();
@@ -435,14 +455,7 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             }
             
             // remove listener locally 
-            // (this is really ugly but on J2ME/MIDP there does not appear to exist a better solution)
-            Enumeration keys= registeredMicroDiscoveryListeners.keys();
-            while (keys.hasMoreElements()) {
-                Object key = keys.nextElement();
-                if (registeredMicroDiscoveryListeners.get(key) == listener) {
-                    registeredMicroDiscoveryListeners.remove(key);
-                }
-            }
+            registeredMicroDiscoveryListeners.remove(key);
             
             // wait for reply
             while (requestResponse != myRequest) {
@@ -676,7 +689,7 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
                 out.writeShort(groupNumber);
                 out.writeShort(0);		// dummy length
                 out.writeUTF(pipeID);
-                out.writeUTF(data.toXMLString());
+                data.write(out);
                 out.close();
                 bout.close();
                 byte[] array = bout.toByteArray();
@@ -982,13 +995,14 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
 	                    switch(type) {
 	                    case Constants.SEARCH_RESPONSE:
 	                    case Constants.NAME_RESOURCE_LOSS:
+	                        int searchhandle = din.readInt();
 	                        String resourceType = din.readUTF();
 	                    		String resourceName = din.readUTF();
 	                    		String resourceId   = din.readUTF();
 	                    		din.close();
 	                    		MicroDiscoveryListener listener = 
 	                    		    	(MicroDiscoveryListener)registeredMicroDiscoveryListeners.get(
-	                    		    	        new Integer(request));
+	                    		    	        new Integer(searchhandle));
 	                    		if (listener != null) {
 	                    		    if (type == Constants.SEARCH_RESPONSE) {
 	                    		        listener.handleSearchResponse(resourceType, resourceName, resourceId);
@@ -1033,6 +1047,18 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             } catch(IOException e) {
                 MicroGroupServiceBundleImpl.LOG.error("cannot send data.");
             }
+        }
+    }
+    
+    /**
+     * Wake up bundle core using local loopback wiring
+     */
+    public void wakeupCore() 
+    {
+        try {
+            wiring.wakeupCore();
+        } catch(IOException e) {
+            LOG.error("cannot wake up core (IOException)");            
         }
     }
 }

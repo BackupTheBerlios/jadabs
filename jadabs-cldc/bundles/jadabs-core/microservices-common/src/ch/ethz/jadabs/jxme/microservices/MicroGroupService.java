@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: MicroGroupService.java,v 1.1 2005/01/16 14:06:37 printcap Exp $
+ * $Id: MicroGroupService.java,v 1.2 2005/02/17 17:29:17 printcap Exp $
  * 
  **********************************************************************/
 
@@ -98,6 +98,41 @@ public interface MicroGroupService extends MicroListener
     public String[] localSearch(String type, String attribute, 
             String value, int threshold) throws IOException;
     
+    /**
+     * Search for Peers, Groups, Pipes or Content resources defined by
+     * Applications.
+     * <p>
+     * 
+     * First, it searches in the local cache. If a match is found, NamedResource
+     * is returned as the matching value. If a match is not found in the local
+     * cache, query is propagated to peer's neighbor based on ResolverService
+     * and a null value is returned.
+     * 
+     * @param type
+     *            one of {@link NamedResource.PEER},
+     *            {@link NamedResource.GROUP},{@link NamedResource.PIPE} or
+     *            {@link NamedResource.OTHER}
+     * 
+     * @param attribute
+     *            the name of the attribute to search for. This is one of the
+     *            fields defined by a NamedResource and advertisements are
+     *            indexed one. For example <code>NAME</code> or
+     *            <code>ID</code> are usually used to search resources by name
+     *            or id.
+     * 
+     * @param value
+     *            an expression specifying the items being searched for and also
+     *            limiting the scope of items to be returned. This is usually a
+     *            simple regular expression such as, for example,
+     *            <code>TicTacToe*</code> to search for all entities with
+     *            names that begin with TicTacToe.
+     * 
+     * @param threshold
+     *            the maximum number of responses allowed from any one peer.
+     * 
+     * @throws IOException
+     *             if a communication error occurs with the the JXTA network
+     */
     public void remoteSearch(String type, String attribute, 
             String value, int threshold, MicroDiscoveryListener listener) 
     	throws IOException;

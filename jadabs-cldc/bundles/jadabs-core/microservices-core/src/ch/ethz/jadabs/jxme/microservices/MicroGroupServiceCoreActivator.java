@@ -2,6 +2,10 @@ package ch.ethz.jadabs.jxme.microservices;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+
+import ch.ethz.jadabs.jxme.PeerNetwork;
+import ch.ethz.jadabs.jxme.services.GroupService;
 
 
 /**
@@ -15,7 +19,10 @@ public class MicroGroupServiceCoreActivator implements BundleActivator
     static BundleContext context;
     
     /** reference to the service object */ 
-    MicroGroupServiceCoreImpl  service;
+    private MicroGroupServiceCoreImpl  service;
+    
+    /** reference to the "real" group service */
+    private GroupService groupService;
     
     /**
      * Start the MicroService bundle 
@@ -25,7 +32,10 @@ public class MicroGroupServiceCoreActivator implements BundleActivator
     public void start(BundleContext context) throws Exception
     {
         MicroGroupServiceCoreActivator.context = context; 
-        service = new MicroGroupServiceCoreImpl(); 
+        
+        ServiceReference sref = context.getServiceReference("ch.ethz.jadabs.jxme.services.GroupService");
+        groupService = (GroupService)context.getService(sref);        
+        service = new MicroGroupServiceCoreImpl(groupService); 
     }
 
     /**
@@ -39,4 +49,12 @@ public class MicroGroupServiceCoreActivator implements BundleActivator
         // get GC a change to collect the object 
         service = null;
     }
+    
+    /**
+     * Return the service object of the MicroGroupService 
+     * @return service object of this bundle 
+     */
+    public MicroGroupServiceCoreImpl getService() {
+        return service;
+    }    
 }
