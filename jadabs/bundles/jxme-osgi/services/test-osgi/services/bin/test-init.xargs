@@ -5,7 +5,7 @@
 
 -Dorg.knopflerfish.verbosity=0
 
--Dorg.knopflerfish.gosg.jars=file:/home/andfrei/.maven/repository/
+-Dorg.knopflerfish.gosg.jars=file:/home/muellerr/.maven/repository/
 
 -Dorg.knopflerfish.framework.debug.packages=false
 -Dorg.knopflerfish.framework.debug.errors=true
@@ -27,7 +27,7 @@
 
 -Dch.ethz.jadabs.jxme.peeralias=peer1
 -Dch.ethz.jadabs.jxme.tcp.port=9001
--Dch.ethz.jadabs.jxme.seedURIs=tcp://ikdesk3.inf.ethz.ch:9002
+-Dch.ethz.jadabs.jxme.seedURIs=tcp://192.168.1.36:9002
 
 -init
 
@@ -36,12 +36,13 @@
 ## jxme-eventsystem
 -initlevel 1
 -istart  log4j/jars/log4j-1.2.8-osgi.jar
--install  jadabs/jars/concurrent-0.6.7.jar
--istart   jadabs/jars/jxme-osgi-j2se-0.6.7.jar
-#-istart   jadabs/jars/jxme-tcp-0.6.7.jar
--istart   jadabs/jars/jxme-udp-0.6.7.jar
--istart   jadabs/jars/jxme-services-0.6.7.jar
--istart   jadabs/jars/jxme-services-test-0.6.7.jar
+-install  jadabs/jars/concurrent-0.7.1-SNAPSHOT.jar
+-istart   jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar
+-istart   jadabs/jars/jxme-tcp-0.7.1-SNAPSHOT.jar
+#-istart   jadabs/jars/jxme-udp-0.7.1-SNAPSHOT.jar
+-install  jadabs/jars/jxme-services-api-0.7.1-SNAPSHOT.jar
+-istart   jadabs/jars/jxme-services-impl-0.7.1-SNAPSHOT.jar
+-istart   jadabs/jars/jxme-services-test-0.7.1-SNAPSHOT.jar
 
 -startlevel 1
 

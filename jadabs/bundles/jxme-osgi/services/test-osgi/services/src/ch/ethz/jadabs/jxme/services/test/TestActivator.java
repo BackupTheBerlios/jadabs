@@ -80,20 +80,21 @@ public class TestActivator
         // testpipe
         if (peername.equals("peer1"))
         {
+            LOG.debug("I am peer1.");
             peer1listeners = new Peer1Listeners();
             testPipePeer1();
         } 
         else if (peername.equals("peer2"))
         {
+            LOG.debug("I am peer2.");
             peer2listeners = new Peer2Listeners();
             groupsvc.remoteSearch(NamedResource.PEER, "Name", "", 1, peer2listeners);
             testPipePeer2();
         } 
         else if (peername.equals("peer3"))
         {
-            
+            LOG.debug("I am peer3.");
             //groupsvc.remoteSearch(NamedResource.PEER, "Name", "", 1, this);
-            
             
             PeerGroup testgroup = new PeerGroup("TestGroup",new ID("urn:jxta:uuid-1:2:03"),"for test purpose");
         
@@ -121,9 +122,10 @@ public class TestActivator
         // propagation pipe
         Pipe proppipe = (Pipe)groupsvc.create(NamedResource.PIPE, 
                 "testpipe", null,Pipe.PROPAGATE);
+        LOG.debug("Propagation pipe "+proppipe+" created.");
         
         groupsvc.remotePublish(proppipe);
-        
+        LOG.debug("Propagation pipe "+proppipe+" published remotely.");
         // unicast pipe
 //        Pipe unicpipe = (Pipe)groupsvc.create(NamedResource.PIPE, 
 //                "testpipe", null,Pipe.UNICAST);
@@ -131,6 +133,7 @@ public class TestActivator
         
         try
         {
+            LOG.debug("listening on propagation pipe: "+proppipe);
             groupsvc.listen(proppipe, peer1listeners);
 //            groupsvc.listen(unicpipe, new UnicastListener());
         } catch (IOException e)
@@ -144,6 +147,7 @@ public class TestActivator
     {
         try
         {
+            LOG.debug("Remote search started for PIPE 'Name'");
             groupsvc.remoteSearch(NamedResource.PIPE, "Name", "", 1, peer2listeners);
         } catch (IOException e)
         {
@@ -155,6 +159,7 @@ public class TestActivator
     {
         try
         {
+            LOG.debug("Remote search started for PIPE 'Name'");
             testgroupsvc.remoteSearch(NamedResource.PIPE, "Name", "", 1, peer3listeners);
         } catch (IOException e)
         {
@@ -169,7 +174,7 @@ public class TestActivator
        
 	    public void handleMessage(Message message, String listenerId)
 	    {
-	        LOG.debug("PropagationListener: "+ message.toXMLString());
+	        LOG.debug("Message received. PropagationListener: "+ message.toXMLString());
 	    }
 
         /* (non-Javadoc)
@@ -189,21 +194,24 @@ public class TestActivator
         
         public void handleSearchResponse(NamedResource namedResource)
         {
-            LOG.debug("found namedresource: " + namedResource.getName());
-            
+            LOG.debug("found namedresource: " + namedResource.getName());            
             LOG.debug("group: "+namedResource.getID().getGroupID());
             
             if (namedResource instanceof Pipe)
             {
+                LOG.debug("resource is in fact a pipe");
                 Pipe pipe = (Pipe)namedResource;
                 
                 try
                 {
-                    groupsvc.resolve(pipe,100000);
-                    
+                   LOG.debug("Resolve pipe.");
+                   groupsvc.resolve(pipe,100000);
+                   
+                   
 	                Element[] elms = new Element[]{new Element("testa","testval",Message.JXTA_NAME_SPACE)};
-	                
-	                groupsvc.send(pipe,new Message(elms));
+	                Message msg = new Message(elms);
+	                LOG.debug("Sending JXTA message over pipe "+msg);
+	                groupsvc.send(pipe, msg);
                     
                 } catch (IOException e)
                 {

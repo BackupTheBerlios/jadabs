@@ -1,0 +1,44 @@
+<bundle>
+	<bundle-name>bundleloader</bundle-name>
+	<bundle-group>jadabs</bundle-group>
+	<bundle-description>
+		Jadabs BundleLoader
+	</bundle-description>
+	<bundle-version>0.7.1-SNAPSHOT</bundle-version>
+	<update-location>localhost:///home/muellerr/.maven/repository</update-location>
+	<bundle-sourceurl>
+		unknown
+	</bundle-sourceurl>
+	<bundle-docurl>
+		unknown
+	</bundle-docurl>
+	<bundle-category>General</bundle-category>
+	<bundle-checksum>72795bfb132a2d830d926b7ba1c6aea5</bundle-checksum>
+	<import-package package="ch.ethz.jadabs.bundleLoader"/>
+	<import-package package="ch.ethz.jadabs.bundleLoader.api"/>
+	<import-package package="ch.ethz.jadabs.http"/>
+	<import-package package="org.apache.log4j"/>
+	<import-package package="org.kxml2.io"/>
+	<import-package package="org.osgi.framework"/>
+	<import-package package="org.xmlpull.v1"/>
+	<export-package package="ch.ethz.jadabs.bundleLoader"/>
+	<export-package package="ch.ethz.jadabs.bundleLoader.api"/>
+	<export-package package="ch.ethz.jadabs.http"/>
+	<dependencies>
+		<bundle>
+			<bundle-name>osgi-framework</bundle-name>
+			<bundle-group>osgi</bundle-group>
+			<bundle-version>1.2</bundle-version>
+		</bundle>
+		<bundle>
+			<bundle-name>kxml2</bundle-name>
+			<bundle-group>kobjects</bundle-group>
+			<bundle-version>2.1.9-osgi</bundle-version>
+		</bundle>
+		<bundle>
+			<bundle-name>log4j-cdc</bundle-name>
+			<bundle-group>jadabs</bundle-group>
+			<bundle-version>0.7.1-SNAPSHOT</bundle-version>
+		</bundle>
+	</dependencies>
+</bundle>

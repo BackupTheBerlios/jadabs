@@ -280,13 +280,20 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	        {         
 	            	// match agains the provided filter
 	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
-	            
-	            // transform | into ¦ due to problems with nokia
+// problem with unicode and cvs	            
+//	            // transform | into ?? due to problems with nokia
+//	            if (filter.indexOf('|') > -1)
+//	                filter = filter.replace('|','??');
+//	            
+//	            String smfilter = filter.substring(filter.lastIndexOf("??")+1);
+// replaced to make it at least compile	            
+	            // transform | into ? due to problems with nokia
 	            if (filter.indexOf('|') > -1)
-	                filter = filter.replace('|','¦');
+	                filter = filter.replace('|','?');
 	            
-	            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
+	            String smfilter = filter.substring(filter.lastIndexOf("?")+1);
 	            
+
 	            
 	            System.out.println("message: "+ msg.toXMLString());
 	            

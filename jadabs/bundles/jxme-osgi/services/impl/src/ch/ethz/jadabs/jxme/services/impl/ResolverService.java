@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: ResolverService.java,v 1.6 2005/02/23 21:34:03 afrei Exp $
+ * $Id: ResolverService.java,v 1.7 2005/04/03 16:32:13 printcap Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -517,7 +517,7 @@ public class ResolverService extends Service implements Runnable, Listener
             
         } catch (IOException e)
         {
-            LOG.debug("advertisement could not be sent on an endpoint:"+e.getMessage());
+//            LOG.debug("advertisement could not be sent on an endpoint:"+e.getMessage());
         }
         
     }
@@ -633,7 +633,7 @@ public class ResolverService extends Service implements Runnable, Listener
 
             try
             {
-                seeduris.add(new EndpointAddress(seeduri));
+                seeduris.addElement(new EndpointAddress(seeduri));
             } catch (MalformedURIException e)
             {
                 LOG.error("seedURI wrong format: " + seeduri);

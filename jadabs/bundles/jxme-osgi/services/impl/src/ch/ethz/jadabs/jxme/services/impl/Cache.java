@@ -51,7 +51,7 @@
  *
  *  This license is based on the BSD license adopted by the Apache Foundation.
  *
- *  $Id: Cache.java,v 1.5 2005/02/13 12:36:26 afrei Exp $
+ *  $Id: Cache.java,v 1.6 2005/04/03 16:32:13 printcap Exp $
  */
 
 package ch.ethz.jadabs.jxme.services.impl;
@@ -137,8 +137,8 @@ class Cache
 
     synchronized boolean addResource(NamedResource resource)
     {
-        LOG.debug("Adding: type: " + resource.getType() + " name:" + resource.getName() + " id: " + resource.getID()
-                + " gid: " + resource.getID().getGroupID());
+//        LOG.debug("Adding: type: " + resource.getType() + " name:" + resource.getName() + " id: " + resource.getID()
+//                + " gid: " + resource.getID().getGroupID());
 
         String type = resource.getType();
 
@@ -313,7 +313,7 @@ class Cache
      */
     synchronized NamedResource[] getResources(String reqpeerId, String groupId, String type, String attr, String value)
     {
-        LOG.debug("searching for :  type: " + type + ", group: " + groupId + " " + attr + ": " + value);
+//        LOG.debug("searching for :  type: " + type + ", group: " + groupId + " " + attr + ": " + value);
         Enumeration en = null;
         if (type.equals(NamedResource.PIPE))
         {
@@ -351,7 +351,7 @@ class Cache
                         && !res.getID().equals(reqpeerId))
                 {
                     resList.addElement((NamedResource) res);
-                    LOG.debug("found " + (NamedResource) res);
+//                    LOG.debug("found " + (NamedResource) res);
                 }
             }
         }
