@@ -29,5 +29,6 @@
 	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/nist-sip-1.2-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/swt/jars/swt-3.0.1-ppc.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/kobjects/jars/kxml2-2.1.9-osgi.jar"/>
+	<classpathentry kind="src" path="bundles/remotefw/shellplugin/src"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
