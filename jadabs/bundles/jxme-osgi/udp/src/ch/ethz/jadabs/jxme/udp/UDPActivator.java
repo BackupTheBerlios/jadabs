@@ -106,7 +106,8 @@ public class UDPActivator implements BundleActivator
     {
         udptrans.stop();
         
-        endptsvc.removeTransport(udpendpoint);
+        //TODO bug in removeing the endpoint
+//        endptsvc.removeTransport(udpendpoint);
     }
 
 }

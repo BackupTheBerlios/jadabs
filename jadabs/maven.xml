@@ -81,7 +81,7 @@
 				goals="eclipse:plugin"
 				banner="Eclipse Plugin generation"
 				ignoreFailures="false"/>
-
+				
 	</goal>
 
   <!--==================================================================-->
