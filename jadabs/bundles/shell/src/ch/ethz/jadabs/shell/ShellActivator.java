@@ -31,64 +31,82 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Created on 09.06.2004
- * 
- * $Id: LogActivator.java,v 1.2 2004/12/29 23:33:49 rjan Exp $
+ * Created on Nov 28, 2004
+ *
  */
-package org.apache.log4j;
 
+
+package ch.ethz.jadabs.shell;
+
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import ch.ethz.jadabs.bundleLoader.IBundleLoader;
+
 
 /**
- * This Log4J ShellActivator sets up the Log4J system for J2ME/MIDP as 
- * initial logging mechanism.
- * 
- * @author andfrei
+ * Jadabs Shell Reloaded 
+ * @author rjan
  */
-public class LogActivator implements BundleActivator
+public class ShellActivator implements BundleActivator
 {
 
+    protected static Logger LOG = Logger.getLogger(ShellActivator.class.getName());    
+    protected static BundleContext b_context;
+    protected static String peerName;
+    protected static IBundleLoader bloader;
+    protected static boolean running = true;
+    private Shell shell;
+
     /**
-     * Start the Log4J bundle
-     * @param bc context the Log4J bundle runs in
+     * start the bundle, this method is called by the OSGi implementation.
+     * 
+     * @param bc the bundle context of the OSGi framework.
+     * @throws Exception
      */
     public void start(BundleContext bc) throws Exception
     {
+        ShellActivator.b_context = bc;
+        ServiceReference sref;
         
-        String level = (String) bc.getProperty("log4j.priority");
-
-        Priority priority = Priority.INFO;
+        if (LOG.isDebugEnabled())
+            LOG.debug("starting Jadabs Shell ... ");        
         
-        if (level != null)
+        // get BundleLoader
+        sref = bc.getServiceReference(IBundleLoader.class.getName());
+        if (sref != null)
         {
-            if (level.equals("FATAL"))
-            {
-                priority = Priority.FATAL;
-            } else if (level.equals("ERROR"))
-            {
-                priority = Priority.ERROR;
-            } else if (level.equals("WARN"))
-            {
-                priority = Priority.WARN;
-            } else if (level.equals("INFO"))
-            {
-                priority = Priority.INFO;
-            } else if (level.equals("DEBUG"))
-            {
-                priority = Priority.DEBUG;
-            }
+            LOG.debug("Connected to BundleLoader ");
+            ShellActivator.bloader = (IBundleLoader) bc.getService(sref);
+        } else
+        {
+            LOG.debug("BundleLoader is not running, load command will be deactivated ...");
+            ShellActivator.bloader = null;
         }
-        
-        Logger.createLogger(priority);
-    }
 
+        ShellActivator.peerName = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
+
+        if (LOG.isDebugEnabled())
+            LOG.debug("peername is " + peerName);
+
+        shell = Shell.getInstance();
+        shell.start();
+        
+        b_context.registerService(IShellPluginService.class.getName(),shell,null);
+
+    }
+    
     /**
-     * Stop the Log4J bundle
-     * @param bc context the Log4J bundle runs in
+     * stops the bundle, this method is called by the OSGi implementation.
+     * 
+     * @param bc
+     *            the bundle context of the OSGi framework.
+     * @throws Exception
      */
     public void stop(BundleContext bc) throws Exception
     {
-        // nothing to do
+       running = false;
+       shell = null;
     }
 }

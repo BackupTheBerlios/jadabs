@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../../project.xml</extend>
+
+	<name>remotefw-plugin</name>
+  	<groupId>jadabs</groupId>
+  	<id>remotefw-plugin</id>
+
+	<shortDescription>Shell Plugin to control remote peers</shortDescription>
+
+	<properties>
+		<osgi.import.service>ch.ethz.jadabs.shell.IShellPluginService</osgi.import.service>
+	</properties>
+
+	<properties>
+		<!-- for osgi bundles -->
+		<osgi.import.service>ch.ethz.jadabs.shell.IShellPluginService</osgi.import.service>
+		
+		<!-- for eclipse osgi plugins -->
+		<eclipse.bundle.symbolicname>ch.ethz.jadabs.shell.plugin</eclipse.bundle.symbolicname>
+		<eclipse.require.bundle>ch.ethz.jadabs.shell,ch.ethz.jadabs.remotefw,org.eclipse.osgi</eclipse.require.bundle>
+		<eclipse.autostart>true</eclipse.autostart>
+		<eclipse.bundle.activator>ch.ethz.jadabs.shell.plugin.PluginActivator</eclipse.bundle.activator>
+		<eclipse.export.service></eclipse.export.service>
+		<eclipse.export.package></eclipse.export.package>
+		<eclipse.import.package>org.apache.log4j,org.osgi.framework</eclipse.import.package>
+	</properties>
+
+
+ 	<dependencies>
+  
+	  	<dependency>
+			<groupId>osgi</groupId>
+			<artifactId>osgi-framework</artifactId>
+			<version>1.2</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>remotefw-api</artifactId>
+			<version>${pom.currentVersion}</version>
+			<properties>
+	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
+	      	</properties>
+		</dependency>
+
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>remotefw-impl</artifactId>
+			<version>${pom.currentVersion}</version>
+			<properties>
+	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
+	      	</properties>
+		</dependency>
+
+	    <dependency>
+	    	  <groupId>log4j</groupId>
+		  <artifactId>log4j</artifactId>
+	    	  <version>1.2.8-osgi</version>
+	          <url>http://jakarta.apache.org/log4j</url>
+	    </dependency>
+    
+	    <dependency>
+    		<groupId>jadabs</groupId>
+    		<artifactId>jadabs-shell</artifactId>
+	    	<version>${pom.currentVersion}</version>
+	    </dependency>
+	        	
+	</dependencies>
+	
+</project>

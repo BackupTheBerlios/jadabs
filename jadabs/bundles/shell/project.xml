@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+	<extend>${basedir}/../../project.xml</extend>
+  	
+  	<groupId>jadabs</groupId>
+  	<id>jadabs-shell</id>
+  	<name>Shell</name>
+  	
+	<shortDescription>Command line shell for handling jadabs.</shortDescription>
+	
+	<properties>
+		<osgi.bundle.category>shell</osgi.bundle.category>
+		<osgi.export.service>ch.ethz.jadabs.shell.IShellPluginService</osgi.export.service>
+	</properties>
+	
+	
+	
+	<dependencies>
+   
+        <dependency>
+            <groupId>osgi</groupId>
+            <artifactId>osgi-framework</artifactId>
+            <version>1.2</version>
+        </dependency>
+                         
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.8-osgi</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>bundleLoader</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        
+	</dependencies>  
+	
+</project>

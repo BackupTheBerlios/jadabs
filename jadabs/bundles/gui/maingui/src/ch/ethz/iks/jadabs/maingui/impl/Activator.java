@@ -84,8 +84,8 @@ public class Activator implements BundleActivator
         rmanager = (FrameworkManager) bc.getService(srefrm);
 
 //        // Get WorldPeerGroup
-//        ServiceReference srefwg = Activator.bc.getServiceReference("WorldPeerGroup");
-//        wgsvc = (GroupService)Activator.bc.getService(srefwg);
+//        ServiceReference srefwg = ShellActivator.bc.getServiceReference("WorldPeerGroup");
+//        wgsvc = (GroupService)ShellActivator.bc.getService(srefwg);
 //        
 //        // get PeerNetwork
 //        ServiceReference srefpnet = bc.getServiceReference(PeerNetwork.class.getName());

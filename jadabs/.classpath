@@ -12,6 +12,8 @@
 	<classpathentry kind="src" path="bundles/jxme-osgi/tcp/src"/>
 	<classpathentry kind="src" path="bundles/remotefw/api/src"/>
 	<classpathentry kind="src" path="bundles/remotefw/impl/src"/>
+	<classpathentry kind="src" path="bundles/remotefw/shellplugin/src"/>
+	<classpathentry kind="src" path="bundles/shell/src"/>	
 	<classpathentry kind="src" path="bundles/mservices/smtpgw/src"/>
 	<classpathentry kind="src" path="bundles/mservices/smtpgw/test-direct/src"/>
 	<classpathentry kind="src" path="bundles/mservices/smtpgw/test-tcp/src"/>
@@ -19,7 +21,6 @@
 	<classpathentry kind="src" path="bundles/gui/maingui/src"/>
 	<classpathentry kind="src" path="bundles/gui/ppcadmin/src"/>
 	<classpathentry kind="src" path="bundles/gui/testmain/src"/>
-	<classpathentry kind="src" path="bundles/shell/svc/src"/>
 	<classpathentry kind="var" path="MAVEN_REPO/junit/jars/junit-3.8.1.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/java/jars/javamail-all-1.3.1-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/xstream/jars/xstream-1.0.1-osgi.jar"/>
@@ -29,6 +30,5 @@
 	<classpathentry kind="var" path="MAVEN_REPO/swt/jars/swt-3.0.1-ppc.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/kobjects/jars/kxml2-2.1.9-osgi.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="bundles/remotefw/shellplugin/src"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
