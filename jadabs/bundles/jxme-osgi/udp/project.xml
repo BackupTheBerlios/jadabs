@@ -10,7 +10,7 @@
 
 	<shortDescription>Jadabs-JXME transport UDP</shortDescription>
 
-	<properties>
+	<properties>		
 		<!-- for eclipse osgi plugins -->
 		<eclipse.bundle.symbolicname>ch.ethz.jadabs.jxme.udp</eclipse.bundle.symbolicname>
 		<eclipse.require.bundle>org.eclipse.osgi,ch.ethz.jadabs.jxme</eclipse.require.bundle>
@@ -45,7 +45,7 @@
       		<artifactId>concurrent</artifactId>
       		<version>${pom.currentVersion}</version>
       		<properties>
-	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
+	      		<eclipse.plugin.include>true</eclipse.plugin.include> 
 	      	</properties>
 		</dependency>
 		

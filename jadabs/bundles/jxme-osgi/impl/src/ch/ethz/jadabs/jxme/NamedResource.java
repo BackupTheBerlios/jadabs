@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: NamedResource.java,v 1.4 2004/12/20 21:25:33 afrei Exp $
+ * $Id: NamedResource.java,v 1.5 2004/12/21 17:21:19 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -209,8 +209,8 @@ public abstract class NamedResource
      */
     public Enumeration ListOfAttr()
     {
-        Enumeration keyse = attributes.keys();
-        return keyse;
+        Enumeration ekeys = attributes.keys();
+        return ekeys;
     }
 
     /**

@@ -4,6 +4,7 @@
 	xmlns:j="jelly:core" 
 	xmlns:util="jelly:util" 
 	xmlns:ant="jelly:ant"
+	xmlns:fn="jelly:functions"
 	xmlns:artifact="artifact">
 
 
@@ -242,7 +243,24 @@
   
 	</goal>
   
+    <goal name="jadabs:osgirepo-local-deploy">
   
+	  	<ant:mkdir dir="${local.osgi.repository}/${pom.groupId}/poms" />
+	  	<ant:mkdir dir="${local.osgi.repository}/${pom.groupId}/jars" />
+	  	
+		<ant:copy 
+			file="${basedir}/project.xml"
+			tofile="${local.osgi.repository}/${pom.groupId}/poms/${pom.artifactId}-${pom.currentVersion}.pom" />
+			
+		<ant:copy 
+			file="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}.jar"
+			todir="${local.osgi.repository}/${pom.groupId}/jars" />
+  	</goal>
+  
+  	<postGoal name="jar:deploy">
+  		<attainGoal name="jadabs:osgirepo-local-deploy"/>
+   	</postGoal>
+  	  
   <goal name="jadabs:release">
   	<attainGoal name="jadabs:superclean"/>
   	<attainGoal name="jadabs:buildall"/>
