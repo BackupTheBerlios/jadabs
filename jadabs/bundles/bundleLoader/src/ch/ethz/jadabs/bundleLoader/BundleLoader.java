@@ -157,6 +157,7 @@ public class BundleLoader implements IBundleLoader {
 	private static void scheduleDependencies(BundleInformation initial) throws XmlPullParserException, IOException {
 		
 		installationQueue.add(initial);
+		System.out.println(initial);
 		
 		boolean found;
 		int index;				
@@ -168,8 +169,8 @@ public class BundleLoader implements IBundleLoader {
 			for (index = 0; ((BundleInformation)installationQueue.get(index)).bundleDependencies.isEmpty() && index < installationQueue.size()-1; index++);
 
 			if (BundleLoaderActivator.LOG.isDebugEnabled()) 
-				BundleLoaderActivator.LOG.debug(installationQueue);
-						
+				BundleLoaderActivator.LOG.debug(installationQueue);							
+			
 			// found one that has not been processed yet
 			if (!((BundleInformation)installationQueue.get(index)).bundleDependencies.isEmpty()) {
 				found = true;				

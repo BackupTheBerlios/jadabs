@@ -44,7 +44,6 @@ public class BundleInformation {
 			}
 			
 			filename = BundleLoader.repository + File.separator + group + File.separator + "jars" + File.separator + bundle + "-" + version + ".jar";
-			// filename = group + File.separator + "jars" + File.separator + bundle + "-" + version + ".jar";
 			reader = new FileReader(BundleLoader.repository + File.separator + group + File.separator + "jars" + File.separator + bundle + "-" + version + ".obr");
 			parser.setInput(reader);
 			parseOBR();

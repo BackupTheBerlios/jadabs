@@ -50,11 +50,12 @@ public class BundleLoaderActivator implements BundleActivator {
 		// this is a hack
 		sysBundles.add(new String("log4j-cdc-0.7.1-SNAPSHOT"));
 		
-		// instanciate BundleLoader and start
+		// instanciate BundleLoader, register and start
 		BundleLoaderActivator.bundleLoader = new BundleLoader(sysBundles);
+		bc.registerService(IBundleLoader.class.getName(), bundleLoader, null);
 		BundleLoaderActivator.bundleLoader.start();
 		
-		bc.registerService(IBundleLoader.class.getName(), bundleLoader, null);
+		
 			
 	}
 

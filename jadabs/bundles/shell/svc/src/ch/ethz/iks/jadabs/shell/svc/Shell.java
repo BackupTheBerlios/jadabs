@@ -185,6 +185,13 @@ public class Shell extends Thread implements IShellPluginService {
             } else {
                System.out.println("[ERROR while uninstalling " + cmd[1] + "]");
             }
+            
+         } else if (cmdString.equalsIgnoreCase("loadBundle")) {
+         	if (cmd.length > 3) {
+         		Activator.bloader.load(cmd[1], cmd[2], cmd[3]);
+         	} else {
+         		System.out.println("[USAGE: loadBundle <bundlename> <bundleid> <bundleversion>");
+         	}
 
          } else if (cmdString.equalsIgnoreCase("listBundles")) {
 
@@ -213,6 +220,7 @@ public class Shell extends Thread implements IShellPluginService {
 
       } catch (Exception e) {
          System.out.println("[ERROR: bad argument]");
+         e.printStackTrace();
       }
    }
 
@@ -241,17 +249,18 @@ public class Shell extends Thread implements IShellPluginService {
    private void help() {
       System.out.println("Commands:");
 
-      System.out.println("startBundle      <bid>             Starts a bundle");
-      System.out.println("stopBundle       <bid>             Stops a bundle");
-      System.out.println("installBundle    <location>        Installs a bundle");
-      System.out.println("uninstallBundle  <bid>             Uninstalls a bundle");
-      System.out.println("listBundles                        Lists all available bundles");
-      System.out.println("bundleState      <bid>             Retrieves the bundle state");
-      System.out.println("bundleLocation   <bid>             Retrieves the bundle location");
+      System.out.println("startBundle      <bid>                       Starts a bundle");
+      System.out.println("stopBundle       <bid>                       Stops a bundle");
+      System.out.println("loadBundle       <name> <group> <version>    Loads a bundle using the Jadabs BundleLoader");
+      System.out.println("installBundle    <location>                  Installs a bundle");
+      System.out.println("uninstallBundle  <bid>                       Uninstalls a bundle");
+      System.out.println("listBundles                                  Lists all available bundles");
+      System.out.println("bundleState      <bid>                       Retrieves the bundle state");
+      System.out.println("bundleLocation   <bid>                       Retrieves the bundle location");
       
-      System.out.println("help                               Shows this message.");
-      System.out.println("exit                               Exits the Shell Program.");
-      System.out.println("quit                               Exits Jadabs.");
+      System.out.println("help                                         Shows this message.");
+      System.out.println("exit                                         Exits the Shell Program.");
+      System.out.println("quit                                         Exits Jadabs.");
 
       for (Enumeration pi = plugIns.elements(); pi.hasMoreElements();) {
          ((IShellPlugin) pi.nextElement()).printHelp();

@@ -44,6 +44,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 import ch.ethz.jadabs.remotefw.FrameworkManager;
+import ch.ethz.jadabs.bundleLoader.IBundleLoader;
 
 
 /**
@@ -57,6 +58,7 @@ public class Activator implements BundleActivator
     protected static BundleContext b_context;
     protected static String peerName;
     protected static FrameworkManager remotefw;
+    protected static IBundleLoader bloader;
     protected static boolean running = true;
     private Shell shell;
 
@@ -85,6 +87,19 @@ public class Activator implements BundleActivator
             throw new BundleException("Can't start Jadabs Shell, RemoteFramework not running !");
         }
         Activator.remotefw = (FrameworkManager) bc.getService(sref);
+
+        // get BundleLoader
+        sref = bc.getServiceReference(IBundleLoader.class.getName());
+        if (sref != null)
+        {
+            LOG.debug("Connected to BundleLoader ");
+        } else
+        {
+            LOG.debug("Can't start Jadabs Shell, BundleLoader not running !");
+            System.out.println("Can't start Jadabs Shell, BundleLoader not running !");
+            throw new BundleException("Can't start Jadabs Shell, BundleLoader not running !");
+        }
+        Activator.bloader = (IBundleLoader) bc.getService(sref);
 
         Activator.peerName = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
 
