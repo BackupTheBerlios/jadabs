@@ -24,5 +24,7 @@
 	<classpathentry kind="var" path="MAVEN_REPO/j2me/jars/wma-1.1.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/j2me/jars/cldcapi-1.0.jar"/>
 	<classpathentry kind="src" path="/jadabs"/>
+	<classpathentry kind="src" path="bundles/service-manager/sm-ui/src"/>
+	<classpathentry kind="src" path="bundles/service-manager/sm-micro/src"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
