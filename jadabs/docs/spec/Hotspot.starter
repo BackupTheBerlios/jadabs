@@ -1,6 +1,6 @@
 
 # iPAQ UDP/BT HotSpot
--useplatform Hotspot-Platform.xml
+-useplatform Mservice-HS-Platform.xml
 
 #
 # runlevel 1 should already be started through the init.xargs

@@ -23,9 +23,9 @@
     />
     
     <PluginActivatorBundle
-        bundle-impl-name="jxme-bt"
-        bundle-impl-version="0.7.1-SNAPSHOT"
-        bundle-impl-group="jadabs"
+        bundle-name="jxme-bt"
+        bundle-version="0.7.1-SNAPSHOT"
+        bundle-group="jadabs"
     />
 
 </OSGiPlugin>
