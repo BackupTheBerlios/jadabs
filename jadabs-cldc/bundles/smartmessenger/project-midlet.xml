@@ -22,7 +22,7 @@
 	      	</properties>
 		</dependency>
 
-      <dependency>
+      	<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>jxme-osgi-j2me</artifactId>
       		<version>${pom.currentVersion}</version>
@@ -31,7 +31,7 @@
 	      	</properties>
 		</dependency>
       
-      <dependency>
+      	<dependency>
       		<groupId>mservices</groupId>
       		<artifactId>smsservice</artifactId>
       		<version>${pom.currentVersion}</version>
@@ -40,7 +40,7 @@
 	      	</properties>
 		</dependency>
       
-      <dependency>
+      	<dependency>
       		<groupId>mservices</groupId>
       		<artifactId>smsgateway</artifactId>
       		<version>${pom.currentVersion}</version>
