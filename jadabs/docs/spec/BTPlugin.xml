@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <OSGiPlugin 
-	id="ch.ethz.jadabs.jxme.udp"
-	name="UDPService"
+	id="ch.ethz.jadabs.jxme.bt"
+	name="BTService"
 	version="0.1.0"
 	description=""
 	provider-name="ETHZ-IKS">
 	
 	<Extension-Point
-	    id="PeerNetwork"
-	    service="ch.ethz.jadabs.jxme.PeerNetwork,
-	        ch.ethz.jadabs.jxmeEndpointService" >
-	    
-	</Extension-Point>
+	    id="Platform/NetIface/bt_jsr-82"
+	    description="requires a BT interface"
+	/>
+	
+	<Extension-Point
+	    id="Extension/PeerNetwork"
+	    service="ch.ethz.jadabs.jxme.PeerNetwork"
+	/>
 	
 	<Extension
-	    id="UDPTransport"
-        service="ch.ethz.jadab.jxme.udp.UDPTransport"
+	    id="BTTransport"
+        service="ch.ethz.jadab.jxme.udp.BTTransport"
     />
     
     <PluginActivatorBundle
-        bundle-impl-name="jxme-udp"
+        bundle-impl-name="jxme-bt"
         bundle-impl-version="0.7.1-SNAPSHOT"
         bundle-impl-group="jadabs"
     />

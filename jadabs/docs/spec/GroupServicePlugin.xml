@@ -8,21 +8,13 @@
 	provider-name="ETHZ-IKS">
 	
 	<Extension-Point
-	    id="PeerNetwork"
-	    service="ch.ethz.jadabs.jxme.PeerNetwork,
-	        ch.ethz.jadabs.jxmeEndpointService"
+	    id="Extension/PeerNetwork"
+	    service="ch.ethz.jadabs.jxme.PeerNetwork"
 	/>
 	
 	<Extension
 	    id="GroupService"
-        service="ch.ethz.jadab.jxme.services.GroupService" >
-        
-        <Bundle-API
-            bundle-name="jxme-services-api"
-            bundle-version="0.7.1-SNAPSHOT"
-            bundle-group="jadabs"
-        />
-
+        service="ch.ethz.jadab.jxme.services.GroupService"
     />
 
     <PluginActivatorBundle

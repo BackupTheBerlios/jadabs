@@ -13,8 +13,8 @@
 
 -runlevel 2
 # use the jxme layer for RemoteBundleLoader
--istart   UDPPlugin-0.1.0.xml
 -istart   JxmePlugin-0.1.0.xml
+-istart   UDPPlugin-0.1.0.xml
 -istart   GroupServicePlugin-0.1.0.xml
 -istart   RemoteBundleLoader-0.1.0.xml
 

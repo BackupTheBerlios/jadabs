@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Platform 
+	id="nokia6600.wlab.ethz.ch"
+	name="nokia6600"
+	version="0.1.0"
+	provider-name="ETHZ-IKS">
+	
+    <Property name="processor" value="xyz" />
+    <Property name="display" value="150x200" />
+    <Property name="vm" value="j2me/midp" />
+    <Property name="vm-version" value="1.0.1" />
+    
+    <OSGiContainer id="j2me-osgi"/>
+
+    <NetIface 
+        type="bt_jsr-82"
+        connection="dynamic"
+        name="bt-hotspot"
+        iface="hci0"
+        description="for BT/JSR-82 Connections"
+    />
+    
+    <NetIface 
+        type="gsm_http"
+        connection="static"
+        name="GSM HTTP"
+        description="for GSM/HTTP Connections"
+    />
+     
+</Platform>

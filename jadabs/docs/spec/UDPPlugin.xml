@@ -8,22 +8,15 @@
 	provider-name="ETHZ-IKS">
 	
 	<Extension-Point
-	    id="wlan"
+	    id="Platform/NetIface/wlan"
         description="requires connection to wlan card"
 	/>
 	
 	<Extension-Point
-	    id="PeerNetwork"
+	    id="Extension/PeerNetwork"
 	    java-service="ch.ethz.jadabs.jxme.PeerNetwork,
-	        ch.ethz.jadabs.jxmeEndpointService">
-	        
-	    <Bundle-Impl
-    	    bundle-name="jxme-osgi"
-    	    bundle-version="0.7.1-SNAPSHOT"
-    	    bundle-group="jadabs"
-    	/>
-    	
-	</Extension-Point>
+	        ch.ethz.jadabs.jxmeEndpointService"    	
+	/>
 	
 	<Extension
 	    id="UDPTransport"

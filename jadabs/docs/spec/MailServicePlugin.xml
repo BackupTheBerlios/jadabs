@@ -9,20 +9,18 @@
 	
     
     <Configuration>
-    
         <property
             name="ch.ethz.jadabs.mservices.smtpgw.smtphost"
-            value="mail.student.ethz.ch" />
-            
+            value="mail.student.ethz.ch" />           
     </Configuration>
     
 	<Extension-Point
-	    id="Internet"
+	    id="Platform/NetworkIface/Configuration/internet"
 	    description="requires connection to smtphost"
 	/>
 	
 	<Extension-Point
-	    id="EndpointService"
+	    id="Extension/EndpointService"
 	    service="ch.ethz.jadabs.jxme.EndpointService"
 	    description="requires connection to Jxme Layer"
 	/>
