@@ -122,9 +122,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
                be.getNestedException().printStackTrace();
             }
 
-            // this fixes a bug: seems like knopflerfish does not notify
-            // when bundles are installed when bundles via stream and started
-            loadedBundles.add(bundle.toString());
+            // loadedBundles.add(bundle.toString());
 
          }
 
@@ -410,7 +408,13 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     */
    public void bundleChanged(BundleEvent bevent) {
       String loc = bevent.getBundle().getLocation();
-      String uuid = location2uuid(loc);
+      String uuid = new String(); 
+      
+      if (!loc.endsWith(":obr")) {
+         uuid = location2uuid(loc);
+      } else {
+         uuid = loc;
+      }
 
       if (LOG.isDebugEnabled())
          LOG.debug("###########  BUNDLE STATE CHANGED ... " + uuid + " to "
