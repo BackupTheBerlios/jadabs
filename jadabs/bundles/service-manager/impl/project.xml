@@ -53,6 +53,12 @@
       		<properties>
 				<obr.dynamic>true</obr.dynamic>
 			</properties>
+		</dependency>	
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>bundleloader</artifactId>
+      		<version>${pom.currentVersion}</version>
 		</dependency>						
 
     	<dependency>

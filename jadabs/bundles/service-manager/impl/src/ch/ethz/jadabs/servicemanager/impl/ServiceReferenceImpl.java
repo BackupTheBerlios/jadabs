@@ -4,7 +4,7 @@
  */
 package ch.ethz.jadabs.servicemanager.impl;
 
-import ch.ethz.jadabs.pluginloader.OSGiPlugin;
+import ch.ethz.jadabs.bundleloader.ServiceAdvertisement;
 import ch.ethz.jadabs.servicemanager.ServiceReference;
 
 
@@ -15,41 +15,43 @@ import ch.ethz.jadabs.servicemanager.ServiceReference;
 public class ServiceReferenceImpl implements ServiceReference
 {
 
-    private OSGiPlugin plugin;
+    private ServiceAdvertisement serviceAdv;
     
     private String peer;
     
+    private String rptype;
     
-    public ServiceReferenceImpl(OSGiPlugin plugin, String peer)
+    public ServiceReferenceImpl(ServiceAdvertisement serviceAdv, String peer, String rptype)
     {
-        this.plugin = plugin;
+        this.serviceAdv = serviceAdv;
         this.peer = peer;
+        this.rptype = rptype;
     }
 
     /*
      */
     public String getName()
     {
-        return plugin.getName();
+        return serviceAdv.getName();
     }
 
     /*
      */
     public String getVersion()
     {
-        return plugin.getVersion();
+        return serviceAdv.getVersion();
     }
 
     /*
      */
     public String getGroup()
     {
-        return plugin.getGroup();
+        return serviceAdv.getGroup();
     }
 
     public String getAdvertisement()
     {
-        return plugin.getAdvertisement();
+        return serviceAdv.getAdvertisement();
     }
     
     public String getPeer()
@@ -59,7 +61,12 @@ public class ServiceReferenceImpl implements ServiceReference
     
     public String getID()
     {
-        return plugin.getID();
+        return serviceAdv.getID();
+    }
+    
+    public String getRPType()
+    {
+        return rptype;
     }
 }
 

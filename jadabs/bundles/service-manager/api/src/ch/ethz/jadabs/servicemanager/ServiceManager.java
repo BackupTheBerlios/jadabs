@@ -14,24 +14,36 @@ import ch.ethz.jadabs.jxme.Pipe;
 public interface ServiceManager
 {
     
-    public static String PROVIDING_SERVICE = "provide";
-    public static String RUNNING_SERVICE = "running";
+    public static String PROVIDING_SERVICES = "P";
+    public static String RUNNING_SERVICES 	= "R";
+    public static String ALL_SERVICES 		= "A";
 
     /**
-     * Returns installed services as an array of strings.
-     * The strings usually contain .obr, opd strings
+     * Sends out a request to gather the services, OBRs and OPDs 
+     * which are installed or providing by any peer in the same
+     * group manager pipe.
+     * This call is asynchronous, it returns true if the request
+     * could be sent out.
      * 
-     * Set which type of service you are interested in. Running gives
-     * the services which are running on the other node, Providing gives
-     * the services which are available through the repository.
+     * Filter is defined as an EBNF, ServiceAdvFilter is defined in
+     * PluginLoader:
+     * (ServiceAdvFilter ",")* "|" ("OPD" ",")? ("OBR" ",")? ["R"|"P"|"A"]
      * 
-     * @param pipe
+     * In case the filter is null the default is: "|OPD,OBR,A"
+     * 
      * @param filter
      * @param serviceListener
-     * @param type kind of PROVIDING_SERVICE, RUNNING_SERVICE
      * @return
      */
-    boolean getServices(ServiceListener serviceListener, String type);
+    boolean getServices(String filter, ServiceListener serviceListener);
+    
+    /**
+     * Remove Service Listener, which has been added to the internal
+     * list by getServices.
+     * 
+     * @param serviceListener
+     */
+    public void removeListener(ServiceListener serviceListener);
     
     /**
      * Add providing service which can be found by other ServiceManagers.
@@ -70,25 +82,5 @@ public interface ServiceManager
      * @return
      */
     boolean istartService(String toPeer, ServiceReference sref);
-    
-    /**
-     * Returns a RemoteService with the given serviceName. Return null if
-     * the service can not be instantiated or found on the remote peer.
-     * 
-     * @param pipe
-     * @param fromPeer
-     * @param serviceName
-     * @return
-     */
-//    Object getRemoteService(Pipe pipe, String fromPeer, String serviceName);
-    
-    /**
-     * Register a RemoteService which can be queried by getRemoteService.
-     * Use the same serviceName as in getRemoteService.
-     * 
-     * @param serviceName
-     * @param handler
-     */
-//    void registerRemoteService(String serviceName, RemoteServiceHandler handler);
     
 }

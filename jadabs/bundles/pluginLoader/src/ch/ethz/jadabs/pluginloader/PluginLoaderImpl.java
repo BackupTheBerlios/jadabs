@@ -31,7 +31,7 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
     
     private KXmlParser parser;
 
-    private OSGiPlugin currentPlugin;
+//    private OSGiPlugin currentPlugin;
 
     private Hashtable registeredPlugins = new Hashtable(); // [(osgiplugin.getName, osgiplugin)]
 
@@ -160,7 +160,9 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
             
             try
             {
-                PluginLoaderActivator.bloader.load(plugin.getActivator().getName(), plugin.getActivator().getGroup(),
+                PluginLoaderActivator.bloader.load(
+                        plugin.getActivator().getName(), 
+                        plugin.getActivator().getGroup(),
                         plugin.getActivator().getVersion());
             } catch (Exception err)
             {
@@ -169,60 +171,50 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
         }
     }
 
-    public OSGiPlugin parsePluginAdvertisement(String adv)
-    {
-        parser = new KXmlParser();
-
-        StringReader reader = new StringReader(adv);
-        try
-        {
-            parser.setInput(reader);
-            
-
-            parsePlugin();
-            
-        } catch (XmlPullParserException e)
-        {
-            LOG.error("error in parsing string: "+adv);
-            return null;
-        } catch (IOException e)
-        {
-            LOG.error("error in parsing string: "+adv);
-            return null;
-        }
-        
-        
-        return currentPlugin;
-    }
+//    public OSGiPlugin parsePluginAdvertisement(String adv)
+//    {
+//        parser = new KXmlParser();
+//
+//        StringReader reader = new StringReader(adv);
+//        try
+//        {
+//            parser.setInput(reader);
+//            
+//
+//            parsePlugin();
+//            
+//        } catch (XmlPullParserException e)
+//        {
+//            LOG.error("error in parsing string: "+adv);
+//            return null;
+//        } catch (IOException e)
+//        {
+//            LOG.error("error in parsing string: "+adv);
+//            return null;
+//        }
+//        
+//        
+//        return currentPlugin;
+//    }
     
     public void loadPlugin(File file)
-    {        
-        FileReader reader;
-        parser = new KXmlParser();
-
+    {     
+        
+        OSGiPlugin plugin = (OSGiPlugin)OSGiPlugin.initAdvertisement(file);
+        
+        registerPlugin(plugin);
         try
         {
-            reader = new FileReader(file);
-            parser.setInput(reader);
-            
-            parsePlugin();
-            
-            currentPlugin.setAdvertisement(file);
-            
-            registerPlugin(currentPlugin);
-            resolvePlugin(currentPlugin);
-            
-            LOG.debug(pluginSchedule);
-            
-            loadScheduledPlugins();
+            resolvePlugin(plugin);
         } catch (Exception e)
         {
-            e.printStackTrace();
-        } finally
-        {
-            parser = null;
-            reader = null;
+            LOG.error("could not resolvePlugin: ",e);
         }
+        
+        LOG.debug(pluginSchedule);
+        
+        loadScheduledPlugins();
+
     }
 
     public Enumeration getOSGiPlugins()
@@ -297,69 +289,69 @@ public class PluginLoaderImpl extends Thread implements PluginLoader
         }
     }
 
-    private synchronized void parsePlugin() throws XmlPullParserException, IOException
-    {
-        Stack stack = new Stack();
+//    private synchronized void parsePlugin() throws XmlPullParserException, IOException
+//    {
+//        Stack stack = new Stack();
+//
+//        for (int type = parser.next(); (type != KXmlParser.END_DOCUMENT); type = parser.next())
+//        {
+//            if (type == KXmlParser.START_TAG)
+//            {
+//                stack.push(parser.getName());
+//                processPluginAttributes(stack);
+//            } else if (type == KXmlParser.END_TAG)
+//            {
+//                try
+//                {
+//                    stack.pop();
+//                } catch (Exception e)
+//                {
+//                    System.err.println("ERROR while parsing, Plugin-File not well-formed");
+//                }
+//            }
+//        }
+//    }
 
-        for (int type = parser.next(); (type != KXmlParser.END_DOCUMENT); type = parser.next())
-        {
-            if (type == KXmlParser.START_TAG)
-            {
-                stack.push(parser.getName());
-                processPluginAttributes(stack);
-            } else if (type == KXmlParser.END_TAG)
-            {
-                try
-                {
-                    stack.pop();
-                } catch (Exception e)
-                {
-                    System.err.println("ERROR while parsing, Plugin-File not well-formed");
-                }
-            }
-        }
-    }
-
-    private void processPluginAttributes(Stack stack)
-    {
-
-        if (stack.peek().equals("OSGiServicePlugin"))
-        {
-            currentPlugin = new OSGiPlugin(
-                    parser.getAttributeValue(null, "id"),
-                    parser.getAttributeValue(null, "name"), 
-                    parser.getAttributeValue(null, "group"),
-                    parser.getAttributeValue(null, "version"), 
-                    parser.getAttributeValue(null, "description"), 
-                    parser.getAttributeValue(null, "provider"));
-        } else if (stack.peek().equals("Extension"))
-        {
-            currentPlugin.addExtension(
-                    new Extension(
-                            parser.getAttributeValue(null, "id"), 
-                            parser.getAttributeValue(null, "service")));
-        } else if (stack.peek().equals("Extension-Point"))
-        {
-            currentPlugin.addExtensionPoint(
-                    new ExtensionPoint(
-                            parser.getAttributeValue(null, "id"), 
-                            parser.getAttributeValue(null, "service"), 
-                            parser.getAttributeValue(null, "description")));
-        } else if (stack.peek().equals("ServiceActivatorBundle"))
-        {
-            if (PluginLoaderActivator.LOG.isDebugEnabled())
-                PluginLoaderActivator.LOG.debug(currentPlugin);
-            	currentPlugin.setActivator(
-            	        new ActivatorBundle(
-            	                parser.getAttributeValue(null, "bundle-name"), 
-            	                parser.getAttributeValue(null, "bundle-group"), 
-            	                parser.getAttributeValue(null, "bundle-version")));
-        } else if (stack.peek().equals("Configuration"))
-        {
-            // TODO: implement configuration
-
-        }
-    }
+//    private void processPluginAttributes(Stack stack)
+//    {
+//
+//        if (stack.peek().equals("OSGiServicePlugin"))
+//        {
+//            currentPlugin = new OSGiPlugin(
+//                    parser.getAttributeValue(null, "id"),
+//                    parser.getAttributeValue(null, "name"), 
+//                    parser.getAttributeValue(null, "group"),
+//                    parser.getAttributeValue(null, "version"), 
+//                    parser.getAttributeValue(null, "description"), 
+//                    parser.getAttributeValue(null, "provider"));
+//        } else if (stack.peek().equals("Extension"))
+//        {
+//            currentPlugin.addExtension(
+//                    new Extension(
+//                            parser.getAttributeValue(null, "id"), 
+//                            parser.getAttributeValue(null, "service")));
+//        } else if (stack.peek().equals("Extension-Point"))
+//        {
+//            currentPlugin.addExtensionPoint(
+//                    new ExtensionPoint(
+//                            parser.getAttributeValue(null, "id"), 
+//                            parser.getAttributeValue(null, "service"), 
+//                            parser.getAttributeValue(null, "description")));
+//        } else if (stack.peek().equals("ServiceActivatorBundle"))
+//        {
+//            if (PluginLoaderActivator.LOG.isDebugEnabled())
+//                PluginLoaderActivator.LOG.debug(currentPlugin);
+//            	currentPlugin.setActivator(
+//            	        new ActivatorBundle(
+//            	                parser.getAttributeValue(null, "bundle-name"), 
+//            	                parser.getAttributeValue(null, "bundle-group"), 
+//            	                parser.getAttributeValue(null, "bundle-version")));
+//        } else if (stack.peek().equals("Configuration"))
+//        {
+//            // TODO: implement configuration
+//
+//        }
+//    }
 
     private void registerPlugin(OSGiPlugin plugin)
     {

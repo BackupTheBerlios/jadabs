@@ -447,9 +447,7 @@ public class MainComposite extends Composite
                 else
                 {
                     //TODO: should be changed to register only once
-                    Activator.serviceManager.getServices(
-                            this,
-                            ServiceManager.RUNNING_SERVICE);
+                    Activator.serviceManager.getServices(null, this);
                 }
                 
                 
@@ -857,12 +855,12 @@ public class MainComposite extends Composite
 
     /*
      */
-    public void foundService(ServiceReference serviceRef, String peer)
+    public void foundService(ServiceReference serviceRef)
     {
         LOG.debug("got ServiceReference from:"+
-                peer+":"+serviceRef.toString());
+                serviceRef.getPeer()+":"+serviceRef.toString());
         
-        final String fpeername = peer;
+        final String fpeername = serviceRef.getPeer();
         final String fid = serviceRef.getID();
         
         MainGUI.manager.exec(new Runnable()

@@ -14,5 +14,4 @@ public interface PluginLoader {
    
     Enumeration getOSGiPlugins();
     
-    OSGiPlugin parsePluginAdvertisement(String adv);
 }

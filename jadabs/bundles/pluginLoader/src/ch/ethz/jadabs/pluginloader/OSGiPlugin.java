@@ -7,33 +7,31 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Enumeration;
+import java.util.Stack;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.kxml2.io.KXmlParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import ch.ethz.jadabs.bundleloader.ServiceAdvertisement;
 
 
 /**
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
-public class OSGiPlugin
+public class OSGiPlugin extends ServiceAdvertisement
 {
 
     private static Logger LOG = Logger.getLogger(OSGiPlugin.class);
     
-    private String id;
-
-    private String name;
-
-    private String group;
-    
-    private String version;
-
-    private String description;
-
     private String provider;
 
     private ActivatorBundle activator;
@@ -44,11 +42,17 @@ public class OSGiPlugin
 
     private File opdfile;
     
-    private String opdadv;
+    private KXmlParser parser;
+
+    private OSGiPlugin currentPlugin;
     
-    public OSGiPlugin(String id, String name, String group, String version, String description, String provider)
+    private OSGiPlugin()
     {
-        this.id = id;
+        
+    }
+    
+    public OSGiPlugin(String name, String group, String version, String description, String provider)
+    {
         this.name = name;
         this.group = group;
         this.version = version;
@@ -56,10 +60,125 @@ public class OSGiPlugin
         this.provider = provider;
     }
 
-
-    public void initAdvertisement(String str)
+    public static ServiceAdvertisement initAdvertisement(File file)
     {
+        FileReader reader;
+        try
+        {
+            reader = new FileReader(file);
+            OSGiPlugin plugin =  initAdvertisement(reader);
+            
+            plugin.setAdvertisement(file);
+            
+            return plugin;
+            
+        } catch (FileNotFoundException e)
+        {
+            LOG.error("file not found");
+        }
         
+        return null;
+    }
+
+	public static ServiceAdvertisement initAdvertisement(String adv)
+	{
+        StringReader reader = new StringReader(adv);
+        OSGiPlugin plugin =  initAdvertisement(reader);
+        
+        plugin.setAdvertisement(adv);
+        
+        return plugin;
+	}
+    
+	private static OSGiPlugin initAdvertisement(Reader reader)
+	{
+	    OSGiPlugin newplugin = new OSGiPlugin();
+	    
+	    newplugin.parser = new KXmlParser();
+
+        try
+        {
+            newplugin.parser.setInput(reader);
+            
+            newplugin.parsePlugin();
+            
+        } catch (XmlPullParserException e)
+        {
+            LOG.error("error in parsing string: ");
+            return null;
+        } catch (IOException e)
+        {
+            LOG.error("error in parsing string: ");
+            return null;
+        } finally
+        {
+            newplugin.parser = null;
+            reader = null;
+        } 
+        
+        
+        return newplugin;
+	}
+	
+    private void parsePlugin() throws XmlPullParserException, IOException
+    {
+        Stack stack = new Stack();
+
+        for (int type = parser.next(); (type != KXmlParser.END_DOCUMENT); type = parser.next())
+        {
+            if (type == KXmlParser.START_TAG)
+            {
+                stack.push(parser.getName());
+                processPluginAttributes(stack);
+            } else if (type == KXmlParser.END_TAG)
+            {
+                try
+                {
+                    stack.pop();
+                } catch (Exception e)
+                {
+                    System.err.println("ERROR while parsing, Plugin-File not well-formed");
+                }
+            }
+        }
+    }
+	
+    private void processPluginAttributes(Stack stack)
+    {
+
+        if (stack.peek().equals("OSGiServicePlugin"))
+        {
+            name = parser.getAttributeValue(null, "name");
+            group = parser.getAttributeValue(null, "group");
+            version = parser.getAttributeValue(null, "version");
+            description = parser.getAttributeValue(null, "description");
+            provider = parser.getAttributeValue(null, "provider");
+        } else if (stack.peek().equals("Extension"))
+        {
+            addExtension(
+                new Extension(
+                        parser.getAttributeValue(null, "id"), 
+                        parser.getAttributeValue(null, "service")));
+        } else if (stack.peek().equals("Extension-Point"))
+        {
+            addExtensionPoint(
+                new ExtensionPoint(
+                        parser.getAttributeValue(null, "id"), 
+                        parser.getAttributeValue(null, "service"), 
+                        parser.getAttributeValue(null, "description")));
+        } else if (stack.peek().equals("ServiceActivatorBundle"))
+        {
+            PluginLoaderActivator.LOG.debug(currentPlugin);
+            setActivator(
+    	        new ActivatorBundle(
+    	                parser.getAttributeValue(null, "bundle-name"), 
+    	                parser.getAttributeValue(null, "bundle-group"), 
+    	                parser.getAttributeValue(null, "bundle-version")));
+        } else if (stack.peek().equals("Configuration"))
+        {
+            // TODO: implement configuration
+
+        }
     }
     
     protected void setActivator(ActivatorBundle activator)
@@ -67,61 +186,6 @@ public class OSGiPlugin
         this.activator = activator;
     }
     
-    protected void setAdvertisement(File file)
-    {
-        this.opdfile = file;
-        
-        BufferedReader br;
-        try
-        {
-            br = new BufferedReader(
-                    new InputStreamReader(
-                            new FileInputStream(file)));
-            
-            String line = "";
-            
-            StringBuffer sb = new StringBuffer();
-            
-            while((line = br.readLine()) != null) {
-                sb.append(line+"\n");
-            }
-            
-            opdadv = sb.toString();
-            
-        } catch (FileNotFoundException e)
-        {
-            LOG.error("could not find file");
-        } catch (IOException e)
-        {
-            LOG.error("error reading file");
-        }
-
-    }
-    
-    public String getName()
-    {
-        return name;
-    }
-    
-    public String getGroup()
-    {
-        return group;
-    }
-    
-    public String getVersion()
-    {
-        return version;
-    }
-    
-    public String getAdvertisement()
-    {
-        return opdadv;
-    }
-
-    public void setAdvertisement(String adv)
-    {
-        opdadv = adv;
-    }
     
     protected ActivatorBundle getActivator()
     {
@@ -147,11 +211,6 @@ public class OSGiPlugin
     {
         return extensionPoints.elements();
     }
-
-    public String getID()
-    {
-        return group+ ":"+name + ":" + version+":";
-    }
    
     public String toString()
     {
@@ -169,6 +228,23 @@ public class OSGiPlugin
         }
 
         return buffer.toString();
+    }
+
+    //---------------------------------------------------
+    // implements ServiceAdvertisement interface
+    //---------------------------------------------------
+    
+    /*
+     */
+    public boolean matches(String filter)
+    {
+        // TODO Auto-generated method stub
+        return true;
+    }
+    
+    public String getID()
+    {
+        return group+ ":"+name + ":" + version+":"+"opd";
     }
 
 }

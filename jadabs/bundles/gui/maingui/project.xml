@@ -59,6 +59,12 @@
             <version>${pom.currentVersion}</version>
         </dependency>
         
+        <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>bundleloader</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        
       	<dependency>
             <groupId>jadabs</groupId>
             <artifactId>servicemanager</artifactId>

@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.Vector;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -24,418 +23,455 @@ import org.osgi.framework.*;
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 
-public class BundleLoaderImpl implements BundleLoader, BundleListener 
+public class BundleLoaderImpl implements BundleLoader, BundleListener
 {
-   
+
     private static Logger LOG = Logger.getLogger(BundleLoaderImpl.class);
 
-   private static HashSet queuedBundles = new HashSet();
-   private static HashSet installedBundles = new HashSet();
-   private static LinkedList installationQueue = new LinkedList();
+    private static HashSet queuedBundles = new HashSet();
 
-   private static Hashtable binfos = new Hashtable(); // [(String(group-name-version), BundleInformation)]
-   
-   protected final static int Eager = 1;
-   protected final static int Lazy = 2;
+    private static HashSet installedBundles = new HashSet();
 
-   protected static int fetchPolicy = Eager;
+    private static LinkedList installationQueue = new LinkedList();
 
-   private BundleStarter starter;
+    private static Hashtable binfos = new Hashtable(); // [(String(group-name-version),
+                                                       // BundleInformation)]
 
-   private static HashSet bls = new HashSet();
-   
-   /**
-    * 
-    * @param sysBundles
-    */
-   public BundleLoaderImpl(Collection sysBundles) {
-      starter = new BundleStarter();
-      starter.start();
-      installedBundles.addAll(sysBundles);
-   }
+    protected final static int Eager = 1;
 
-   /**
-    *  
-    */
-   protected void startup() {
+    protected final static int Lazy = 2;
 
-      try {
-         FileReader reader = new FileReader("startup.xml");
-         KXmlParser parser = new KXmlParser();
-         parser.setInput(reader);
-         // parse startup.xml
-         Vector tasks = parseStartup(parser);
+    protected static int fetchPolicy = Eager;
 
-         // resolve all tasks and install scheduled bundles
-         for (Enumeration en = tasks.elements(); en.hasMoreElements();) {
-            BundleInformation bundle = (BundleInformation) en.nextElement();
-            scheduleDependencies(bundle);
-            LOG.debug("<<Schedule for " + bundle + ": "
-                  + installationQueue + ">>");
-            install();
-         }
+    private BundleStarter starter;
 
-      } catch (Exception e) {
-         //         e.printStackTrace();
-         LOG.error("could not load or parse the startup.xml", e);
-      }
-   }
+    private static HashSet bls = new HashSet();
 
-   /**
-    * 
-    * @param name
-    * @param group
-    * @param version
-    * @throws Exception
-    */
-   public synchronized void load(String name, String group, String version) throws Exception {
-      BundleInformation bundle = new BundleInformation(name, group, version);
-      scheduleDependencies(bundle);
-      LOG.debug("Schedule for " + bundle + ": " + installationQueue);
-      install();
-   }
+    /**
+     * 
+     * @param sysBundles
+     */
+    public BundleLoaderImpl(Collection sysBundles)
+    {
+        starter = new BundleStarter();
+        starter.start();
+        installedBundles.addAll(sysBundles);
+    }
 
-   public void addListener(BundleLoaderListener bl)
-   {
-       bls.add(bl);
-   }
-   
-   public void removeListener(BundleLoaderListener bl)
-   {
-       bls.remove(bl);
-   }
-   
-   private void notifyBundleLoaderListener(BundleInformation binfo, int event)
-   {
-       for(Iterator it = bls.iterator(); it.hasNext();)
-       {
-           BundleLoaderListener bl = (BundleLoaderListener)it.next();
-           
-           bl.bundleChanged(binfo, event);
-       }
-   }
-   
-   /**
-    * 
-    * @throws BundleException
-    * @throws FileNotFoundException
-    */
-   private synchronized void install() throws BundleException, FileNotFoundException {
+    /**
+     *  
+     */
+    protected void startup()
+    {
 
-      // in case we have lazy fetching, bundles must be downloaded now
-      if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Lazy) {
-         if (!loadBundles(installationQueue))
-            throw new BundleException(
-                  "BundleLoader failed getting dependencies");
-      }
+        try
+        {
+            FileReader reader = new FileReader("startup.xml");
+            KXmlParser parser = new KXmlParser();
+            parser.setInput(reader);
+            // parse startup.xml
+            Vector tasks = parseStartup(parser);
 
-      // install and start all bundles
-      for (Iterator bundles = installationQueue.iterator(); bundles.hasNext();) {
-         BundleInformation binf = ((BundleInformation) bundles.next());
-                  
-         String location = binf.filename;
-         File file = new File(location);
-         FileInputStream fin = new FileInputStream(file);
-         Bundle bundle = BundleLoaderActivator.bc.installBundle(file.getName(),
-               fin);
-         LOG.debug("installed " + location);
+            // resolve all tasks and install scheduled bundles
+            for (Enumeration en = tasks.elements(); en.hasMoreElements();)
+            {
+                BundleInformation bundle = (BundleInformation) en.nextElement();
+                scheduleDependencies(bundle);
+                LOG.debug("<<Schedule for " + bundle + ": " + installationQueue + ">>");
+                install();
+            }
 
-         binfos.put(binf.getID(), binf);
-         
-         
-         
-         // enqueue bundle for threaded starting
-         starter.enqueue(bundle);
-      }
+        } catch (Exception e)
+        {
+            //         e.printStackTrace();
+            LOG.error("could not load or parse the startup.xml", e);
+        }
+    }
 
-      // clear queue
-      installationQueue.clear();
-   }
+    /**
+     * 
+     * @param name
+     * @param group
+     * @param version
+     * @throws Exception
+     */
+    public synchronized void load(String name, String group, String version) throws Exception
+    {
+        BundleInformation bundle = new BundleInformation(name, group, version);
+        scheduleDependencies(bundle);
+        LOG.debug("Schedule for " + bundle + ": " + installationQueue);
+        install();
+    }
 
-   /**
-    * 
-    * @param bundleName
-    * @param group
-    * @param version
-    */
-   protected static boolean loadBundle(String name, String group, String version) {
+    public void addListener(BundleLoaderListener bl)
+    {
+        bls.add(bl);
+    }
 
-      // TODO: download obr
+    public void removeListener(BundleLoaderListener bl)
+    {
+        bls.remove(bl);
+    }
 
-      if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Eager) {
-         return fetchBundle(name, group, version);
-      }
-      return true;
-   }
+    private void notifyBundleLoaderListener(BundleInformation binfo, int event)
+    {
+        for (Iterator it = bls.iterator(); it.hasNext();)
+        {
+            BundleLoaderListener bl = (BundleLoaderListener) it.next();
 
-   protected static boolean loadBundles(LinkedList bundles)
-         throws BundleException {
-      for (Iterator it = bundles.iterator(); it.hasNext();) {
-         BundleInformation bundle = (BundleInformation) it.next();
-         if (!fetchBundle(bundle.getName(), bundle.getGroup(), bundle
-               .getVersion())) {
-            throw new BundleException("Could not locate " + bundle);
-         }
-      }
-      return true;
-   }
+            bl.bundleChanged(binfo, event);
+        }
+    }
 
-   private static boolean fetchBundle(String name, String group, String version) {
-      // TODO: download bundle
-      // FIXME: Maybe return false here and crosscut this method from
-      // remoteLoader ?
+    /**
+     * 
+     * @throws BundleException
+     * @throws FileNotFoundException
+     */
+    private synchronized void install() throws BundleException, FileNotFoundException
+    {
 
-      return true;
-   }
+        // in case we have lazy fetching, bundles must be downloaded now
+        if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Lazy)
+        {
+            if (!loadBundles(installationQueue))
+                throw new BundleException("BundleLoader failed getting dependencies");
+        }
 
-   /**
-    * 
-    * @param initial
-    * @throws XmlPullParserException
-    * @throws IOException
-    */
-   private static void scheduleDependencies(BundleInformation initial)
-         throws XmlPullParserException, IOException {
+        // install and start all bundles
+        for (Iterator bundles = installationQueue.iterator(); bundles.hasNext();)
+        {
+            BundleInformation binf = ((BundleInformation) bundles.next());
 
-      queuedBundles.clear();
-      installationQueue.add(initial);
+            String location = binf.filename;
+            File file = new File(location);
+            FileInputStream fin = new FileInputStream(file);
+            Bundle bundle = BundleLoaderActivator.bc.installBundle(file.getName(), fin);
+            LOG.debug("installed " + location);
 
-      if (BundleLoaderActivator.LOG.isDebugEnabled())
-         BundleLoaderActivator.LOG.debug("<<Installed Bundles: "
-               + installedBundles + ">>");
-      LOG.debug("<<Reqested Bundle: " + initial + ">>");
+            binfos.put(binf.getID(), binf);
 
-      boolean found;
-      int index;
+            // enqueue bundle for threaded starting
+            starter.enqueue(bundle);
+        }
 
-      do {
-         found = false;
+        // clear queue
+        installationQueue.clear();
+    }
 
-         // another iteration until all dependencies are processed
-         for (index = 0; ((BundleInformation) installationQueue.get(index)).bundleDependencies
-               .isEmpty()
-               && index < installationQueue.size() - 1; index++)
-            ;
+    /**
+     * 
+     * @param bundleName
+     * @param group
+     * @param version
+     */
+    protected static boolean loadBundle(String name, String group, String version)
+    {
 
-         if (BundleLoaderActivator.LOG.isDebugEnabled())
-            BundleLoaderActivator.LOG.debug(installationQueue);
+        // TODO: download obr
 
-         // found one that has not been processed yet
-         if (!((BundleInformation) installationQueue.get(index)).bundleDependencies
-               .isEmpty()) {
-            found = true;
-            Vector dependencies = ((BundleInformation) installationQueue
-                  .get(index)).bundleDependencies;
+        if (BundleLoaderImpl.fetchPolicy == BundleLoaderImpl.Eager) { return fetchBundle(name, group, version); }
+        return true;
+    }
+
+    protected static boolean loadBundles(LinkedList bundles) throws BundleException
+    {
+        for (Iterator it = bundles.iterator(); it.hasNext();)
+        {
+            BundleInformation bundle = (BundleInformation) it.next();
+            if (!fetchBundle(bundle.getName(), bundle.getGroup(), bundle.getVersion())) { throw new BundleException(
+                    "Could not locate " + bundle); }
+        }
+        return true;
+    }
+
+    private static boolean fetchBundle(String name, String group, String version)
+    {
+        // TODO: download bundle
+        // FIXME: Maybe return false here and crosscut this method from
+        // remoteLoader ?
+
+        return true;
+    }
+
+    /**
+     * 
+     * @param initial
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
+    private static void scheduleDependencies(BundleInformation initial) throws XmlPullParserException, IOException
+    {
+
+        queuedBundles.clear();
+        installationQueue.add(initial);
+
+        if (BundleLoaderActivator.LOG.isDebugEnabled())
+            BundleLoaderActivator.LOG.debug("<<Installed Bundles: " + installedBundles + ">>");
+        LOG.debug("<<Reqested Bundle: " + initial + ">>");
+
+        boolean found;
+        int index;
+
+        do
+        {
+            found = false;
+
+            // another iteration until all dependencies are processed
+            for (index = 0; ((BundleInformation) installationQueue.get(index)).bundleDependencies.isEmpty()
+                    && index < installationQueue.size() - 1; index++)
+                ;
+
             if (BundleLoaderActivator.LOG.isDebugEnabled())
-               BundleLoaderActivator.LOG
-                     .debug(((BundleInformation) installationQueue.get(index))
-                           .toString()
-                           + " HAS DEPENDENCIES: " + dependencies);
+                BundleLoaderActivator.LOG.debug(installationQueue);
 
-            // TODO: Check, if a bundle is already in the queue but in a
-            // different version
+            // found one that has not been processed yet
+            if (!((BundleInformation) installationQueue.get(index)).bundleDependencies.isEmpty())
+            {
+                found = true;
+                Vector dependencies = ((BundleInformation) installationQueue.get(index)).bundleDependencies;
+                if (BundleLoaderActivator.LOG.isDebugEnabled())
+                    BundleLoaderActivator.LOG.debug(((BundleInformation) installationQueue.get(index)).toString()
+                            + " HAS DEPENDENCIES: " + dependencies);
 
-            for (Enumeration deps = dependencies.elements(); deps
-                  .hasMoreElements();) {
-               BundleInformation depsBundle = (BundleInformation) deps
-                     .nextElement();
+                // TODO: Check, if a bundle is already in the queue but in a
+                // different version
 
-               if (!installedBundles.contains(depsBundle.toString())) {
-                  // bundle is not a system bundle
-                  if (!queuedBundles.contains(depsBundle.toString())) {
-                     // bundle is not yet in queue
-                     // so add it prior to the bundle that had this dependency
-                     if (index > 0) {
-                        installationQueue.add(index - 1, depsBundle);
-                     } else {
-                        installationQueue.addFirst(depsBundle);
-                     }
-                     queuedBundles.add(depsBundle.toString());
-                  } else {
-                     // bundle is already in queue
-                     // check, if it is scheduled later than the bundle
-                     // that had this dependency
-                     int inQueue = installationQueue.indexOf(depsBundle);
-                     // it is in queue
-                     if (index < inQueue) {
-                        // remove existing entry from queue
-                        installationQueue.remove(depsBundle);
+                for (Enumeration deps = dependencies.elements(); deps.hasMoreElements();)
+                {
+                    BundleInformation depsBundle = (BundleInformation) deps.nextElement();
 
-                        // and add prior to the bundle that had this dependency
-                        if (index > 0) {
-                           installationQueue.add(index - 1, depsBundle);
-                        } else {
-                           installationQueue.addFirst(depsBundle);
+                    if (!installedBundles.contains(depsBundle.toString()))
+                    {
+                        // bundle is not a system bundle
+                        if (!queuedBundles.contains(depsBundle.toString()))
+                        {
+                            // bundle is not yet in queue
+                            // so add it prior to the bundle that had this
+                            // dependency
+                            if (index > 0)
+                            {
+                                installationQueue.add(index - 1, depsBundle);
+                            } else
+                            {
+                                installationQueue.addFirst(depsBundle);
+                            }
+                            queuedBundles.add(depsBundle.toString());
+                        } else
+                        {
+                            // bundle is already in queue
+                            // check, if it is scheduled later than the bundle
+                            // that had this dependency
+                            int inQueue = installationQueue.indexOf(depsBundle);
+                            // it is in queue
+                            if (index < inQueue)
+                            {
+                                // remove existing entry from queue
+                                installationQueue.remove(depsBundle);
+
+                                // and add prior to the bundle that had this
+                                // dependency
+                                if (index > 0)
+                                {
+                                    installationQueue.add(index - 1, depsBundle);
+                                } else
+                                {
+                                    installationQueue.addFirst(depsBundle);
+                                }
+                            }
+
                         }
-                     }
+                    }
+                }
 
-                  }
-               }
+                dependencies.removeAllElements();
+                queuedBundles.add(initial);
             }
 
-            dependencies.removeAllElements();
-            queuedBundles.add(initial);
-         }
+        } while (found);
+    }
 
-      } while (found);
-   }
+    /**
+     * 
+     * @param parser
+     * @return
+     * @throws Exception
+     */
+    private Vector parseStartup(KXmlParser parser) throws Exception
+    {
+        Vector startup = new Vector();
 
-   /**
-    * 
-    * @param parser
-    * @return
-    * @throws Exception
-    */
-   private Vector parseStartup(KXmlParser parser) throws Exception {
-      Vector startup = new Vector();
+        parser.next();
+        parser.require(KXmlParser.START_TAG, "", "bundleLoader");
+        parser.next();
 
-      parser.next();
-      parser.require(KXmlParser.START_TAG, "", "bundleLoader");
-      parser.next();
-
-      while (parser.next() == KXmlParser.START_TAG) {
-         parser.require(KXmlParser.START_TAG, "", "bundle");
-         parser.next();
-
-         String bundlename = null;
-         String bundleversion = null;
-         String bundleid = null;
-         String bundlegroup = null;
-
-         while (parser.next() == KXmlParser.START_TAG) {
-            String tagname = parser.getName();
+        while (parser.next() == KXmlParser.START_TAG)
+        {
+            parser.require(KXmlParser.START_TAG, "", "bundle");
             parser.next();
 
-            if (tagname.equals("bundle-name")) {
-               bundlename = parser.getText();
-               if (BundleLoaderActivator.LOG.isDebugEnabled())
-                  BundleLoaderActivator.LOG.debug("bundle-name: " + bundlename);
-            } else if (tagname.equals("bundle-version")) {
-               bundleversion = parser.getText();
-               if (BundleLoaderActivator.LOG.isDebugEnabled())
-                  BundleLoaderActivator.LOG.debug("bundle-version: "
-                        + bundleversion);
-            } else if (tagname.equals("bundle-group")) {
-               bundlegroup = parser.getText();
-               if (BundleLoaderActivator.LOG.isDebugEnabled())
-                  BundleLoaderActivator.LOG.debug("bundle-group: "
-                        + bundlegroup);
+            String bundlename = null;
+            String bundleversion = null;
+            String bundleid = null;
+            String bundlegroup = null;
+
+            while (parser.next() == KXmlParser.START_TAG)
+            {
+                String tagname = parser.getName();
+                parser.next();
+
+                if (tagname.equals("bundle-name"))
+                {
+                    bundlename = parser.getText();
+                    if (BundleLoaderActivator.LOG.isDebugEnabled())
+                        BundleLoaderActivator.LOG.debug("bundle-name: " + bundlename);
+                } else if (tagname.equals("bundle-version"))
+                {
+                    bundleversion = parser.getText();
+                    if (BundleLoaderActivator.LOG.isDebugEnabled())
+                        BundleLoaderActivator.LOG.debug("bundle-version: " + bundleversion);
+                } else if (tagname.equals("bundle-group"))
+                {
+                    bundlegroup = parser.getText();
+                    if (BundleLoaderActivator.LOG.isDebugEnabled())
+                        BundleLoaderActivator.LOG.debug("bundle-group: " + bundlegroup);
+                }
+
+                if (bundlename != null && bundleversion != null && bundlegroup != null)
+                {
+                    BundleInformation dependency = new BundleInformation(bundlename, bundlegroup, bundleversion);
+                    startup.add(dependency);
+                }
+
+                parser.next();
+                parser.require(KXmlParser.END_TAG, "", tagname);
+                parser.next();
             }
 
-            if (bundlename != null && bundleversion != null
-                  && bundlegroup != null) {
-               BundleInformation dependency = new BundleInformation(bundlename,
-                     bundlegroup, bundleversion);
-               startup.add(dependency);
-            }
-
+            parser.require(KXmlParser.END_TAG, "", "bundle");
             parser.next();
-            parser.require(KXmlParser.END_TAG, "", tagname);
-            parser.next();
-         }
+        }
 
-         parser.require(KXmlParser.END_TAG, "", "bundle");
-         parser.next();
-      }
+        parser.require(KXmlParser.END_TAG, "", "bundleLoader");
 
-      parser.require(KXmlParser.END_TAG, "", "bundleLoader");
+        return startup;
+    }
 
-      return startup;
-   }
+    /**
+     * @see org.osgi.framework.BundleListener#bundleChanged(org.osgi.framework.BundleEvent)
+     */
+    public void bundleChanged(BundleEvent bevent)
+    {
 
-   /**
-    * @see org.osgi.framework.BundleListener#bundleChanged(org.osgi.framework.BundleEvent)
-    */
-   public void bundleChanged(BundleEvent bevent) {
-       
-       if (bevent.getType() == Bundle.UNINSTALLED)
-       {
-           String loc = bevent.getBundle().getLocation();
-           LOG.debug("bundle uninstalled: "+loc);
-           
-           // how do we map unknown bundle obrs to BundleInfo???
-           
-       }
-       // Jan, ist der Vergleich mit 1, 16 richtig hier?
-      else if (bevent.getType() == 1) {
-         LOG.debug("bevent");
-         String loc = bevent.getBundle().getLocation();
-         int pos = loc.lastIndexOf(File.separatorChar);
+        if (bevent.getType() == Bundle.UNINSTALLED)
+        {
+            String loc = bevent.getBundle().getLocation();
+            LOG.debug("bundle uninstalled: " + loc);
 
-         if (pos > -1) {
-            loc = loc.substring(pos + 1);
-         }
-         pos = loc.indexOf(".jar");
-         if (pos > -1) {
-            loc = loc.substring(0, pos);
-         }
-         installedBundles.add(loc);
-      } else if (bevent.getType() == 16) {
-         String loc = bevent.getBundle().getLocation();
-         int pos = loc.lastIndexOf(File.separatorChar);
+            // how do we map unknown bundle obrs to BundleInfo???
 
-         if (pos > -1) {
-            loc = loc.substring(pos + 1);
-         }
-         pos = loc.indexOf(".jar");
-         if (pos > -1) {
-            loc = loc.substring(0, pos);
-         }
-         installedBundles.remove(loc);
-      }
-   }
+        }
+        // Jan, ist der Vergleich mit 1, 16 richtig hier?
+        else if (bevent.getType() == 1)
+        {
+            LOG.debug("bevent");
+            String loc = bevent.getBundle().getLocation();
+            int pos = loc.lastIndexOf(File.separatorChar);
 
-   protected Hashtable getInstalledBundles() {
-      return binfos;
-   }
-
-   
-   public class BundleStarter extends Thread {
-      private LinkedList bundles = new LinkedList();
-      public boolean running = true;
-
-      public void enqueue(Bundle bundle) {
-         synchronized (bundles) {
-            bundles.add(bundle);
-            bundles.notifyAll();
-            if (BundleLoaderActivator.LOG.isDebugEnabled())
-               BundleLoaderActivator.LOG.debug(bundles);
-         }
-      }
-
-      public void run() {
-         while(running) {
-         if (!bundles.isEmpty()) {
-            Bundle bundle;
-            synchronized (bundles) {
-               bundle = (Bundle) bundles.removeFirst();
+            if (pos > -1)
+            {
+                loc = loc.substring(pos + 1);
             }
-            try {
-               bundle.start();
-               if (BundleLoaderActivator.LOG.isDebugEnabled())
-                  BundleLoaderActivator.LOG.debug(bundle + " started");
-            } catch (BundleException be) {
-               LOG.debug("Error starting bundle "
-                     + bundle.getLocation());
-               be.printStackTrace();
-               if (be.getNestedException() == null) {
-                  LOG.debug("Exception: ");
-                  be.printStackTrace();
-               } else {
-                  LOG.debug("Nested exception: ");
-                  be.getNestedException().printStackTrace();
-               }
+            pos = loc.indexOf(".jar");
+            if (pos > -1)
+            {
+                loc = loc.substring(0, pos);
             }
-         }
-         // sleep 
-         try {
-            synchronized(bundles) {
-               bundles.wait();
+            installedBundles.add(loc);
+        } else if (bevent.getType() == 16)
+        {
+            String loc = bevent.getBundle().getLocation();
+            int pos = loc.lastIndexOf(File.separatorChar);
+
+            if (pos > -1)
+            {
+                loc = loc.substring(pos + 1);
             }
-         } catch (InterruptedException err) {
-            err.printStackTrace();
-         }
-         }
-      }
-   }
+            pos = loc.indexOf(".jar");
+            if (pos > -1)
+            {
+                loc = loc.substring(0, pos);
+            }
+            installedBundles.remove(loc);
+        }
+    }
+
+    protected Hashtable getInstalledBundles()
+    {
+        return binfos;
+    }
+
+    public class BundleStarter extends Thread
+    {
+
+        private LinkedList bundles = new LinkedList();
+
+        public boolean running = true;
+
+        public void enqueue(Bundle bundle)
+        {
+            synchronized (bundles)
+            {
+                bundles.add(bundle);
+                bundles.notifyAll();
+                if (BundleLoaderActivator.LOG.isDebugEnabled())
+                    BundleLoaderActivator.LOG.debug(bundles);
+            }
+        }
+
+        public void run()
+        {
+            while (running)
+            {
+                if (!bundles.isEmpty())
+                {
+                    Bundle bundle;
+                    synchronized (bundles)
+                    {
+                        bundle = (Bundle) bundles.removeFirst();
+                    }
+                    try
+                    {
+                        bundle.start();
+                        if (BundleLoaderActivator.LOG.isDebugEnabled())
+                            BundleLoaderActivator.LOG.debug(bundle + " started");
+                    } catch (BundleException be)
+                    {
+                        LOG.debug("Error starting bundle " + bundle.getLocation());
+                        be.printStackTrace();
+                        if (be.getNestedException() == null)
+                        {
+                            LOG.debug("Exception: ");
+                            be.printStackTrace();
+                        } else
+                        {
+                            LOG.debug("Nested exception: ");
+                            be.getNestedException().printStackTrace();
+                        }
+                    }
+                }
+                // sleep
+                try
+                {
+                    synchronized (bundles)
+                    {
+                        bundles.wait();
+                    }
+                } catch (InterruptedException err)
+                {
+                    err.printStackTrace();
+                }
+            }
+        }
+    }
 }

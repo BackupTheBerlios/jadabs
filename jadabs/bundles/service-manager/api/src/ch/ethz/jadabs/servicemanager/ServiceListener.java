@@ -12,5 +12,5 @@ package ch.ethz.jadabs.servicemanager;
 public interface ServiceListener
 {
     
-    void foundService(ServiceReference serviceAdv, String peer);
+    void foundService(ServiceReference serviceAdv);
 }

@@ -41,7 +41,7 @@
 
 		<dependency>
 			<groupId>jadabs</groupId>
-			<artifactId>bundleLoader</artifactId>
+			<artifactId>bundleloader</artifactId>
 			<version>${pom.currentVersion}</version>
 		</dependency>
 				
