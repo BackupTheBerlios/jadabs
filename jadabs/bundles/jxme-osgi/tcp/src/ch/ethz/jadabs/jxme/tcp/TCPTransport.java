@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: TCPTransport.java,v 1.1 2004/11/08 07:30:34 afrei Exp $
+ * $Id: TCPTransport.java,v 1.2 2005/02/18 15:01:36 printcap Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -279,7 +279,7 @@ public final class TCPTransport implements Transport
      */
     public void propagate(Message message) throws IOException
     {
-        
+        Session.propagate(message);
     }
 
     public void process(DatagramPacket incoming) throws IOException

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * 
- * $Id: Session.java,v 1.2 2004/11/19 08:16:36 afrei Exp $
+ * $Id: Session.java,v 1.3 2005/02/18 15:01:36 printcap Exp $
  * 
  * Copyright (c) 2001 Sun Microsystems, Inc. All rights reserved.
  * 
@@ -221,6 +221,32 @@ public final class Session
 
         // for session LRU expiry calculations
         lastUsed = (int) (System.currentTimeMillis() / 1000L);
+    }
+    
+    /**
+     * Propagate (broadcast) message over all connections in pool 
+     * @param outgoing message to propagate
+     * @throws IOException if an individual connection cause an exception
+     */
+    public static void propagate(Message outgoing) throws IOException
+    {
+        Enumeration si = sessionPool.elements();
+        boolean exceptionOccurred = false;
+        String lastExceptionSession = null;
+        
+        // look for existing session in pool
+        while (si.hasMoreElements()) {
+            Session s = (Session) si.nextElement();
+            try {
+                s.send(outgoing);
+            } catch(IOException e) {
+                exceptionOccurred = true;
+                lastExceptionSession = s.toString();
+            }
+        }
+        if (exceptionOccurred) {
+            throw new IOException("exception on at least one connection: "+lastExceptionSession);
+        }
     }
 
     public synchronized Message recv() throws IOException
