@@ -237,7 +237,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 //            {
 //                String filter = new String(msg.getElement(SERVICE_FILTER).getData());
 //	            
-//	            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
+//	            String smfilter = filter.substring(filter.lastIndexOf("|")+1);
 //	             
 //                System.out.println("got servicereq: "+ msg.toXMLString());
 //	            
@@ -260,11 +260,15 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	        {         
 	            	// match agains the provided filter
 	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
+	            
+	            // transform | into ¦ due to problems with nokia
+	            if (filter.indexOf('|') > -1)
+	                filter = filter.replace('|','¦');
+	            
 	            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
 	            
 	            
 	            System.out.println("message: "+ msg.toXMLString());
-	            System.out.println("filter request received: "+filter);
 	            
 	            Iterator it = null;
 	            String rptype = "";
@@ -335,20 +339,20 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	        	// UUID_INFORMATION
 	        else if (type.equals(INFO_REQ))
 	        {
-	            String uuid = new String(msg.getElement(UUID).getData());
-	            
-	            sendServiceAdvertisement(INFO_ACK, frompeer, 
-  		    	        uuid, ServiceManager.INSTALLED_SERVICES, 
-  		    	        UUID, uuid);
+//	            String uuid = new String(msg.getElement(UUID).getData());
+//	            
+//	            sendServiceAdvertisement(INFO_ACK, frompeer, 
+//  		    	        uuid, ServiceManager.INSTALLED_SERVICES, 
+//  		    	        UUID, uuid);
 	            
 	        }
         	// UUID_INFORMATION
 	        else if (type.equals(INFO_ACK))
 	        {
-	            String uuid = new String(msg.getElement(UUID).getData());
-	            String adv = new String(msg.getElement(SERVICE_ADV).getData());
-	            
-	            System.out.println("got info_ack: "+adv);
+//	            String uuid = new String(msg.getElement(UUID).getData());
+//	            String adv = new String(msg.getElement(SERVICE_ADV).getData());
+//	            
+//	            System.out.println("got info_ack: "+adv);
 	            
 	        }
 	    		// JAR-Request
@@ -696,7 +700,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     public InputStream retrieveInformation(String uuid)
     {
         
-        sendRequest(ANYPEER, INFO_REQ, UUID, uuid);
+//        sendRequest(ANYPEER, INFO_REQ, UUID, uuid);
         
         return null;
     }

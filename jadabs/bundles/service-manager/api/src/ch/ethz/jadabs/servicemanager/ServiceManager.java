@@ -42,7 +42,7 @@ public interface ServiceManager
     
 //    public static String SERVICE_PEER = "svcpeer";
     
-    public static String UUID = "uuid";
+//    public static String UUID = "uuid";
     
     /** Service Running or Providing type */
     public static String SERVICE_RP_TYPE = "rptype";
