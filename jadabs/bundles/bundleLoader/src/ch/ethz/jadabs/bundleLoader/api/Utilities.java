@@ -61,4 +61,11 @@ public class Utilities {
       return sbuf.toString() ;
     }
 
+   public static String tabs(int num) {
+      String sep = "";
+      for (int i=0; i<num; i++) {
+         sep = sep.concat("\t");
+      }
+      return sep;
+   }
 }

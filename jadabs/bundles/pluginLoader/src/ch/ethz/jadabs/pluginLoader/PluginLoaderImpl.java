@@ -47,6 +47,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 import org.apache.log4j.Logger;
+import org.osgi.framework.Bundle;
+
+import ch.ethz.jadabs.bundleLoader.HttpClient;
 import ch.ethz.jadabs.bundleLoader.Repository;
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.LoaderListener;
@@ -75,17 +78,15 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
     */
    private PluginLoaderImpl() {
       infoSources.add(new Repository());
-
+      try {
+         registerInformationSource(new HttpClient());
+      } catch (Exception e) {
+         // don't care
+      }
+      
       // Register a PluginLoaderHandler at httpDaemon
-      PluginLoaderActivator.bloader.registerRequestHandler(new PluginLoaderHandler());
+      PluginLoaderActivator.bloader.registerRequestHandler(new PluginLoaderHandler());      
       
-      
-      // BUNDLE LOADER TEST SECTION
-      /*
-      System.out.println();
-      System.out.println(PluginLoaderActivator.bloader.getDependencyGraph("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr"));
-      */
-
    }
 
    
@@ -99,6 +100,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return me;
    }
 
+   
    /**
     * Initialisation method, reads the starter file and starts the startup plugins. 
     * Also starts the parsing of the platform information file.
@@ -128,8 +130,14 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
          LOG.error(e.getMessage());
          LOG.error("Loading of Plugin " + uuid + " failed.");
       }
+      // BUNDLE LOADER TEST SECTION
+      
+      System.out.println();
+      System.out.println(PluginLoaderActivator.bloader.getDependencyGraph("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr"));
+      
    }
 
+   
    /**
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#loadPlugin(java.lang.String)
     */
@@ -141,7 +149,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       while (!scheduler.stillToProcess.isEmpty()) {
          if (LOG.isDebugEnabled())
             LOG.debug("Scheduler now processes " + scheduler.stillToProcess.get(0));
-         PluginDescriptor providing = getPluginDescriptor((String)scheduler.stillToProcess.remove(0)); 
+         PluginDescriptor providing = getPluginDescriptor((String)scheduler.stillToProcess.remove(0));
       }
       
       System.out.println(scheduler);
@@ -152,32 +160,62 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
          ArrayList schedule = (ArrayList)schedules.next();
          try {
             for (int index=0; index < schedule.size(); index++) {
-               PluginDescriptor current = this.getPluginDescriptor((String)schedule.get(index));
+               PluginDescriptor current = getPluginDescriptor((String)schedule.get(index));
                System.out.println("LOADING " + current.activator);
                PluginLoaderActivator.bloader.loadBundle(current.activator);
+               loadedPlugins.add(current.toString());
             }            
          } catch (Exception e) {
+            // loading did not work, but maybe there is another schedule 
+            // and another chance
             continue;
          }
          break;
       }
    }
 
+   
    /**
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#unloadPlugin(java.lang.String)
     */
    public void unloadPlugin(String uuid) throws Exception {
-      // TODO Auto-generated method stub
+      PluginDescriptor descr = getPluginDescriptor(uuid);
+      Bundle[] bundles = PluginLoaderActivator.bc.getBundles();
+      String[] parts = uuid.split(":");
+      String filename = parts[2] + "-" + parts[3] + ".jar";
+      
+      for (int i=0; i<bundles.length; i++) {
+         if (bundles[i].getLocation().endsWith(uuid) || bundles[i].getLocation().endsWith(filename)) {
+            bundles[i].stop();
+            bundles[i].uninstall();
+         }
+      }
+      loadedPlugins.remove(uuid);
    }
 
+   
    /**
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#getExtensionGraph(java.lang.String)
     */
    public String getExtensionGraph(String uuid) {
-      // TODO Auto-generated method stub
-      return null;
+      StringBuffer buffer = new StringBuffer();
+      scheduler.clear();
+      scheduler.addPlugin(uuid);
+      
+      try {
+         PluginDescriptor pDescr = getPluginDescriptor(uuid);            
+         
+         // TODO: Implement graph
+         
+      } catch (Exception e) {
+         // LOG.error(e.getMessage());
+         e.printStackTrace();
+      }
+      
+      return buffer.toString();
    }
 
+   
    /**
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#getInstalledPlugins()
     */
@@ -185,6 +223,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return loadedPlugins.iterator();
    }
 
+   
    /**
     * @throws Exception
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#getMatchingPlugins(java.lang.String)
@@ -206,6 +245,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return result.iterator();
    }
 
+   
    /**
     * Static version to be called by PluginDescriptions
     * @param filter
@@ -224,6 +264,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       }
       return result.iterator();      
    }
+
    
    /**
     * Get a <code>PluginDescription</code>, either the cached version by weak
@@ -253,6 +294,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return result;
    }
 
+   
    /**
     * Same as in BundleLoader, but only used to fetch opds
     * @param uuid Uuid of the opd
@@ -283,6 +325,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
          infoSources.add(infoSources);
    }
 
+   
    /**
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#unregisterInformationSource(ch.ethz.jadabs.bundleLoader.api.InformationSource)
     */
@@ -290,6 +333,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       infoSources.remove(infoSource);
    }
 
+   
    /**
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#registerLoaderListener(ch.ethz.jadabs.bundleLoader.api.LoaderListener)
     */
@@ -298,6 +342,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
          loaderListeners.add(listener);
    }
 
+   
    /**
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#unregisterLoaderListener(ch.ethz.jadabs.bundleLoader.api.LoaderListener)
     */
@@ -305,6 +350,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       loaderListeners.remove(listener);
    }
 
+   
    /**
     * @see ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher#debug(java.lang.String)
     */
@@ -313,6 +359,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
 
    }
 
+   
    /**
     * @see ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher#error(java.lang.String)
     */

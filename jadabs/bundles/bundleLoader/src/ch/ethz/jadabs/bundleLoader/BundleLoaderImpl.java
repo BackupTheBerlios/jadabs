@@ -56,10 +56,12 @@ import ch.ethz.jadabs.bundleLoader.api.BundleLoader;
 import ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler;
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.LoaderListener;
+import ch.ethz.jadabs.bundleLoader.api.Utilities;
 
 /**
  * BundleLoader Implementation, resolves dependencies of a bundle, builds up a
  * schedule for a bundle and loads the schedule.
+ * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 public class BundleLoaderImpl implements BundleLoader, BundleListener {
@@ -70,7 +72,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
    private static Vector infoSources = new Vector();
    private Vector loaderListeners = new Vector();
    private static Boolean locked = Boolean.FALSE;
-   
+
    /**
     * Singleton, hidden constructor
     */
@@ -94,7 +96,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
    }
 
-   
    /**
     * Singleton, get implementation
     * 
@@ -106,7 +107,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return me;
    }
 
-   
    /**
     * Load a bundle together with all dependencies.
     * 
@@ -155,8 +155,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
                be.getNestedException().printStackTrace();
             }
 
-            // loadedBundles.add(bundle.toString());
-
          }
 
          // open semaphore
@@ -165,93 +163,107 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
-   
    /**
     * Get the dependency graph of a given bundle
+    * 
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#getDependencyGraph(java.lang.String)
     */
    public String getDependencyGraph(String uuid) {
       // FIXME: still a bit buggy for large graphs ...
-
-      int index;
-      int level;
-      boolean found;
       LinkedList list = new LinkedList();
       list.add(getBundleDescriptor(uuid));
 
       do {
-         found = false;
-
-         // another iteration until all dependencies are processed
-         for (index = 0; ((BundleDescriptor) list.get(index)).processed
-               && index < list.size() - 1; index++)
-            ;
-
-         BundleDescriptor current = (BundleDescriptor) list.get(index);
-
-         // found one that has not been processed yet
-         if (!current.processed) {
-            found = true;
-
-            Vector dependencies = current.dependencies;
-
-            // insert all dependencies
-            for (Enumeration deps = dependencies.elements(); deps
-                  .hasMoreElements();) {
-               String depUuid = (String) deps.nextElement();
-               BundleDescriptor depDescr = getBundleDescriptor(depUuid);
-
-               // Dependencies get parent's level plus 1
-               depDescr.level = current.level + 1;
-               list.add(index + 1, depDescr);
-            }
-            current.processed = true;
+         int index;
+         
+         for (index=0; index<list.size()-1 && ((BundleDescriptor)list.get(index)).processed; index++);
+         
+         BundleDescriptor current = (BundleDescriptor)list.get(index);
+         
+         // all are processed, exit loop
+         if (current.processed) break;
+         
+         int offset=1;
+         int childLevel = current.getLevel() + 1;
+         
+         System.out.println(current + " has Dependencies: ");
+         for (Enumeration deps = current.dependencies.elements(); deps.hasMoreElements(); ) {
+            String depUuid = (String)deps.nextElement();
+            System.out.println("\t" + depUuid);
+            BundleDescriptor dep = getBundleDescriptor(depUuid);
+            System.out.println("\t old level: " + dep.getLevel() + ", new level: " + childLevel);
+            dep.setLevel(childLevel);
+            if (dep.dependencies.isEmpty()) 
+               dep.processed = true;
+            list.add(index+offset, dep);
+            
+            offset++;
          }
-      } while (found);
+         System.out.println();
+         
+         current.processed = true;
+         
+      } while(true);
 
-      // and now make an XML document from the list
+      
+      for (Iterator iter = list.iterator(); iter.hasNext(); ) {         
+         BundleDescriptor current = (BundleDescriptor)iter.next(); 
+         System.out.println(current + " hat Level " + current.getLevel());
+      }
+      
+
+      // and now make a XML document from the list
 
       Stack stack = new Stack();
       StringBuffer buffer = new StringBuffer();
-      level = -1;
       buffer.append("<dependency-graph>\n");
-      
+
+      String sep = new String();
+      int level = -1;
+
       while (!list.isEmpty()) {
-         BundleDescriptor current = (BundleDescriptor)list.removeFirst();
-         buffer.append("<bundle uuid=\"" + current.toString() + "\">\n");
-         for (int dif = 0; dif <= level-current.level; dif++) {
-            buffer.append("</bundle>\n");
+         BundleDescriptor current = (BundleDescriptor) list.removeFirst();
+
+         for (int dif = level; dif >= current.getLevel(); dif--) {
+            buffer.append(Utilities.tabs(dif) + "</bundle>\n");
          }
-         level = current.level;
+
+         buffer.append(Utilities.tabs(current.getLevel()) + "<bundle uuid=\""
+               + current.toString() + "\">\n");
+
+         level = current.getLevel();
+
       }
 
       for (int dif = 0; dif <= level; dif++) {
-         buffer.append("</bundle>\n");
+         buffer.append(Utilities.tabs(level - dif) + "</bundle>\n");
       }
 
       buffer.append("</dependency-graph>\n");
-      
+
       return buffer.toString();
+            
    }
 
-   
    /**
     * Get a list of all currently installed bundles
+    * 
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#getInstalledBundles()
     */
    public Iterator getInstalledBundles() {
       return loadedBundles.iterator();
    }
 
-   
    /**
-    * Get a bundle descriptor. Either, the <code>BundleDescriptor</code>
-    * still exists, that means the <code>WeakReference</code> has not been
-    * broken up by the garbage collector due to memory shortness. Or if the
-    * Reference points to <code>null</code>, a new <code>BundleDescriptor</code>
-    * will be build and returned. 
-    * @param uuid Uuid of the obr file. 
-    * @return A <code>BundleDescriptor</code> for the given uuid. 
+    * Get a bundle descriptor. Either, the <code>BundleDescriptor</code> still
+    * exists, that means the <code>WeakReference</code> has not been broken up
+    * by the garbage collector due to memory shortness. Or if the Reference
+    * points to <code>null</code>, a new <code>BundleDescriptor</code> will
+    * be build and returned.
+    * 
+    * @param uuid
+    *           Uuid of the obr file.
+    * @return A <code>BundleDescriptor</code> for the given uuid.
     */
    private BundleDescriptor getBundleDescriptor(String uuid) {
       BundleDescriptor result = null;
@@ -277,18 +289,19 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
       if (result != null) {
          result.processed = false;
-      	 result.level = 0;
+         result.setLevel(0);
       }
       return result;
    }
 
-   
    /**
     * Builds up a schedule for a given bundle.
-    * @param initial <code>BundleDescriptor</code> of the 
-    * bundle that is to be loaded. The schedule consists of the
-    * uuid of the bundle itself and the uuid of the closure of all dependencies.  
-    * @return <code>LinkedList</code> representing a schedule for the bundle. 
+    * 
+    * @param initial
+    *           <code>BundleDescriptor</code> of the bundle that is to be
+    *           loaded. The schedule consists of the uuid of the bundle itself
+    *           and the uuid of the closure of all dependencies.
+    * @return <code>LinkedList</code> representing a schedule for the bundle.
     */
    private LinkedList buildSchedule(BundleDescriptor initial) {
       LinkedList installationQueue = new LinkedList();
@@ -369,28 +382,28 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return installationQueue;
    }
 
-   
    /**
     * Register a request handler at the <code>HttpDaemon</code>
+    * 
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#registerRequestHandler(ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler)
     */
    public void registerRequestHandler(HttpRequestHandler handler) {
       BundleLoaderActivator.httpDaemon.addRequestHandler(handler);
    }
 
-   
    /**
     * Unregister a request handler at the <code>HttpDaemon</code>
+    * 
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#unregisterRequestHandler(ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler)
     */
    public void unregisterRequestHandler(HttpRequestHandler handler) {
       BundleLoaderActivator.httpDaemon.removeRequestHandler(handler);
    }
 
-   
    /**
     * Register an <code>InformationSource</code> to be used when fetching
     * bundle jars or obrs.
+    * 
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#registerInformationSource(ch.ethz.jadabs.bundleLoader.api.InformationSource)
     */
    public void registerInformationSource(InformationSource infoSource) {
@@ -400,15 +413,16 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
    /**
     * Unregister an <code>InformationSource</code>
+    * 
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#unregisterInformationSource(ch.ethz.jadabs.bundleLoader.api.InformationSource)
     */
    public void unregisterInformationSource(InformationSource infoSource) {
       infoSources.remove(infoSource);
    }
 
-   
    /**
-    * Fetch Information like bundle jars or obrs using all registered <code>InformationSources<code>
+    * Fetch Information like bundle jars or obrs using all registered
+    * <code>InformationSources<code>
     * @param uuid Uuid of the requested information. 
     * @param location If the <code>InformationSource</code> supports directed search, 
     *        the location is used as primary search location, e.g. the <code>HttpClient</code> 
@@ -417,12 +431,15 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     *        is itself an <code>InformationSource</code>. Used to avoid cycles. 
     * @return <code>InputStream</code> to the found information or <code>null</code>.
     */
-   protected InputStream fetchInformation(String uuid, String location, Object requestor) {
+   protected InputStream fetchInformation(String uuid, String location,
+         Object requestor) {
       InputStream result = null;
-      for (Enumeration sources = infoSources.elements(); sources.hasMoreElements();) {
+      for (Enumeration sources = infoSources.elements(); sources
+            .hasMoreElements();) {
          InformationSource source = (InformationSource) sources.nextElement();
          if (source instanceof InformationSource) {
-            if (source == requestor) return result;
+            if (source == requestor)
+               return result;
          }
          if ((result = source.retrieveInformation(uuid, location)) != null)
             break;
@@ -432,17 +449,19 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
-
    /**
-    * Fetch Information like bundle jars or obrs using all registered <code>InformationSources<code>
+    * Fetch Information like bundle jars or obrs using all registered
+    * <code>InformationSources<code>
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#getInformation(java.lang.String, java.lang.Object)
     */
    public InputStream fetchInformation(String uuid, Object requestor) {
       InputStream result = null;
-      for (Enumeration sources = infoSources.elements(); sources.hasMoreElements();) {
+      for (Enumeration sources = infoSources.elements(); sources
+            .hasMoreElements();) {
          InformationSource source = (InformationSource) sources.nextElement();
          if (source instanceof InformationSource) {
-            if (((InformationSource)source) == requestor) return result;
+            if (((InformationSource) source) == requestor)
+               return result;
          }
          if ((result = source.retrieveInformation(uuid)) != null)
             break;
@@ -452,9 +471,9 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
-   
    /**
     * Register a <code>LoaderListener</code>
+    * 
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#registerLoaderListener(ch.ethz.jadabs.bundleLoader.api.LoaderListener)
     */
    public void registerLoaderListener(LoaderListener listener) {
@@ -462,21 +481,23 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          loaderListeners.add(listener);
    }
 
-   
    /**
     * Unregister a <code>LoaderListener</code>
+    * 
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#unregisterLoaderListener(ch.ethz.jadabs.bundleLoader.api.LoaderListener)
     */
    public void unregisterLoaderListener(LoaderListener listener) {
       loaderListeners.remove(listener);
    }
 
-   
    /**
-    * Notifies all registered <code>LoaderListeners</code> that the state
-    * of a bundle has changed.  
-    * @param uuid Uuid of the bundle that changed
-    * @param type New bundle state. 
+    * Notifies all registered <code>LoaderListeners</code> that the state of a
+    * bundle has changed.
+    * 
+    * @param uuid
+    *           Uuid of the bundle that changed
+    * @param type
+    *           New bundle state.
     */
    private void notifyListeners(String uuid, int type) {
       for (Enumeration listeners = loaderListeners.elements(); listeners
@@ -485,15 +506,15 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
-   
    /**
-    * Called by framework, if a bundle state has changed. 
+    * Called by framework, if a bundle state has changed.
+    * 
     * @see org.osgi.framework.BundleListener#bundleChanged(org.osgi.framework.BundleEvent)
     */
    public void bundleChanged(BundleEvent bevent) {
       String loc = bevent.getBundle().getLocation();
-      String uuid = new String(); 
-      
+      String uuid = new String();
+
       if (!loc.endsWith(":obr")) {
          uuid = location2uuid(loc);
       } else {
@@ -521,10 +542,11 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
-   
    /**
     * Get a obr uuid from a bundle jar filename
-    * @param loc bundle jar filename
+    * 
+    * @param loc
+    *           bundle jar filename
     * @return obr uuid
     */
    private static String location2uuid(String loc) {
@@ -537,10 +559,11 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
             filename = filename.substring(0, pos2);
          }
          pos2 = filename.indexOf("-");
-         while (!Character.isDigit(filename.charAt(pos2+1))) {
-            int next = filename.substring(pos2+1).indexOf("-");
-            if (next == -1) return null;
-            pos2 +=next+1;
+         while (!Character.isDigit(filename.charAt(pos2 + 1))) {
+            int next = filename.substring(pos2 + 1).indexOf("-");
+            if (next == -1)
+               return null;
+            pos2 += next + 1;
          }
          String name = filename.substring(0, pos2);
          String version = filename.substring(pos2 + 1);

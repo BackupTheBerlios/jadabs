@@ -59,7 +59,7 @@ public class BundleDescriptor extends Descriptor {
    private String bundleLocation;
    private String bundleChecksum;
    protected boolean processed = false;
-   protected int level = 0;
+   private int level = 0;
    
    /**
     * Hidden constructor    
@@ -207,5 +207,17 @@ public class BundleDescriptor extends Descriptor {
          return (this.toString().equals(descr.toString()) && this.dependencies.equals(descr.dependencies) && this.bundleChecksum.equals(descr.bundleChecksum));
       } 
       return false;
+   }
+   
+   
+   protected void setLevel(int level) {
+      System.out.println("SET LEVEL TO " + level);
+      this.level = level;
+   }
+   
+   
+   protected int getLevel() {
+      //System.out.println("REQUESTED LEVEL " + level);
+      return level;
    }
 }
