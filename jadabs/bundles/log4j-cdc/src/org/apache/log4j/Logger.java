@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: Logger.java,v 1.1 2004/11/08 07:30:35 afrei Exp $
+ * $Id: Logger.java,v 1.2 2004/11/19 08:16:36 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -83,7 +83,7 @@ public final class Logger
     
     protected static Logger createLogger(Priority prio) 
     {
-        if (logger != null)
+        if (logger == null)
             logger = new Logger();
         
         priority = prio;

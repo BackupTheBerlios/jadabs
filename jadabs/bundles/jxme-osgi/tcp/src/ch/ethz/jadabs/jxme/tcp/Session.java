@@ -1,6 +1,6 @@
 /*******************************************************************************
  * 
- * $Id: Session.java,v 1.1 2004/11/08 07:30:34 afrei Exp $
+ * $Id: Session.java,v 1.2 2004/11/19 08:16:36 afrei Exp $
  * 
  * Copyright (c) 2001 Sun Microsystems, Inc. All rights reserved.
  * 
@@ -50,13 +50,13 @@
 
 package ch.ethz.jadabs.jxme.tcp;
 
-import java.net.InetAddress;
-import java.net.Socket;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Vector;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.Enumeration;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 

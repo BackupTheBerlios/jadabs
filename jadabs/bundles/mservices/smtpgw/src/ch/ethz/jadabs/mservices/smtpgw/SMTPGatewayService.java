@@ -39,6 +39,7 @@ package ch.ethz.jadabs.mservices.smtpgw;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Properties;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -53,13 +54,11 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.ServiceReference;
 
 import ch.ethz.jadabs.jxme.Element;
+import ch.ethz.jadabs.jxme.EndpointAddress;
 import ch.ethz.jadabs.jxme.EndpointService;
 import ch.ethz.jadabs.jxme.Listener;
-import ch.ethz.jadabs.jxme.NamedResource;
-import ch.ethz.jadabs.jxme.EndpointAddress;
 import ch.ethz.jadabs.jxme.MalformedURIException;
-
-import java.util.Properties;
+import ch.ethz.jadabs.jxme.NamedResource;
 
 
 /**

@@ -1,5 +1,5 @@
 /**
- * $Id: PipeService.java,v 1.2 2004/11/16 14:32:51 afrei Exp $
+ * $Id: PipeService.java,v 1.3 2004/11/19 08:16:36 afrei Exp $
  *
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -70,7 +70,7 @@ import ch.ethz.jadabs.jxme.Service;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Class provides functionality to manage pipes. It allows one to send messages
@@ -81,7 +81,7 @@ import org.apache.log4j.Category;
 public class PipeService extends Service implements Listener
 {
 
-    private static final Category LOG = Category.getInstance("ch.ethz.jadabs.jxme.services.PipeService");
+    private static final Logger LOG = Logger.getLogger("ch.ethz.jadabs.jxme.services.PipeService");
 
     private static PipeService INSTANCE = null;
 

@@ -52,8 +52,6 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.ServiceReference;
 
-import com.thoughtworks.xstream.XStream;
-
 import ch.ethz.jadabs.jxme.DiscoveryListener;
 import ch.ethz.jadabs.jxme.Element;
 import ch.ethz.jadabs.jxme.EndpointAddress;
@@ -69,6 +67,8 @@ import ch.ethz.jadabs.remotefw.BundleInfo;
 import ch.ethz.jadabs.remotefw.Framework;
 import ch.ethz.jadabs.remotefw.FrameworkManager;
 import ch.ethz.jadabs.remotefw.RemoteFrameworkListener;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * Implements the basic OSGi BundleActivator behaviour and activates the Remote

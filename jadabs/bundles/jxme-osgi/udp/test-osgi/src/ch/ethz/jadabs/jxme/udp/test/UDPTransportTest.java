@@ -38,6 +38,8 @@ package ch.ethz.jadabs.jxme.udp.test;
 
 import java.io.IOException;
 
+import junit.framework.TestCase;
+
 import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -49,8 +51,6 @@ import ch.ethz.jadabs.jxme.EndpointService;
 import ch.ethz.jadabs.jxme.Listener;
 import ch.ethz.jadabs.jxme.Message;
 import ch.ethz.jadabs.jxme.NamedResource;
-
-import junit.framework.TestCase;
 
 
 /**

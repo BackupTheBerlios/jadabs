@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: ByteCounterOutputStream.java,v 1.1 2004/11/08 07:30:34 afrei Exp $
+ * $Id: ByteCounterOutputStream.java,v 1.2 2004/11/19 08:16:36 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -58,8 +58,8 @@
 
 package ch.ethz.jadabs.jxme;
 
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * This class extends OutputStream to implement the functionality of counting

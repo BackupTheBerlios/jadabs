@@ -48,8 +48,6 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
 
-import com.thoughtworks.xstream.XStream;
-
 import ch.ethz.jadabs.jxme.Element;
 import ch.ethz.jadabs.jxme.Message;
 import ch.ethz.jadabs.jxme.NamedResource;
@@ -57,6 +55,8 @@ import ch.ethz.jadabs.jxme.Peer;
 import ch.ethz.jadabs.remotefw.BundleInfo;
 import ch.ethz.jadabs.remotefw.BundleInfoListener;
 import ch.ethz.jadabs.remotefw.Framework;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * @author rjan, andfrei

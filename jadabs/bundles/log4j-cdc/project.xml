@@ -11,7 +11,7 @@
   	<shortDescription>Log4j-CDC small implementation</shortDescription>
 
 	<properties>
-		
+		<osgi.import.package>org.osgi.framework</osgi.import.package>
 	</properties>
 	
 	

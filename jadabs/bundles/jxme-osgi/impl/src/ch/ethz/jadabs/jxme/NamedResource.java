@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: NamedResource.java,v 1.1 2004/11/08 07:30:34 afrei Exp $
+ * $Id: NamedResource.java,v 1.2 2004/11/19 08:16:36 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -58,10 +58,10 @@
 
 package ch.ethz.jadabs.jxme;
 
-import org.apache.log4j.Logger;
-
 import java.util.Enumeration;
 import java.util.Hashtable;
+
+import org.apache.log4j.Logger;
 
 /**
  * This is an abstract class representing JXTA Network resources. A JXTA

@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: PeerNetwork.java,v 1.1 2004/11/08 07:30:34 afrei Exp $
+ * $Id: PeerNetwork.java,v 1.2 2004/11/19 08:16:36 afrei Exp $
  *
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -58,6 +58,7 @@
 package ch.ethz.jadabs.jxme;
 
 import java.io.IOException;
+
 import org.apache.log4j.Logger;
 
 

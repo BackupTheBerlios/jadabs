@@ -4,9 +4,9 @@
  */
 package ch.ethz.jadabs.jxme.test;
 
+import junit.framework.TestCase;
 import ch.ethz.jadabs.jxme.EndpointAddress;
 import ch.ethz.jadabs.jxme.MalformedURIException;
-import junit.framework.TestCase;
 
 
 /**
