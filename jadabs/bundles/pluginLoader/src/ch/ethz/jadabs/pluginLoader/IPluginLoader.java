@@ -1,12 +1,12 @@
 /*
  * Created on 30.12.2004
  */
-package ch.ethz.jadabs.serviceManager;
+package ch.ethz.jadabs.pluginLoader;
 
 /**
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
-public interface IServiceManager {
+public interface IPluginLoader {
    
 }

@@ -1,7 +1,7 @@
 /*
  * Created on 01.01.2005
  */
-package ch.ethz.jadabs.serviceManager;
+package ch.ethz.jadabs.pluginLoader;
 
 
 /**
@@ -41,10 +41,11 @@ public class ExtensionPoint {
       if (type == EXTENSION) {
          return id;
       } else {
-         return section + "//" + id;
+         return section + "/" + id;
       }
    }
-   
+
+   /*
    public boolean equals(Object obj) {
       if (obj instanceof ExtensionPoint) {
          ExtensionPoint other = (ExtensionPoint)obj;
@@ -52,14 +53,7 @@ public class ExtensionPoint {
       }
       return false;
    }
-   
-   public boolean matches(Extension ext) {
-      return (id.equals(ext.id()) && service.equals(ext.service()));
-   }
-   
-   public boolean matches(ExtensionPoint extp) {
-      return false;
-   }
+   */
    
    protected String id() {
       return id;      

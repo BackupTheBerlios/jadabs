@@ -1,7 +1,7 @@
 /*
  * Created on 01.01.2005
  */
-package ch.ethz.jadabs.serviceManager;
+package ch.ethz.jadabs.pluginLoader;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -34,8 +34,17 @@ public class OSGiPlugin {
    public Enumeration getExtensions() {
       return extensions.elements();
    }
+    
    public void addExtensionPoint(ExtensionPoint extp) {
       extensionPoints.add(extp);
+   }
+   
+   public Enumeration getExtensionPoints() {
+      return extensionPoints.elements();
+   }
+   
+   public String getName() {
+      return name + "::" + id;
    }
    
    public String toString() {

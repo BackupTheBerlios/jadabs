@@ -1,7 +1,7 @@
 /*
  * Created on 30.12.2004
  */
-package ch.ethz.jadabs.serviceManager;
+package ch.ethz.jadabs.pluginLoader.fileFilters;
 
 import java.io.File;
 
@@ -9,15 +9,13 @@ import java.io.File;
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
-public class PluginFilter implements java.io.FileFilter {
+public class StarterFilter implements java.io.FileFilter {
 
    /**
     * @see java.io.FileFilter#accept(java.io.File)
     */
    public boolean accept(File pathname) {
-      return pathname.getName().endsWith("Plugin.xml");
-   }
-
-  
+      return pathname.getName().endsWith(".starter");
+   } 
 
 }

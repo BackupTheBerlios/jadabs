@@ -9,7 +9,7 @@
 	provider-name="ETHZ-IKS">
 	
 	<Extension-Point
-	    id="Platform/NetIface/bt_jsr-82"
+	    id="Platform/NetIface/bt/jsr-82"
 	    description="requires a BT interface"
 	/>
 	

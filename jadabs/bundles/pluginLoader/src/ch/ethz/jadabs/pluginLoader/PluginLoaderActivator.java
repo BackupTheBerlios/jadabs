@@ -36,7 +36,7 @@
  */
 
 
-package ch.ethz.jadabs.serviceManager;
+package ch.ethz.jadabs.pluginLoader;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
@@ -46,18 +46,18 @@ import ch.ethz.jadabs.bundleLoader.IBundleLoader;
 
 
 /**
- * Jadabs Shell Reloaded 
+ * PluginLoaderActivator
  * @author rjan
  */
-public class ServiceManagerActivator implements BundleActivator
+public class PluginLoaderActivator implements BundleActivator
 {
 
-    protected static Logger LOG = Logger.getLogger(ServiceManagerActivator.class.getName());    
+    protected static Logger LOG = Logger.getLogger(PluginLoaderActivator.class.getName());    
     protected static BundleContext b_context;
     protected static String peerName;
     protected static IBundleLoader bloader;
     protected static boolean running = true;
-    private ServiceManager sman;
+    private PluginLoader ploader;
     
     /**
      * start the bundle, this method is called by the OSGi implementation.
@@ -67,32 +67,34 @@ public class ServiceManagerActivator implements BundleActivator
      */
     public void start(BundleContext bc) throws Exception
     {
-        ServiceManagerActivator.b_context = bc;
+        PluginLoaderActivator.b_context = bc;
         ServiceReference sref;
         
+        System.out.println("STARTING PLUGIN LOADER");
+        
         if (LOG.isDebugEnabled())
-            LOG.debug("starting Jadabs Shell ... ");        
+            LOG.debug("starting Plugin Loader ... ");        
         
         // get BundleLoader
         sref = bc.getServiceReference(IBundleLoader.class.getName());
         if (sref != null)
         {
             LOG.debug("Connected to BundleLoader ");
-            ServiceManagerActivator.bloader = (IBundleLoader) bc.getService(sref);
+            PluginLoaderActivator.bloader = (IBundleLoader) bc.getService(sref);
         } else
         {
             LOG.debug("BundleLoader is not running, load command will be deactivated ...");
-            ServiceManagerActivator.bloader = null;
+            PluginLoaderActivator.bloader = null;
         }
 
-        ServiceManagerActivator.peerName = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
+        PluginLoaderActivator.peerName = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
 
         if (LOG.isDebugEnabled())
             LOG.debug("peername is " + peerName);
 
-        sman = new ServiceManager();
+        ploader = new PluginLoader();
         
-        b_context.registerService(IServiceManager.class.getName(),sman,null);
+        b_context.registerService(IPluginLoader.class.getName(),ploader,null);
 
     }
     
@@ -105,6 +107,6 @@ public class ServiceManagerActivator implements BundleActivator
      */
     public void stop(BundleContext bc) throws Exception
     {
-       sman = null;
+       ploader = null;
     }
 }

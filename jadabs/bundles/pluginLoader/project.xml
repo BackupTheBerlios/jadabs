@@ -5,14 +5,14 @@
   	<extend>${basedir}/../../project.xml</extend>
 
   	<groupId>jadabs</groupId>
-  	<id>serviceManager</id>
-  	<name>Jadabs Service Manager</name>
+  	<id>pluginLoader</id>
+  	<name>Jadabs Plugin Loader</name>
 
-  	<shortDescription>Jadabs ServiceManager</shortDescription>
+  	<shortDescription>Jadabs Plugin Loader</shortDescription>
 
 	<properties>
 		<osgi.import.service></osgi.import.service>		
-		<osgi.export.service>ch.ethz.jadabs.bundleLoader.IServiceManager</osgi.export.service>
+		<osgi.export.service>ch.ethz.jadabs.pluginLoader.IPluginLoader</osgi.export.service>		
 	</properties>
 	
 	
