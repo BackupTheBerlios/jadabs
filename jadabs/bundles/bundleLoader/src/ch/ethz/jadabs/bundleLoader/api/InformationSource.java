@@ -32,7 +32,8 @@ public interface InformationSource {
     * @param filter a <code>String</code> compliant with the following EBNF:
     * filter = ExtensionPointExpression "|" (ContainerExpression)* "|" (PlatformExpression)* "|" [R|P|RP] 
     * @return Iterator over uuids of matching plugins
+    * @throws Exception
     */
-   public Iterator getMatchingPlugins(String filter);
+   public Iterator getMatchingPlugins(String filter) throws Exception;
    
 }

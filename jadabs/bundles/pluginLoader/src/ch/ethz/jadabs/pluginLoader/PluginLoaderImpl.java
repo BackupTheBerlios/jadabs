@@ -73,6 +73,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    }
 
    private void init(String starter) {
+      String uuid = new String();
       try {
          BufferedReader reader = new BufferedReader(new FileReader(starter));
          String line;
@@ -84,15 +85,15 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
                platform = PlatformInformation.parsePAD("." + File.separatorChar
                      + line.substring(7).trim());
             } else if (line.startsWith("-startopd")) {
-               String uuid = line.substring(9).trim();
-               if (LOG.isDebugEnabled())
-                  LOG.debug("Starting Plugin " + uuid);
+               uuid = line.substring(9).trim();
+               LOG.info("Loading Plugin " + uuid + "...");
 
                loadPlugin(uuid);
             }
          }
       } catch (Exception e) {
          LOG.error(e.getMessage());
+         LOG.error("Loading of Plugin " + uuid + " failed.");
       }
    }
 
@@ -111,6 +112,21 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       }
       
       System.out.println(scheduler);
+      
+      // and finally load the activator bundles and all their dependencies 
+      // via bundleLoader
+      for (Iterator schedules = scheduler.getIterator(); schedules.hasNext(); ) {
+         ArrayList schedule = (ArrayList)schedules.next();
+         try {
+            for (int index=0; index < schedule.size(); index++) {
+               System.out.println("LOADING " + opd2obr((String)schedule.get(index)));
+               PluginLoaderActivator.bloader.loadBundle(opd2obr((String)schedule.get(index)));
+            }            
+         } catch (Exception e) {
+            continue;
+         }
+         break;
+      }
    }
 
    /**
@@ -136,9 +152,10 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    }
 
    /**
+    * @throws Exception
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#getMatchingPlugins(java.lang.String)
     */
-   public Iterator getMatchingPlugins(String filter, Object requestor) {
+   public Iterator getMatchingPlugins(String filter, Object requestor) throws Exception {
       ArrayList result = new ArrayList();
       for (Enumeration sources = infoSources.elements(); sources
             .hasMoreElements();) {
@@ -155,7 +172,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return result.iterator();
    }
 
-   protected static Iterator getMatchingPlugins(String filter) {
+   protected static Iterator getMatchingPlugins(String filter) throws Exception {
       ArrayList result = new ArrayList();
       for (Enumeration sources = infoSources.elements(); sources
             .hasMoreElements();) {
@@ -168,9 +185,8 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       return result.iterator();      
    }
    
-   private PluginDescriptor getPluginDescriptor(String uuid) {
+   private PluginDescriptor getPluginDescriptor(String uuid) throws Exception {
       PluginDescriptor result = null;
-      try {
          WeakReference ref = (WeakReference) descriptorCache.get(uuid);
          if (ref == null) {
             result = new PluginDescriptor(uuid);
@@ -186,15 +202,6 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
                descriptorCache.put(uuid, ref);
             }
          }
-      } catch (Exception e) {
-         e.printStackTrace();
-         LOG.error("Could not locate bundle descriptor " + uuid);
-      }
-      if (result != null) {
-         /*
-          * result.processed = false; result.level = 0;
-          */
-      }
       return result;
    }
 
@@ -258,6 +265,10 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    protected void error(String str) {
       // TODO Auto-generated method stub
 
+   }
+   
+   private String opd2obr(String opd) {
+      return opd.substring(0,opd.length()-3) + "opd"; 
    }
 
 }

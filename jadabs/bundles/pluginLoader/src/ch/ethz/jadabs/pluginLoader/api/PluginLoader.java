@@ -21,6 +21,6 @@ public interface PluginLoader extends Loader {
    
    public Iterator getInstalledPlugins();
    
-   public Iterator getMatchingPlugins(String filter, Object requestor);
+   public Iterator getMatchingPlugins(String filter, Object requestor) throws Exception;
    
 }

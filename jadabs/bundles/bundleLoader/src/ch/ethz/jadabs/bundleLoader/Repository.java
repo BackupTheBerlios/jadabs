@@ -56,9 +56,10 @@ public class Repository extends PluginFilterMatcher implements InformationSource
    }
 
    /**
+    * @throws Exception
     * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#getMatchingPlugins(java.lang.String)
     */
-   public Iterator getMatchingPlugins(String filter) {
+   public Iterator getMatchingPlugins(String filter) throws Exception {
       ArrayList result = new ArrayList();
       
       try {
@@ -67,7 +68,8 @@ public class Repository extends PluginFilterMatcher implements InformationSource
          Iterator filesIter = files.iterator();
          while( filesIter.hasNext() ){
             File file = (File)filesIter.next();
-            System.out.println(file);
+            if (LOG.isDebugEnabled())
+               LOG.debug(file);
             if (matches(new FileInputStream(file), filter)) {
                result.add(location2uuid(file.toString()));
                if (LOG.isDebugEnabled())
@@ -115,7 +117,7 @@ public class Repository extends PluginFilterMatcher implements InformationSource
       LOG.error(str);      
    }
    
-   private String location2uuid(String loc) {
+   private static String location2uuid(String loc) throws Exception {
       int pos = loc.lastIndexOf(File.separatorChar);
 
       if (pos > -1) {
@@ -125,6 +127,11 @@ public class Repository extends PluginFilterMatcher implements InformationSource
             filename = filename.substring(0, pos2);
          }
          pos2 = filename.indexOf("-");
+         while (!Character.isDigit(filename.charAt(pos2+1))) {
+            int next = filename.substring(pos2+1).indexOf("-");
+            if (next == -1) throw new Exception("Illegal uuid");
+            pos2 +=next+1;
+         }
          String name = filename.substring(0, pos2);
          String version = filename.substring(pos2 + 1);
 

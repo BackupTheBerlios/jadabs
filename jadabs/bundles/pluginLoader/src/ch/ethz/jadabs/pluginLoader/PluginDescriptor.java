@@ -54,6 +54,8 @@ public class PluginDescriptor extends Descriptor {
             stack.push(parser.getName());
 
             if (stack.peek().equals("Extension")) {
+               // TODO: add to Extension vector
+               
                /*
                String id = parser.getAttributeValue(null, "id");
                LOG.debug("FOUND EXTENSION " + id);
@@ -75,9 +77,11 @@ public class PluginDescriptor extends Descriptor {
                
                if (id.startsWith("Extension")) {
                ArrayList matchingPlugins = new ArrayList();
-               System.out.println("");
-               System.out.println("REQUESTING " + id + " ¦ " + PluginLoaderImpl.platform + " ¦ " + "R");
-               System.out.println("");
+               if (LOG.isDebugEnabled()) {
+                  LOG.debug("\n");
+                  LOG.debug("REQUESTING " + id + " ¦ " + PluginLoaderImpl.platform + " ¦ " + "R");
+                  LOG.debug("\n");
+               }
                for (Iterator matches = PluginLoaderImpl.getMatchingPlugins(id + " ¦ " + PluginLoaderImpl.platform + " ¦ " + "R"); matches.hasNext(); ) {
                   matchingPlugins.add(matches.next());
                }
@@ -102,5 +106,4 @@ public class PluginDescriptor extends Descriptor {
          }
       }
    }
-
 }
