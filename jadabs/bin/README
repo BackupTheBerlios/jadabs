@@ -15,7 +15,9 @@ To start a second peer make a copy of this folder and change inside
 the runpeer -Dch.ethz.jadabs.jxme.peeralias=$HOSTNAME the HOSTNAME to an
 other name, e.g. peer2.
 
-
+For the PocketPC Version, copy this folder to your PPC root folder and 
+install the IBM j9-VM in the root folder. Use the link run-ppcj9.lnk to
+start Jadabs.
 
 Full
 ----

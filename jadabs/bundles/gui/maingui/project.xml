@@ -27,7 +27,7 @@
             <artifactId>swt</artifactId>
             <version>3.0RC1-osgi</version>
         </dependency>
-        
+                
         <dependency>
             <groupId>jadabs</groupId>
             <artifactId>remotefw-api</artifactId>
@@ -45,6 +45,7 @@
             <artifactId>log4j-cdc</artifactId>
             <version>${pom.currentVersion}</version>
         </dependency>
+	    
 	    
 	</dependencies>
   

@@ -22,8 +22,8 @@
 -install   sip/jars/nist-sip-1.2-osgi.jar
 -install   sip/jars/nist-sip-1.2-osgi.jar
 -install   sip/jars/nist-sip-parser-1.2-osgi.jar
--istart    jadabs/jars/jxme-sip-gw-0.7.0-SNAPSHOT.jar
--istart    jadabs/jars/jxme-sip-gw-test-0.7.0-SNAPSHOT.jar
+-istart    jadabs/jars/jxme-sip-gw-0.7.1.jar
+-istart    jadabs/jars/jxme-sip-gw-test-0.7.1.jar
 
 
 -startlevel 1

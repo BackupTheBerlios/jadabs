@@ -100,10 +100,10 @@
 			<!--<ant:fileset dir="xdocs/licences" includes="${knopflerfish.copyright},${osgi.copyright}"/> -->
 		</ant:copy>
 		
-		<!-- copy log4j.properties, README -->
+		<!-- copy README -->
 		<ant:copy todir="${jadabs.dist.dir}">
 			<ant:fileset dir="bin" 
-				includes="log4j.properties, README"/>
+				includes="README"/>
 		</ant:copy>
 		
 		<!-- Licences -->
@@ -114,16 +114,13 @@
 		<!-- copy bundles jadabs core, log4j, -->
 		<ant:copy todir="${jadabs.dist.repository}/jadabs/jars">
 			<ant:fileset dir="${jadabs.maven.inst.dir}/" 
-				includes="concurrent-*,jxme-osgi-*,jxme-udp-*,jxme-tcp-*,
+				includes="concurrent-*,jxme-osgi-*,jxme-udp-*,jxme-tcp-*,log4j-cdc-*,
 					jxme-services-api-*,jxme-services-impl-*,
 					remotefw-api-*,remotefw-impl-*"
 				excludes="*-test-*"
 			/>
 		</ant:copy>
 		
-		<ant:copy todir="${jadabs.dist.repository}/log4j/jars">
-			<ant:fileset dir="${maven.repo.local}/log4j/jars" includes="log4j-1.2.8-osgi.jar"/>
-		</ant:copy>
 		<ant:copy todir="${jadabs.dist.repository}/xpp3/jars">
 			<ant:fileset dir="${maven.repo.local}/xpp3/jars" includes="*-osgi.jar"/>
 		</ant:copy>
@@ -134,7 +131,7 @@
 		<!-- copy init.xargs, runpeer.sh, runpeer.bat -->
 		<ant:copy todir="${jadabs.dist.dir}">
 			<ant:fileset dir="bin" 
-				includes="init.xargs,run*"/>
+				includes="init.xargs,init-ppcj9*,run*"/>
 		</ant:copy>
 		
 		<ant:chmod perm="+x" >
@@ -157,6 +154,14 @@
     	</ant:tar>
     	
 		<!-- Create the full .tar file -->
+		<!-- copy log4j.properties, README -->
+		<ant:copy todir="${jadabs.dist.dir}">
+			<ant:fileset dir="bin" 
+				includes="log4j.properties, README"/>
+		</ant:copy>
+		<ant:copy todir="${jadabs.dist.repository}/log4j/jars">
+			<ant:fileset dir="${maven.repo.local}/log4j/jars" includes="log4j-1.2.8-osgi.jar"/>
+		</ant:copy>
 		
 		<!-- copy init-kf.xargs -->
 		<ant:copy todir="${jadabs.dist.dir}">
@@ -234,6 +239,7 @@
   
 	</goal>
   
+  
   <goal name="jadabs:release">
   	<attainGoal name="jadabs:superclean"/>
   	<attainGoal name="jadabs:buildall"/>
@@ -267,7 +273,7 @@
     	your working temporary stuff. 
   -->
   <goal name="jadabs:superclean" prereqs="clean">
-  	<!--<attainGoal name="multiproject:clean" />-->
+  	<attainGoal name="multiproject:clean" />
   	<ant:delete dir="${basedir}/${jadabs.dist.name}"/>
   </goal>
   
