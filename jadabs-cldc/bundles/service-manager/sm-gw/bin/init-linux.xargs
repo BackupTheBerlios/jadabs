@@ -54,8 +54,8 @@
 
 -launch
 
-#-start    jadabs/jars/bundleloader-0.7.1-SNAPSHOT.jar
-#-start    jadabs/jars/pluginloader-0.7.1-SNAPSHOT.jar
+-start    jadabs/jars/bundleloader-0.7.1-SNAPSHOT.jar
+-start    jadabs/jars/pluginloader-0.7.1-SNAPSHOT.jar
 -start log4j/jars/log4j-1.2.8-osgi.jar
 #-start jadabs/jars/log4j-cdc-0.7.1-SNAPSHOT.jar
 -start jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar

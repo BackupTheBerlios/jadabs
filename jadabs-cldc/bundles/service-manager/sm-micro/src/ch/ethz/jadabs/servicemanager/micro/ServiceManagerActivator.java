@@ -4,12 +4,11 @@
  */
 package ch.ethz.jadabs.servicemanager.micro;
 
-import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -54,10 +53,26 @@ public class ServiceManagerActivator extends Thread
         
     static boolean running = true;
     
-    private Vector serviceListeners = new Vector();
+    private ServiceAdvertisementListener listener;
     
     private Hashtable services = new Hashtable();
+        
+    private String PLATFORM_DESCRIPTOR =
+        "Platform/id:nokia6600.wlab.ethz.ch, " +
+    	"name:nokia6600, version:0.1.0, provider-name:ETHZ-IKS; " +
+    "Property/name:processor, value:arm9; " +
+    "Property/name:os, value:linux; " +
+    "Property/name:display, value:176x208; " +
+    "Property/name:vm, value:cldc/midp; " +
+    "Property/name:vm-version, value:1.0.1; " +
+    "OSGiContainer/id:j2me-osgi; " +
+    "NetIface/type:bt-jsr82, connection:dynamic, " +
+        "name:bt-hotspot; " +
+    "NetIface/type:gsm, connection:dynamic, " +
+        "name:GSM";
     
+    private String DEFAULT_PLATFORM_FILTER = 
+        "|"+PLATFORM_DESCRIPTOR+"| OPD,PRO";
     
     //---------------------------------------------------
     // Implement BundleActivator interface
@@ -144,9 +159,17 @@ public class ServiceManagerActivator extends Thread
     
     /*
      */
-    public boolean getServiceAdvertisements(String peername, String filter)
+    public boolean getServiceAdvertisements(String peername, String filter,
+            ServiceAdvertisementListener listener)
     {
-        sendRequest(peername, SERVICE_REQ, SERVICE_FILTER, filter);
+        // Hack, or simplification for J2ME: 
+        // we do allow only one listener, replaces the old one
+        this.listener = listener;
+        
+        if (filter == null)
+            filter = DEFAULT_PLATFORM_FILTER;
+        
+        sendRequest(ANYPEER, FILTER_REQ, filter, filter);
         
         return true;
     }
@@ -180,40 +203,7 @@ public class ServiceManagerActivator extends Thread
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see ch.ethz.jadabs.servicemanager.ServiceManager#addServiceAdvertisementListener(ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener)
-     */
-    public void addServiceAdvertisementListener(ServiceAdvertisementListener svcListener)
-    {
-        serviceListeners.addElement(svcListener);
-    }
-
-    /* (non-Javadoc)
-     * @see ch.ethz.jadabs.servicemanager.ServiceManager#removeServiceAdvertisementListener(ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener)
-     */
-    public void removeServiceAdvertisementListener(ServiceAdvertisementListener svcListener)
-    {
-        serviceListeners.removeElement(svcListener);  
-    }
-    
-    private void notifyFoundService(ServiceReference sref)
-    {
-        for (Enumeration en = serviceListeners.elements(); en.hasMoreElements();)
-        {
-            ServiceAdvertisementListener listener = (ServiceAdvertisementListener)en.nextElement();
-            listener.foundService(sref);
-        }
-    }
-    
-    private void notifyRemovedService(ServiceReference sref)
-    {
-        for (Enumeration en = serviceListeners.elements(); en.hasMoreElements();)
-        {
-            ServiceAdvertisementListener listener = (ServiceAdvertisementListener)en.nextElement();
-            listener.removedService(sref);
-        }
-    }
-    
+       
     //---------------------------------------------------
     // Implement Listener interface
     //---------------------------------------------------
@@ -222,36 +212,36 @@ public class ServiceManagerActivator extends Thread
      */
     public void handleMessage(Message message, String listenerId)
     {
-//        LOG.debug("got message:"+message.toXMLString());
+        LOG.debug("got message:"+message.toXMLString());
         
         String type = new String(message.getElement(SERVICE_TYPE).getData());
         
         String topeer = new String(message.getElement(SERVICE_TO_PEER).getData());
         String frompeer = new String(message.getElement(SERVICE_FROM_PEER).getData());
         
-//        LOG.debug("type: "+ type +" topeer: "+topeer+" frompeer: "+frompeer);
+        LOG.debug("type: "+ type +" topeer: "+topeer+" frompeer: "+frompeer);
         
         if (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER))
         {
         
-            if (type.equals(SERVICE_ACK))
-            {                
-		         String uuid = new String(message.getElement(UUID).getData());
-		         String durl = new String(message.getElement(DOWNLOAD_URL).getData());
-		         String port = new String(message.getElement("port").getData());
-		         
+            if (type.equals(FILTER_ACK))
+            {     
+                LOG.debug("b1");
+		         String uuid = new String(message.getElement(SERVICE_ID).getData());
+		         LOG.debug("b2");
+		         String adv = new String(message.getElement(SERVICE_ADV).getData());
+//		         String port = new String(message.getElement("port").getData());
+		         LOG.debug("b3");
 		         LOG.info("uuid: "+ uuid);
 		         
 		         if (!services.containsKey(uuid))
 		         {
-		             
-		             ServiceReferenceImpl sref = new ServiceReferenceImpl(uuid, frompeer, "");
-				     sref.durl = durl;
-				     sref.port = port;
-				     
+		             LOG.debug("b4");
+		             ServiceReferenceImpl sref = new ServiceReferenceImpl(uuid, frompeer, adv);
+		             LOG.debug("b5");
 		             services.put(uuid, sref);
 				     
-				     notifyFoundService(sref);
+				     listener.foundService(sref);
 		         }
 		         
             }
@@ -276,7 +266,7 @@ public class ServiceManagerActivator extends Thread
             
             services.remove(srefid);
             
-            notifyRemovedService((ServiceReference)todelete.get(srefid));
+            listener.removedService((ServiceReference)todelete.get(srefid));
         }
     }
     
@@ -290,7 +280,7 @@ public class ServiceManagerActivator extends Thread
         {
             LOG.info("resource is peer .");
             
-            serviceManager.getServiceAdvertisements(namedResource.getName(), "|OPD");
+            serviceManager.getServiceAdvertisements(namedResource.getName(), "|OPD", null);
             
         }
             
@@ -316,9 +306,8 @@ public class ServiceManagerActivator extends Thread
         
         while (running) {
             
-            // send discovery message 
-            getServiceAdvertisements(ServiceManager.ANYPEER, "|OPD");
-                        
+            sendRequest(ANYPEER, FILTER_REQ, SERVICE_FILTER, DEFAULT_PLATFORM_FILTER);
+//               
             // sleep until next discovery cycle
             try {
                 Thread.sleep(DISCOVERY_INTERVAL_MS);

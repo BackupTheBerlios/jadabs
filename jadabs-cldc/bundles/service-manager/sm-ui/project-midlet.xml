@@ -96,6 +96,15 @@
       	   </properties>
 		</dependency>
 		
+		<dependency>
+      		<groupId>kobjects</groupId>
+      		<artifactId>kxml2-min</artifactId>
+      		<version>2.1.9-osgi</version>
+      		<properties>
+	    			<midlet>true</midlet>    
+      	   </properties>
+		</dependency>
+				
   	</dependencies>
   
 </project>

@@ -147,7 +147,8 @@ public class ServiceManagerMIDlet extends MIDlet
         org.osgi.framework.ServiceReference sref = bc.getServiceReference("ch.ethz.jadabs.servicemanager.ServiceManager");
         serviceManager = (ServiceManager)bc.getService(sref);
         
-        serviceManager.addServiceAdvertisementListener(this);
+        serviceManager.getServiceAdvertisements(ServiceManager.ANYPEER,
+                null, this);
     }
 
     /**
@@ -254,7 +255,7 @@ public class ServiceManagerMIDlet extends MIDlet
     
     private void startOTAService(ServiceReference sref)
     {
-        String port = sref.getProperty("port");
+        String port = sref.getProperty("midp-port");
         String localURL = "datagram://127.0.0.1:"+port;
        
         
