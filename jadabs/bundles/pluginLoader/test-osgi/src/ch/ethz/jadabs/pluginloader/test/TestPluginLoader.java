@@ -66,9 +66,9 @@ public class TestPluginLoader implements BundleActivator
         			"ip:192.168.55.10; NetIface/type:internet, " +
         			"ext-type:wlan/managed ¦ R");
         
-        filters.add( "¦ R");
+        filters.add( "¦ ¦ R");
         
-        filters.add("Platform/id:mservices.wlab.ethz.ch, " +
+        filters.add("¦ Platform/id:mservices.wlab.ethz.ch, " +
         			"name:mservices, version:0.1.0, provider-name:ETHZ-IKS; " +
         			"Property/name:processor, value:armv4l; " +
         		"Property/name:os, value:linux; " +
@@ -79,10 +79,16 @@ public class TestPluginLoader implements BundleActivator
         		"NetIface/type:wlan/managed, connection:static, " +
         			"configuration:internet, name:mservices, " +
         			"essid:wlan, mode:managed, iface:eth0, " +
-        			"ip:192.168.55.10; NetIface/type:internet, " +
-        			"ext-type:wlan/managed¦ R");
+        			"ip:192.168.55.10; " +
+        		"NetIface/type:internet, " +
+        			"ext-type:wlan/managed ¦ RP");
         
-            
+           
+        filters.add("¦ Property/name:vm, value:cdc/fp; " +
+    		"Property/name:vm-version, value:1.3; " +
+    		"OSGiContainer/id:core-osgi-daop; " +
+    		" ¦ RP");
+        
         for (Enumeration en = filters.elements(); en.hasMoreElements();)
             queryAndPrintResult((String)en.nextElement());
 
