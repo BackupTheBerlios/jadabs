@@ -1,5 +1,5 @@
 /**
- * $Id: PipeService.java,v 1.4 2004/11/30 15:40:38 afrei Exp $
+ * $Id: PipeService.java,v 1.5 2004/12/10 13:46:24 afrei Exp $
  *
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -209,24 +209,31 @@ public class PipeService extends Service implements Listener
      */
     void send(Pipe pipe, Message message) throws IOException
     {
-        String ownerId = pipe.getOwnerId();
-
-        EndpointAddress[] URIList = pipe.getResolvedURIList();
+               
+        if (pipe.getValueof(Pipe.TYPE).equals(Pipe.PROPAGATE))
+            propagate(message, pipe);
+        else
+        {
         
-        if (URIList == null) { throw new IOException("unresolved Pipe"); }
-
-        try
-        {
-                sendToEndpoint(message, pipe, URIList);
-        } catch (IOException e)
-        {
-            // Couldn't sent to the URIList of the given Peer. May be the Peer
-            // is dead.
-            // May be this pipe is no longer associated with the previous
-            // URIList.
-            // Hence the resolved Peer for this pipe is set to null.
-            pipe.setResolvedURIList(null);
-            throw e;
+	        String ownerId = pipe.getOwnerId();
+	
+	        EndpointAddress[] URIList = pipe.getResolvedURIList();
+	        
+	        if (URIList == null) { throw new IOException("unresolved Pipe"); }
+	
+	        try
+	        {
+	                sendToEndpoint(message, pipe, URIList);
+	        } catch (IOException e)
+	        {
+	            // Couldn't sent to the URIList of the given Peer. May be the Peer
+	            // is dead.
+	            // May be this pipe is no longer associated with the previous
+	            // URIList.
+	            // Hence the resolved Peer for this pipe is set to null.
+	            pipe.setResolvedURIList(null);
+	            throw e;
+	        }
         }
     }
 
