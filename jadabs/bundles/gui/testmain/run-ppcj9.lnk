@@ -1,0 +1,1 @@
+18#"\j9\bin\j9.exe" -Djava.home=\j9 -cp \j9\lib\jclMax\swt.jar;\test\testmain-0.1.0.jar test.Main 
