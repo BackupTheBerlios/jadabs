@@ -23,11 +23,9 @@ import org.osgi.framework.*;
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 
-public class BundleLoader implements IBundleLoader, BundleListener 
-{
-    private static Logger LOG = Logger.getLogger(BundleLoader.class);
-    
-//   protected static String repository;
+public class BundleLoader implements IBundleLoader, BundleListener {
+   private static Logger LOG = Logger.getLogger(BundleLoader.class);
+
    private static HashSet queuedBundles = new HashSet();
    private static HashSet installedBundles = new HashSet();
    private static LinkedList installationQueue = new LinkedList();
@@ -37,21 +35,24 @@ public class BundleLoader implements IBundleLoader, BundleListener
 
    protected static int fetchPolicy = Eager;
 
+   private BundleStarter starter;
+
    /**
     * 
     * @param sysBundles
     */
    public BundleLoader(Collection sysBundles) {
+      starter = new BundleStarter();
+      starter.start();
       installedBundles.addAll(sysBundles);
    }
 
    /**
     *  
     */
-   public void start() {
+   protected void startup() {
 
       try {
-
          FileReader reader = new FileReader("startup.xml");
          KXmlParser parser = new KXmlParser();
          parser.setInput(reader);
@@ -68,7 +69,7 @@ public class BundleLoader implements IBundleLoader, BundleListener
          }
 
       } catch (Exception e) {
-//         e.printStackTrace();
+         //         e.printStackTrace();
          LOG.error("could not load or parse the startup.xml", e);
       }
    }
@@ -80,7 +81,7 @@ public class BundleLoader implements IBundleLoader, BundleListener
     * @param version
     * @throws Exception
     */
-   public void load(String name, String group, String version) throws Exception {
+   public synchronized void load(String name, String group, String version) throws Exception {
       BundleInformation bundle = new BundleInformation(name, group, version);
       scheduleDependencies(bundle);
       System.out.println();
@@ -93,7 +94,7 @@ public class BundleLoader implements IBundleLoader, BundleListener
     * @throws BundleException
     * @throws FileNotFoundException
     */
-   private void install() throws BundleException, FileNotFoundException {
+   private synchronized void install() throws BundleException, FileNotFoundException {
 
       // in case we have lazy fetching, bundles must be downloaded now
       if (BundleLoader.fetchPolicy == BundleLoader.Lazy) {
@@ -112,8 +113,8 @@ public class BundleLoader implements IBundleLoader, BundleListener
                fin);
          System.out.println("installed " + location);
 
-         new BundleStarter(bundle).start();            
-
+         // enqueue bundle for threaded starting
+         starter.enqueue(bundle);
       }
 
       // clear queue
@@ -133,7 +134,6 @@ public class BundleLoader implements IBundleLoader, BundleListener
       if (BundleLoader.fetchPolicy == BundleLoader.Eager) {
          return fetchBundle(name, group, version);
       }
-
       return true;
    }
 
@@ -151,7 +151,8 @@ public class BundleLoader implements IBundleLoader, BundleListener
 
    private static boolean fetchBundle(String name, String group, String version) {
       // TODO: download bundle
-      // FIXME: Maybe return false here and crosscut this method from remoteLoader ?
+      // FIXME: Maybe return false here and crosscut this method from
+      // remoteLoader ?
 
       return true;
    }
@@ -169,8 +170,9 @@ public class BundleLoader implements IBundleLoader, BundleListener
       installationQueue.add(initial);
 
       System.out.println();
-      if (BundleLoaderActivator.LOG.isDebugEnabled()) 
-         BundleLoaderActivator.LOG.debug("<<Installed Bundles: " + installedBundles + ">>");
+      if (BundleLoaderActivator.LOG.isDebugEnabled())
+         BundleLoaderActivator.LOG.debug("<<Installed Bundles: "
+               + installedBundles + ">>");
       System.out.println("<<Reqested Bundle: " + initial + ">>");
 
       boolean found;
@@ -341,34 +343,57 @@ public class BundleLoader implements IBundleLoader, BundleListener
          installedBundles.remove(loc);
       }
    }
-   
+
    protected Set getInstalledBundles() {
       return installedBundles;
    }
 
+   
    public class BundleStarter extends Thread {
-      Bundle bundle;
-      
-      public BundleStarter(Bundle bundle) {
-         this.bundle = bundle;
+      private LinkedList bundles = new LinkedList();
+      public boolean running = true;
+
+      public void enqueue(Bundle bundle) {
+         synchronized (bundles) {
+            bundles.add(bundle);
+            bundles.notifyAll();
+            if (BundleLoaderActivator.LOG.isDebugEnabled())
+               BundleLoaderActivator.LOG.debug(bundles);
+         }
       }
 
-      /**
-       * @see java.lang.Runnable#run()
-       */
       public void run() {
-         try {
-            bundle.start();
-         } catch (BundleException be) {
-            System.out.println("Error starting bundle " + bundle.getLocation());
-            if (be.getNestedException() == null) {
-               System.out.println("Exception: ");
-               be.printStackTrace();
-            } else {
-               System.out.println("Nested exception: ");
-               be.getNestedException().printStackTrace();
+         while(running) {
+         if (!bundles.isEmpty()) {
+            Bundle bundle;
+            synchronized (bundles) {
+               bundle = (Bundle) bundles.removeFirst();
             }
-         }         
+            try {
+               bundle.start();
+               if (BundleLoaderActivator.LOG.isDebugEnabled())
+                  BundleLoaderActivator.LOG.debug(bundle + " started");
+            } catch (BundleException be) {
+               System.out.println("Error starting bundle "
+                     + bundle.getLocation());
+               if (be.getNestedException() == null) {
+                  System.out.println("Exception: ");
+                  be.printStackTrace();
+               } else {
+                  System.out.println("Nested exception: ");
+                  be.getNestedException().printStackTrace();
+               }
+            }
+         }
+         // sleep 
+         try {
+            synchronized(bundles) {
+               bundles.wait();
+            }
+         } catch (InterruptedException err) {
+            err.printStackTrace();
+         }
+         }
       }
    }
 }

@@ -31,14 +31,13 @@ public class PluginLoader extends Thread implements IPluginLoader {
    private LinkedList pluginSchedule = new LinkedList();
    private Platform platform;
 
-   public PluginLoader() {   
-   }
-
    public void run() {
       // load starter
       File dir = new File("." + File.separatorChar + "plugins");
       File[] files = dir.listFiles(new StarterFilter());
-
+      
+      parser = new KXmlParser();
+      
       for (int i = 0; i < files.length; i++) {
          try {
             BufferedReader reader = new BufferedReader(new FileReader(files[i]));
@@ -50,15 +49,12 @@ public class PluginLoader extends Thread implements IPluginLoader {
                         + line.substring(7).trim());
                   File padfile = new File("." + File.separatorChar + "plugins"
                         + File.separatorChar + line.substring(7).trim());
-                  parser = new KXmlParser();
-
                   FileReader padreader = new FileReader(padfile);
                   parser.setInput(padreader);
 
                   parsePlatform();
-
-                  padreader = null;
                   parser = null;
+                  padreader = null;
                }
             }
          } catch (Exception err) {
@@ -91,19 +87,15 @@ public class PluginLoader extends Thread implements IPluginLoader {
       }
 
       // TEST STARTS HERE
-      OSGiPlugin pl = (OSGiPlugin) registeredPlugins
-            .get("SMTPGateway::ch.ethz.jadabs.mservices.smtpgw");
-      try {
-         resolvePlugin(pl);
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
 
-      System.out.println(pluginSchedule);
+      File file = new File("." + File.separatorChar + "MailService.opd"); 
+      System.out.println(file.getAbsolutePath());
+      loadPlugin(file);
 
-      loadScheduledPlugins();
       // TEST ENDS HERE
    }
+   
+
    
    private void loadScheduledPlugins() {
       OSGiPlugin plugin;
@@ -120,12 +112,18 @@ public class PluginLoader extends Thread implements IPluginLoader {
       }
    }
 
-   public void registerPlugin(File file) {
+   public void loadPlugin(File file) {
       FileReader reader;
+      parser = new KXmlParser();
+      
       try {
          reader = new FileReader(file);
          parser.setInput(reader);
          parsePlugin();
+         registerPlugin(currentPlugin);
+         resolvePlugin(currentPlugin);
+         System.out.println(pluginSchedule);
+         loadScheduledPlugins();         
       } catch (Exception e) {
          e.printStackTrace();
       } finally {
