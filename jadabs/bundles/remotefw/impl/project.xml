@@ -17,6 +17,7 @@
 		<osgi.import.service>ch.ethz.jadabs.jxme.services.GroupService</osgi.import.service>
 		<osgi.export.service>ch.ethz.jadabs.remotefw.FrameworkManager</osgi.export.service>
 		<osgi.bundle.category>remotefw</osgi.bundle.category>
+		<osgi.dynimport.package>ch.*</osgi.dynimport.package>
 		
 		<!-- for eclipse osgi plugins -->
 		<eclipse.bundle.symbolicname>ch.ethz.jadabs.jxme.remotefw</eclipse.bundle.symbolicname>
@@ -76,6 +77,15 @@
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3</artifactId>
 			<version>1.1.3.3_min-osgi</version>
+			<properties>
+	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
+	      	</properties>
+		</dependency>
+	
+		<dependency>
+			<groupId>jsx</groupId>
+			<artifactId>jsx-osgi</artifactId>
+			<version>2.2.3.8</version>
 			<properties>
 	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
 	      	</properties>

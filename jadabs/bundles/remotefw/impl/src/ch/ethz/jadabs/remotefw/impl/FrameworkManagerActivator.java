@@ -39,6 +39,10 @@ package ch.ethz.jadabs.remotefw.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -51,6 +55,10 @@ import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.ServiceReference;
+
+//import JSX.ObjIn;
+//import JSX.ObjOut;
+import JSX.ObjectReader;
 
 import ch.ethz.jadabs.jxme.DiscoveryListener;
 import ch.ethz.jadabs.jxme.Element;
@@ -68,7 +76,7 @@ import ch.ethz.jadabs.remotefw.Framework;
 import ch.ethz.jadabs.remotefw.FrameworkManager;
 import ch.ethz.jadabs.remotefw.RemoteFrameworkListener;
 
-import com.thoughtworks.xstream.XStream;
+//import com.thoughtworks.xstream.XStream;
 
 /**
  * Implements the basic OSGi BundleActivator behaviour and activates the Remote
@@ -410,21 +418,41 @@ public class FrameworkManagerActivator
 	        }
 	        
 			// xstream version
-			XStream xstream = new XStream();
-			String bxml = xstream.toXML(binfoarr);
-			
-			Element[] elms = new Element[3];
-			
-			elms[0] = new Element(MSG_TYPE,
-                    Integer.toString(INFO_ACK), 
-                    Message.JXTA_NAME_SPACE);
-			elms[1] = new Element(FWNAME, peer.getName(),Message.JXTA_NAME_SPACE);
-			elms[2] = new Element(BUNDLES,bxml,Message.JXTA_NAME_SPACE);
+//			XStream xstream = new XStream();
+//			String bxml = xstream.toXML(binfoarr);
+	        
+			// JSX
+	        try {
+		        StringWriter strwbins = new StringWriter();
+//		        ObjOut out = new ObjOut(
+//		                new PrintWriter(
+//		                        strwbins, true));
+//		        
+//		        out.writeObject(binfoarr);
+		        
+		        
+		        JSX.ObjectWriter out = new JSX.ObjectWriter(new PrintWriter(
+                        strwbins, true));
+		        out.writeObject(binfoarr);
+		        out.close();
+		        
+		        
+		        String bxml = strwbins.toString();
+		        LOG.debug("stream: "+ bxml);
+	
+		        
+				Element[] elms = new Element[3];
+				
+				elms[0] = new Element(MSG_TYPE,
+	                    Integer.toString(INFO_ACK), 
+	                    Message.JXTA_NAME_SPACE);
+				elms[1] = new Element(FWNAME, peer.getName(),Message.JXTA_NAME_SPACE);
+				elms[2] = new Element(BUNDLES,bxml,Message.JXTA_NAME_SPACE);
 	        
 			
 			// TODO select the right destination address, just propagate for the moment
-			try
-			{
+//			try
+//			{
 			    EndpointAddress endptaddr = new EndpointAddress(
 	                    null, FrameworkManagerActivator.ENDPOINT_SVC_NAME, null);
 				FrameworkManagerActivator.endptsvc.propagate(elms,
@@ -446,20 +474,41 @@ public class FrameworkManagerActivator
 	        String bxmlresp = new String(message.getElement(BUNDLES).getData());
 	        
             // xstream version
-            XStream xstreamresp = new XStream();
+//            XStream xstreamresp = new XStream();
+//            BundleInfo[] binforesp = (BundleInfo[])xstreamresp.fromXML(bxmlresp);
             
-            // get as vector
-//    	    Vector remotebundles = (Vector)xstreamresp.fromXML(bxmlresp);
+	        // JSX
+	        try {
+	            System.out.println("array: "+bxmlresp);
+//		        ObjIn in = new ObjIn(new StringReader(bxmlresp));
+//		        Object obj = in.readObject();
+	            
+	            Object obj = new ObjectReader(new StringReader(bxmlresp)).readObject();
+
+		        System.out.println("class1: "+obj.getClass().getName());
+		        
+		        BundleInfo[] binforesp = (BundleInfo[])obj;
+
+	            // get as vector
+	//    	    Vector remotebundles = (Vector)xstreamresp.fromXML(bxmlresp);
+	    	                
+	            Vector remotebundles = new Vector();
+	            for (int k = 0; k < binforesp.length; k++)
+	                remotebundles.add(binforesp[k]);
+	            
+	    	    RemoteFramework rfw = (RemoteFramework)frameworks.get(fwname);
+	    	    if (rfw != null)
+	    	        rfw.allBundlesChanged(remotebundles);
     	    
-            // get as array
-            BundleInfo[] binforesp = (BundleInfo[])xstreamresp.fromXML(bxmlresp);
-            Vector remotebundles = new Vector();
-            for (int k = 0; k < binforesp.length; k++)
-                remotebundles.add(binforesp[k]);
-            
-    	    RemoteFramework rfw = (RemoteFramework)frameworks.get(fwname);
-    	    if (rfw != null)
-    	        rfw.allBundlesChanged(remotebundles);
+	        }
+	        catch (IOException ioe)
+	        {
+	            LOG.error("could not parse message");
+	        } catch (ClassNotFoundException e)
+            {
+	            LOG.error("could not create class from message type1");
+            }
+	        
     	    break;
     	    
 	    case INFO_UPD:
@@ -469,12 +518,34 @@ public class FrameworkManagerActivator
 	        String dataupd = new String(message.getElement(ELEM_DATA).getData());
 	        
 	        // xstream version
-            XStream xstreamupd = new XStream();
-            BundleInfo binfo = (BundleInfo)xstreamupd.fromXML(dataupd);
-    	    	        
-    	    RemoteFramework rfwupd = (RemoteFramework)frameworks.get(fwnameupd);
-    	    if (rfwupd != null)
-    	        rfwupd.bundleChanged(binfo);
+//            XStream xstreamupd = new XStream();
+//            BundleInfo binfo = (BundleInfo)xstreamupd.fromXML(dataupd);
+            
+	        // JSX
+	        try {
+	            
+//		        ObjIn binobj = new ObjIn(new StringReader(dataupd));
+//		        Object obj2 = binobj.readObject();
+		        
+		        Object obj2 = new ObjectReader(new StringReader(dataupd)).readObject();
+
+		        
+		        System.out.println("class2: "+obj2.getClass().getName());
+		        BundleInfo binfo = (BundleInfo)obj2;
+		        
+	    	    RemoteFramework rfwupd = (RemoteFramework)frameworks.get(fwnameupd);
+	    	    if (rfwupd != null)
+	    	        rfwupd.bundleChanged(binfo);
+    	    
+	        }
+	        catch (IOException ioe)
+	        {
+	            LOG.error("could not parse message");
+	        } catch (ClassNotFoundException e)
+	        {
+	            LOG.error("could not create class from message type");
+	        }
+    	    
     	    break;
     	    
 	    case INSTALL:

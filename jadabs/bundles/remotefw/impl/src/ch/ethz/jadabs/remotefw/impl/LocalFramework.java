@@ -38,6 +38,9 @@ package ch.ethz.jadabs.remotefw.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -48,6 +51,8 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
 
+import JSX.ObjectWriter;
+
 import ch.ethz.jadabs.jxme.Element;
 import ch.ethz.jadabs.jxme.Message;
 import ch.ethz.jadabs.jxme.NamedResource;
@@ -56,7 +61,7 @@ import ch.ethz.jadabs.remotefw.BundleInfo;
 import ch.ethz.jadabs.remotefw.BundleInfoListener;
 import ch.ethz.jadabs.remotefw.Framework;
 
-import com.thoughtworks.xstream.XStream;
+//import com.thoughtworks.xstream.XStream;
 
 /**
  * @author rjan, andfrei
@@ -275,20 +280,40 @@ public class LocalFramework implements Framework, BundleListener
             
             // send bundle change to remote peers
             // xstream version
-            XStream xstream = new XStream();
-			String bxml = xstream.toXML(binfo);
+//            XStream xstream = new XStream();
+//			String bxml = xstream.toXML(binfo);
 			
-            Element[] elms = new Element[3];
-            
-            elms[0] = new Element(FrameworkManagerActivator.MSG_TYPE,
-                    Integer.toString(FrameworkManagerActivator.INFO_UPD), 
-                    Message.JXTA_NAME_SPACE);
-            elms[1] = new Element(FrameworkManagerActivator.FWNAME,
-                    namedResource.getName(), Message.JXTA_NAME_SPACE);
-            elms[2] = new Element(FrameworkManagerActivator.ELEM_DATA,
-                    bxml, Message.JXTA_NAME_SPACE);
-            
-            FrameworkManagerActivator.sendMessage((Peer)namedResource, elms);
+			
+	        try {
+	            // JSX
+		        StringWriter strwbins = new StringWriter();
+//		        ObjOut out = new ObjOut(
+//		                new PrintWriter(
+//		                        strwbins, true));
+//		        String bxml = strwbins.toString();
+			
+		        ObjectWriter out = new ObjectWriter(new PrintWriter(
+                        strwbins, true));
+		        out.writeObject(binfo);
+		        out.close();
+		        String bxml = strwbins.toString();
+		        
+	            Element[] elms = new Element[3];
+	            
+	            elms[0] = new Element(FrameworkManagerActivator.MSG_TYPE,
+	                    Integer.toString(FrameworkManagerActivator.INFO_UPD), 
+	                    Message.JXTA_NAME_SPACE);
+	            elms[1] = new Element(FrameworkManagerActivator.FWNAME,
+	                    namedResource.getName(), Message.JXTA_NAME_SPACE);
+	            elms[2] = new Element(FrameworkManagerActivator.ELEM_DATA,
+	                    bxml, Message.JXTA_NAME_SPACE);
+	            
+	            FrameworkManagerActivator.sendMessage((Peer)namedResource, elms);
+	            
+	        } catch (IOException e)
+	        {
+	            LOG.error("couldn't send message");
+	        }
         }
     }
     
