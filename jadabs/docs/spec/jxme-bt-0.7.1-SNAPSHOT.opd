@@ -2,17 +2,21 @@
 <!DOCTYPE OSGiServicePlugin SYSTEM "D:\andfrei-nobkp\workspace\jadabs\docs\spec\dtd\OSGiPluginDescriptor.dtd">
 
 <OSGiServicePlugin 
-	id="ch.ethz.jadabs.jxme.bt"
-	name="Jxme-BT"
-	version="0.1.0"
+	uuid="jadabs:jxme-bt:0.7.1-SNAPSHOT:opd"
+	service="ch.ethz.jadabs.jxme.bt"
 	description=""
 	provider-name="ETHZ-IKS">
 	
 	<Extension-Point
-	    id="Platform/NetIface/bt/jsr-82"
+	    id="NetIface/type:bt-jsr82"
 	    description="requires a BT interface"
 	/>
-	
+
+<!--	
+	<Extension-Point
+	    id="Property/AlienProperty:alienValue"
+	/>
+-->
 	<Extension-Point
 	    id="Extension/PeerNetwork"
 	    service="ch.ethz.jadabs.jxme.PeerNetwork"
@@ -20,18 +24,16 @@
 	
 	<Extension
 	    id="BTTransport"
-        service="ch.ethz.jadab.jxme.udp.BTTransport"
+	    service="ch.ethz.jadab.jxme.udp.BTTransport"
     />
     
     <Extension
 	    id="Transport"
-        service="ch.ethz.jadab.jxme.udp.BTTransport"
+            service="ch.ethz.jadab.jxme.udp.BTTransport"
     />
     
     <ServiceActivatorBundle
-        bundle-name="jxme-bt"
-        bundle-version="0.7.1-SNAPSHOT"
-        bundle-group="jadabs"
+	activator-uuid="jadabs:jxme-bt:0.7.1-SNAPSHOT:obr"
     />
 
 </OSGiServicePlugin>

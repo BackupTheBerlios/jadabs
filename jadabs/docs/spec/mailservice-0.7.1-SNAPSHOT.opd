@@ -2,9 +2,8 @@
 <!DOCTYPE OSGiServicePlugin SYSTEM "D:\andfrei-nobkp\workspace\jadabs\docs\spec\dtd\OSGiPluginDescriptor.dtd">
 
 <OSGiServicePlugin
-	id="ch.ethz.jadabs.mservices.smtpgw"
-	name="SMTPGateway"
-	version="0.1.0"
+	uuid="jadabs:mailservice:0.7.1-SNAPSHOT:opd"
+	service="ch.ethz.jadabs.mservices.smtpgw"
 	description=""
 	provider-name="ETHZ-IKS">
 	
@@ -16,7 +15,7 @@
     </Configuration>
     
 	<Extension-Point
-	    id="Platform/NetIface/internet"
+	    id="NetIface/type:internet"
 	    description="requires connection to smtphost"
 	/>
 	
@@ -28,14 +27,12 @@
 	
 	<Extension
 	    id="SMTPGatewayService"
-        service="ch.ethz.jadab.mservices.smtpgw.SMTPGatewayService"
-        description="provides service for sending emails"
-    />
+            service="ch.ethz.jadab.mservices.smtpgw.SMTPGatewayService"
+            description="provides service for sending emails"
+        />
 
     <ServiceActivatorBundle
-        bundle-name="smtpgw"
-        bundle-version="0.7.1-SNAPSHOT"
-        bundle-group="mservices"
+	activator-uuid="mservices:smtpgw:0.7.1-SNAPSHOT:obr"
     />
 
 </OSGiServicePlugin>

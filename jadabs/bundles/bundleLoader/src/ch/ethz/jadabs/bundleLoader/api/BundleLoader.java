@@ -10,23 +10,16 @@ import java.util.Iterator;
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
-public interface BundleLoader {
+public interface BundleLoader extends Loader {
    
    public void loadBundle(String uuid) throws Exception;
    
    public String getDependencyGraph(String uuid);
    
-   public Iterator getInstalledBundles();
-   
+   public Iterator getInstalledBundles();   
 
    // registration functions
    public void registerRequestHandler(HttpRequestHandler handler);
    public void unregisterRequestHandler(HttpRequestHandler handler);
    
-   public void registerInformationSource(InformationSource infoSource);
-   public void unregisterInformationSource(InformationSource infoSource);
-   
-   // callback registration functions
-   public void registerLoaderListener(LoaderListener listener);
-   public void unregisterLoaderListener(LoaderListener listener);
 }

@@ -2,37 +2,35 @@
 <!DOCTYPE OSGiServicePlugin SYSTEM "D:\andfrei-nobkp\workspace\jadabs\docs\spec\dtd\OSGiPluginDescriptor.dtd">
 
 <OSGiServicePlugin
-	id="ch.ethz.jadabs.jxme.udp"
-	name="UDPService"
-	version="0.1.0"
+	uuid="jadabs:jxme-udp:0.7.1-SNAPSHOT:opd"
+	service="ch.ethz.jadabs.jxme.udp"
 	description=""
 	provider-name="ETHZ-IKS">
 	
 	<Extension-Point
-	    id="Platform/NetIface/wlan"
-        description="requires connection to wlan card"
+	    id="NetIface/type:internet"
+            description="requires connection to wlan card"
 	/>
 	
 	<Extension-Point
 	    id="Extension/PeerNetwork"
-	    java-service="ch.ethz.jadabs.jxme.PeerNetwork,
+	    service="ch.ethz.jadabs.jxme.PeerNetwork,
 	        ch.ethz.jadabs.jxmeEndpointService"    	
 	/>
+
 	
 	<Extension
 	    id="Transport"
-        java-service="ch.ethz.jadab.jxme.udp.UDPTransport"
-    />
+            service="ch.ethz.jadab.jxme.udp.UDPTransport"
+        />
     
-    <Extension
+        <Extension
 	    id="UDPTransport"
-        java-service="ch.ethz.jadab.jxme.udp.UDPTransport"
-    />
+            service="ch.ethz.jadab.jxme.udp.UDPTransport"
+        />
     
     <ServiceActivatorBundle
-        bundle-name="jxme-udp"
-        bundle-version="0.7.1-SNAPSHOT"
-        bundle-group="jadabs"
+	activator-uuid="jadabs:jxme-udp:0.7.1-SNAPSHOT:obr"
     />
 
 </OSGiServicePlugin>

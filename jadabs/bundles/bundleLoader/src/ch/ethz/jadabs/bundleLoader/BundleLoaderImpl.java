@@ -72,6 +72,8 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       System.out.println();
       System.out.println(getDependencyGraph("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr"));
 
+      System.out.println();
+      System.out.println(new Repository().getMatchingPlugins("Extension/id:Transport ¦ Container/id:core-osgi-daop,version:0.1.0; NetIface/type:bt-jsr82 ¦ RP"));
    }
 
    /**

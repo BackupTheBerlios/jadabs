@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="bundles/bundleLoader/src"/>
 	<classpathentry kind="src" path="bundles/pluginLoader/src"/>
-	<classpathentry kind="src" path="bundles/service-manager/api/src"/>
-	<classpathentry kind="src" path="bundles/service-manager/impl/src"/>
+	<classpathentry kind="src" path="bundles/serviceManager/impl/src"/>
+	<classpathentry kind="src" path="bundles/serviceManager/api/src"/>	
 	<classpathentry kind="src" path="bundles/commons/concurrent/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/impl/src"/>
 	<classpathentry kind="src" path="bundles/jxme-osgi/impl/test/src"/>

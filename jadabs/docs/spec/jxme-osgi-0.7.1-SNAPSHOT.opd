@@ -2,27 +2,24 @@
 <!DOCTYPE OSGiServicePlugin SYSTEM "D:\andfrei-nobkp\workspace\jadabs\docs\spec\dtd\OSGiPluginDescriptor.dtd">
 
 <OSGiServicePlugin 
-	id="ch.ethz.jadabs.jxme"
-	name="Jxme-OSGi"
-	version="0.1.0"
+	uuid="jadabs:jxme-osgi:0.7.1-SNAPSHOT:opd"
+	service="ch.ethz.jadabs.jxme"
 	description=""
 	provider-name="ETHZ-IKS">
 	
 	
 	<Extension
 	    id="PeerNetwork"
-        service="ch.ethz.jadab.jxme.PeerNetwork"
-    />
+            service="ch.ethz.jadab.jxme.PeerNetwork"
+        />
 
 	<Extension
 	    id="EndpointService"
-        service="ch.ethz.jadab.jxme.EndpointService"
-    />
+            service="ch.ethz.jadab.jxme.EndpointService"
+        />
 
     <ServiceActivatorBundle
-        bundle-name="jxme-osgi"
-        bundle-version="0.7.1-SNAPSHOT"
-        bundle-group="jadabs"
+        activator-uuid="jadabs:jxme-osgi:0.7.1-SNAPSHOT:obr"
     />
 
 </OSGiServicePlugin>

@@ -6,16 +6,21 @@ package ch.ethz.jadabs.bundleLoader;
 import java.io.*;
 import java.net.Socket;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
+import ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher;
 
 /**
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
-public class HttpClient implements InformationSource {
+public class HttpClient extends PluginFilterMatcher implements InformationSource {
    private Vector knownHosts;
+   private static Logger LOG = Logger.getLogger(HttpClient.class);
    
    public HttpClient() {
       //TODO: read property or file and build up list of known hosts
@@ -61,6 +66,29 @@ public class HttpClient implements InformationSource {
    public InputStream retrieveInformation(String uuid, String source) {
       // TODO Auto-generated method stub
       return null;
+   }
+
+   /**
+    * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#getMatchingPlugins(java.lang.String)
+    */
+   public Iterator getMatchingPlugins(String filter) {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   /**
+    * @see ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher#debug(java.lang.String)
+    */
+   protected void debug(String str) {
+      if(LOG.isDebugEnabled())
+         LOG.debug(str);
+   }
+
+   /**
+    * @see ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher#error(java.lang.String)
+    */
+   protected void error(String str) {
+      LOG.error(str);
    }
    
 }

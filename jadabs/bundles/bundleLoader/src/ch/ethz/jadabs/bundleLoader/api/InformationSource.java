@@ -4,6 +4,7 @@
 package ch.ethz.jadabs.bundleLoader.api;
 
 import java.io.InputStream;
+import java.util.Iterator;
 
 /**
  * 
@@ -25,5 +26,13 @@ public interface InformationSource {
     * @return Reader over the retrieved information or null if no information could be retrieved.
     */
    public InputStream retrieveInformation(String uuid, String source);
+   
+   /**
+    * Get an iterator over all uuids matching a pluginFilter. 
+    * @param filter a <code>String</code> compliant with the following EBNF:
+    * filter = ExtensionPointExpression "|" (ContainerExpression)* "|" (PlatformExpression)* "|" [R|P|RP] 
+    * @return Iterator over uuids of matching plugins
+    */
+   public Iterator getMatchingPlugins(String filter);
    
 }
