@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../../project.xml</extend>
+
+  	<groupId>jadabs</groupId>
+  	<id>pluginloader-test</id>
+  	<name>Jadabs Plugin Loader Test</name>
+
+  	<shortDescription>Jadabs Plugin Loader Test</shortDescription>
+
+	<properties>
+		<osgi.import.service></osgi.import.service>		
+		<osgi.export.service>ch.ethz.jadabs.pluginLoader.IPluginLoader</osgi.export.service>	
+	</properties>
+	
+	
+  	<dependencies>
+
+        <dependency>
+            <groupId>osgi</groupId>
+            <artifactId>osgi-framework</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>bundleloader</artifactId>
+			<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>pluginloader</artifactId>
+			<version>${pom.currentVersion}</version>
+		</dependency>
+				
+  	</dependencies>
+  
+</project>
