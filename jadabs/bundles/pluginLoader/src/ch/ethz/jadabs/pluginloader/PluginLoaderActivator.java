@@ -75,7 +75,7 @@ public class PluginLoaderActivator implements BundleActivator
         LOG.debug("STARTING PLUGIN LOADER");
         
         if (LOG.isDebugEnabled())
-            LOG.debug("starting Plugin Loader ... ");        
+            LOG.debug("starting Plugin Loader ... " + System.currentTimeMillis());        
         
         // get BundleLoader
         sref = bc.getServiceReference(BundleLoader.class.getName());

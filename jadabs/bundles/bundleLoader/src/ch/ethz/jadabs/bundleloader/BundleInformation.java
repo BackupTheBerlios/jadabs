@@ -291,7 +291,9 @@ public class BundleInformation extends ServiceAdvertisement
             String uuid = parser.getText().trim();
             try
             {
-                BundleInformation dependency = new BundleInformation(uuid);
+               if (LOG.isDebugEnabled()) 
+                  LOG.debug("Dependency:" + uuid);
+               BundleInformation dependency = new BundleInformation(uuid);
                 bundleDependencies.add(dependency);
             } catch (Exception e)
             {

@@ -1,119 +1,177 @@
 package ch.ethz.jadabs.http;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.ProtocolException;
 import java.net.Socket;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-public class HttpSocket extends Socket
-{
-    protected BufferedReader inbound = null;
+public class HttpSocket extends Socket {
+   protected BufferedReader fromClient = null;
 
-    public String version = null;
-    public String method = null;
-    public String file = null;
-    public Hashtable headerValues = new Hashtable();
-    public String extraHdr = null;
+   public String version = null;
+   public String method = null;
+   public String file = null;
+   public Hashtable headerValues = new Hashtable();
+   public String extraHdr = null;
 
-    HttpSocket()
-    {
-        super();
-    }
+   HttpSocket() {
+      super();
+   }
 
-    public void getRequest()
-        throws IOException, ProtocolException
-    {
-        try
-        {
+   public void getRequest() throws IOException, ProtocolException {
+      try {
 
-            inbound = new BufferedReader(
-                new InputStreamReader(getInputStream()) );
+         fromClient = new BufferedReader(
+               new InputStreamReader(getInputStream()));
 
-            String reqhdr = readHeader(inbound);
+         String reqhdr = readHeader(fromClient);
 
-            parseReqHdr(reqhdr);
-        }
-        catch (IOException ioe)
-        {
-            if ( inbound != null )
-                inbound.close();
-            throw ioe;
-        }
-    }
+         parseReqHdr(reqhdr);
+      } catch (IOException ioe) {
+         if (fromClient != null)
+            fromClient.close();
+         throw ioe;
+      }
+   }
 
-    private String readHeader(BufferedReader is)
-        throws IOException
-    {
-        String command;
-        String line;
+   private String readHeader(BufferedReader is) throws IOException {
+      String command;
+      String line;
 
-        // Get the first request line
-        if ( (command = is.readLine()) == null )
-            command = "";
-        command += "\n";
+      if ((command = is.readLine()) == null)
+         command = "";
+      command += "\n";
 
-        // Check for HTTP/1.0 signature
-        if (command.indexOf("HTTP/") != -1)
-        {
-            // Retreive any additional lines
-            while ((line = is.readLine()) != null  &&  !line.equals(""))
-                command += line + "\n";
-        }
-        else
-        {
-            throw new IOException();
-        }
-        return command;
-    }
+      if (command.indexOf("HTTP/") != -1) {
+         while ((line = is.readLine()) != null && !line.equals(""))
+            command += line + "\n";
+      } else {
+         throw new IOException();
+      }
+      return command;
+   }
 
-    private void parseReqHdr(String reqhdr)
-        throws IOException, ProtocolException
-    {
-        // Break the request into lines
-        StringTokenizer lines = new StringTokenizer(reqhdr, "\r\n");
-        String currentLine = lines.nextToken();
+   private void parseReqHdr(String reqhdr) throws IOException,
+         ProtocolException {
+      StringTokenizer lines = new StringTokenizer(reqhdr, "\r\n");
+      String currentLine = lines.nextToken();
 
-        // Process the initial request line
-        // into method, file, version Strings
-        StringTokenizer members = new StringTokenizer(currentLine, " \t");
-        method = members.nextToken();
-        file = members.nextToken();
-        // if (file.equals("/")) file += "../index.html";
-        version = members.nextToken();
+      StringTokenizer members = new StringTokenizer(currentLine, " \t");
+      method = members.nextToken();
+      file = members.nextToken();
 
-        // Process additional lines into name/value pairs
-        while ( lines.hasMoreTokens() )
-        {
-            String line = lines.nextToken();
+      version = members.nextToken();
 
-            // Search for separating character
-            int slice = line.indexOf(':');
+      while (lines.hasMoreTokens()) {
+         String line = lines.nextToken();
 
-            // Error if no separating character
-            if ( slice == -1 )
-            {
-                throw new ProtocolException(
-                    "Invalid HTTP header: " + line);
+         int slice = line.indexOf(':');
+
+         if (slice == -1) {
+            throw new ProtocolException("Invalid HTTP header: " + line);
+         } else {
+            String name = line.substring(0, slice).trim();
+            String value = line.substring(slice + 1).trim();
+            addNameValue(name, value);
+         }
+      }
+   }
+
+   private void addNameValue(String name, String value) {
+      headerValues.put(name, value);
+   }
+
+   public void send404() {
+      OutputStream toClient = null;
+
+      try {
+
+         toClient = getOutputStream();
+
+         String hdr = "HTTP/1.0 404 NOT_FOUND\r\n\r\n";
+         toClient.write(hdr.getBytes());
+
+         toClient.close();
+         fromClient.close();
+      } catch (IOException e) {
+         e.printStackTrace();
+      } finally {
+         toClient = null;
+         fromClient = null;
+      }
+   }
+
+   public void sendFile(File file, String MimeType) {
+      OutputStream toClient = null;
+
+      
+      try {
+         toClient = getOutputStream();
+
+         FileInputStream fis = new FileInputStream(file);
+         long fileSize = file.length();
+
+         String hdr = "HTTP/1.0 200 OK\r\n";
+         hdr += "Content-type: " + MimeType + "\r\n";
+         hdr += "Content-Length: " + fileSize + "\r\n";
+         if (extraHdr != null)
+            hdr += extraHdr;
+         hdr += "\r\n";
+
+         toClient.write(hdr.getBytes());
+
+         if (!method.equals("HEAD")) {
+            byte dataBody[] = new byte[1024];
+            int cnt;
+            while ((cnt = fis.read(dataBody)) != -1) {
+               toClient.write(dataBody, 0, cnt);
             }
-            else
-            {
-                // Separate at the slice character into name, value
-                String name = line.substring(0,slice).trim();
-                String value = line.substring(slice + 1).trim();
-                addNameValue(name, value);
-            }
-        }
-    }
+         }
+         toClient.close();
+         fromClient.close();
+      } catch (IOException e) {
+         send404();
+         e.printStackTrace();         
+      } finally {
+         toClient = null;
+         fromClient = null;
+      }
+   }
 
-    /**
-     * Add a name/value pair to the internal array
-     */
-    private void addNameValue(String name, String value)
-    {
-    	headerValues.put(name, value);
-    }
+   public void sendString(String data, String MimeType) {
+      OutputStream toClient = null;
+
+      try {
+         toClient = getOutputStream();
+
+         String hdr = "HTTP/1.0 200 OK\r\n";
+         hdr += "Content-type: " + MimeType + "\r\n";
+         hdr += "Content-Length: " + data.length() + "\r\n";
+         if (extraHdr != null)
+            hdr += extraHdr;
+         hdr += "\r\n";
+
+         toClient.write(hdr.getBytes());
+
+         if (!method.equals("HEAD")) {
+            byte dataBody[] = new byte[1024];
+            int cnt;
+            toClient.write(data.getBytes(), 0, data.length());
+         }
+         toClient.close();
+         fromClient.close();
+      } catch (IOException e) {
+         e.printStackTrace();
+      } finally {
+         toClient = null;
+         fromClient = null;
+      }
+   }
 
 }

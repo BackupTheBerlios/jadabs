@@ -72,6 +72,9 @@ public class OSGiPlugin extends ServiceAdvertisement
         } catch (FileNotFoundException e)
         {
             LOG.error("file not found");
+        } finally {
+           reader = null;
+           file = null;
         }
         
         return null;
@@ -150,6 +153,7 @@ public class OSGiPlugin extends ServiceAdvertisement
             version = parser.getAttributeValue(null, "version");
             description = parser.getAttributeValue(null, "description");
             provider = parser.getAttributeValue(null, "provider");
+            id = getID();
         } else if (stack.peek().equals("Extension"))
         {
             addExtension(
