@@ -64,6 +64,7 @@ public abstract class PluginFilterMatcher {
          parser.setInput(plugin, null);
          boolean matches = false;
          
+                
          for (int type = parser.next(); (type != KXmlParser.END_DOCUMENT); type = parser
          .next()) {
             if (type == KXmlParser.START_TAG) {
@@ -72,7 +73,7 @@ public abstract class PluginFilterMatcher {
                if (stack.peek().equals("Extension")) {
                   String id = parser.getAttributeValue(null, "id");
                   debug("FOUND EXTENSION " + id);
-                  if (requires.equals("Extension/" + "id:" + id)) {
+                  if (requires == null || requires.equals("Extension/" + "id:" + id)) {
                      matches = true;
                   }
                } else if (stack.peek().equals("Extension-Point")) {
@@ -96,6 +97,10 @@ public abstract class PluginFilterMatcher {
                }
             }
          }
+         
+         if (requires == null)
+             return true;
+         
          return matches;
       } catch (Exception e) {
          e.printStackTrace();
@@ -110,6 +115,8 @@ public abstract class PluginFilterMatcher {
     */
    private MatchItem extensionPointFromFilter(String filter) {      
       String[] parts = filter.split("¦");
+      if (parts[0].trim().equals(""))
+          return null;
       return new MatchItem(parts[0]);
    }
 
