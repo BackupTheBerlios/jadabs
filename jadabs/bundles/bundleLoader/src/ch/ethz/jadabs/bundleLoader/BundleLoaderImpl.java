@@ -61,19 +61,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       // this is a hack
       loadedBundles.add(new String("jadabs:log4j-cdc:0.7.1-SNAPSHOT:obr"));
 
-      // TEST SECTION
-      try {
-         this.loadBundle("jadabs:jxme-udp:0.7.1-SNAPSHOT:obr");
-         this.loadBundle("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr");
-         this.loadBundle("jadabs:remotefw-impl:0.7.1-SNAPSHOT:obr");
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-      System.out.println();
-      System.out.println(getDependencyGraph("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr"));
-
-      System.out.println();
-      System.out.println(new Repository().getMatchingPlugins("Extension/id:Transport ¦ Container/id:core-osgi-daop,version:0.1.0; NetIface/type:bt-jsr82 ¦ RP"));
    }
 
    /**
@@ -151,8 +138,8 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#getDependencyGraph(java.lang.String)
     */
    public String getDependencyGraph(String uuid) {
-      // still a bit buggy for large graphs ...
-      
+      // FIXME: still a bit buggy for large graphs ...
+
       int index;
       int level;
       boolean found;
@@ -245,9 +232,10 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          e.printStackTrace();
          LOG.error("Could not locate bundle descriptor " + uuid);
       }
-      if (result != null)
+      if (result != null) {
          result.processed = false;
-      result.level = 0;
+      	 result.level = 0;
+      }
       return result;
    }
 
@@ -360,15 +348,14 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
    }
 
    
-   protected static InputStream fetchInformation(String uuid, String location, Object requestor) {
+   protected InputStream fetchInformation(String uuid, String location, Object requestor) {
       InputStream result = null;
       for (Enumeration sources = infoSources.elements(); sources.hasMoreElements();) {
          InformationSource source = (InformationSource) sources.nextElement();
          if (source instanceof InformationSource) {
-            if (((InformationSource)source) == requestor) return result;
+            if (source == requestor) return result;
          }
-         if ((result = ((InformationSource) sources.nextElement())
-               .retrieveInformation(uuid, location)) != null)
+         if ((result = source.retrieveInformation(uuid, location)) != null)
             break;
       }
       if (LOG.isDebugEnabled())
@@ -387,8 +374,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          if (source instanceof InformationSource) {
             if (((InformationSource)source) == requestor) return result;
          }
-         if ((result = ((InformationSource) sources.nextElement())
-               .retrieveInformation(uuid)) != null)
+         if ((result = source.retrieveInformation(uuid)) != null)
             break;
       }
       if (LOG.isDebugEnabled())
