@@ -1,5 +1,5 @@
 /**
- * $Id: PipeService.java,v 1.3 2004/11/19 08:16:36 afrei Exp $
+ * $Id: PipeService.java,v 1.4 2004/11/30 15:40:38 afrei Exp $
  *
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -163,11 +163,15 @@ public class PipeService extends Service implements Listener
             synchronized (this)
             {
                 // See if its in the local cache.
-                pipeOwner = (Peer)resService.localSearch(
+                
+                NamedResource[] nr = resService.localSearch(
                         pipe.getID().getGroupID(), 
                         NamedResource.PEER, Message.ID_TAG,
-                        ownerId, 1, serviceName)[0];
+                        ownerId, 1, serviceName);
                 
+                if (nr.length >= 1)
+                    pipeOwner = (Peer)nr[0];
+               
                 if (pipeOwner == null)
                 {
                     unResolvedOwnerIdList.addElement(ownerId);
