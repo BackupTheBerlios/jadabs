@@ -133,7 +133,9 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
       // BUNDLE LOADER TEST SECTION
       
       System.out.println();
-      System.out.println(PluginLoaderActivator.bloader.getDependencyGraph("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr"));
+      System.out.println();
+      System.out.println();
+      // System.out.println(PluginLoaderActivator.bloader.getDependencyGraph("jadabs:jxme-services-impl:0.7.1-SNAPSHOT:obr"));
       
    }
 

@@ -1,0 +1,45 @@
+Fri Feb 18 15:03:39 CET 2005  [debug] AvalonLogSystem initialized using logfile 'velocity.log'
+Fri Feb 18 15:03:39 CET 2005   [info] ************************************************************** 
+Fri Feb 18 15:03:39 CET 2005   [info] Starting Jakarta Velocity v1.4-dev
+Fri Feb 18 15:03:39 CET 2005   [info] RuntimeInstance initializing.
+Fri Feb 18 15:03:39 CET 2005   [info] Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+Fri Feb 18 15:03:39 CET 2005   [info] Trying to use logger class org.apache.velocity.runtime.log.AvalonLogSystem
+Fri Feb 18 15:03:39 CET 2005   [info] Using logger class org.apache.velocity.runtime.log.AvalonLogSystem
+Fri Feb 18 15:03:39 CET 2005   [info] Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+Fri Feb 18 15:03:39 CET 2005   [info] Resource Loader Instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Feb 18 15:03:39 CET 2005   [info] FileResourceLoader : initialization starting.
+Fri Feb 18 15:03:39 CET 2005   [info] FileResourceLoader : adding path '/home/rjan/.maven/cache/maven-xdoc-plugin-1.8/plugin-resources/templates'
+Fri Feb 18 15:03:39 CET 2005   [info] FileResourceLoader : initialization complete.
+Fri Feb 18 15:03:39 CET 2005   [info] ResourceCache : initialized. (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+Fri Feb 18 15:03:39 CET 2005   [info] Default ResourceManager initialization complete.
+Fri Feb 18 15:03:39 CET 2005   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+Fri Feb 18 15:03:39 CET 2005   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+Fri Feb 18 15:03:39 CET 2005   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+Fri Feb 18 15:03:39 CET 2005   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Include
+Fri Feb 18 15:03:39 CET 2005   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+Fri Feb 18 15:03:39 CET 2005   [info] Created: 20 parsers.
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : initialization starting.
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : adding VMs from VM library template : VM_global_library.vm
+Fri Feb 18 15:03:39 CET 2005  [error] ResourceManager : unable to find resource 'VM_global_library.vm' in any resource loader.
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : error using  VM library template VM_global_library.vm : org.apache.velocity.exception.ResourceNotFoundException: Unable to find resource 'VM_global_library.vm'
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro :  VM library template macro registration complete.
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : allowInline = true : VMs can be defined inline in templates
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : allowInlineLocal = false : VMs defined inline will be  global in scope if allowed.
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : messages on  : VM system will output logging messages
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : autoload off  : VM system will not automatically reload global library macros
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : initialization complete.
+Fri Feb 18 15:03:39 CET 2005   [info] Velocity successfully started.
+Fri Feb 18 15:03:39 CET 2005   [info] ResourceManager : found cvs-usage.xml with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Feb 18 15:03:39 CET 2005  [error] RHS of #set statement is null. Context will not be modified. cvs-usage.xml [line 28, column 5]
+Fri Feb 18 15:03:39 CET 2005   [info] ResourceManager : found index.xml with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Feb 18 15:03:39 CET 2005   [info] ResourceManager : found maven-reports.xml with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Feb 18 15:03:39 CET 2005   [info] ResourceManager : found dependencies.xml with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Feb 18 15:03:39 CET 2005   [info] ResourceManager : found issue-tracking.xml with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Feb 18 15:03:39 CET 2005  [error] RHS of #set statement is null. Context will not be modified. issue-tracking.xml [line 29, column 9]
+Fri Feb 18 15:03:39 CET 2005   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = issue-tracking.xml [line 30,column 18] : $url is not a valid reference.
+Fri Feb 18 15:03:39 CET 2005   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = issue-tracking.xml [line 30,column 24] : $url is not a valid reference.
+Fri Feb 18 15:03:39 CET 2005   [info] Velocimacro : added new VM : #displayLink( label link ) : source = mail-lists.xml
+Fri Feb 18 15:03:40 CET 2005   [info] ResourceManager : found mail-lists.xml with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Feb 18 15:03:40 CET 2005   [info] ResourceManager : found project-info.xml with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Feb 18 15:03:40 CET 2005   [info] ResourceManager : found team-list.xml with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs BundleLoader</title>
+  </properties>
+
+  <body>
+    <section name="BundleLoader">    
+     <subsection name="uuids">
+     <p>
+   Jadabs Bundle Loader resolves the dependencies between bundles. The 
+   bundle that is to be loaded is defined by it's uuid (universal unique
+   identifyer) that can easily derived from the bundle's properties:
+   <source>
+    bundle-group + ":" + bundle-name + ":" + bundle-version + ":" + idtype
+     </source>
+   So the uuid for the bundle "jxme-osgi-0.7.1" is 
+   <code>jadabs:jxme-osgi:0.7.1:jar</code>
+   while the uuid for the corresponding obr file is 
+   <code>jadabs:jxme-osgi:0.7.1:obr</code>. Compliant to the maven  
+   repository format, it is expected that the location of the bundle in a 
+   repository is <code>repopath/group-name/jars/</code> and the obr is in <code>repopath/group-name/obrs</code>. 
+     </p>
+ </subsection>
+ <subsection name="Information Sources">
+ <p>
+   In a Jadabs system, several sources for bundles and obrs exist, first 
+   of all, every Jadabs container has a repository, normally a directory 
+   on a local fixed disk. But if an internet connection exists, Bundle 
+   Loader can also ask Repository Servers via http for information. On a     
+   even leven, the Service Manager can use the JXME groupservice to 
+   retrieve information. All this possibilities are abstracted to 
+   Information Sources, where bundles or obrs can be requested and the 
+   Plugin Loader can start filtered queries for matching plugins. The  
+   result of a request is always a <code>InputStream</code> because the 
+   found information is not necessarily a file, it can also be a Network 
+   Stream or a different source. As standard, every Bundle Loader has it's 
+   local repository registered as Information Source, if a 
+   <code>Socket</code> can be opened, a http client is also registered.  
+   Higher level bundles can register additional Information Sources, like
+   the service manager does. To do this, the providing class must 
+   implement the 
+   <code>ch.ethz.jadabs.bundleLoader.api.InformationSource</code> Interface: 
+ <source>
+   <![CDATA[
+ public interface InformationSource {
+
+      public InputStream retrieveInformation(String uuid);
+   
+      public InputStream retrieveInformation(String uuid, String source);
+   
+      public Iterator getMatchingPlugins(String filter) throws Exception;
+ }
+ ]]>
+ </source>
+   The first two methods are used to retrieve bundle jars or obrs 
+   specified by the uuid, the second method additionally specifies a 
+   source location where the information can be found, the implementation  
+   of this feature is optional, Repository omits this argument while 
+   HttpClient interprets this argument as an url. The 
+   <code>getMatchingPlugins(String filter)</code> method is used in 
+   connection with Plugins by the Plugin Loader. 
+ </p>
+     </subsection> 
+    </section>    
+  </body>
+</document>
+
+
+
+
+
+

@@ -28,7 +28,7 @@
   		
   		<item name="Getting Started" 				href="/start/index.html" collapse="true">
   			<item name="User Guide" 				href="/start/userguide.html"/>
-  		    <item name="JXME"						href="/start/jxme.html"/>
+	  		<item name="JXME"						href="/start/jxme.html"/>
   			<item name="AOP"						href="/start/aop.html"/>
   			<item name="SOA"						href="/start/soa.html"/>
   			<!--<item name="Design Principles"			href="/start/design.html"/> -->
@@ -60,6 +60,10 @@
 		<item name="Services"					href="" collapse="false">
 			<item name="SMTP Gateway"           	href="/multiproject/smtpgw/index.html"/>
 		</item>
+		<item name="Dynamic Loader"				href="/start/loader.html">				
+			<item name="BundleLoader"                       href="/multiproject/bundleloader/index.html" />				
+			<item name="PluginLoader"                       href="/multiproject/pluginloader/index.html" />			
+		</item>		
 	</menu>
 	
 	<menu name="Project Admin">

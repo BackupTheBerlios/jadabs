@@ -96,6 +96,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
    }
 
+   
    /**
     * Singleton, get implementation
     * 
@@ -107,6 +108,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return me;
    }
 
+   
    /**
     * Load a bundle together with all dependencies.
     * 
@@ -163,6 +165,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
+   
    /**
     * Get the dependency graph of a given bundle
     * 
@@ -175,42 +178,45 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
 
       do {
          int index;
-         
-         for (index=0; index<list.size()-1 && ((BundleDescriptor)list.get(index)).processed; index++);
-         
-         BundleDescriptor current = (BundleDescriptor)list.get(index);
-         
+
+         for (index = 0; index < list.size() - 1
+               && ((BundleDescriptor) list.get(index)).processed; index++)
+            ;
+
+         BundleDescriptor current = (BundleDescriptor) list.get(index);
+
          // all are processed, exit loop
-         if (current.processed) break;
-         
-         int offset=1;
+         if (current.processed)
+            break;
+
+         int offset = 1;
          int childLevel = current.getLevel() + 1;
-         
+
          System.out.println(current + " has Dependencies: ");
-         for (Enumeration deps = current.dependencies.elements(); deps.hasMoreElements(); ) {
-            String depUuid = (String)deps.nextElement();
+         for (Enumeration deps = current.dependencies.elements(); deps
+               .hasMoreElements();) {
+            String depUuid = (String) deps.nextElement();
             System.out.println("\t" + depUuid);
             BundleDescriptor dep = getBundleDescriptor(depUuid);
-            System.out.println("\t old level: " + dep.getLevel() + ", new level: " + childLevel);
+            System.out.println("\t old level: " + dep.getLevel()
+                  + ", new level: " + childLevel);
             dep.setLevel(childLevel);
-            if (dep.dependencies.isEmpty()) 
+            if (dep.dependencies.isEmpty())
                dep.processed = true;
-            list.add(index+offset, dep);
-            
+            list.add(index + offset, dep);
+
             offset++;
          }
          System.out.println();
-         
-         current.processed = true;
-         
-      } while(true);
 
-      
-      for (Iterator iter = list.iterator(); iter.hasNext(); ) {         
-         BundleDescriptor current = (BundleDescriptor)iter.next(); 
+         current.processed = true;
+
+      } while (true);
+
+      for (Iterator iter = list.iterator(); iter.hasNext();) {
+         BundleDescriptor current = (BundleDescriptor) iter.next();
          System.out.println(current + " hat Level " + current.getLevel());
       }
-      
 
       // and now make a XML document from the list
 
@@ -242,9 +248,10 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       buffer.append("</dependency-graph>\n");
 
       return buffer.toString();
-            
+
    }
 
+   
    /**
     * Get a list of all currently installed bundles
     * 
@@ -254,6 +261,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return loadedBundles.iterator();
    }
 
+   
    /**
     * Get a bundle descriptor. Either, the <code>BundleDescriptor</code> still
     * exists, that means the <code>WeakReference</code> has not been broken up
@@ -294,6 +302,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
+   
    /**
     * Builds up a schedule for a given bundle.
     * 
@@ -382,6 +391,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return installationQueue;
    }
 
+   
    /**
     * Register a request handler at the <code>HttpDaemon</code>
     * 
@@ -391,6 +401,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       BundleLoaderActivator.httpDaemon.addRequestHandler(handler);
    }
 
+   
    /**
     * Unregister a request handler at the <code>HttpDaemon</code>
     * 
@@ -400,6 +411,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       BundleLoaderActivator.httpDaemon.removeRequestHandler(handler);
    }
 
+   
    /**
     * Register an <code>InformationSource</code> to be used when fetching
     * bundle jars or obrs.
@@ -411,6 +423,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          infoSources.add(infoSources);
    }
 
+   
    /**
     * Unregister an <code>InformationSource</code>
     * 
@@ -420,6 +433,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       infoSources.remove(infoSource);
    }
 
+   
    /**
     * Fetch Information like bundle jars or obrs using all registered
     * <code>InformationSources<code>
@@ -449,6 +463,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
+   
    /**
     * Fetch Information like bundle jars or obrs using all registered
     * <code>InformationSources<code>
@@ -471,6 +486,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
+   
    /**
     * Register a <code>LoaderListener</code>
     * 
@@ -481,6 +497,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          loaderListeners.add(listener);
    }
 
+   
    /**
     * Unregister a <code>LoaderListener</code>
     * 
@@ -490,6 +507,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       loaderListeners.remove(listener);
    }
 
+   
    /**
     * Notifies all registered <code>LoaderListeners</code> that the state of a
     * bundle has changed.
@@ -506,6 +524,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
+   
    /**
     * Called by framework, if a bundle state has changed.
     * 
@@ -542,6 +561,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       }
    }
 
+   
    /**
     * Get a obr uuid from a bundle jar filename
     * 

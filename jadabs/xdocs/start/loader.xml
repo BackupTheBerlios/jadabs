@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+
+<document>
+
+  <properties>
+    <title>Jadabs dynamic loader project</title>
+    <author email="jrellermeyer_at_student.ethz.ch">Jan S. Rellermeyer</author>
+  </properties>
+
+  <body>
+
+    <section name="Introduction">
+      <p>
+ Jadabs Dynamic Loader was developed as a semester thesis by Jan S. 
+ Rellermeyer at the <a href="http://www.iks.inf.ethz.ch">Information and 
+ Communication System Research Group</a> of the Swiss Federal Institute of 
+ Technology (<a href="http://www.ethz.ch">ETH Zurich</a>). 
+      </p>
+      <p>
+ OSGi is a dynamic service oriented middleware that allows to load and 
+ unload bundles at runtime. However the bundles must exist on the peer and 
+ in the general case, an application bundle cannot be started as a 
+ standalone unit, but several dependencies have to be fulfilled before the 
+ bundle can be started. For example an application like the SMTP Gateway 
+ requires JXME to send emails so JXME must be started before SMTP Gateway   
+ can be started. Additionally, some bundles are platform dependent, for  
+ example JXME has an implementation using UDP and one using Bluetooth, the
+ choice of the implementation depends on what platform is used and the 
+ available connections on that platform. Sometimes bundles require native 
+ code libraries like SWT, then the choice of the implementation depends on 
+ the operating system running on the peer.       
+      </p>     
+      <p>
+ Jadabs Dynamic Loader is an approach to provide a framework that can 
+ solve these problems in an autonomic way, with the use of abstract 
+ plugins and metadata descriptions of Bundles, the specification of an 
+ application plugin suffice to load all necessary bundle dependencies and 
+ choose the right implementation for the underlying platform. And together 
+ with the http client and the Jadabs Service Manager, the required bundles 
+ and metadata can be taken from other peers in the neighbourhood. 
+      </p>
+ <subsection name="Design Issues">
+ <p>
+   The main targets for Jadabs are small devices like cell phones or PDAs
+   with limited memory and processor power. Finding dependencies of a 
+   given bundle is an inherently recursive problems, as dependencies can 
+   themself have again dependencies. But on devices with very limited 
+   resources, recursion are time consuming as large stacks for function
+   calls have to be build up. And a middleware should be as lightweight 
+   as possible to leave more resources for the actual applications. 
+   This is why Dynamic Loader uses iterations instead of 
+   recursions to be able to process even large dependency graphs without
+   blocking running bundles.
+ </p>
+ <p>
+   The required metadata should not result in additional work for the 
+   developer, so Dynamic Loader uses the <a 
+   href="http://mavenosgiplugin.berlios.de/">Maven-OSGi-Plugin</a> to 
+   automatically create bundle descriptors that are based on the 
+   <a href="http://oscar-osgi.sourceforge.net/">Oscar Bundle 
+   Repository</a> format. With the help of the obr files, obvious  
+       dependencies can be resolved, obvious in the sense that they 
+   are the result of classpath dependencies, one bundle uses classes from  
+   the other bundle. Apart from obvious dependencies, 
+   also implicit dependencies can exist, where one bundle is the api of
+   the other and many possible implementations can exist. In this case, 
+   the dependency between a bundle and the api is obvious, while the 
+   dependency to the implementation is implicit, the bundle cannot run
+   without the implementation although the api already satisfies the 
+   classpath dependency. Dynamic Loader has the concept of plugins to 
+   solve this problem, plugins are abstract units that provide certain
+   extensions and have extension points that have to be satisfied by 
+   either other plugins' extensions or platform attributes. The mechanism 
+   also solves platform dependencies. 
+        </p>
+ </subsection>
+    </section>
+  </body>
+</document>
