@@ -1,6 +1,6 @@
 /*
  * Created on Aug 5, 2004
- * $Id: SMTPServiceDiscovery.java,v 1.1 2004/11/10 10:28:13 afrei Exp $
+ * $Id: SMTPServiceDiscovery.java,v 1.2 2004/11/19 14:31:07 afrei Exp $
  */
 package ch.ethz.jadabs.mservices.smsgateway;
 
@@ -32,7 +32,7 @@ public class SMTPServiceDiscovery implements Listener, Runnable
      * polling interval for discovery thread sending discovery 
      * messages to the SMTPGateway
      */
-    private static final int DISCOVERY_INTERVAL_MS = 60000;
+    private static final int DISCOVERY_INTERVAL_MS = 10000;
     
     /** expriation time of smtp discovery lease in ms */
     private static final int EXPIRATION_TIME_MS = 600000;

@@ -8,7 +8,7 @@
 -Dlog4j.priority=DEBUG
 -Dch.ethz.jadabs.jxme.hostname=cronus
 -Dch.ethz.jadabs.jxme.bt.rendezvouspeer=true
--Dch.ethz.jadabs.jxme.bt.discoverysleep=10000
+-Dch.ethz.jadabs.jxme.bt.discoverysleep=3000
 -Dch.ethz.jadabs.mservices.smtpgw.smtphost=smtp.inf.ethz.ch
 
 -init
