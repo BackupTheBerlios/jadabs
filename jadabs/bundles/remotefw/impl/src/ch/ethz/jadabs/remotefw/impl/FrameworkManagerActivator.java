@@ -149,7 +149,7 @@ public class FrameworkManagerActivator
         FrameworkManagerActivator.bc = bc;
         peerName = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
         
-        // get GroupService
+        // get PeerNetwork
         ServiceReference srefpnet = bc.getServiceReference(PeerNetwork.class.getName());
         if (srefpnet == null)
         {
@@ -181,8 +181,10 @@ public class FrameworkManagerActivator
         
         groupsvc = (GroupService) bc.getService(srefgsvc);
         
-        // add the framework of the local peer
+        // subscribe in groupsvc for discovery events
+        groupsvc.addDiscoveryListener(this);
         
+        // add the framework of the local peer
         local = new LocalFramework(peer);
         frameworks.put(peer.getName(), local);
         
@@ -296,6 +298,20 @@ public class FrameworkManagerActivator
         for (Enumeration en = listeners.elements(); en.hasMoreElements();)
         {
             ((RemoteFrameworkListener) en.nextElement()).enterFrameworkEvent(rframework);
+        }
+    }
+    
+    /*
+     */
+    public void handleNamedResourceLoss(NamedResource namedResource)
+    {
+        LOG.debug("handle named resource loss");
+        
+        Framework fw = (Framework)frameworks.get(namedResource.getName());
+        
+        for (Enumeration en = listeners.elements(); en.hasMoreElements();)
+        {
+            ((RemoteFrameworkListener) en.nextElement()).leaveFrameworkEvent(fw);
         }
     }
     
@@ -535,5 +551,6 @@ public class FrameworkManagerActivator
 
         }
     }
+
 
 }

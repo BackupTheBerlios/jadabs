@@ -51,7 +51,7 @@
  *
  *  This license is based on the BSD license adopted by the Apache Foundation.
  *
- *  $Id: Cache.java,v 1.1 2004/11/08 07:30:35 afrei Exp $
+ *  $Id: Cache.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
  */
 
 package ch.ethz.jadabs.jxme.services.impl;
@@ -132,30 +132,74 @@ class Cache
      * 
      * @param resource
      *            resource adv to be added
+     * @return boolean 
+     * 				true if entry already available, false if new added
      */
 
-    synchronized void addResource(NamedResource resource)
+    synchronized boolean addResource(NamedResource resource)
     {
         LOG.debug("Adding: type: " + resource.getType() + " name:" + resource.getName() + " id: " + resource.getID()
                 + " gid: " + resource.getID().getGroupID());
 
         String type = resource.getType();
 
+
+        boolean available = false;
+        
         if (type.equals(NamedResource.PIPE))
         {
+            available = pipeTable.containsKey(resource.getID());
+            
             numPipeEntries = putInTable(pipeTable, resource, numPipeEntries);
+        
         } else if (type.equals(NamedResource.PEER))
         {
+            available = peerTable.containsKey(resource.getID());
+            
             numPeerEntries = putInTable(peerTable, resource, numPeerEntries);
         } else if (type.equals(NamedResource.GROUP))
         {
+            available = groupTable.containsKey(resource.getID());
+            
             numGroupEntries = putInTable(groupTable, resource, numGroupEntries);
         } else
         {
+            available = otherTable.containsKey(resource.getID());
+            
             numContentEntries = putInTable(otherTable, resource, numContentEntries);
         }
+        
+        return available;
     }
 
+    /**
+     * Removing advertisments from the Cache
+     * 
+     * @param resource
+     *            resource adv to be added
+     */
+    synchronized void removeResource(NamedResource resource)
+    {
+        LOG.debug("Removing: type: " + resource.getType() + " name:" + resource.getName() + " id: " + resource.getID()
+                + " gid: " + resource.getID().getGroupID());
+
+        String type = resource.getType();
+        
+        if (type.equals(NamedResource.PIPE))
+        {
+            pipeTable.remove(resource.getID());
+        } else if (type.equals(NamedResource.PEER))
+        {
+            peerTable.remove(resource.getID());
+        } else if (type.equals(NamedResource.GROUP))
+        {
+            groupTable.remove(resource.getID());
+        } else
+        {
+            otherTable.remove(resource.getID());
+        }
+    }
+    
     /**
      * small method to put an advertisments in the cache tables- used internally
      * 
@@ -183,7 +227,7 @@ class Cache
         table.put(resource.getID(), resource);
         return count;
     }
-
+   
     /**
      * removing the entry with min time stamp - LRU based
      * 
@@ -243,17 +287,17 @@ class Cache
      *            groupId for identifying which group the resource should be in
      * @return resource if advertisment found
      */
-//    NamedResource getResource(String groupId, String type, String attr, String value)
-//    {
-//        NamedResource res = null;
-//        NamedResource[] cachedRes = getResources(groupId, type, attr, value);
-//        if (cachedRes.length > 0)
-//        {
-//            res = cachedRes[random.nextInt(cachedRes.length)];
-//        }
-//        return res;
-//    }
-
+    //    NamedResource getResource(String groupId, String type, String attr,
+    // String value)
+    //    {
+    //        NamedResource res = null;
+    //        NamedResource[] cachedRes = getResources(groupId, type, attr, value);
+    //        if (cachedRes.length > 0)
+    //        {
+    //            res = cachedRes[random.nextInt(cachedRes.length)];
+    //        }
+    //        return res;
+    //    }
     /**
      * Get advertisments from local Cache - accepts GroupId but havent
      * implemented as yet
@@ -268,9 +312,7 @@ class Cache
      *            groupId for identifying which group the resource should be in
      * @return resource if advertisment found
      */
-    synchronized NamedResource[] getResources(
-            String reqpeerId, String groupId, String type, 
-            String attr, String value)
+    synchronized NamedResource[] getResources(String reqpeerId, String groupId, String type, String attr, String value)
     {
         LOG.debug("searching for :  type: " + type + ", group: " + groupId + " " + attr + ": " + value);
         Enumeration enum = null;
@@ -297,15 +339,17 @@ class Cache
             {
                 NamedResource res = (NamedResource) enum.nextElement();
                 //String attribute = res.getValueof(attr);
-                
-//                if (value.equals(attribute) && res.getID().getGroupID().equals(groupId))
-                
-//                LOG.debug("res ID: " + res.getID()+" reqpeerId: " + reqpeerId);
-                
-                // attribute.indexOf(value) != -1 
-                if (res.matchesAttr(attr,value) &&  
-                        res.getID().getGroupID().equals(groupId) &&
-                        !res.getID().equals(reqpeerId))
+
+                //                if (value.equals(attribute) &&
+                // res.getID().getGroupID().equals(groupId))
+
+                //                LOG.debug("res ID: " + res.getID()+" reqpeerId: " +
+                // reqpeerId);
+
+                // attribute.indexOf(value) != -1
+                if (res.matchesAttr(attr, value) && 
+                        (groupId == null || res.getID().getGroupID().equals(groupId))
+                        && !res.getID().equals(reqpeerId))
                 {
                     resList.add((NamedResource) res);
                     LOG.debug("found " + (NamedResource) res);
@@ -318,7 +362,7 @@ class Cache
             nrar[i] = (NamedResource) oar[i];
         return (NamedResource[]) nrar;
     }
-    
+
     /**
      * method for searching a resource with its ID and its type
      * 
@@ -331,8 +375,14 @@ class Cache
         if (type.equals(NamedResource.PIPE))
         {
             return (NamedResource) pipeTable.get(id);
-        } else if (type.equals(NamedResource.PEER)) { return (NamedResource) peerTable.get(id); }
-        if (type.equals(NamedResource.GROUP)) { return (NamedResource) groupTable.get(id); }
+        } else if (type.equals(NamedResource.PEER)) 
+        { 
+            return (NamedResource) peerTable.get(id); 
+        }
+        if (type.equals(NamedResource.GROUP)) 
+        { 
+            return (NamedResource) groupTable.get(id); 
+        }
         if (type.equals(NamedResource.OTHER)) { return (NamedResource) otherTable.get(id); }
 
         return null;
@@ -351,7 +401,8 @@ class Cache
     {
         // i am in my cache
         noOfNeighbors = (noOfNeighbors < peerTable.size() ? noOfNeighbors : peerTable.size() - 1);
-//        LOG.debug("PeerTable size: " + peerTable.size() + " #ngbrs: " + noOfNeighbors);
+        //        LOG.debug("PeerTable size: " + peerTable.size() + " #ngbrs: " +
+        // noOfNeighbors);
         EndpointAddress[][] neighborURI = new EndpointAddress[noOfNeighbors][];
 
         Enumeration enum = peerTable.elements();

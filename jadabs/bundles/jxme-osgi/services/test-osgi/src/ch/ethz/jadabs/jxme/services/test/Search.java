@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: Search.java,v 1.1 2004/11/08 07:30:36 afrei Exp $
+ * $Id: Search.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -170,6 +170,15 @@ public final class Search implements DiscoveryListener
         {
             LOG.info("found: " + resources[i].getName());
         }
+    }
+
+    /* (non-Javadoc)
+     * @see ch.ethz.jadabs.jxme.DiscoveryListener#handleNamedResourceLoss(ch.ethz.jadabs.jxme.NamedResource)
+     */
+    public void handleNamedResourceLoss(NamedResource namedResource)
+    {
+        LOG.info("namedresouce lost: " + namedResource.getName());
+        
     }
     
 }

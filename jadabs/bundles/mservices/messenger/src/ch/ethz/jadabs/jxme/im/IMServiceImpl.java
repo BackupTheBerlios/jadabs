@@ -384,6 +384,15 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener
         }
         
     }// end NeighbourThread
+
+    /* (non-Javadoc)
+     * @see ch.ethz.jadabs.jxme.DiscoveryListener#handleNamedResourceLoss(ch.ethz.jadabs.jxme.NamedResource)
+     */
+    public void handleNamedResourceLoss(NamedResource namedResource)
+    {
+        LOG.info("namedresouce lost: " + namedResource.getName());
+        
+    }
     
     
 }

@@ -216,6 +216,14 @@ public class TestActivator
 	    {
 	        LOG.debug("PropagationListener: "+ message.toXMLString());
 	    }
+
+        /* (non-Javadoc)
+         * @see ch.ethz.jadabs.jxme.DiscoveryListener#handleNamedResourceLoss(ch.ethz.jadabs.jxme.NamedResource)
+         */
+        public void handleNamedResourceLoss(NamedResource namedResource)
+        {
+            LOG.info("namedresouce lost: " + namedResource.getName());
+        }
         
     }
     
@@ -249,6 +257,15 @@ public class TestActivator
 	    {
 	        LOG.debug("PropagationListener: "+ message.toXMLString());
 	    }
+
+        /* (non-Javadoc)
+         * @see ch.ethz.jadabs.jxme.DiscoveryListener#handleNamedResourceLoss(ch.ethz.jadabs.jxme.NamedResource)
+         */
+        public void handleNamedResourceLoss(NamedResource namedResource)
+        {
+            LOG.info("namedresouce lost: " + namedResource.getName());
+            
+        }
     
     }
     

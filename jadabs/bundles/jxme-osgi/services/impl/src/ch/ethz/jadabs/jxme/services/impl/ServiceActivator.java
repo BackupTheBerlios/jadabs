@@ -18,6 +18,7 @@
  */
 package ch.ethz.jadabs.jxme.services.impl;
 
+
 import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -52,6 +53,8 @@ public class ServiceActivator implements BundleActivator
     static GroupService groupService;
     static PeerNetwork peernetwork;
     
+    ResolverService resServ;
+    
     /*
      */
     public void start(BundleContext bc) throws Exception
@@ -70,23 +73,31 @@ public class ServiceActivator implements BundleActivator
         PeerGroup group = peernetwork.getPeerGroup();
         
         // Initialize other core services and connect to the JXME Network
-        ResolverService resServ = ResolverService.createInstance(peer, endptsvc);
+        resServ = ResolverService.createInstance(peer, endptsvc);
         PipeService pipeService = PipeService.createInstance(peer, endptsvc, resServ);
 
         // Create the default GroupService for teh default group
         groupService = GroupServiceImpl.createInstance(peer, group, resServ, pipeService);
 
         // register GroupService
-        bc.registerService("ch.ethz.jadabs.jxme.services.GroupService", groupService, null);
+        bc.registerService(new String[]{
+                "ch.ethz.jadabs.jxme.services.GroupService","WorldPeerGroup"},
+                groupService, null);
                 
         // Also publish this Peer and the PeerGroup on the network
         groupService.remotePublish(peer);
         groupService.remotePublish(group);
+        
+        // start resolverservice Thread
+        Thread resolverThread = new Thread(resServ);
+        resolverThread.start();
+        
     }
 
     /*
      */
     public void stop(BundleContext bc) throws Exception
     {
+        resServ.stopPeerRefresh();
     }
 }

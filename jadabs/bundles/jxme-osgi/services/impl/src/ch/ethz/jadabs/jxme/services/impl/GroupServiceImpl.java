@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: GroupServiceImpl.java,v 1.1 2004/11/08 07:30:35 afrei Exp $
+ * $Id: GroupServiceImpl.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -91,7 +91,7 @@ public class GroupServiceImpl extends Service implements GroupService
 
     private final PeerGroup myGroup;
 
-    private Vector discListeners;
+    Vector discListeners;
 
     /**
      * Constructor initializes this service and registers it with the other

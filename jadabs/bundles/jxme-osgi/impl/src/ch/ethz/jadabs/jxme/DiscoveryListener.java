@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: DiscoveryListener.java,v 1.1 2004/11/08 07:30:34 afrei Exp $
+ * $Id: DiscoveryListener.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -73,5 +73,7 @@ public interface DiscoveryListener
      *            discovered {@link NamedResource}/Advertisement
      */
     public void handleSearchResponse(NamedResource namedResource);
+    
+    public void handleNamedResourceLoss(NamedResource namedResource);
 
 }

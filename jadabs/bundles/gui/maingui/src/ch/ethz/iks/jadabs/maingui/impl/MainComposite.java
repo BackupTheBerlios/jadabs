@@ -338,6 +338,8 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
         // register this gui as listener change in the framework
         rframework.removeBundleInfoListener(this);
         
+        LOG.debug("leave frameworkevent: "+rframework.getPeername());
+        
         MainGUI.manager.exec(new Runnable()
         {
 

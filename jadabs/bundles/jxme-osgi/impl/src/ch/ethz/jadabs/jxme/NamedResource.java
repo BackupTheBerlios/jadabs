@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: NamedResource.java,v 1.2 2004/11/19 08:16:36 afrei Exp $
+ * $Id: NamedResource.java,v 1.3 2004/11/25 16:35:26 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -73,6 +73,8 @@ public abstract class NamedResource
 
     private static final Logger LOG = Logger.getLogger("ch.ethz.jadabs.jxme.NamedResource");
 
+    protected static final String LEASE_OFFSET_TAG = "loffset";
+        
     public static final String COUNTTAG = "Count";
 
     public static final String PEERADVTAG = "PeerAdv";
@@ -117,11 +119,11 @@ public abstract class NamedResource
      * Undefined resource.
      */
     public static final String OTHER = "99";
-
+    
     /**
-     * one of {@link #PEER},{@link #GROUP}or {@link #PIPE}or {@link #OTHER}
-     *  
+     * Wakeuptime for the chronDeamon to send out SAEs
      */
+    protected int leaseoffset;
 
     /*
      * Hash table of advertisable attributes and their values
@@ -161,6 +163,8 @@ public abstract class NamedResource
 
         LOG.debug("NamedResource created: type: " + resourceType + "  name: " + resourceName + "  id: "
                  + id.toString());
+        
+        
     }
 
     /**
@@ -264,6 +268,26 @@ public abstract class NamedResource
     public void touch()
     {
         lastUsed = System.currentTimeMillis();
+    }
+    
+    /**
+     * Return the LeaseOffset since the list has been set.
+     * 
+     * @return int in milliseconds
+     */
+    public int getLeaseOffset()
+    {
+        return leaseoffset;
+    }
+    
+    /**
+     * Set the LesaeTime for this peer. 
+     * 
+     * @param leaseoffset in milliseconds
+     */
+    public void setLeaseOffset(int leaseoffset)
+    {
+        this.leaseoffset = leaseoffset;
     }
     
     public boolean matches(String groupId, String type, String attr, String value)

@@ -120,6 +120,8 @@ public class MainGUI implements Runnable
 		shell.open();
 		
         // show current peer list
+		
+		// fill up starting with the worldpeergroup
 		maincomposite.fillupTree();
         Activator.rmanager.addListener(maincomposite);
 		
@@ -127,6 +129,7 @@ public class MainGUI implements Runnable
 //		maincomposite.select(Activator.peername);
 //		maincomposite.peertree.setEnabled(true);
 	}
+
 	
     class ShellCloseListener extends ShellAdapter
     {

@@ -20,7 +20,7 @@
           <tr>
           	<td>ch.ethz.jadabs.jxme.defaultgroup</td>
           	<td>PeerNetworkGroup</td>
-          	<td></td>
+          	<td>Name of the Default WorldPeerGroup.</td>
           </tr>
           
           <tr>
@@ -29,7 +29,7 @@
           	<td>specify this peeralias if you are running several
           	jadabs instances on the same machine.</td>
           </tr>
-          
+                    
       </table>
       </subsection>
       

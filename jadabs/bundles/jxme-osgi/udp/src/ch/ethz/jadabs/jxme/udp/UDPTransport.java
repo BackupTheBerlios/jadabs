@@ -33,7 +33,7 @@
  * 
  * Created on Jul 31, 2003
  * 
- * $Id: UDPTransport.java,v 1.1 2004/11/08 07:30:35 afrei Exp $
+ * $Id: UDPTransport.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.udp;
 
@@ -161,7 +161,8 @@ public class UDPTransport implements Transport
      */
     public void propagate(Message message) throws IOException
     {
-        LOG.debug("propagating message ... ");
+        LOG.debug("propagating message: "+message.toXMLString());
+        
         
         Element[] elm = message.getElements();
         Element[] elmNew = new Element[elm.length + 1];
@@ -175,7 +176,10 @@ public class UDPTransport implements Transport
                 Message.JXTA_NAME_SPACE, null);
         
         byte[] data = getBytes(new Message(elmNew));
-
+        
+        LOG.debug("Data Package send size: "
+                + data.length);
+        
         DatagramPacket datagram = new DatagramPacket(data, data.length, mcastgroup, mcastport);
         mcastsocket.send(datagram);
     }

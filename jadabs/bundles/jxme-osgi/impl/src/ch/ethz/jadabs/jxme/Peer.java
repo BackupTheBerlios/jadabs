@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: Peer.java,v 1.1 2004/11/08 07:30:34 afrei Exp $
+ * $Id: Peer.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -70,11 +70,12 @@ public final class Peer extends NamedResource
 {
 
     private static final Logger LOG = Logger.getLogger("ch.ethz.jadabs.jxme.Peer");
-
+    
     public static final String DESCTAG = "desc";
 
     private EndpointAddress[] URIList = new EndpointAddress[0];
 
+    
     /**
      * Create an empty Peer object, filled using RevAdvertisement() method of
      * this class
@@ -108,6 +109,7 @@ public final class Peer extends NamedResource
 
         attributes.put(URITAG, URIList);
         this.URIList = URIList;
+        
     }
 
     public void addURI(EndpointAddress endptaddr)
@@ -135,7 +137,7 @@ public final class Peer extends NamedResource
                 newlist[ndx++] = URIList[i];
         }
     }
-    
+        
     /**
      * @return an array of URI
      */
@@ -154,7 +156,7 @@ public final class Peer extends NamedResource
         int numAttr = this.attributes.size();
         int URIsize = getURIList().length;
         String numURI = String.valueOf(URIsize);
-        Element[] elm = new Element[numAttr + 7];
+        Element[] elm = new Element[numAttr + 8];
         elm[0] = new Element(Message.MESSAGE_TYPE_TAG, Message.REQUEST_RESOLVE, Message.JXTA_NAME_SPACE);
         elm[1] = new Element(Message.TYPE_TAG, NamedResource.PEER, Message.JXTA_NAME_SPACE);
         elm[2] = new Element(Message.ATTRIBUTE_TAG, attr, Message.JXTA_NAME_SPACE);
@@ -162,11 +164,12 @@ public final class Peer extends NamedResource
         elm[4] = new Element(Message.THRESHOLD_TAG, threshold, Message.JXTA_NAME_SPACE);
         elm[5] = new Element(Message.REQUESTID_TAG, id, Message.JXTA_NAME_SPACE);
         elm[6] = new Element(Message.NUM_URI_TAG, numURI, Message.JXTA_NAME_SPACE);
-
+        elm[7] = new Element(super.LEASE_OFFSET_TAG, Integer.toString(leaseoffset), Message.JXTA_NAME_SPACE);
+        
         Enumeration keys = this.attributes.keys();
         Enumeration data = this.attributes.elements();
 
-        int ndx = 7;
+        int ndx = 8;
         //System.out.println ("#attr: " + numAttr + " #elm: " + elm.length);
         // there seems to be a bug in java with this ndx++ in the loop combined with an if ?!
         for ( ;keys.hasMoreElements(); )
@@ -239,6 +242,9 @@ public final class Peer extends NamedResource
             if (elName.equals(Message.NUM_URI_TAG))
             {
                 //list = new URI[Integer.parseInt(data)]; // what that ?
+            } else if (elName.equals(LEASE_OFFSET_TAG))
+            {
+                leaseoffset = Integer.parseInt(data);
             } else if (elName.startsWith(URITAG))
             {
                 String URIString = data;

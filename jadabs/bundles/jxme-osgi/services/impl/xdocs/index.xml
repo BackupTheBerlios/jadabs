@@ -20,22 +20,35 @@
                
           <tr>
           	<td>ch.ethz.jadabs.jxme.services.hopCount</td>
-          	<td>0</td>
+          	<td>7</td>
           	<td></td>
           </tr>
           
           <tr>
           	<td>ch.ethz.jadabs.jxme.services.noNeighbors</td>
-          	<td>0</td>
+          	<td>3</td>
           	<td></td>
           </tr>
           
           <tr>
           	<td>ch.ethz.jadabs.jxme.services.queryTableSize</td>
-          	<td>0</td>
+          	<td>20</td>
           	<td></td>
           </tr>
-          
+                
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.services.backoff</td>
+          	<td>3</td>
+          	<td></td>
+          </tr>
+
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.services.peerrefresh</td>
+          	<td>5s</td>
+          	<td>A keep alive message is sent every refresh to inform remote
+          	peers about its availability.</td>
+          </tr>
+                    
       </table>
       </subsection>
       

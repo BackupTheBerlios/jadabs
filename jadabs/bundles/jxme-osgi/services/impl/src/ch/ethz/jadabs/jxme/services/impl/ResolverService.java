@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: ResolverService.java,v 1.1 2004/11/08 07:30:35 afrei Exp $
+ * $Id: ResolverService.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -87,7 +87,7 @@ import ch.ethz.jadabs.jxme.Service;
  * has a publish mechanism for publishing resources to the Cache.
  */
 
-public class ResolverService extends Service implements Listener
+public class ResolverService extends Service implements Runnable, Listener
 {
 
     private static final Logger LOG = Logger.getLogger("ch.ethz.jadabs.jxme.services.ResolverService");
@@ -110,7 +110,11 @@ public class ResolverService extends Service implements Listener
     private static final int DEFAULT_CACHE_SIZE = 20;
 
     private static final int DEFAULT_HOP_COUNT = 7;
-
+    
+    private static final int DEFAULT_BACKOFF = 2;
+    
+    private static final int DEFAULT_PEER_REFRESH = 5*1000;
+    
     private static ResolverService resService = null;
 
     private static int nextRequestId = -1;
@@ -120,7 +124,15 @@ public class ResolverService extends Service implements Listener
     private static int neighbors;
 
     private static int cacheSize;
+    
+    /**
+     * Backoffnumber, the number of times a peer may send a SAE with its
+     * wakeuptime.
+     */
+    protected int backoffno;
 
+    private int peerrefresh;
+    
     private final Hashtable queryTable = new Hashtable(); // already seen
                                                           // queries
 
@@ -135,14 +147,94 @@ public class ResolverService extends Service implements Listener
 
     private String peerId = null;
 
+    private boolean running = true;
+    
     private Cache cache; // cache handler
+    
 
-    static
+    /**
+     * This is the default constructor for Resolver service , intiates a cache ,
+     * already seen queries table.Also sends hello mesg for connecting to the
+     * Jxta network
+     * 
+     * @param seedPeerList
+     *            list of URIs of the seed peer
+     * @param peer
+     *            peer is my peer object.
+     * @param epService
+     *            EndpointService Singleton Handler
+     */
+
+    private ResolverService(Peer peer, EndpointService epService)
     {
+        super(peer, RESSERVICE_NAME);
+
+        // init fields
+        initFields();
+        
+        
+        this.epService = epService;
+        epService.addListener(serviceName, this); //adding listener to end
+                                                  // point service
+
+        cache = Cache.createInstance(); //creating cache
+        cache.addResource(peer);
+        
+
+        // get SeedPeerList
+        EndpointAddress[] seedPeerList = getSeedURIs();
+        
+        if (seedPeerList != null && seedPeerList.length > 0)
+        {
+            int seedListSize = (neighbors > seedPeerList.length ? seedPeerList.length : neighbors);
+            seedURI = new EndpointAddress[seedListSize][1];
+            for (int i = 0; i < seedListSize; i++)
+            {
+                seedURI[i][0] = seedPeerList[i];
+            }
+        }
+//        try
+//        {
+//            mcastURI = new EndpointAddress(null, null, 0);
+//        } catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+
+//        myPeer = peer;
+        peerId = peer.getID().toString(); //TBD kuldeep - Is this needed?
+//        peername = myPeer.getName();
+    }
+
+    /**
+     * There needs to be one instance of ResolverService to resolve queries and
+     * issue queries for Jxta peers. A Singleton object
+     * 
+     * @param peer
+     *            my peer object
+     * @param seedList -
+     *            list of URIs of the seed peers
+     * @param epService
+     *            Singleton EndpointService Handler
+     * 
+     * @return createInstance returns the same instance of this service.
+     */
+    public static ResolverService createInstance(Peer peer, EndpointService epService)
+    {
+        if (resService == null)
+        {
+            resService = new ResolverService(peer, epService);
+        }
+        return resService;
+    }
+    
+    private void initFields()
+    {
+        // hopcounts
         hopCount = 0;
         try
         {
-            String str = System.getProperty("ch.ethz.jadabs.jxme.services.hopCount");
+            String str = ServiceActivator.bc.getProperty("ch.ethz.jadabs.jxme.services.hopCount");
             hopCount = Integer.parseInt(str);
         } catch (Throwable t)
         {
@@ -151,10 +243,11 @@ public class ResolverService extends Service implements Listener
         if (hopCount < 1)
             hopCount = DEFAULT_HOP_COUNT;
 
+        // neigbors
         neighbors = 0;
         try
         {
-            String str = System.getProperty("ch.ethz.jadabs.jxme.services.noNeighbors");
+            String str = ServiceActivator.bc.getProperty("ch.ethz.jadabs.jxme.services.noNeighbors");
             neighbors = Integer.parseInt(str);
         } catch (Throwable t)
         {
@@ -163,10 +256,11 @@ public class ResolverService extends Service implements Listener
         if (neighbors < 1)
             neighbors = DEFAULT_NEIGHBORS;
 
+        // cacheSize
         cacheSize = 0;
         try
         {
-            String str = System.getProperty("ch.ethz.jadabs.jxme.services.queryTableSize");
+            String str = ServiceActivator.bc.getProperty("ch.ethz.jadabs.jxme.services.queryTableSize");
             cacheSize = Integer.parseInt(str);
         } catch (Throwable t)
         {
@@ -174,12 +268,118 @@ public class ResolverService extends Service implements Listener
         }
         if (cacheSize < 1)
             cacheSize = DEFAULT_CACHE_SIZE;
+                
+        // backoff
+        backoffno = 0;
+        try
+        {
+            String str = ServiceActivator.bc.getProperty("ch.ethz.jadabs.jxme.services.backoff");
+            backoffno = Integer.parseInt(str);
+        } catch (Throwable t)
+        {
+            /* do nothing */
+        }
+        if (backoffno < 1)
+            backoffno = DEFAULT_BACKOFF;
         
+        // peerrefresh
+        peerrefresh = DEFAULT_PEER_REFRESH;
+        try
+        {
+            String str = ServiceActivator.bc.getProperty("ch.ethz.jadabs.jxme.services.peerrefresh");
+            peerrefresh = Integer.parseInt(str);
+        } catch (Throwable t)
+        {
+            /* do nothing */
+        }
+    }
+    
+    private void fireLostNamedResouce(NamedResource namedr)
+    {
+        String groupid = namedr.getID().getGroupID();
+        
+//        Listener listener = getListener(groupid);
+//        if (listener instanceof GroupServiceImpl)
+//        {
+//            for (Enumeration en = ((GroupServiceImpl)listener).discListeners.elements();
+//            	en.hasMoreElements();)
+//            {
+//                ((DiscoveryListener) en.nextElement()).
+//                	handleNamedResourceLoss(namedr);
+//        
+//            }
+//        }
+        
+        Vector listeners = ((GroupServiceImpl)ServiceActivator.groupService).discListeners;
+        
+        for (Enumeration en = listeners.elements(); en.hasMoreElements();)
+	    {
+	        ((DiscoveryListener) en.nextElement()).
+	        	handleNamedResourceLoss(namedr);
+	    }
         
     }
+    
+    private void sendPeerKeepAlive()
+    {
+        Peer peer = ServiceActivator.peernetwork.getPeer();
+        PeerGroup group = ServiceActivator.peernetwork.getPeerGroup();
+        
+        remotePublish(peer, group);
+    }
 
-    //private ResolverService () {}
+    public void run()
+    {
+        Peer peer = ServiceActivator.peernetwork.getPeer();
+        peer.setLeaseOffset(peerrefresh);
+        
+        while(running)
+	    {
 
+            // send peer alive to update lease in all peergroups
+            sendPeerKeepAlive();
+                        
+            /*
+             * check the peer list for peers, that haven't responded for
+             * three cycles
+             */
+            NamedResource[] nres = cache.getResources("", null, NamedResource.PEER, "Name","");
+            for (int i = 0; i < nres.length; i++)
+            {
+                Peer chkpeer = (Peer)nres[i];
+                                
+                if ( !peer.getID().equals(chkpeer.getID()) &&
+                     (chkpeer.getLastUsed() + backoffno * chkpeer.getLeaseOffset() < System.currentTimeMillis()))
+                {
+                    
+                    // remove from cache
+                    cache.removeResource(chkpeer);
+                    
+                    // notify registered listeners
+                    fireLostNamedResouce(chkpeer);
+                    
+                    LOG.debug("lost peer in cache after timeout");
+                    
+                }
+            }
+         
+            try
+            {
+                Thread.sleep(peerrefresh);
+            } catch (InterruptedException ie)
+            {
+                LOG.error("JaclDiscovery:chronThread interrupted", ie);
+                ie.printStackTrace();
+            }
+        }
+    }
+    
+    
+    void stopPeerRefresh()
+    {
+        running = false;
+    }
+    
     /**
      * searches resources in JXTA Network.
      * 
@@ -445,6 +645,7 @@ public class ResolverService extends Service implements Listener
         }
     }
     
+    
     /**
      * Gets a response to a query sent earlier and creates a new pipe or peer
      * obj depending on the response and returns the Named Resource object to
@@ -488,6 +689,8 @@ public class ResolverService extends Service implements Listener
             res = (Pipe) new Pipe();
         }
         
+        boolean available = false;
+        
         if (res != null)
         {
             res.RevAdvertisment(msg.getElements());
@@ -498,18 +701,20 @@ public class ResolverService extends Service implements Listener
                 LOG.debug("got its own peer advertisement");
                 return;
             }
-            cache.addResource(res);
+            available = cache.addResource(res);
             res.touch();
         }
 
-        for(Enumeration en = queries.elements(); en.hasMoreElements();)
+        if (!available)
         {
-            Query query = (Query)en.nextElement();
-            
-            if (res.matches(query.groupId, query.type, query.attr,query.value))
-                query.listener.handleSearchResponse(res);
+	        for(Enumeration en = queries.elements(); en.hasMoreElements();)
+	        {
+	            Query query = (Query)en.nextElement();
+	            
+	            if (res.matches(query.groupId, query.type, query.attr,query.value))
+	                query.listener.handleSearchResponse(res);
+	        }
         }
-        
 //        Listener listener = getListener(listenerId);
 //        if (listener != null){
 //            listener.handleSearchResponse(res);
@@ -671,77 +876,6 @@ public class ResolverService extends Service implements Listener
         }//if query not seen before
     }// end of method
 
-    /**
-     * This is the default constructor for Resolver service , intiates a cache ,
-     * already seen queries table.Also sends hello mesg for connecting to the
-     * Jxta network
-     * 
-     * @param seedPeerList
-     *            list of URIs of the seed peer
-     * @param peer
-     *            peer is my peer object.
-     * @param epService
-     *            EndpointService Singleton Handler
-     */
-
-    private ResolverService(Peer peer, EndpointService epService)
-    {
-        super(peer, RESSERVICE_NAME);
-
-        this.epService = epService;
-        epService.addListener(serviceName, this); //adding listener to end
-                                                  // point service
-
-        cache = Cache.createInstance(); //creating cache
-        cache.addResource(peer);
-        
-
-        // get SeedPeerList
-        EndpointAddress[] seedPeerList = getSeedURIs();
-        
-        if (seedPeerList != null && seedPeerList.length > 0)
-        {
-            int seedListSize = (neighbors > seedPeerList.length ? seedPeerList.length : neighbors);
-            seedURI = new EndpointAddress[seedListSize][1];
-            for (int i = 0; i < seedListSize; i++)
-            {
-                seedURI[i][0] = seedPeerList[i];
-            }
-        }
-//        try
-//        {
-//            mcastURI = new EndpointAddress(null, null, 0);
-//        } catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-
-//        myPeer = peer;
-        peerId = peer.getID().toString(); //TBD kuldeep - Is this needed?
-//        peername = myPeer.getName();
-    }
-
-    /**
-     * There needs to be one instance of ResolverService to resolve queries and
-     * issue queries for Jxta peers. A Singleton object
-     * 
-     * @param peer
-     *            my peer object
-     * @param seedList -
-     *            list of URIs of the seed peers
-     * @param epService
-     *            Singleton EndpointService Handler
-     * 
-     * @return createInstance returns the same instance of this service.
-     */
-    public static ResolverService createInstance(Peer peer, EndpointService epService)
-    {
-        if (resService == null)
-        {
-            resService = new ResolverService(peer, epService);
-        }
-        return resService;
-    }
 
     /*
      */

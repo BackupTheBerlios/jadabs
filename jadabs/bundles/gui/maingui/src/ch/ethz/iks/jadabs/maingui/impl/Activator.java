@@ -40,9 +40,12 @@ import java.util.Hashtable;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 
 import ch.ethz.iks.jadabs.maingui.SwtManager;
+import ch.ethz.jadabs.jxme.PeerNetwork;
+import ch.ethz.jadabs.jxme.services.GroupService;
 import ch.ethz.jadabs.remotefw.FrameworkManager;
 
 /**
@@ -63,6 +66,9 @@ public class Activator implements BundleActivator
 
     static String peername;
     
+    static PeerNetwork peernetwork;
+    static GroupService wgsvc;
+    
     /*
      *
      */
@@ -80,6 +86,20 @@ public class Activator implements BundleActivator
         ServiceReference srefrm = Activator.bc.getServiceReference(FrameworkManager.class.getName());
         rmanager = (FrameworkManager) bc.getService(srefrm);
 
+        // Get WorldPeerGroup
+        ServiceReference srefwg = Activator.bc.getServiceReference("WorldPeerGroup");
+        wgsvc = (GroupService)Activator.bc.getService(srefwg);
+        
+        // get PeerNetwork
+        ServiceReference srefpnet = bc.getServiceReference(PeerNetwork.class.getName());
+        if (srefpnet == null)
+        {
+            throw new BundleException("Can't start RemoteFramework, peernetwork not running !");
+        }
+        
+        peernetwork = (PeerNetwork) bc.getService(srefpnet);
+        
+        
         //register service
         bc.registerService(SwtManager.class.getName(), ui, new Hashtable());
         //register service as a singleton... need a PID?
