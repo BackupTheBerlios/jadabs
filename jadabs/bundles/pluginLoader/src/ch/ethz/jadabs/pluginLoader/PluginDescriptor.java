@@ -89,7 +89,7 @@ public class PluginDescriptor extends Descriptor {
                   PluginLoaderImpl.scheduler.addAlternativePlugins(matchingPlugins);
                }
               
-               PluginLoaderImpl.scheduler.stillToProcess.addAll(matchingPlugins);
+               PluginLoaderImpl.scheduler.stillToProcess.addAll(0, matchingPlugins);
                }
                
             }

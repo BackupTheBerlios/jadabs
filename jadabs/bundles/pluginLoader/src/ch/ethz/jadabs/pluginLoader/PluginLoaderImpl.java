@@ -101,8 +101,8 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
     */
    public void loadPlugin(String uuid) throws Exception {
       scheduler.clear();
-      PluginDescriptor pDescr = this.getPluginDescriptor(uuid);      
       scheduler.addPlugin(uuid);
+      PluginDescriptor pDescr = this.getPluginDescriptor(uuid);            
       
       while (!scheduler.stillToProcess.isEmpty()) {
          if (LOG.isDebugEnabled())

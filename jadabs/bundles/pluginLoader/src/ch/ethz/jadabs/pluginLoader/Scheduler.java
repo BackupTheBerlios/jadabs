@@ -9,6 +9,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 import ch.ethz.jadabs.pluginLoader.api.ScheduleComparator;
 
 
@@ -19,24 +21,31 @@ import ch.ethz.jadabs.pluginLoader.api.ScheduleComparator;
 public class Scheduler {
    
    private Vector schedules = new Vector();
+   private static Logger LOG = Logger.getLogger(Scheduler.class);
    protected ArrayList stillToProcess = new ArrayList();
    
    protected Scheduler() {
-      clear();
+      clear();      
    }
    
    protected void clear() {
       schedules.clear();
       ArrayList schedule = new ArrayList();
-      schedules.add(schedule);      
+      schedules.add(schedule);
+      stillToProcess.clear();
    }
    
    protected void addPlugin(String uuid) {
       for (Enumeration existingSchedules = schedules.elements(); existingSchedules.hasMoreElements();) {
          ArrayList schedule = (ArrayList)existingSchedules.nextElement();
          if (!schedule.contains(uuid)) 
-            schedule.add(0, uuid);         
+            schedule.add(0, uuid);
+         if (LOG.isDebugEnabled()) { 
+            LOG.debug("Enqueueing Plugin " + uuid);
+            LOG.debug("Schedule is now: " + schedule);
+         }
       }
+         
    }  
    
    protected void addAlternativePlugins(ArrayList plugins) {
