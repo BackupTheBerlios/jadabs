@@ -155,7 +155,7 @@ public class FileChooser extends Dialog
 			dialogShell.setLayout(dialogShellLayout);
 			dialogShellLayout.marginWidth = 0;
 			dialogShellLayout.marginHeight = 0;
-			dialogShellLayout.spacing = 0;
+//			dialogShellLayout.spacing = 0;
 			dialogShell.layout();
 			dialogShell.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {

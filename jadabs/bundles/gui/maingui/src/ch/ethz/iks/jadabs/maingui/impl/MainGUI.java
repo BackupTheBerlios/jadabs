@@ -95,7 +95,7 @@ public class MainGUI implements Runnable
 	
 	public void init()
 	{	    
-		shell = new Shell(display); //main-windows
+		shell = new Shell(display, SWT.Close); //main-windows
 		shell.setText("Jadabs - " + Activator.peername);
 		
 		// get image from bundle

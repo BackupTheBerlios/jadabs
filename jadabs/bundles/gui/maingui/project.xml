@@ -28,6 +28,13 @@
             <version>3.0RC1-osgi</version>
         </dependency>
         
+        <!--
+        <dependency>
+            <groupId>ibm</groupId>
+            <artifactId>swt-prsnlwin-ppcj9</artifactId>
+            <version>2.13</version>
+        </dependency>
+        -->
         <dependency>
             <groupId>jadabs</groupId>
             <artifactId>remotefw-api</artifactId>
@@ -41,9 +48,9 @@
         </dependency>
 	    
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.8-osgi</version>
+            <groupId>jadabs</groupId>
+            <artifactId>log4j-cdc</artifactId>
+            <version>${pom.currentVersion}</version>
         </dependency>
 	    
 	</dependencies>

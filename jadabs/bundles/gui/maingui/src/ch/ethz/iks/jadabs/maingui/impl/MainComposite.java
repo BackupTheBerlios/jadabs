@@ -40,7 +40,6 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -52,6 +51,7 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -76,7 +76,7 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
 
     private static Logger LOG = Logger.getLogger(MainComposite.class.getName());
 
-    private CLabel cLabel1;
+    private Label cLabel1;
 
     private Menu menu1;
 
@@ -121,7 +121,7 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
         {
             preInitGUI();
 
-            cLabel1 = new CLabel(this, SWT.SHADOW_IN);
+            cLabel1 = new Label(this, SWT.SHADOW_IN);
             consoleText = new Text(this, SWT.MULTI | SWT.WRAP | SWT.BORDER);
             composite1 = new Composite(this, SWT.NULL);
             updateButton = new Button(composite1, SWT.PUSH | SWT.CENTER);
@@ -132,6 +132,8 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
             peertree = new Tree(this, SWT.SINGLE | SWT.BORDER);
 
             this.setSize(new org.eclipse.swt.graphics.Point(507, 526));
+            
+            
 
             FormData cLabel1LData = new FormData();
             cLabel1LData.height = 22;
@@ -230,12 +232,12 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
             RowLayout composite1Layout = new RowLayout(256);
             composite1.setLayout(composite1Layout);
             composite1Layout.type = SWT.HORIZONTAL;
-            composite1Layout.marginWidth = 0;
-            composite1Layout.marginHeight = 0;
+//            composite1Layout.marginWidth = 0;
+//            composite1Layout.marginHeight = 0;
             composite1Layout.spacing = 3;
             composite1Layout.wrap = false;
             composite1Layout.pack = true;
-            composite1Layout.fill = true;
+//            composite1Layout.fill = true;
             composite1Layout.justify = true;
             composite1Layout.marginLeft = 3;
             composite1Layout.marginTop = 3;
@@ -265,7 +267,7 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
             this.setLayout(thisLayout);
             thisLayout.marginWidth = 0;
             thisLayout.marginHeight = 0;
-            thisLayout.spacing = 0;
+//            thisLayout.spacing = 0;
             this.layout();
             menubar = new Menu(getShell(), SWT.BAR);
             aboutmenue = new MenuItem(menubar, SWT.CASCADE);
