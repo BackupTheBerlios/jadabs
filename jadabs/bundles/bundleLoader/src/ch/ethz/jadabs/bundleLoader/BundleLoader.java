@@ -23,7 +23,7 @@ import org.osgi.framework.*;
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 
-public class BundleLoader {
+public class BundleLoader implements IBundleLoader {
 	protected static final String repository = "/home/rjan/.maven/repository"; 
 	private static HashSet availableBundles = new HashSet();
 	private static HashSet systemBundles = new HashSet();
@@ -58,7 +58,7 @@ public class BundleLoader {
 			// resolve all tasks and install scheduled bundles
 			for (Enumeration en = tasks.elements(); en.hasMoreElements(); ) {
 				BundleInformation bundle = (BundleInformation)en.nextElement(); 
-				processDependencies(bundle);				
+				scheduleDependencies(bundle);				
 				System.out.println();
 				System.out.println("Schedule for " + bundle + ": " + installationQueue);
 				install();
@@ -67,8 +67,22 @@ public class BundleLoader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}	
+	
+	/**
+	 * 
+	 * @param name
+	 * @param group
+	 * @param version	
+	 * @throws Exception
+	 */
+	public void load(String name, String group, String version) throws Exception {
+		BundleInformation bundle = new BundleInformation(name, group, version);
+		scheduleDependencies(bundle);
+		System.out.println();
+		System.out.println("Schedule for " + bundle + ": " + installationQueue);
+		install();
 	}
-
 	
 	/**
 	 * 
@@ -107,8 +121,7 @@ public class BundleLoader {
 	 * @param version
 	 */
 	protected static boolean loadBundle(String name, String group, String version) {
-		
-		
+			
 		// TODO: download obr
 		
 		if (BundleLoader.fetchPolicy == BundleLoader.Eager) {
@@ -141,7 +154,7 @@ public class BundleLoader {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	public static void processDependencies(BundleInformation initial) throws XmlPullParserException, IOException {
+	private static void scheduleDependencies(BundleInformation initial) throws XmlPullParserException, IOException {
 		
 		installationQueue.add(initial);
 		

@@ -54,7 +54,7 @@ public class BundleLoaderActivator implements BundleActivator {
 		BundleLoaderActivator.bundleLoader = new BundleLoader(sysBundles);
 		BundleLoaderActivator.bundleLoader.start();
 		
-		bc.registerService(BundleLoader.class.getName(), bundleLoader, null);
+		bc.registerService(IBundleLoader.class.getName(), bundleLoader, null);
 			
 	}
 
