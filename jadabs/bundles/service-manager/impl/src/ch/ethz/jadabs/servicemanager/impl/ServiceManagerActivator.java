@@ -8,6 +8,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import ch.ethz.jadabs.bundleloader.BundleLoader;
 import ch.ethz.jadabs.jxme.Pipe;
 import ch.ethz.jadabs.jxme.services.GroupService;
 import ch.ethz.jadabs.pluginloader.PluginLoader;
@@ -27,6 +28,8 @@ public class ServiceManagerActivator implements BundleActivator
     static Pipe groupPipe;
     
     static PluginLoader pluginLoader;
+    
+    static BundleLoader bundleLoader;
     
     private ServiceManagerImpl serviceManager;
     
@@ -55,11 +58,14 @@ public class ServiceManagerActivator implements BundleActivator
         // create and publish ServiceManager
         serviceManager = new ServiceManagerImpl();
         serviceManager.initRepoCache();
-
-//        bundleLoader.addListener(serviceManager);
         
+        	// PluginLoader
         sref = bc.getServiceReference(PluginLoader.class.getName());
         pluginLoader = (PluginLoader)bc.getService(sref);
+        
+    		// BundleLoader
+        sref = bc.getServiceReference(BundleLoader.class.getName());
+        bundleLoader = (BundleLoader)bc.getService(sref);
         
         // register servicemanager
         bc.registerService("ch.ethz.jadabs.servicemanager.ServiceManager", serviceManager, null);

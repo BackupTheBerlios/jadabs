@@ -240,8 +240,19 @@ public class ServiceManagerImpl implements ServiceManager, Listener
                 matchAndSendServiceAdvertisement(en, ServiceManager.RUNNING_SERVICES, filter, SERVICE_OPD);
 	            
             }
-            
-            	//TODO send running OBRs
+
+// TODO buggy
+            	//send running OBRs
+//            if ((smfilter.indexOf("OBR".toString()) > -1) && 
+//                    ( ( (smfilter.indexOf(ServiceManager.RUNNING_SERVICES.toString()) > -1)) ||
+//                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
+//            {
+//                	//  enum over installed plugins
+//                Enumeration en = ServiceManagerActivator.bundleLoader.getBundleAdvertisements();
+//
+//                matchAndSendServiceAdvertisement(en, ServiceManager.RUNNING_SERVICES, filter, SERVICE_OBR);
+//	            
+//            }
             
             	// send providing OPDs
             if ((smfilter.indexOf("OPD".toString()) > -1) && 
@@ -253,9 +264,18 @@ public class ServiceManagerImpl implements ServiceManager, Listener
                 
                 matchAndSendServiceAdvertisement(en, ServiceManager.PROVIDING_SERVICES, filter, SERVICE_OPD);
             }
-                
-            	//TODO send providing OBRs
-            
+
+// TODO buggy               
+            	//send providing OBRs
+//            if ((smfilter.indexOf("OBR".toString()) > -1) && 
+//                    ( ( (smfilter.indexOf(ServiceManager.PROVIDING_SERVICES.toString()) > -1)) ||
+//                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
+//            {
+//                	//  enum over providing bundles
+//                Enumeration en = providingBundles.elements();
+//                
+//                matchAndSendServiceAdvertisement(en, ServiceManager.PROVIDING_SERVICES, filter, SERVICE_OBR);
+//            }
         }
         	// Plugin-Ack
         else if (type.equals(SERVICE_ACK))

@@ -406,11 +406,16 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener
         }
     }
 
-    protected Hashtable getInstalledBundles()
-    {
-        return binfos;
-    }
+//    protected Hashtable getInstalledBundles()
+//    {
+//        return binfos;
+//    }
 
+    public Enumeration getBundleAdvertisements()
+    {
+        return binfos.elements();
+    }
+    
     public class BundleStarter extends Thread
     {
 

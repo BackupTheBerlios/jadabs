@@ -62,10 +62,15 @@ public class BundleInformation extends ServiceAdvertisement
 
             filename = BundleLoaderActivator.repository + File.separator + group + File.separator + "jars"
                     + File.separator + bundle + "-" + version + ".jar";
-            reader = new FileReader(BundleLoaderActivator.repository + File.separator + group + File.separator + "obr"
+            
+            File obrfile = new File(BundleLoaderActivator.repository + File.separator + group + File.separator + "obr"
                     + File.separator + bundle + "-" + version + ".obr");
+            
+            reader = new FileReader(obrfile);
             parser.setInput(reader);
             parseOBR();
+            
+            setAdvertisement(obrfile);
 
         } catch (Exception e)
         {

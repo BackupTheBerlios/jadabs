@@ -60,6 +60,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.osgi.framework.Bundle;
 
+import ch.ethz.jadabs.bundleloader.ServiceAdvertisement;
 import ch.ethz.jadabs.pluginloader.OSGiPlugin;
 import ch.ethz.jadabs.remotefw.BundleInfo;
 import ch.ethz.jadabs.remotefw.BundleInfoListener;
@@ -83,6 +84,7 @@ public class MainComposite extends Composite
 
     private static String ITEM_SERVICE_NAME = "services";
     private static String ITEM_BUNDLE_NAME = "bundles";
+    private static String ITEM_PROVIDED_BUNDLES = "bundles-available";
     
     private static int ITEM_ORDER_SERVICES = 0;
     private static int ITEM_ORDER_BUNDLES = 1;
@@ -380,8 +382,12 @@ public class MainComposite extends Composite
         TreeItem svcitem = new TreeItem(item, SWT.NULL);
         svcitem.setText(ITEM_SERVICE_NAME);
 
+        TreeItem bpitem = new TreeItem(item, SWT.NULL);
+        bpitem.setText(ITEM_PROVIDED_BUNDLES);
+        
         TreeItem bitem = new TreeItem(item, SWT.NULL);
         bitem.setText(ITEM_BUNDLE_NAME);   
+       
     }
     
     protected void select(String peername)
@@ -455,7 +461,7 @@ public class MainComposite extends Composite
             else if (titem.getText().equals(ITEM_BUNDLE_NAME))
             {
             
-	            //            TreeItem titem = treeitems[0];
+	            // TreeItem titem = treeitems[0];
                 TreeItem pitem = titem.getParentItem();
                 
 	            // get Bundles for the selection
@@ -482,6 +488,39 @@ public class MainComposite extends Composite
 		                addBundle(peername, titem, rframework.getBundleInfo(bids[i]));
 		            }
 	            }
+            }
+            else if (titem.getText().equals(ITEM_PROVIDED_BUNDLES))
+            {
+                TreeItem pitem = titem.getParentItem();
+                
+	            // get Bundles for the selection
+	            String peername = pitem.getText();
+	            
+                if (peername.equals(Activator.peername))
+                {
+                    Enumeration en = Activator.bundleLoader.getBundleAdvertisements();
+                                                 
+                    TreeItem[] items = titem.getItems();
+                    
+                    for (int i = 0; i < items.length; i++)
+                    {
+                        items[i].dispose();
+                    }
+                    
+                    for (;en.hasMoreElements();)
+                    {
+                        ServiceAdvertisement svcadv = (ServiceAdvertisement)en.nextElement();
+                        
+                        TreeItem bundleitem = new TreeItem(titem, SWT.NULL);
+
+                        bundleitem.setText(svcadv.getID());
+                    }
+                }
+                else
+                {
+                    //TODO: should be changed to register only once
+                    Activator.serviceManager.getServices("|OBR,A", this);
+                }
             }
             
             //titem.setExpanded(true);
@@ -695,112 +734,7 @@ public class MainComposite extends Composite
 
     }
 
-    public void allBundlesChanged(String peername, Framework framework)
-    {
-        final Framework fframework = framework;
-        final String fpeername = peername;
-
-        MainGUI.manager.exec(new Runnable()
-        {
-
-            public void run()
-            {
-                TreeItem bitem = null;
-                
-                // get peer-item
-                TreeItem[] titems = peertree.getItems();
-                for (int i = 0; i < titems.length; i++)
-                {
-                    if (titems[i].getText().equals(fpeername))
-                    {
-                        TreeItem peeritem = titems[i];
-                        
-                        bitem = peeritem.getItems()[1];
-                        break;
-                    }
-                }
-                
-                // get bundle-item
-                if (bitem != null)
-                {
-                    refreshTreeItem(bitem, fframework);
-                } else
-                {
-                    LOG.warn("this is a new peer: " + fpeername);
-
-                }
-               
-
-	           
-            }
-        }, false);
-
-    }
-    
-    /**
-     * Update the TreeView for changed BundleInfos
-     */
-    public void bundleChanged(String peername, BundleInfo bundleinfo)
-    {
-
-        final String fpeername = peername;
-        final BundleInfo fbundleinfo = bundleinfo;
-
-        MainGUI.manager.exec(new Runnable()
-        {
-
-            public void run()
-            {
-                TreeItem bitem = null;
-                
-                // get peer-item
-                TreeItem[] titems = peertree.getItems();
-                for (int i = 0; i < titems.length; i++)
-                {
-                    if (titems[i].getText().equals(fpeername))
-                    {
-                        TreeItem peeritem = titems[i];
-                        bitem = peeritem.getItems()[1];
-                        break;
-                    }
-                }
-
-                // get bundle-item
-                if (bitem != null)
-                {
-                    TreeItem bundleitem = null;
-                    titems = bitem.getItems();
-                    long bid = fbundleinfo.bid;
-
-                    for (int i = 0; i < titems.length; i++)
-                    {
-                        if (titems[i].getText().startsWith(new Long(bid).toString()))
-                        {
-                            bundleitem = titems[i];
-                            break;
-                        }
-                    }
-
-                    // bundleitem is new
-                    if (bundleitem == null)
-                    {
-                        bundleitem = addBundle(fpeername, bitem, fbundleinfo);
-                    } else
-                    {
-                        // set text of bundle-item
-                        setBundleItemText(bundleitem, fbundleinfo);
-                    }
-                } else
-                {
-                    LOG.warn("this is a new peer: " + fpeername);
-
-                }
-
-	           
-            }
-        }, false);
-
-    }
+ 
 
     private TreeItem addBundle(String peername, TreeItem peeritem, BundleInfo binfo)
     {
@@ -852,6 +786,112 @@ public class MainComposite extends Composite
         }
     }
     
+    public void allBundlesChanged(String peername, Framework framework)
+    {
+        final Framework fframework = framework;
+        final String fpeername = peername;
+
+        MainGUI.manager.exec(new Runnable()
+        {
+
+            public void run()
+            {
+                TreeItem bitem = null;
+                
+                // get peer-item
+                TreeItem[] titems = peertree.getItems();
+                for (int i = 0; i < titems.length; i++)
+                {
+                    if (titems[i].getText().equals(fpeername))
+                    {
+                        TreeItem peeritem = titems[i];
+                        
+                        bitem = peeritem.getItems()[2];
+                        break;
+                    }
+                }
+                
+                // get bundle-item
+                if (bitem != null)
+                {
+                    refreshTreeItem(bitem, fframework);
+                } else
+                {
+                    LOG.warn("this is a new peer: " + fpeername);
+
+                }
+               
+
+	           
+            }
+        }, false);
+
+    }
+    
+    /**
+     * Update the TreeView for changed BundleInfos
+     */
+    public void bundleChanged(String peername, BundleInfo bundleinfo)
+    {
+
+        final String fpeername = peername;
+        final BundleInfo fbundleinfo = bundleinfo;
+
+        MainGUI.manager.exec(new Runnable()
+        {
+
+            public void run()
+            {
+                TreeItem bitem = null;
+                
+                // get peer-item
+                TreeItem[] titems = peertree.getItems();
+                for (int i = 0; i < titems.length; i++)
+                {
+                    if (titems[i].getText().equals(fpeername))
+                    {
+                        TreeItem peeritem = titems[i];
+                        bitem = peeritem.getItems()[2];
+                        break;
+                    }
+                }
+
+                // get bundle-item
+                if (bitem != null)
+                {
+                    TreeItem bundleitem = null;
+                    titems = bitem.getItems();
+                    long bid = fbundleinfo.bid;
+
+                    for (int i = 0; i < titems.length; i++)
+                    {
+                        if (titems[i].getText().startsWith(new Long(bid).toString()))
+                        {
+                            bundleitem = titems[i];
+                            break;
+                        }
+                    }
+
+                    // bundleitem is new
+                    if (bundleitem == null)
+                    {
+                        bundleitem = addBundle(fpeername, bitem, fbundleinfo);
+                    } else
+                    {
+                        // set text of bundle-item
+                        setBundleItemText(bundleitem, fbundleinfo);
+                    }
+                } else
+                {
+                    LOG.warn("this is a new peer: " + fpeername);
+
+                }
+
+	           
+            }
+        }, false);
+
+    }    
 
     /*
      */
@@ -861,7 +901,10 @@ public class MainComposite extends Composite
                 serviceRef.getPeer()+":"+serviceRef.toString());
         
         final String fpeername = serviceRef.getPeer();
-        final String fid = serviceRef.getID();
+        String id = serviceRef.getID();
+        final String fid = id;
+        final String fidsuffix = id.substring(id.lastIndexOf(":") + 1);
+        final ServiceReference fsref = serviceRef;
         
         MainGUI.manager.exec(new Runnable()
                 {
@@ -877,7 +920,15 @@ public class MainComposite extends Composite
                             if (titems[i].getText().equals(fpeername))
                             {
                                 TreeItem peeritem = titems[i];
-                                svcitems = peeritem.getItems()[0];
+                                
+                                // services or provided bundles
+                                if (fidsuffix.equals("opd"))
+                                    svcitems = peeritem.getItems()[0];
+                                else if (fidsuffix.equals("obr"))
+                                    svcitems = peeritem.getItems()[1];
+                                else
+                                    LOG.error("unknown type:"+fid);
+                                
                                 break;
                             }
                         }

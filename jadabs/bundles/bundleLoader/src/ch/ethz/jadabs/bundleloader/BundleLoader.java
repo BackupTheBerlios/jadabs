@@ -1,11 +1,15 @@
 package ch.ethz.jadabs.bundleloader;
 
+import java.util.Enumeration;
+
 /**
  * @author rjan
  *
  */
 public interface BundleLoader {
 
+    Enumeration getBundleAdvertisements();
+    
 	/**
 	 * 
 	 * @param name
