@@ -23,7 +23,7 @@
   <!-- Knopflerfish -->
   <!-- <ant:property name="knopflerfish.dir" value="${basedir}/knopflerfish" />
   <ant:property name="knopflerfish.osgi.dir" value="${knopflerfish}/osgi" /> -->
-  <ant:property name="knopflerfish.framework.aop" value="framework-1.3.0-aop.jar" />
+  <ant:property name="knopflerfish.framework.aop" value="framework-aop-1.3.3.jar" />
   
   <ant:property name="knopflerfish.copyright" value="license_knopflerfish.txt" />
   <ant:property name="knopflerfish.bundles.dir" value="${knopflerfish.osgi.dir}/jars" />
@@ -119,24 +119,25 @@
 		<!-- copy bundles jadabs core, log4j, -->
 		<ant:copy todir="${jadabs.dist.repository}/jadabs/jars">
 			<ant:fileset dir="${jadabs.maven.inst.dir}/" 
-				includes="concurrent-*,jxme-osgi-*,jxme-udp-*,jxme-tcp-*,log4j-cdc-*,
+				includes="*shell*,*Loader*,concurrent-*,jxme-osgi-*,jxme-udp-*,jxme-tcp-*,log4j-cdc-*,
 					jxme-services-api-*,jxme-services-impl-*,
 					remotefw-api-*,remotefw-impl-*"
 				excludes="*-test-*"
 			/>
 		</ant:copy>
 		
-		<ant:copy todir="${jadabs.dist.repository}/xpp3/jars">
-			<ant:fileset dir="${maven.repo.local}/xpp3/jars" includes="*-osgi.jar"/>
-		</ant:copy>
-		<ant:copy todir="${jadabs.dist.repository}/xstream/jars">
-			<ant:fileset dir="${maven.repo.local}/xstream/jars" includes="*-osgi.jar"/>
-		</ant:copy>
+		<ant:copy 
+			file="${maven.repo.local}/jsx/jars/jsx-osgi-2.2.3.8.jar"
+			todir="${jadabs.dist.repository}/jsx/jars" />
+			
+		<ant:copy 
+			file="${maven.repo.local}/kobjects/jars/kxml2-2.1.9-osgi.jar"
+			todir="${jadabs.dist.repository}/kobjects/jars" />
 		
 		<!-- copy init.xargs, runpeer.sh, runpeer.bat -->
 		<ant:copy todir="${jadabs.dist.dir}">
 			<ant:fileset dir="bin" 
-				includes="init.xargs,init-ppcj9*,run*"/>
+				includes="props.xargs,init.xargs,init-ppcj9*,jadabs*"/>
 		</ant:copy>
 		
 		<ant:chmod perm="+x" >
