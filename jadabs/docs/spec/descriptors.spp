@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+	<Folder FolderName="XML Files" ExtStr="xml;cml;math;mtx;rdf;smil;svg;wml">
+		<File FilePath=".\BTService.opd" HomeFolder="Yes"/>
+		<File FilePath=".\GroupService.opd" HomeFolder="Yes"/>
+		<File FilePath=".\JxmeService.opd" HomeFolder="Yes"/>
+		<File FilePath=".\MailService.opd" HomeFolder="Yes"/>
+		<File FilePath=".\Mservice-HS.pad" HomeFolder="Yes"/>
+		<File FilePath=".\Nokia6600.pad" HomeFolder="Yes"/>
+		<File FilePath=".\OSGiContainers.ocd" HomeFolder="Yes"/>
+		<File FilePath=".\UDPService.opd" HomeFolder="Yes"/>
+	</Folder>
+	<Folder FolderName="XSL Files" ExtStr="xsl;xslt"/>
+	<Folder FolderName="XQuery Files" ExtStr="xq;xql;xquery"/>
+	<Folder FolderName="HTML Files" ExtStr="html;htm;xhtml;asp"/>
+	<Folder FolderName="DTD/Schemas" ExtStr="dtd;dcd;xdr;biz;xsd">
+		<File FilePath=".\dtd\OSGiContainers.dtd" HomeFolder="Yes"/>
+		<File FilePath=".\dtd\OSGiPluginDescriptor.dtd" HomeFolder="Yes"/>
+		<File FilePath=".\dtd\PlatformDescriptor.dtd" HomeFolder="Yes"/>
+	</Folder>
+	<Folder FolderName="Entities" ExtStr="ent"/>
+</Project>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Platform SYSTEM "D:\andfrei-nobkp\workspace\jadabs\docs\spec\dtd\PlatformDescriptor.dtd">
 
 <Platform 
 	id="nokia6600.wlab.ethz.ch"
