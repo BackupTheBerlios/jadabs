@@ -191,9 +191,7 @@ public class RemoteFramework implements Framework
      *  
      */
     public long[] getBundles()
-    {
-        System.out.println("RemoteFramework, getBundles");
-        
+    {        
         if (bundles.size() == 0)
         {
             // request bundles from this peer

@@ -636,7 +636,7 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
             public void run()
             {
                 TreeItem peeritem = null;
-
+                
                 // get peer-item
                 TreeItem[] titems = peertree.getItems();
                 for (int i = 0; i < titems.length; i++)
@@ -647,7 +647,7 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
                         break;
                     }
                 }
-
+                
                 // get bundle-item
                 if (peeritem != null)
                 {
@@ -657,6 +657,7 @@ public class MainComposite extends Composite implements RemoteFrameworkListener,
                     LOG.warn("this is a new peer: " + fpeername);
 
                 }
+               
 
 	           
             }

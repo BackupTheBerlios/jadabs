@@ -378,15 +378,24 @@ public class FrameworkManagerActivator
 	        LOG.debug("assemble an binfo answer with all bundles: ");
 	        
 	        Bundle[] bundles = FrameworkManagerActivator.bc.getBundles();
-	        Vector binfos = new Vector();
+	        
+	        // vector version
+//	        Vector binfos = new Vector();
+//	        for(int i = 0; i < bundles.length; i++)
+//	        {
+//	            binfos.add(new BundleInfo(bundles[i]));
+//	        }
+	        
+	        // array version
+	        BundleInfo[] binfoarr = new BundleInfo[bundles.length];
 	        for(int i = 0; i < bundles.length; i++)
 	        {
-	            binfos.add(new BundleInfo(bundles[i]));
+	            binfoarr[i] = new BundleInfo(bundles[i]);
 	        }
 	        
 			// xstream version
 			XStream xstream = new XStream();
-			String bxml = xstream.toXML(binfos);
+			String bxml = xstream.toXML(binfoarr);
 			
 			Element[] elms = new Element[3];
 			
@@ -422,8 +431,16 @@ public class FrameworkManagerActivator
 	        
             // xstream version
             XStream xstreamresp = new XStream();
-    	    Vector remotebundles = (Vector)xstreamresp.fromXML(bxmlresp);
+            
+            // get as vector
+//    	    Vector remotebundles = (Vector)xstreamresp.fromXML(bxmlresp);
     	    
+            // get as array
+            BundleInfo[] binforesp = (BundleInfo[])xstreamresp.fromXML(bxmlresp);
+            Vector remotebundles = new Vector();
+            for (int k = 0; k < binforesp.length; k++)
+                remotebundles.add(binforesp[k]);
+            
     	    RemoteFramework rfw = (RemoteFramework)frameworks.get(fwname);
     	    if (rfw != null)
     	        rfw.allBundlesChanged(remotebundles);

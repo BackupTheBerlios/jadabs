@@ -54,6 +54,11 @@ public class BundleInfo implements Serializable
     public String name;
     public int state;
     
+    public BundleInfo()
+    {
+        
+    }
+    
     public BundleInfo(Bundle bundle)
     {
         bid = bundle.getBundleId();
