@@ -6,11 +6,11 @@
 
 package ch.ethz.jadabs.jxme.sip;
 
-import gov.nist.sip.instantmessaging.DebugIM;
-
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -19,7 +19,8 @@ import java.util.Vector;
  */
 public class SubscriberList
 {
-
+    private Logger LOG = Logger.getLogger(SubscriberList.class);
+    
     private Hashtable subscriberList;
 
     /** Creates new SubscriberController */
@@ -57,11 +58,11 @@ public class SubscriberList
         String subscriberName = subscriber.getSubscriberName();
         if (hasSubscriber(subscriberName))
         {
-            DebugIM.println("DEBUG, subscriberList, addSubscriber(), " + "We add a new subscriber: " + subscriberName);
+            LOG.debug("DEBUG, subscriberList, addSubscriber(), " + "We add a new subscriber: " + subscriberName);
             subscriberList.put(subscriberName, subscriber);
         } else
         {
-            DebugIM.println("DEBUG, subscriberList, addSubscriber(), " + "We update the subscriber: " + subscriberName);
+            LOG.debug("DEBUG, subscriberList, addSubscriber(), " + "We update the subscriber: " + subscriberName);
             subscriberList.put(subscriberName, subscriber);
         }
         printSubscriberList();
@@ -72,11 +73,11 @@ public class SubscriberList
         Subscriber subscriber = (Subscriber) subscriberList.get(subscriberName);
         if (subscriber != null)
         {
-            DebugIM.println("DEBUG: subscriberList, removeSubscriber(), " + " the subscriber " + subscriberName
+            LOG.debug("DEBUG: subscriberList, removeSubscriber(), " + " the subscriber " + subscriberName
                     + " has been removed");
             subscriberList.remove(subscriberName);
         } else
-            DebugIM.println("DEBUG: subscriberList, removeSubscriber(), " + " the subscriber: " + subscriberName
+            LOG.debug("DEBUG: subscriberList, removeSubscriber(), " + " the subscriber: " + subscriberName
                     + " was not found...");
         printSubscriberList();
     }
@@ -85,18 +86,21 @@ public class SubscriberList
     {
         Collection collection = subscriberList.values();
         Vector subscribers = new Vector(collection);
-        DebugIM.println();
-        DebugIM.println("************* DEBUG subscriberList    ************************************");
-        DebugIM.println("************* Subscribers  record:    ************************************");
-        DebugIM.println();
+
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append("************* DEBUG subscriberList    ************************************");
+        sb.append("************* Subscribers  record:    ************************************");
+        sb.append("\n");
         for (int i = 0; i < subscribers.size(); i++)
         {
             Subscriber subscriber = (Subscriber) subscribers.elementAt(i);
-            DebugIM.println("subscriber URL : " + subscriber.getSubscriberName());
-            DebugIM.println();
+            sb.append("subscriber URL : " + subscriber.getSubscriberName());
+            sb.append("\n");
         }
-        DebugIM.println("**************************************************************************");
-        DebugIM.println();
+        sb.append("**************************************************************************");
+
+        LOG.debug(sb.toString());
     }
 
 }

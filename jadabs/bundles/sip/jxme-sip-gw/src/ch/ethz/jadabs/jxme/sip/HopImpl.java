@@ -3,12 +3,12 @@
  *******************************************************************************/
 package ch.ethz.jadabs.jxme.sip;
 
-import gov.nist.sip.instantmessaging.DebugIM;
-
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import javax.sip.address.Hop;
+
+import org.apache.log4j.Logger;
 
 /**
  * Routing algorithms return a list of hops to which the request is routed.
@@ -21,9 +21,10 @@ import javax.sip.address.Hop;
  * </a>
  *  
  */
-public class IMHop implements Hop
+public class HopImpl implements Hop
 {
-
+    private Logger LOG = Logger.getLogger(HopImpl.class);
+    
     protected String host;
 
     protected int port;
@@ -46,7 +47,7 @@ public class IMHop implements Hop
      * @throws IllegalArgument
      *             exception if string is not properly formatted or null.
      */
-    public IMHop(String hop) throws IllegalArgumentException
+    public HopImpl(String hop) throws IllegalArgumentException
     {
         if (hop == null)
             throw new IllegalArgumentException("Null arg!");
@@ -60,7 +61,7 @@ public class IMHop implements Hop
             transport = "UDP";
         if (transport.compareToIgnoreCase("UDP") != 0 && transport.compareToIgnoreCase("TCP") != 0)
         {
-            DebugIM.println("HopImpl, Bad transport string " + transport);
+            LOG.debug("HopImpl, Bad transport string " + transport);
             throw new IllegalArgumentException(hop);
         }
 
@@ -102,7 +103,7 @@ public class IMHop implements Hop
      * @param trans
      *            transport
      */
-    public IMHop(String hostName, int portNumber, String trans)
+    public HopImpl(String hostName, int portNumber, String trans)
     {
         host = hostName;
         port = portNumber;

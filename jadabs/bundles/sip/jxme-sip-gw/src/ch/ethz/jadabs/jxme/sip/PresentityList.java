@@ -6,11 +6,11 @@
 
 package ch.ethz.jadabs.jxme.sip;
 
-import gov.nist.sip.instantmessaging.DebugIM;
-
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -19,7 +19,9 @@ import java.util.Vector;
  */
 public class PresentityList
 {
-
+    
+    private Logger LOG = Logger.getLogger(PresentityList.class);
+    
     private Hashtable presentityList;
 
     /** Creates new SubscriberController */
@@ -58,8 +60,7 @@ public class PresentityList
         {
             Presentity presentity = getPresentity(presentityName);
             presentity.setStatus(status);
-            DebugIM
-                    .println("DEBUG, PresentityList, updatePresentity(), " + "We change the status of "
+            LOG.debug("DEBUG, PresentityList, updatePresentity(), " + "We change the status of "
                             + presentityName);
             printPresentityList();
         }
@@ -70,11 +71,11 @@ public class PresentityList
         String presentityName = presentity.getPresentityName();
         if (hasPresentity(presentityName))
         {
-            DebugIM.println("DEBUG, PresentityList, addPresentity(), " + "We add a new presentity: " + presentityName);
+            LOG.debug("DEBUG, PresentityList, addPresentity(), " + "We add a new presentity: " + presentityName);
             presentityList.put(presentityName, presentity);
         } else
         {
-            DebugIM.println("DEBUG, PresentityList, addPresentity(), " + "We update the presentity: " + presentityName);
+            LOG.debug("DEBUG, PresentityList, addPresentity(), " + "We update the presentity: " + presentityName);
             presentityList.put(presentityName, presentity);
         }
         printPresentityList();
@@ -85,11 +86,11 @@ public class PresentityList
         Presentity presentity = (Presentity) presentityList.get(presentityName);
         if (presentity != null)
         {
-            DebugIM.println("DEBUG: PresentityList, removePresentity(), " + " the presentity " + presentityName
+            LOG.debug("DEBUG: PresentityList, removePresentity(), " + " the presentity " + presentityName
                     + " has been removed");
             presentityList.remove(presentityName);
         } else
-            DebugIM.println("DEBUG: PresentityList, removePresentity(), " + " the presentity: " + presentityName
+            LOG.debug("DEBUG: PresentityList, removePresentity(), " + " the presentity: " + presentityName
                     + " was not found...");
         printPresentityList();
     }
@@ -98,13 +99,13 @@ public class PresentityList
     {
         if (hasPresentity(presentityName))
         {
-            DebugIM.println("DEBUG, PresentityList, changePresentityStatus(), " + "The status of the presentity: "
+            LOG.debug("DEBUG, PresentityList, changePresentityStatus(), " + "The status of the presentity: "
                     + presentityName + " is now: " + status);
             Presentity presentity = (Presentity) presentityList.get(presentityName);
             presentity.setStatus(status);
         } else
         {
-            DebugIM.println("DEBUG, PresentityList, changePresentityStatus(), " + "The presentity " + presentityName
+            LOG.debug("DEBUG, PresentityList, changePresentityStatus(), " + "The presentity " + presentityName
                     + " was not found...");
         }
         printPresentityList();
@@ -114,19 +115,22 @@ public class PresentityList
     {
         Collection collection = presentityList.values();
         Vector presentities = new Vector(collection);
-        DebugIM.println();
-        DebugIM.println("************* DEBUG PresentityList    ************************************");
-        DebugIM.println("************* Presentities record:    ************************************");
-        DebugIM.println();
+
+        StringBuffer sb = new StringBuffer();
+       
+        sb.append("************* DEBUG PresentityList    ************************************");
+        sb.append("************* Presentities record:    ************************************");
+        
         for (int i = 0; i < presentities.size(); i++)
         {
             Presentity presentity = (Presentity) presentities.elementAt(i);
-            DebugIM.println("presentity URL : " + presentity.getPresentityName());
-            DebugIM.println("       status  : " + presentity.getStatus());
-            DebugIM.println();
+            sb.append("presentity URL : " + presentity.getPresentityName());
+            sb.append("       status  : " + presentity.getStatus());
+            sb.append("\n");
         }
-        DebugIM.println("**************************************************************************");
-        DebugIM.println();
+        sb.append("**************************************************************************");
+        
+        LOG.debug(sb.toString());
     }
 
 }

@@ -5,7 +5,6 @@
 package ch.ethz.jadabs.jxme.sip;
 
 import gov.nist.javax.sip.Utils;
-import gov.nist.sip.instantmessaging.DebugIM;
 
 import java.util.Vector;
 
@@ -28,6 +27,8 @@ import javax.sip.header.ViaHeader;
 import javax.sip.message.MessageFactory;
 import javax.sip.message.Request;
 
+import org.apache.log4j.Logger;
+
 /**
  * The Publish is NOT supported by the Jain SIP 1.1. This is here for
  * experimental purposes.
@@ -36,19 +37,20 @@ import javax.sip.message.Request;
  * @version 0.1
  */
 
-public class IMPublishProcessing
+public class PublishProcessing
 {
-
-    private IMUserAgent imUA;
+    private Logger LOG = Logger.getLogger(PublishProcessing.class);
+    
+    private SipGatewayImpl sipgw;
 
     private int callIdCounter;
 
     /** A unique id used to identify this entity in a pidf-document * */
     private String entity;
 
-    public IMPublishProcessing(IMUserAgent imUA)
+    public PublishProcessing(SipGatewayImpl sipgw)
     {
-        this.imUA = imUA;
+        this.sipgw = sipgw;
         this.callIdCounter = 0;
         this.entity = "NistSipIM_" + Utils.generateTag();
     }
@@ -57,16 +59,15 @@ public class IMPublishProcessing
     {
         try
         {
-            DebugIM.println();
-            DebugIM.println("Sending PUBLISH in progress");
-            int proxyPort = imUA.getProxyPort();
-            String proxyAddress = imUA.getProxyAddress();
-            String imProtocol = imUA.getIMProtocol();
-            SipStack sipStack = imUA.getSipStack();
-            SipProvider sipProvider = imUA.getSipProvider();
-            MessageFactory messageFactory = imUA.getMessageFactory();
-            HeaderFactory headerFactory = imUA.getHeaderFactory();
-            AddressFactory addressFactory = imUA.getAddressFactory();
+            LOG.debug("Sending PUBLISH in progress");
+            int proxyPort = sipgw.getProxyPort();
+            String proxyAddress = sipgw.getProxyAddress();
+            String imProtocol = sipgw.getIMProtocol();
+            SipStack sipStack = sipgw.getSipStack();
+            SipProvider sipProvider = sipgw.getSipProvider();
+            MessageFactory messageFactory = sipgw.getMessageFactory();
+            HeaderFactory headerFactory = sipgw.getHeaderFactory();
+            AddressFactory addressFactory = sipgw.getAddressFactory();
 
             // Request-URI:
             if (localURI.startsWith("sip:"))
@@ -77,7 +78,7 @@ public class IMPublishProcessing
 
             //  Via header
             String branchId = Utils.generateBranchId();
-            ViaHeader viaHeader = headerFactory.createViaHeader(imUA.getIMAddress(), imUA.getIMPort(), imProtocol,
+            ViaHeader viaHeader = headerFactory.createViaHeader(sipgw.getIMAddress(), sipgw.getIMPort(), imProtocol,
                     branchId);
             Vector viaList = new Vector();
             viaList.addElement(viaHeader);

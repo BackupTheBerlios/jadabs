@@ -5,13 +5,12 @@
  *******************************************************************************/
 package gov.nist.sip.instantmessaging.presence.pidfparser;
 
-import gov.nist.sip.instantmessaging.DebugIM;
-
 import java.io.IOException;
 import java.io.StringReader;
 
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -24,7 +23,8 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLpidfParser extends DefaultHandler
 {
-
+    private Logger LOG = Logger.getLogger(XMLpidfParser.class);
+    
     private PresenceTag presenceTag;
 
     private PresentityTag presentityTag;
@@ -127,7 +127,7 @@ public class XMLpidfParser extends DefaultHandler
     {
         try
         {
-            DebugIM.println("Parsing XML pidf string");
+            LOG.debug("Parsing XML pidf string");
         } catch (Exception e)
         {
             throw new SAXException("XMLpidfParser error", e);
@@ -138,7 +138,7 @@ public class XMLpidfParser extends DefaultHandler
     {
         try
         {
-            DebugIM.println("XML pidf string parsed successfully!!!");
+            LOG.debug("XML pidf string parsed successfully!!!");
         } catch (Exception e)
         {
             throw new SAXException("XMLpidfParser error", e);
@@ -165,7 +165,7 @@ public class XMLpidfParser extends DefaultHandler
                 presentityTag.setURI(uri);
             } else
             {
-                DebugIM.println("ERROR, XMLpidfParser, the presentity uri is null");
+                LOG.debug("ERROR, XMLpidfParser, the presentity uri is null");
             }
         }
         if (element.compareToIgnoreCase("atom") == 0)
@@ -178,7 +178,7 @@ public class XMLpidfParser extends DefaultHandler
                 atomTag.setId(id);
             } else
             {
-                DebugIM.println("ERROR, XMLpidfParser, the atom id is null");
+                LOG.debug("ERROR, XMLpidfParser, the atom id is null");
             }
         }
         if (element.compareToIgnoreCase("address") == 0)
@@ -191,7 +191,7 @@ public class XMLpidfParser extends DefaultHandler
                 addressTag.setURI(uri);
             } else
             {
-                DebugIM.println("ERROR, XMLpidfParser, the address uri is null");
+                LOG.debug("ERROR, XMLpidfParser, the address uri is null");
             }
 
             String priority = attrs.getValue("priority");
@@ -206,7 +206,7 @@ public class XMLpidfParser extends DefaultHandler
                 }
             } else
             {
-                DebugIM.println("DEBUG, XMLpidfParser, the priority is null");
+                LOG.debug("DEBUG, XMLpidfParser, the priority is null");
             }
         }
         if (element.compareToIgnoreCase("status") == 0)
@@ -219,7 +219,7 @@ public class XMLpidfParser extends DefaultHandler
                 statusTag.setStatus(status);
             } else
             {
-                DebugIM.println("ERROR, XMLpidfParser, the status status is null");
+                LOG.debug("ERROR, XMLpidfParser, the status status is null");
             }
 
         }
@@ -233,7 +233,7 @@ public class XMLpidfParser extends DefaultHandler
                 msnSubStatusTag.setMSNSubStatus(msnSubStatus);
             } else
             {
-                DebugIM.println("ERROR, XMLpidfParser, the msnsubstatus substatus is null");
+                LOG.debug("ERROR, XMLpidfParser, the msnsubstatus substatus is null");
             }
 
         }

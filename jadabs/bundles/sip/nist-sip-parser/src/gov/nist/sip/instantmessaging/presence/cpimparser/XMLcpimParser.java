@@ -5,13 +5,12 @@
  *******************************************************************************/
 package gov.nist.sip.instantmessaging.presence.cpimparser;
 
-import gov.nist.sip.instantmessaging.DebugIM;
-
 import java.io.IOException;
 import java.io.StringReader;
 
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -24,7 +23,8 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLcpimParser extends DefaultHandler
 {
-
+    private Logger LOG = Logger.getLogger(XMLcpimParser.class);
+    
     private PresenceTag presenceTag;
 
     private PresentityTag presentityTag;
@@ -128,7 +128,7 @@ public class XMLcpimParser extends DefaultHandler
     {
         try
         {
-            DebugIM.println("Parsing XML cpim string");
+            LOG.debug("Parsing XML cpim string");
         } catch (Exception e)
         {
             throw new SAXException("XMLcpimParser error", e);
@@ -139,7 +139,7 @@ public class XMLcpimParser extends DefaultHandler
     {
         try
         {
-            DebugIM.println("XML cpim string parsed successfully!!!");
+            LOG.debug("XML cpim string parsed successfully!!!");
         } catch (Exception e)
         {
             throw new SAXException("XMLcpimParser error", e);

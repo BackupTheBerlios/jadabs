@@ -6,8 +6,6 @@
 
 package ch.ethz.jadabs.jxme.sip;
 
-import gov.nist.sip.instantmessaging.DebugIM;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -22,29 +20,32 @@ import javax.sip.address.URI;
 import javax.sip.header.RouteHeader;
 import javax.sip.message.Request;
 
+import org.apache.log4j.Logger;
+
 /**
  * 
  * @author olivier
  * @version 1.0
  */
-public class IMRouter implements Router
+public class RouterImpl implements Router
 {
-
-    protected IMHop defaultRoute;
+    private Logger LOG = Logger.getLogger(RouterImpl.class);
+    
+    protected HopImpl defaultRoute;
 
     protected SipStack stack;
 
     /**
      * Creates new IMRouter
      */
-    public IMRouter(SipStack sipStack, String defaultRoute)
+    public RouterImpl(SipStack sipStack, String defaultRoute)
     {
         if (defaultRoute != null)
-            this.defaultRoute = new IMHop(defaultRoute);
+            this.defaultRoute = new HopImpl(defaultRoute);
         this.stack = sipStack;
     }
 
-    public IMHop getNextHop(ListIterator routes) throws IllegalArgumentException
+    public HopImpl getNextHop(ListIterator routes) throws IllegalArgumentException
     {
         try
         {
@@ -67,13 +68,13 @@ public class IMRouter implements Router
                 // Dont want to route to myself.
                 if (stack.getIPAddress().equals(host) && checkPort(port))
                 {
-                    DebugIM.println("DEBUG, IMRouter, getNextHop(), "
+                    LOG.debug("DEBUG, IMRouter, getNextHop(), "
                             + "The RouteHeader address matches the proxy, we remove it!");
                     // Let'take the next one:
                     routes.remove();
                 } else
                 {
-                    IMHop hop = new IMHop(host, port, transport);
+                    HopImpl hop = new HopImpl(host, port, transport);
                     return hop;
                 }
             }
@@ -140,10 +141,10 @@ public class IMRouter implements Router
                     int mAddrPort = ((SipURI) requestURI).getPort();
                     if (mAddrPort == -1)
                         mAddrPort = 5060;
-                    IMHop mAddrHop = new IMHop(mAddr, mAddrPort, mAddrTransport);
+                    HopImpl mAddrHop = new HopImpl(mAddr, mAddrPort, mAddrTransport);
                     if (mAddrHop != null)
                         nextHops.add(mAddrHop);
-                    DebugIM.println("DEBUG, IMRouter, getNextHops(), One hop added: Request URI maddr parameter!");
+                    LOG.debug("DEBUG, IMRouter, getNextHops(), One hop added: Request URI maddr parameter!");
                 } catch (Exception e)
                 {
                     throw new IllegalArgumentException("ERROR, IMRouter, pb to add the maddr hop");
@@ -160,7 +161,7 @@ public class IMRouter implements Router
              */
         } else
         {
-            DebugIM.println("DEBUG, IMRouter, getNextHops(), " + " the request URI is not a SipURI:"
+            LOG.debug("DEBUG, IMRouter, getNextHops(), " + " the request URI is not a SipURI:"
                     + " unable to build a hop.");
         }
 

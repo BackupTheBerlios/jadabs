@@ -25,13 +25,13 @@ public class PresenceManager
 
     private SubscriberList subscriberList;
 
-    private IMUserAgent imUserAgent;
+    private SipGatewayImpl sipgw;
 
     /** Creates new SubscriberController */
-    public PresenceManager(IMUserAgent imUserAgent)
+    public PresenceManager(SipGatewayImpl sipgw)
     {
         expiresTime = 3600;
-        this.imUserAgent = imUserAgent;
+        this.sipgw = sipgw;
         presentityList = new PresentityList();
         subscriberList = new SubscriberList();
     }

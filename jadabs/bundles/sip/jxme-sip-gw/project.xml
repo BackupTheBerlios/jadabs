@@ -4,7 +4,7 @@
 
   	<extend>${basedir}/../../../project.xml</extend>
 
-  	<groupId>sip</groupId>
+  	<groupId>jadabs</groupId>
   	<artifactId>jxme-sip-gw</artifactId>
   	<name>JXME-SIP-Gateway</name>
 
@@ -35,6 +35,18 @@
       		<version>1.2-osgi</version>
 		</dependency>
 
+		<dependency>
+      		<groupId>sip</groupId>
+      		<artifactId>nist-sip-parser</artifactId>
+      		<version>1.2-osgi</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>log4j-cdc</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
   	</dependencies>
   
 </project>

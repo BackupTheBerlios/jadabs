@@ -12,14 +12,25 @@ import org.osgi.framework.BundleContext;
  * @author andfrei
  * 
  */
-public class SIPGatewayActivator implements BundleActivator
+public class SipGatewayActivator implements BundleActivator
 {
 
+    static BundleContext bc;
+    
+    SipGatewayImpl sipgw;
+    
     /* 
      */
     public void start(BundleContext bc) throws Exception
     {
-
+        SipGatewayActivator.bc = bc;
+        
+        sipgw = new SipGatewayImpl();
+        
+        sipgw.start();
+        
+        bc.registerService(SipGateway.class.getName(), sipgw, null);
+        
     }
 
     /*

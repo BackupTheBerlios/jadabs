@@ -35,6 +35,12 @@
       		<version>1.2-osgi</version>
 		</dependency>
 
+		<dependency>
+      		<groupId>sip</groupId>
+      		<artifactId>nist-sip-parser</artifactId>
+      		<version>1.2-osgi</version>
+		</dependency>
+
   	</dependencies>
   
 </project>

@@ -11,18 +11,17 @@ import javax.sip.message.Request;
 
 /**
  * 
- * @author olivier
+ * @author olivier, andfrei
  * @version 1.0
  */
-public class IMAckProcessing
+public class AckProcessing
 {
 
-    private IMUserAgent imUA;
+    
 
     /** Creates new AckProcessing */
-    public IMAckProcessing(IMUserAgent imUA)
+    public AckProcessing(SipGatewayImpl sipgw)
     {
-        this.imUA = imUA;
     }
 
     public void processAck(Request request, ServerTransaction serverTransaction)
