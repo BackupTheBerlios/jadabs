@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.xmlpull.v1.XmlPullParserException;
+import org.apache.log4j.Logger;
 import org.kxml2.io.KXmlParser;
 import org.osgi.framework.*;
 
@@ -22,8 +23,11 @@ import org.osgi.framework.*;
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 
-public class BundleLoader implements IBundleLoader, BundleListener {
-   protected static String repository;
+public class BundleLoader implements IBundleLoader, BundleListener 
+{
+    private static Logger LOG = Logger.getLogger(BundleLoader.class);
+    
+//   protected static String repository;
    private static HashSet queuedBundles = new HashSet();
    private static HashSet installedBundles = new HashSet();
    private static LinkedList installationQueue = new LinkedList();
@@ -64,7 +68,8 @@ public class BundleLoader implements IBundleLoader, BundleListener {
          }
 
       } catch (Exception e) {
-         e.printStackTrace();
+//         e.printStackTrace();
+         LOG.error("could not load, or parse the startup.xml", e);
       }
    }
 

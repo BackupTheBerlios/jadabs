@@ -17,7 +17,7 @@ public class BundleLoaderActivator implements BundleActivator {
 	protected static Logger LOG = Logger.getLogger(BundleLoader.class.getName());
 	protected static BundleContext bc;
 	protected static BundleLoader bundleLoader;
-	protected static String repository;
+	static String repository;
 	
 
 	
@@ -29,8 +29,10 @@ public class BundleLoaderActivator implements BundleActivator {
 		BundleLoaderActivator.bc = bc;
 				
 		String location = BundleLoaderActivator.bc.getBundle().getLocation();
-	    repository = location.substring(location.indexOf(":"), location.indexOf("jadabs") - 1);
-
+	    repository = location.substring(location.indexOf(":")+1, location.indexOf("jadabs") - 1);
+	    
+	    System.out.println("bundlelocation: "+repository);
+	    
 		// register all system bundles
 		Bundle [] bundles = BundleLoaderActivator.bc.getBundles();
 		Vector sysBundles = new Vector();
