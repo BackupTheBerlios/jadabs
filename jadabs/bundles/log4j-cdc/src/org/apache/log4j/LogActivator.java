@@ -33,7 +33,7 @@
  * 
  * Created on 09.06.2004
  * 
- * $Id: LogActivator.java,v 1.2 2004/12/29 23:33:49 rjan Exp $
+ * $Id: LogActivator.java,v 1.3 2005/01/01 17:57:44 rjan Exp $
  */
 package org.apache.log4j;
 
@@ -41,7 +41,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
- * This Log4J ShellActivator sets up the Log4J system for J2ME/MIDP as 
+ * This Log4J Activator sets up the Log4J system for J2ME/MIDP as 
  * initial logging mechanism.
  * 
  * @author andfrei

@@ -126,7 +126,7 @@ public class MainGUI implements Runnable
         Activator.rmanager.addListener(maincomposite);
 		
         
-//		maincomposite.select(ShellActivator.peername);
+//		maincomposite.select(Activator.peername);
 //		maincomposite.peertree.setEnabled(true);
 	}
 

@@ -147,7 +147,7 @@ public class Shell extends Thread implements IShellPluginService {
             // cmdString = cmdString.substring(seperator + 1,
             // cmdString.length());
             // context =
-            // ShellActivator.remotefw.getFrameworkByPeername(qualifier);
+            // Activator.remotefw.getFrameworkByPeername(qualifier);
             // if (context == null) {
             //   System.out.println("Error: peer " + qualifier
             //         + " could not be resolved.");
@@ -160,7 +160,7 @@ public class Shell extends Thread implements IShellPluginService {
 
             //         } else {
 
-            //         	context = ShellActivator.remotefw.getLocalFramework();
+            //         	context = Activator.remotefw.getLocalFramework();
 
          }
       }
