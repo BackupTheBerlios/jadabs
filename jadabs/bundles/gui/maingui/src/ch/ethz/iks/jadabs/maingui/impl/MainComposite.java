@@ -60,14 +60,11 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.osgi.framework.Bundle;
 
-import ch.ethz.jadabs.bundleloader.ServiceAdvertisement;
-import ch.ethz.jadabs.pluginloader.OSGiPlugin;
 import ch.ethz.jadabs.remotefw.BundleInfo;
 import ch.ethz.jadabs.remotefw.BundleInfoListener;
 import ch.ethz.jadabs.remotefw.Framework;
 import ch.ethz.jadabs.remotefw.RemoteFrameworkListener;
 import ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener;
-import ch.ethz.jadabs.servicemanager.ServiceListener;
 import ch.ethz.jadabs.servicemanager.ServiceReference;
 import ch.ethz.jadabs.servicemanager.impl.ServiceReferenceImpl;
 
@@ -125,6 +122,7 @@ public class MainComposite extends Composite
         super(parent, style);
         
         initGUI();
+        
     }
 
     /**
@@ -450,28 +448,33 @@ public class MainComposite extends Composite
 	            
                 if (peername.equals(Activator.peername))
                 {
-                    Enumeration en = Activator.pluginLoader.getOSGiPlugins();
-                                                 
-                    TreeItem[] items = titem.getItems();
-                    
-                    for (int i = 0; i < items.length; i++)
-                    {
-                        items[i].dispose();
-                    }
-                    
-                    for (;en.hasMoreElements();)
-                    {
-                        OSGiPlugin plugin = (OSGiPlugin)en.nextElement();
-                        
-                        TreeItem bundleitem = new TreeItem(titem, SWT.NULL);
-
-                        bundleitem.setText(plugin.getID());
-                    }
+//                    Enumeration en = Activator.pluginLoader.getOSGiPlugins();
+//                                                 
+//                    TreeItem[] items = titem.getItems();
+//                    
+//                    for (int i = 0; i < items.length; i++)
+//                    {
+//                        items[i].dispose();
+//                    }
+//                    
+//                    for (;en.hasMoreElements();)
+//                    {
+//                        OSGiPlugin plugin = (OSGiPlugin)en.nextElement();
+//                        
+//                        TreeItem bundleitem = new TreeItem(titem, SWT.NULL);
+//
+//                        bundleitem.setText(plugin.getID());
+//                    }
                 }
                 else
                 {
-                    //TODO: should be changed to register only once
-                    Activator.serviceManager.getServiceAdvertisements(peername, null, this);
+                    
+                    // send a filter message
+                    // Extension/id:PeerNetwork ¦ Platform/id:mservices.wlab.ethz.ch, name:mservices, version:0.1.0, provider-name:ETHZ-IKS; Property/name:processor, value:armv4l; Property/name:os, value:linux; Property/name:display, value:no; Property/name:vm, value:cdc/fp; Property/name:vm-version, value:1.0.1; OSGiContainer/id:core-osgi-daop; NetIface/type:wlan/managed, connection:static, configuration:internet, name:mservices, essid:wlan, mode:managed, iface:eth0, ip:192.168.55.10; NetIface/type:internet, ext-type:wlan/managed ¦ R
+                    String testfilter = "¦¦OPD,INS";
+                    
+                    Activator.serviceManager.getServiceAdvertisements(peername, testfilter, this);
+                    
                 }
                 
                 
@@ -517,28 +520,31 @@ public class MainComposite extends Composite
 	            
                 if (peername.equals(Activator.peername))
                 {
-                    Enumeration en = Activator.bundleLoader.getBundleAdvertisements();
-                                                 
-                    TreeItem[] items = titem.getItems();
-                    
-                    for (int i = 0; i < items.length; i++)
-                    {
-                        items[i].dispose();
-                    }
-                    
-                    for (;en.hasMoreElements();)
-                    {
-                        ServiceAdvertisement svcadv = (ServiceAdvertisement)en.nextElement();
-                        
-                        TreeItem bundleitem = new TreeItem(titem, SWT.NULL);
-
-                        bundleitem.setText(svcadv.getID());
-                    }
+//                    Enumeration en = Activator.bundleLoader.getBundleAdvertisements();
+//                                                 
+//                    TreeItem[] items = titem.getItems();
+//                    
+//                    for (int i = 0; i < items.length; i++)
+//                    {
+//                        items[i].dispose();
+//                    }
+//                    
+//                    for (;en.hasMoreElements();)
+//                    {
+//                        ServiceAdvertisement svcadv = (ServiceAdvertisement)en.nextElement();
+//                        
+//                        TreeItem bundleitem = new TreeItem(titem, SWT.NULL);
+//
+//                        bundleitem.setText(svcadv.getID());
+//                    }
                 }
                 else
                 {
                     //TODO: should be changed to register only once
-                    Activator.serviceManager.getServiceAdvertisements(peername, "|OBR,A", this);
+
+                    // registerservicelistener
+                    // Activator.serviceManager.addServiceAdvertisementListener(this);
+                    Activator.serviceManager.getServiceAdvertisements(peername, "¦¦OBR,INS", this);
                 }
             }
             
@@ -742,16 +748,7 @@ public class MainComposite extends Composite
             
             System.out.println("selection: "+uuid);
             
-            Activator.serviceManager.getService(peername, sref, new ServiceListener()
-                    {
-
-                        public void receivedService(ServiceReference sref)
-                        {
-                            System.out.println("got service: "+ sref.getID());
-                            
-                        }
-                
-                    });
+            Activator.serviceManager.getService(peername, sref);
             
 //            StringTokenizer st = new StringTokenizer(bundlestr, ": ");
 //            long bid = new Long(st.nextToken()).longValue();
@@ -952,7 +949,7 @@ public class MainComposite extends Composite
     public void foundService(ServiceReference serviceRef)
     {
         LOG.debug("got ServiceReference from:"+
-                serviceRef.getPeer()+":"+serviceRef.toString());
+                serviceRef.getID()+":"+serviceRef.toString());
         
         final String fpeername = serviceRef.getPeer();
         String id = serviceRef.getID();
@@ -1017,6 +1014,11 @@ public class MainComposite extends Composite
         	           
                     }
                 }, false);
+        
+    }
+    
+    public void removedService(ServiceReference sref)
+    {
         
     }
         

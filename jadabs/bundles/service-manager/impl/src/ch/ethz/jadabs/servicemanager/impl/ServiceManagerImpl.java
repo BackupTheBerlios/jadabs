@@ -60,9 +60,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     // [(String id, ServiceListener)]
     private Hashtable mapId2SvcListener = new Hashtable();
     private Hashtable mapId2SvcReference = new Hashtable();
-  
-    private Vector serviceListeners = new Vector();
-    
+      
     /** Local repository cache */
     private String repoCacheDirDefault = "./repocache/";
     private File repoCacheDir;
@@ -147,21 +145,14 @@ public class ServiceManagerImpl extends PluginFilterMatcher
      * 
      * In case filter is null default is: "|OPD,OBR,A"
      */
-    public boolean getServiceAdvertisements(String peername, String filter)
-    {
+    public boolean getServiceAdvertisements(String peername, String filter, ServiceAdvertisementListener listener)
+    {   
+        
+        addListener(filter, listener);
+        
         sendRequest(peername, FILTER_REQ, SERVICE_FILTER, filter);
         
         return true;
-    }
-
-    public void addServiceAdvertisementListener(ServiceAdvertisementListener svcListener)
-    {
-        serviceListeners.add(svcListener);
-    }
-    
-    public void removeServiceAdvertisementListener(ServiceAdvertisementListener svcListener)
-    {
-        serviceListeners.remove(svcListener);
     }
     
     /*
@@ -237,86 +228,107 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         String topeer = new String(msg.getElement(SERVICE_TO_PEER).getData());
         String frompeer = new String(msg.getElement(SERVICE_FROM_PEER).getData());
         
+        System.out.println("topeer: "+topeer +" frompeer: "+frompeer);
+        
         if (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER))
         {
         
-            if (type.equals(SERVICE_REQ))
-            {
-                String filter = new String(msg.getElement(SERVICE_FILTER).getData());
-	            
-	            String smfilter = filter.substring(filter.lastIndexOf("|")+1);
-	             
-                System.out.println("got servicereq: "+ msg.toXMLString());
-	            
-            	// send matching plugins
-	            if ((smfilter.indexOf("OPD".toString()) > -1)) 
-	            {
-      		    	sendTestServiceAdvertisement(SERVICE_ACK, frompeer);
-	            }
-
-                
-            }
-            else if (type.equals(SERVICE_ACK))
-            {
-                
-            }
+//            if (type.equals(SERVICE_REQ))
+//            {
+//                String filter = new String(msg.getElement(SERVICE_FILTER).getData());
+//	            
+//	            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
+//	             
+//                System.out.println("got servicereq: "+ msg.toXMLString());
+//	            
+//            	// send matching plugins
+//	            if ((smfilter.indexOf("Nokia".toString()) > -1)) 
+//	            {
+//      		    	sendTestServiceAdvertisement(SERVICE_ACK, frompeer);
+//	            }
+//
+//                
+//            }
+//            else if (type.equals(SERVICE_ACK))
+//            {
+//                
+//            }
 	        	// Plugin-Request
 	        //TODO include a callback function to the pluginloader
 	        // to match the ExtensionPoint filter.
-	        else if (type.equals(FILTER_REQ))
+	        if (type.equals(FILTER_REQ))
 	        {         
 	            	// match agains the provided filter
 	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
+	            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
 	            
-	            	// service manager filter
-//	            String smfilter = filter.substring(filter.lastIndexOf("|")+1);
-	             
-            	// send matching plugins
-//	            if ((smfilter.indexOf("OPD".toString()) > -1) && 
-//	                    ( ( (smfilter.indexOf(ServiceManager.RUNNING_SERVICES.toString()) > -1)) ||
-//	                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
-
-                	//  enum over installed plugins
-//                Iterator it = ServiceManagerActivator.pluginLoader.getMatchingPlugins(filter, this);
-//
-//                for(;it.hasNext(); )
-//                {
-//                    Descriptor descriptor = (Descriptor)it.next();
-//                  	String id = descriptor.toString();
-//                  
-//      		    	InputStream instr = ServiceManagerActivator.bundleLoader.fetchInformation(id, this);
-//      		    
-//      		    	sendServiceAdvertisement(FILTER_ACK, frompeer, 
-//      		    	        id, ServiceManager.RUNNING_SERVICES, 
-//      		    	        SERVICE_FILTER, filter);
-//                }
+	            
+	            System.out.println("message: "+ msg.toXMLString());
+	            System.out.println("filter request received: "+filter);
+	            
+	            Iterator it = null;
+	            String rptype = "";
+	            if ((smfilter.indexOf("OPD".toString()) > -1) &&
+	            	smfilter.indexOf("INS") > -1)
+	            {
+	                it = ServiceManagerActivator.pluginLoader.getInstalledPlugins();
+	                rptype = INSTALLED_SERVICES;
+	            }
+	            sendAdvertisements(it, rptype, frompeer, filter);
+	            
+	            if ((smfilter.indexOf("OPD".toString()) > -1) &&
+		            	smfilter.indexOf("PRO") > -1)
+	            {
+		            // check for matching providing plugins
+		            try
+		            {
+			            it = ServiceManagerActivator.pluginLoader.getMatchingPlugins(
+			                    filter, this);
+			            rptype = PROVIDING_SERVICES;
+		            } catch(Exception e)
+		            {
+		                LOG.error("could not get plugins",e);
+		            }
+	            }
+	            sendAdvertisements(it, rptype, frompeer, filter);
+	            
+	            if ((smfilter.indexOf("OBR".toString()) > -1) &&
+		            	smfilter.indexOf("INS") > -1)
+	            {
+		            // check for installed OBRs
+		            try
+		            {
+			            it = ServiceManagerActivator.bundleLoader.getInstalledBundles();
+			            rptype = INSTALLED_SERVICES;
+		            } catch(Exception e)
+		            {
+		                LOG.error("could not get plugins",e);
+		            }
+	            }
+	            sendAdvertisements(it, rptype, frompeer, filter);
+	            
+	            
+	        
 	        }
         		// Plugin-Ack
 	        else if (type.equals(FILTER_ACK))
 	        {            
-	            String peer = new String(msg.getElement(SERVICE_PEER).getData());
 	            String adv = new String(msg.getElement(SERVICE_ADV).getData());
-	            
 	            String rptype = new String(msg.getElement(SERVICE_RP_TYPE).getData());
 	            
 	            String id = new String(msg.getElement(SERVICE_ID).getData());
-	            
-//	            String idsuffix = id.substring(id.lastIndexOf(":") + 1);
-	            
-	            // save the uuid together with the adv in a serviceref
-//	            ServiceAdvertisement svcAdv = ServiceAdvertisement.initAdvertisement(adv);
-	            
-	            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(id, null, peer, rptype);
+	                     
+	            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(id, adv, frompeer, rptype);
 	            
 	            serviceRefs.put(id, svcRefImpl);
 	            	            	            
 	            // per default save the opd in the repocache
-//	            saveServiceAdvInCache(svcAdv);
+	            saveServiceAdvInCache(id, adv);
 	        
 	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
 	            
 	            // call listeners
-//	            notifyListeners(filter, svcRefImpl);
+	            notifyListeners(filter, svcRefImpl);
 	            
 	            System.out.println("got info_ack: "+adv);
 	        }
@@ -326,7 +338,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	            String uuid = new String(msg.getElement(UUID).getData());
 	            
 	            sendServiceAdvertisement(INFO_ACK, frompeer, 
-  		    	        uuid, ServiceManager.RUNNING_SERVICES, 
+  		    	        uuid, ServiceManager.INSTALLED_SERVICES, 
   		    	        UUID, uuid);
 	            
 	        }
@@ -408,34 +420,51 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         }
     }
 
-    private void sendTestServiceAdvertisement(String svctype, String topeer)
+    private void sendAdvertisements(Iterator it, String rptype, String frompeer, String filter)
     {
-        
-        String uuid = "jadabs-im:installee:0.7.1:opd";
-        String downloadurl = "http://wlab.ethz.ch/test/installee.jad";
-        String port = "5432";
-        
-        System.out.println("id: "+uuid);
-        
-        Element[] elm = new Element[6];
-        
-        elm[0] = new Element(SERVICE_TYPE, svctype, Message.JXTA_NAME_SPACE);
-        elm[1] = new Element(SERVICE_TO_PEER, topeer, Message.JXTA_NAME_SPACE);
-        elm[2] = new Element(SERVICE_FROM_PEER, ServiceManagerActivator.peername, Message.JXTA_NAME_SPACE);		        
-        elm[3] = new Element(UUID, uuid, Message.JXTA_NAME_SPACE);
-        elm[4] = new Element(DOWNLOAD_URL, downloadurl, Message.JXTA_NAME_SPACE);
-        elm[5] = new Element("port", port, Message.JXTA_NAME_SPACE);
-        //        elm[6] = new Element(SERVICE_ADV, adv, Message.JXTA_NAME_SPACE);
-        
-        try
-        {                    
-            ServiceManagerActivator.groupService.send(ServiceManagerActivator.groupPipe, new Message(elm));
-        } catch (IOException e)
+        while(it != null && it.hasNext())
         {
-            LOG.debug("error in sending message");
+            String id = (String)it.next();
+          
+            System.out.println("id to send: "+id);
+            
+		    	InputStream instr = ServiceManagerActivator.bundleLoader.fetchInformation(id, this);
+		    
+		    	
+		    	sendServiceAdvertisement(FILTER_ACK, frompeer, 
+		    	        id, rptype, 
+		    	        SERVICE_FILTER, filter);
         }
-        
     }
+    
+//    private void sendTestServiceAdvertisement(String svctype, String topeer)
+//    {
+//        
+//        String uuid = "jadabs-im:installee:0.7.1:opd";
+//        String downloadurl = "http://wlab.ethz.ch/test/installee.jad";
+//        String port = "5432";
+//        
+//        System.out.println("id: "+uuid);
+//        
+//        Element[] elm = new Element[6];
+//        
+//        elm[0] = new Element(SERVICE_TYPE, svctype, Message.JXTA_NAME_SPACE);
+//        elm[1] = new Element(SERVICE_TO_PEER, topeer, Message.JXTA_NAME_SPACE);
+//        elm[2] = new Element(SERVICE_FROM_PEER, ServiceManagerActivator.peername, Message.JXTA_NAME_SPACE);		        
+//        elm[3] = new Element(UUID, uuid, Message.JXTA_NAME_SPACE);
+//        elm[4] = new Element(DOWNLOAD_URL, downloadurl, Message.JXTA_NAME_SPACE);
+//        elm[5] = new Element("port", port, Message.JXTA_NAME_SPACE);
+//        //        elm[6] = new Element(SERVICE_ADV, adv, Message.JXTA_NAME_SPACE);
+//        
+//        try
+//        {                    
+//            ServiceManagerActivator.groupService.send(ServiceManagerActivator.groupPipe, new Message(elm));
+//        } catch (IOException e)
+//        {
+//            LOG.debug("error in sending message");
+//        }
+//        
+//    }
     
     private void sendServiceAdvertisement(String svctype, String topeer, 
             String uuid, String rptype, String name, String value)
@@ -444,9 +473,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	    InputStream instr = ServiceManagerActivator.bundleLoader.fetchInformation(uuid, this);
 	    
 	    String adv = inputStream2String(instr);
-        
-        System.out.println("id: "+uuid);
-        
+                
         Element[] elm = new Element[7];
         
         elm[0] = new Element(SERVICE_TYPE, svctype, Message.JXTA_NAME_SPACE);
@@ -548,8 +575,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         String name = args[1];
         String version = args[2];
         String type = args[3];
-        
-        
+                
         // save adv in repocache
         StringBuffer sb = new StringBuffer();
         sb.append(repoCacheDir.getAbsolutePath() + 
@@ -558,33 +584,47 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         File groupdir = new File(sb.toString());
         groupdir.mkdir();
         
-        sb.append(File.separatorChar + "opds");
-        File opddir = new File(sb.toString());
-        opddir.mkdir();
+        File svcdir = null;
+        if (type.equals("opd"))
+        {
+	        sb.append(File.separatorChar + "opds");
+	        svcdir = new File(sb.toString());
+	        sb.append(File.separatorChar + name+"-"+version+".opd");
+        }
+        else if (type.equals("obr"))
+        {
+	        sb.append(File.separatorChar + "obrs");
+	        svcdir = new File(sb.toString());
+	        sb.append(File.separatorChar + name+"-"+version+".obr");
+        }
         
-        sb.append(File.separatorChar + name+"-"+version+".opd");
-        File pluginfile = new File(sb.toString());
-        
-        FileOutputStream out;
-        try
+        if (svcdir != null)
         {
-
-            pluginfile.createNewFile();
-            
-            out = new FileOutputStream(sb.toString());
-            
-            // Connect print stream to the output stream
-            PrintStream p = new PrintStream( out );
-
-            p.println(adv);
-            p.close();
-            
-        } catch (FileNotFoundException e)
-        {
-            LOG.error("error in writing file");
-        } catch (IOException e)
-        {
-            LOG.error("error in writing file");
+	        svcdir.mkdir();
+	        
+	        File pluginfile = new File(sb.toString());
+	        
+	        FileOutputStream out;
+	        try
+	        {
+	
+	            pluginfile.createNewFile();
+	            
+	            out = new FileOutputStream(sb.toString());
+	            
+	            // Connect print stream to the output stream
+	            PrintStream p = new PrintStream( out );
+	
+	            p.println(adv);
+	            p.close();
+	            
+	        } catch (FileNotFoundException e)
+	        {
+	            LOG.error("error in writing file");
+	        } catch (IOException e)
+	        {
+	            LOG.error("error in writing file");
+	        }
         }
 
     }
@@ -609,11 +649,14 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         
         try
         {
-            LOG.debug("send servicemanager message");
+            Message msg = new Message(elm);
+            
+            LOG.debug("send servicemanager message: "+ msg.toXMLString());
+            
             
             ServiceManagerActivator.groupService.send(
                     ServiceManagerActivator.groupPipe, 
-                    new Message(elm));
+                    msg);
             
         } catch (IOException e)
         {
@@ -681,6 +724,6 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         
         return null;
     }
-
+    
     
 }

@@ -1,6 +1,4 @@
-/*
- * $Id: EndpointService.java,v 1.4 2005/02/18 15:00:44 printcap Exp $
- *
+/**
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

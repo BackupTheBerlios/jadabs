@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: ResolverService.java,v 1.5 2005/02/13 12:36:26 afrei Exp $
+ * $Id: ResolverService.java,v 1.6 2005/02/23 21:34:03 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -358,7 +358,7 @@ public class ResolverService extends Service implements Runnable, Listener
                     // notify registered listeners
                     fireLostNamedResouce(chkpeer);
                     
-                    LOG.debug("lost peer in cache after timeout");
+//                    LOG.debug("lost peer in cache after timeout");
                     
                 }
             }

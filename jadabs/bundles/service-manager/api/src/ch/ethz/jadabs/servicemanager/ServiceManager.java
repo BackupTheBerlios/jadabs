@@ -13,15 +13,14 @@ package ch.ethz.jadabs.servicemanager;
 public interface ServiceManager
 {
     
-    public static String PROVIDING_SERVICES = "P";
-    public static String RUNNING_SERVICES 	= "R";
-    public static String ALL_SERVICES 		= "RP";
+    public static String PROVIDING_SERVICES = "PRO";
+    public static String INSTALLED_SERVICES = "INS";
 
     public static String SERVICE_TYPE = "type";
     
     /** Service Types */
-    public static String SERVICE_REQ = "svcreq";
-    public static String SERVICE_ACK = "svcack";
+//    public static String SERVICE_REQ = "svcreq";
+//    public static String SERVICE_ACK = "svcack";
     
     public static String FILTER_REQ = "filreq";
     public static String FILTER_ACK = "filack";
@@ -41,7 +40,7 @@ public interface ServiceManager
     
     public static String SERVICE_CODE = "svccode";
     
-    public static String SERVICE_PEER = "svcpeer";
+//    public static String SERVICE_PEER = "svcpeer";
     
     public static String UUID = "uuid";
     
@@ -74,19 +73,7 @@ public interface ServiceManager
      * @param serviceListener
      * @return
      */
-    boolean getServiceAdvertisements(String peername, String filter);
-    
-    void addServiceAdvertisementListener(ServiceAdvertisementListener svcListener);
-    
-    void removeServiceAdvertisementListener(ServiceAdvertisementListener svcListener);
-    
-    /**
-     * Remove Service Listener, which has been added to the internal
-     * list by getServices.
-     * 
-     * @param serviceListener
-     */
-//    public void removeListener(ServiceAdvertisementListener serviceListener);
+    boolean getServiceAdvertisements(String peername, String filter, ServiceAdvertisementListener listener);
     
     /**
      * Add providing service which can be found by other ServiceManagers.

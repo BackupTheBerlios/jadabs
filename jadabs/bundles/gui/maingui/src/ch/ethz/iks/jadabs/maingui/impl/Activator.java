@@ -38,14 +38,15 @@ package ch.ethz.iks.jadabs.maingui.impl;
 
 import java.util.Hashtable;
 
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import ch.ethz.iks.jadabs.maingui.SwtManager;
-import ch.ethz.jadabs.bundleloader.BundleLoader;
+import ch.ethz.jadabs.bundleLoader.api.BundleLoader;
 import ch.ethz.jadabs.jxme.services.GroupService;
-import ch.ethz.jadabs.pluginloader.PluginLoader;
+import ch.ethz.jadabs.pluginLoader.api.PluginLoader;
 import ch.ethz.jadabs.remotefw.FrameworkManager;
 import ch.ethz.jadabs.servicemanager.ServiceManager;
 
@@ -56,6 +57,8 @@ import ch.ethz.jadabs.servicemanager.ServiceManager;
 public class Activator implements BundleActivator
 {
 
+    private static Logger LOG = Logger.getLogger(Activator.class);
+    
     static BundleContext bc;
 
     static SwtManagerImpl ui;
@@ -100,7 +103,7 @@ public class Activator implements BundleActivator
         serviceManager = (ServiceManager)bc.getService(sref);
         
         // PluginLoader
-        sref = bc.getServiceReference(PluginLoader.class.getName());
+        sref = bc.getServiceReference("ch.ethz.jadabs.pluginLoader.api.PluginLoader");      
         pluginLoader = (PluginLoader)bc.getService(sref);
         
         // BundleLoader
@@ -108,8 +111,8 @@ public class Activator implements BundleActivator
         bundleLoader = (BundleLoader)bc.getService(sref);
         
         // FrameworkManager
-        ServiceReference srefrm = Activator.bc.getServiceReference(FrameworkManager.class.getName());
-        rmanager = (FrameworkManager) bc.getService(srefrm);
+        sref = bc.getServiceReference(FrameworkManager.class.getName());
+        rmanager = (FrameworkManager) bc.getService(sref);
 
 //        // Get WorldPeerGroup
 //        ServiceReference srefwg = Activator.bc.getServiceReference("WorldPeerGroup");

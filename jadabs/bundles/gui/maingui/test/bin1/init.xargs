@@ -17,7 +17,7 @@
 -Dch.ethz.jadabs.pluginloader.repository=file:///home/andfrei/.maven/repository.xml
 
 -Dch.ethz.jadabs.servicemanager.gmpipe.name=gmpipe
--Dch.ethz.jadabs.servicemanager.gmpipe.id=11
+-Dch.ethz.jadabs.servicemanager.gmpipe.id=23
 
 -Dorg.knopflerfish.startlevel.use=true
 
@@ -27,7 +27,7 @@
 -istart  	log4j/jars/log4j-1.2.8-osgi.jar
 -install 	kobjects/jars/kxml2-2.1.9-osgi.jar
 -istart  	jadabs/jars/bundleloader-0.7.1-SNAPSHOT.jar
--istart         jadabs/jars/pluginloader-0.7.1-SNAPSHOT.jar
+-istart     jadabs/jars/pluginloader-0.7.1-SNAPSHOT.jar
 
 -startlevel 1
 

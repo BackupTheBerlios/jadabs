@@ -7,13 +7,13 @@
 	version="0.1.0"
 	provider-name="ETHZ-IKS">
 	
-    <Property name="processor" value="xyz" />
-    <Property name="display" value="150x200" />
+    <Property name="processor" value="arm9" />
+    <Property name="display" value="176x208" />
     
     <OSGiContainer id="j2me-osgi"/>
 
     <NetIface 
-        type="bt_jsr-82"
+        type="bt-jsr82"
         connection="dynamic"
         name="bt-hotspot"
         iface="hci0"
@@ -21,9 +21,9 @@
     />
     
     <NetIface 
-        type="gsm_http"
-        connection="static"
-        name="GSM HTTP"
+        type="gsm"
+        connection="dynamic"
+        name="GSM"
         description="for GSM/HTTP Connections"
     />
      

@@ -71,12 +71,12 @@ public class ServiceManagerActivator implements BundleActivator
         serviceManager.initRepoCache();
         
 //        	// PluginLoader
-//        sref = bc.getServiceReference(PluginLoader.class.getName());
-//        pluginLoader = (PluginLoader)bc.getService(sref);
+        sref = bc.getServiceReference(PluginLoader.class.getName());
+        pluginLoader = (PluginLoader)bc.getService(sref);
 //        
 //    		// BundleLoader
-//        sref = bc.getServiceReference(BundleLoader.class.getName());
-//        bundleLoader = (BundleLoader)bc.getService(sref);
+        sref = bc.getServiceReference(BundleLoader.class.getName());
+        bundleLoader = (BundleLoader)bc.getService(sref);
         
         // register servicemanager
         bc.registerService("ch.ethz.jadabs.servicemanager.ServiceManager", serviceManager, null);
