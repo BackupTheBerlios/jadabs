@@ -43,7 +43,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.Hashtable;
 import java.util.Enumeration;
@@ -212,15 +214,27 @@ public class Shell extends Thread implements IShellPluginService {
                      .println("[USAGE: loadBundle <bundlename> <bundleid> <bundleversion>");
             }
 
-         } else if (cmdString.equalsIgnoreCase("listBundles")) {
+         } else if (cmdString.equalsIgnoreCase("ss")) {
 
             long[] bundles = getBundles();
             System.out.println("[Available bundles:]");
-            for (int i = 0; i < bundles.length; i++) {
-               System.out.println("[BID " + bundles[i] + " - "
-                     + getBundleName(bundles[i]) + "]");
-            }
 
+            Arrays.sort(bundles);
+            
+            System.out.println("id	state		bundle");
+            
+            for (int i = 0; i < bundles.length; i++) {
+            
+                StringBuffer sb = new StringBuffer();
+                sb.append(bundles[i]);
+                sb.append("	   ");
+                sb.append(getBundleStateString(bundles[i]));
+                sb.append("	   ");
+                sb.append(getBundleName(bundles[i]));
+                System.out.println(sb.toString());
+           }
+            
+            
          } else if (cmdString.equalsIgnoreCase("bundleState")) {
 
             System.out.println("[Bundle " + cmd[1] + " has state "
@@ -243,6 +257,7 @@ public class Shell extends Thread implements IShellPluginService {
       }
    }
 
+   
    /** Returns the next command, split into tokens. */
    private String[] nextCommand() throws IOException {
 
@@ -279,7 +294,7 @@ public class Shell extends Thread implements IShellPluginService {
       System.out
             .println("uninstallBundle  <bid>                       Uninstalls a bundle");
       System.out
-            .println("listBundles                                  Lists all available bundles");
+            .println("ss                                           display installed bundles (short status)");
       System.out
             .println("bundleState      <bid>                       Retrieves the bundle state");
       System.out
@@ -411,6 +426,31 @@ public class Shell extends Thread implements IShellPluginService {
       return bname;
    }
 
+   public String getBundleStateString(long bid)
+   {
+       Bundle bundle = ShellActivator.b_context.getBundle(bid);
+       
+       int state = bundle.getState();
+       
+       switch(state)
+       {
+       case Bundle.UNINSTALLED:
+           return "UNINSTALLED";
+       case Bundle.INSTALLED:
+           return "INSTALLED  ";
+       case Bundle.RESOLVED:
+           return "RESOLVED   ";
+       case Bundle.STARTING:
+           return "STARTING   ";
+       case Bundle.STOPPING:
+           return "STOPPING   ";
+       case Bundle.ACTIVE:
+           return "ACTIVE     ";
+       }
+       
+       return "ERROR";
+   }
+   
    /*
     * (non-Javadoc)
     * 
