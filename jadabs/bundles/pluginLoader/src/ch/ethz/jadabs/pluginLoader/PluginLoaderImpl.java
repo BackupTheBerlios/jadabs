@@ -119,8 +119,9 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
          ArrayList schedule = (ArrayList)schedules.next();
          try {
             for (int index=0; index < schedule.size(); index++) {
-               System.out.println("LOADING " + opd2obr((String)schedule.get(index)));
-               PluginLoaderActivator.bloader.loadBundle(opd2obr((String)schedule.get(index)));
+               PluginDescriptor current = this.getPluginDescriptor((String)schedule.get(index));
+               System.out.println("LOADING " + current.activator);
+               PluginLoaderActivator.bloader.loadBundle(current.activator);
             }            
          } catch (Exception e) {
             continue;
@@ -268,7 +269,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements
    }
    
    private String opd2obr(String opd) {
-      return opd.substring(0,opd.length()-3) + "opd"; 
+      return opd.substring(0,opd.length()-3) + "obr"; 
    }
 
 }

@@ -25,7 +25,8 @@ public class PluginDescriptor extends Descriptor {
    private KXmlParser parser;
    protected Vector extensions = new Vector();
    private Hashtable extensionPoints = new Hashtable();
-
+   protected String activator;
+   
    private PluginDescriptor() {
       super(null);
    }
@@ -96,6 +97,8 @@ public class PluginDescriptor extends Descriptor {
                PluginLoaderImpl.scheduler.stillToProcess.addAll(0, matchingPlugins);
                }
                
+            } else if (stack.peek().equals("ServiceActivatorBundle")) {
+               this.activator = parser.getAttributeValue(null, "activator-uuid");
             }
          } else if (type == KXmlParser.END_TAG) {
             try {
