@@ -6,7 +6,7 @@
   
       <name>jadabs</name>
       <artifactId>jadabs</artifactId>
-      <currentVersion>0.7.0-SNAPSHOT</currentVersion>
+      <currentVersion>0.7.0</currentVersion>
   
       <organization>
         <name>ETHZ-IKS</name>
