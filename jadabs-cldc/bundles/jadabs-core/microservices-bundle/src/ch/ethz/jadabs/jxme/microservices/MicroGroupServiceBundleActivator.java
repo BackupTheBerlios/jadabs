@@ -12,7 +12,7 @@ import org.osgi.framework.BundleContext;
 public class MicroGroupServiceBundleActivator implements BundleActivator
 {
     /** reference to the context of this bundle */
-    static BundleContext context;
+    static BundleContext bc;
     
     /** reference to the service object */ 
     MicroGroupServiceBundleImpl  service;
@@ -24,7 +24,7 @@ public class MicroGroupServiceBundleActivator implements BundleActivator
      */
     public void start(BundleContext context) throws Exception
     {
-        MicroGroupServiceBundleActivator.context = context; 
+        MicroGroupServiceBundleActivator.bc = context; 
         service = new MicroGroupServiceBundleImpl(); 
     }
 
