@@ -30,7 +30,7 @@ public class MatchItem {
     
    public boolean equals(Object obj) {      
       // DEBUG one line   
-      System.out.println("testing " + obj + " against " + toString());
+      // System.out.println("testing " + obj + " against " + toString());
       if (obj instanceof String) {
          MatchItem test = new MatchItem((String)obj);         
          return equals(test);         

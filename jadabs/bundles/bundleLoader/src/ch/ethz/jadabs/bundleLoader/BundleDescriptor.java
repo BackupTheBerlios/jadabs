@@ -38,7 +38,7 @@ public class BundleDescriptor extends Descriptor {
 
       parser = new KXmlParser();
       
-      InputStream instream = BundleLoaderImpl.fetchInformation(uuid);      
+      InputStream instream = BundleLoaderActivator.bundleLoader.fetchInformation(uuid, this);      
       parser.setInput(new InputStreamReader(instream));
       parseOBR();
       if (! uuid.equals(group + ":" + name + ":" + version + ":obr"))

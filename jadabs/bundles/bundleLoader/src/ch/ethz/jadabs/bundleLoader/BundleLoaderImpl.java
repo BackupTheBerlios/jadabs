@@ -359,10 +359,34 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       infoSources.remove(infoSource);
    }
 
-   protected static InputStream fetchInformation(String uuid) {
+   
+   protected static InputStream fetchInformation(String uuid, String location, Object requestor) {
       InputStream result = null;
-      for (Enumeration sources = infoSources.elements(); sources
-            .hasMoreElements();) {
+      for (Enumeration sources = infoSources.elements(); sources.hasMoreElements();) {
+         InformationSource source = (InformationSource) sources.nextElement();
+         if (source instanceof InformationSource) {
+            if (((InformationSource)source) == requestor) return result;
+         }
+         if ((result = ((InformationSource) sources.nextElement())
+               .retrieveInformation(uuid, location)) != null)
+            break;
+      }
+      if (LOG.isDebugEnabled())
+         LOG.debug("fetched: " + uuid + " - " + result);
+      return result;
+   }
+
+
+   /**
+    * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#getInformation(java.lang.String, java.lang.Object)
+    */
+   public InputStream fetchInformation(String uuid, Object requestor) {
+      InputStream result = null;
+      for (Enumeration sources = infoSources.elements(); sources.hasMoreElements();) {
+         InformationSource source = (InformationSource) sources.nextElement();
+         if (source instanceof InformationSource) {
+            if (((InformationSource)source) == requestor) return result;
+         }
          if ((result = ((InformationSource) sources.nextElement())
                .retrieveInformation(uuid)) != null)
             break;
@@ -372,18 +396,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       return result;
    }
 
-   protected static InputStream fetchInformation(String uuid, String source) {
-      InputStream result = null;
-      for (Enumeration sources = infoSources.elements(); sources
-            .hasMoreElements();) {
-         if ((result = ((InformationSource) sources.nextElement())
-               .retrieveInformation(uuid, source)) != null)
-            break;
-      }
-      LOG.debug("fetched result: " + result);
-      return result;
-   }
-
+   
    /**
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#registerLoaderListener(ch.ethz.jadabs.bundleLoader.api.LoaderListener)
     */

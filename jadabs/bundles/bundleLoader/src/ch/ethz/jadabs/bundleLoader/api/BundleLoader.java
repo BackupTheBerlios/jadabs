@@ -3,6 +3,7 @@
  */
 package ch.ethz.jadabs.bundleLoader.api;
 
+import java.io.InputStream;
 import java.util.Iterator;
 
 
@@ -18,6 +19,8 @@ public interface BundleLoader extends Loader {
    
    public Iterator getInstalledBundles();   
 
+   public InputStream fetchInformation(String uuid, Object requestor);
+   
    // registration functions
    public void registerRequestHandler(HttpRequestHandler handler);
    public void unregisterRequestHandler(HttpRequestHandler handler);

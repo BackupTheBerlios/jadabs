@@ -5,6 +5,7 @@ package ch.ethz.jadabs.pluginLoader;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -79,7 +80,7 @@ public class PluginLoaderImpl implements PluginLoader {
     * @see ch.ethz.jadabs.pluginLoader.api.PluginLoader#getMatchingPlugins(java.lang.String)
     */
    public Iterator getMatchingPlugins(String filter, Object requestor) {
-      HashSet result = new HashSet();
+      ArrayList result = new ArrayList();
       for (Enumeration sources = infoSources.elements(); sources.hasMoreElements();) {
          InformationSource source = (InformationSource) sources.nextElement();
          if (source instanceof InformationSource) {
