@@ -1,7 +1,7 @@
 /*
  * Created on Aug 1, 2004
  *
- * $Id: BTDiscovery.java,v 1.2 2004/12/22 12:39:31 afrei Exp $
+ * $Id: BTDiscovery.java,v 1.3 2005/01/19 10:01:58 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.bt;
 
@@ -38,7 +38,7 @@ public class BTDiscovery implements DiscoveryListener, Runnable
     private static int discosleeptime = 60000;
     
     /** Log4j logger to be used */
-    private Logger LOG = Logger.getLogger("BTDeviceDiscovery");
+    private Logger LOG = Logger.getLogger("ch.ethz.jadabs.jxme.bt.BTDeviceDiscovery");
     
     /** access to the local BT interface */
     private LocalDevice localDevice;

@@ -1,7 +1,7 @@
 /*
  * Created on Jul 28, 2004
  *
- * $Id: BTConnection.java,v 1.1 2004/11/10 10:28:13 afrei Exp $
+ * $Id: BTConnection.java,v 1.2 2005/01/19 10:01:58 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.bt;
 
@@ -27,7 +27,7 @@ import ch.ethz.jadabs.jxme.MalformedURIException;
 public class BTConnection implements Runnable 
 {
     /** logger for instances of BTConnection */
-    private static final Logger LOG = Logger.getLogger("BTConnection");
+    private static final Logger LOG = Logger.getLogger("ch.ethz.jadabs.jxme.bt.BTConnection");
     
     /** this BT connection */
     private StreamConnection conn;
@@ -116,6 +116,12 @@ public class BTConnection implements Runnable
     {
         try {
             LOG.debug("new connection to "+remoteBTAddress);
+            
+            // add BT Transport to EndpointService
+//          BTActivator.endptsvc.addTransport(
+//                  remoteAddress, 
+//                  btTransport);
+            
             while (!aborting) {
                 // skip bytes in InputStream until PROLOG field in header 
                 // is encountered
@@ -156,6 +162,10 @@ public class BTConnection implements Runnable
             }
         } catch(IOException e) {
             if (!aborting) {
+                
+                // remove Endpoint from Peers URI list
+//                BTActivator.endptsvc.removeTransport(remoteAddress);
+                
                 // an exception always occurs when we are aborting 
                 // however in this case nothing is reported
                 if (LOG.isDebugEnabled()) {
@@ -217,11 +227,9 @@ public class BTConnection implements Runnable
             out.flush();
         } catch(IOException e) {
             LOG.error("cannot send message to "+receiver+": "+e.getMessage());
+            throw e;
         }        
         
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("BTConnection.sendMessage() done.");
-        }
         
     }
     
