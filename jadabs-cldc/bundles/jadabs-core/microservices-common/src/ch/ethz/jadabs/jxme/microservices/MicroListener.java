@@ -1,7 +1,7 @@
 package ch.ethz.jadabs.jxme.microservices;
 /************************************************************************
  *
- * $Id: MicroListener.java,v 1.1 2005/01/16 14:06:37 printcap Exp $
+ * $Id: MicroListener.java,v 1.2 2005/01/23 15:47:37 printcap Exp $
  *
  **********************************************************************/
 
@@ -33,6 +33,7 @@ public interface MicroListener
      * @param namedResourceName
      *            name of NamedResource found
      */
-    public void handleSearchResponse(String namedResourceName);
+    // FIXME: Andreas why does Listener contain a handleSearchResponse 
+    //public void handleSearchResponse(String namedResourceName);
 
 }

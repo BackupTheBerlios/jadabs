@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: Constants.java,v 1.1 2005/01/16 22:43:28 printcap Exp $
+ * $Id: Constants.java,v 1.2 2005/01/23 15:47:37 printcap Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -26,5 +26,38 @@ public interface Constants
     
     /** message code for local search */
     public static final short LOCAL_SEARCH = 66;
+    
+    /** message code for remote search */
+    public static final short REMOTE_SEARCH = 67;
+    
+    /** message code for remote search */
+    public static final short CANCEL_SEARCH = 68;
+    
+    /** message code for create and publish */
+    public static final short CREATE = 69;
+    
+    /** message code for join*/
+    public static final short JOIN  = 70;
+    
+    /** message code for send */
+    public static final short SEND  = 71;
+    
+    /** message code for listen */
+    public static final short LISTEN = 72;
+    
+    /** message code for resolve */
+    public static final short RESOLVE = 73; 
+    
+    /** message code for close */
+    public static final short CLOSE = 74;
+    
+    /** message for SEARCH_RESPONSE ASYNC_MSG */
+    public static final short SEARCH_RESPONSE = 128;
+    
+    /** message for NAME_RESOURCE_LOSS ASYNC_MSG */
+    public static final short NAME_RESOURCE_LOSS = 129;
+    
+    /** message for MESSAGE ASYNC_MSG */
+    public static final short MESSAGE = 130;
     
 }

@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceBundleImpl.java,v 1.2 2005/01/16 22:43:28 printcap Exp $
+ * $Id: MicroGroupServiceBundleImpl.java,v 1.3 2005/01/23 15:47:37 printcap Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -10,6 +10,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 
@@ -39,6 +41,9 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
     /** flag signaling dispatcher thread to shutdown */
     private boolean shutdown = false;
     
+    /** internal group number of this group */
+    private int groupNumber = 0;
+    
     /** next sequence number to be used in requests */
     private short nextSequenceNumber = 0;
     
@@ -47,6 +52,12 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
     
     /** array containing data received from core */
     private byte[] responseData;
+    
+    /** table stores registered listeners (MicroDiscoveryListeners) */
+    private Hashtable registeredMicroDiscoveryListeners;
+    
+    /** table stores registered listeners (MicroListeners) */
+    private Hashtable registeredMircoListeners;
     
     
     /**
@@ -65,7 +76,9 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             LOG.fatal("Listening port 'ch.ethz.jadsbs.microservices.bundleport' invalid or not specified.");
             return;
         }
-        wiring = new LocalWiringBundle(port, this);        
+        wiring = new LocalWiringBundle(port, this); 
+        registeredMicroDiscoveryListeners = new Hashtable();
+        registeredMircoListeners = new Hashtable();
     }       
     
     /**
@@ -91,22 +104,32 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             myRequest = nextSequenceNumber++;
             try {
                 out.writeShort(myRequest);
+                out.writeShort(groupNumber);
                 out.writeShort(Constants.PUBLISH);
+                out.writeShort(0);	// dummy length
                 out.writeUTF(resourceType);
                 out.writeUTF(resourceName);
                 out.writeUTF(stringID);
-                connection.sendBytes(bout.toByteArray());
+                out.close();
+                bout.close();
+                byte[] array = bout.toByteArray();
+                array[6] = (byte)((array.length >> 8) & 0xff);
+                array[7] = (byte)(array.length & 0xff);
+                connection.sendBytes(array);
             } catch (IOException e) { 
-                LOG.debug("cannot send publish message.");
+                LOG.debug("cannot send PUBLISH message.");
                 return;
             }
             
-            // wait for return, i.e. ack
+            // wait for reply
             while (requestResponse != myRequest) {
                 try {
                     connection.wait();
                 } catch (InterruptedException e) { }
-            }      
+            }  
+            if (responseData[7] == 1) {
+                LOG.error("published failed.");
+            }
             // also notify dispatcher thread
             connection.notifyAll();
             requestResponse = -1;
@@ -138,28 +161,38 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             try {
                 out.writeShort(myRequest);
                 out.writeShort(Constants.PUBLISH_REMOTE);
+                out.writeShort(groupNumber);
+                out.writeShort(0);		// dummy length
                 out.writeUTF(resourceType);
                 out.writeUTF(resourceName);
                 out.writeUTF(stringID);
-                connection.sendBytes(bout.toByteArray());
+                out.close();
+                bout.close();
+                byte[] array = bout.toByteArray();
+                array[6] = (byte)((array.length >> 8) & 0xff);
+                array[7] = (byte)(array.length & 0xff);
+                connection.sendBytes(array);
             } catch (IOException e) { 
-                LOG.debug("cannot send publish message.");
+                LOG.debug("cannot send REMOTE_PUBLISH message.");
                 return;
             }
             
-            // wait for return, i.e. ack
+            // wait for reply
             while (requestResponse != myRequest) {
                 try {
                     connection.wait();
                 } catch (InterruptedException e) { }
             }      
+            if (responseData[7] == 1) {
+                LOG.error("published failed.");
+            }            
             // also notify dispatcher thread
             connection.notifyAll();
             requestResponse = -1;
         }    
     }
 
-    /*
+    /**
      * Search for Peers, Groups, Pipes or Content resources defined by
      * Applications.
      * <p>
@@ -208,14 +241,21 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
         synchronized(connection) {
             myRequest = nextSequenceNumber++;
             out.writeShort(myRequest);
+            out.writeShort(groupNumber);
             out.writeShort(Constants.LOCAL_SEARCH);
+            out.writeShort(0);	// dummy length
             out.writeUTF(type);
             out.writeUTF(attribute);
             out.writeUTF(value);
             out.writeInt(threshold);
-            connection.sendBytes(bout.toByteArray());
+            out.close();
+            bout.close();
+            byte[] array = bout.toByteArray();
+            array[6] = (byte)((array.length >> 8) & 0xff);
+            array[7] = (byte)(array.length & 0xff);
+            connection.sendBytes(array);
             
-            // wait for return, i.e. ack
+            // wait for reply
             while (requestResponse != myRequest) {
                 try {
                     connection.wait();
@@ -225,14 +265,34 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             // also notify dispatcher thread
             connection.notifyAll();
             requestResponse = -1;
-        } 
+        }
+        // process response
         DataInputStream din = new DataInputStream(new ByteArrayInputStream(response));
-        din.readShort();	// skip request field
+        din.readBoolean(); 	// skip, it is a reply message anyway
+        short request = din.readShort();
+        if (myRequest != request) {
+            // match request field
+            String error = "invalid reply received to LOCAL_SEARCH: request# do not match. "+
+            	"expected: "+myRequest+", received: "+request;             
+            LOG.error(error);
+            throw new IOException(error);
+        }
+        short groupNr = din.readShort();
+        short requestType = din.readShort();
+        if (requestType != Constants.LOCAL_SEARCH) {
+            String error = "invalid reply received to LOCAL_SEARCH: request type does not match. "+
+         			"expected: "+Constants.LOCAL_SEARCH+", received: "+requestType;             
+            LOG.error(error);
+            throw new IOException(error);
+        }
         boolean exception = din.readBoolean();
         if (exception) {
-            throw new IOException(din.readUTF());
+            String error = "localSearch failed";             
+            LOG.error(error);
+            throw new IOException(error);
         }
-        int itemCount = din.readInt();
+        din.readShort(); // skip message length
+        short itemCount = din.readShort();
         result = new String[itemCount];
         for (int i=0; i<itemCount; i++) {
             result[i] = din.readUTF();
@@ -241,77 +301,601 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
         return result;
     }
 
-    /* (non-Javadoc)
+    /**
+     * Search for Peers, Groups, Pipes or Content resources defined by
+     * Applications.
+     * <p>
+     * 
+     * First, it searches in the local cache. If a match is found, NamedResource
+     * is returned as the matching value. If a match is not found in the local
+     * cache, query is propagated to peer's neighbor based on ResolverService
+     * and a null value is returned.
+     * 
+     * @param type
+     *            one of {@link NamedResource.PEER},
+     *            {@link NamedResource.GROUP},{@link NamedResource.PIPE} or
+     *            {@link NamedResource.OTHER}
+     * 
+     * @param attribute
+     *            the name of the attribute to search for. This is one of the
+     *            fields defined by a NamedResource and advertisements are
+     *            indexed one. For example <code>NAME</code> or
+     *            <code>ID</code> are usually used to search resources by name
+     *            or id.
+     * 
+     * @param value
+     *            an expression specifying the items being searched for and also
+     *            limiting the scope of items to be returned. This is usually a
+     *            simple regular expression such as, for example,
+     *            <code>TicTacToe*</code> to search for all entities with
+     *            names that begin with TicTacToe.
+     * 
+     * @param threshold
+     *            the maximum number of responses allowed from any one peer.
+     * 
+     * @return JXTA-ID string if a match was found, null other wise.
+     * 
+     * @throws IOException
+     *             if a communication error occurs with the the JXTA network
      * @see ch.ethz.jadabs.jxme.microservices.MicroGroupService#remoteSearch(java.lang.String, java.lang.String, java.lang.String, int, ch.ethz.jadabs.jxme.microservices.MicroDiscoveryListener)
      */
     public void remoteSearch(String type, String attribute, String value, int threshold, MicroDiscoveryListener listener)
             throws IOException
-    {
-        // TODO Auto-generated method stub
-
+    {                
+        // prepare message and sent it
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(bout);
+        short myRequest;
+        byte response[];
+        String result[];
+        synchronized(connection) {
+            myRequest = nextSequenceNumber++;
+            out.writeShort(myRequest);
+            out.writeShort(groupNumber);
+            out.writeShort(Constants.REMOTE_SEARCH);
+            out.writeShort(0);	// dummy length
+            out.writeUTF(type);
+            out.writeUTF(attribute);
+            out.writeUTF(value);
+            out.writeInt(threshold);
+            out.close();
+            bout.close();
+            byte[] array = bout.toByteArray();
+            array[6] = (byte)((array.length >> 8) & 0xff);
+            array[7] = (byte)(array.length & 0xff);
+            connection.sendBytes(bout.toByteArray());
+            
+            // wait for response
+            while (requestResponse != myRequest) {
+                try {
+                    connection.wait();
+                } catch (InterruptedException e) { }
+            }
+            response = responseData;
+            // also notify dispatcher thread
+            connection.notifyAll();
+            requestResponse = -1;
+        }
+        // process response
+        DataInputStream din = new DataInputStream(new ByteArrayInputStream(response));
+        din.readBoolean(); 	// skip, it is a reply message anyway
+        short request = din.readShort();
+        if (myRequest != request) {
+            // match request field
+            String error = "invalid reply received to REMOTE_SEARCH: request# do not match. "+
+            	"expected: "+myRequest+", received: "+request;             
+            LOG.error(error);
+            throw new IOException(error);
+         }
+         short groupNr = din.readShort();
+         short requestType = din.readShort();
+         if (requestType != Constants.REMOTE_SEARCH) {
+             String error = "invalid reply received to REMOTE_SEARCH: request type does not match. "+
+             	"expected: "+Constants.REMOTE_SEARCH+", received: "+requestType;             
+             LOG.error(error);
+             throw new IOException(error);
+         }
+         boolean exception = din.readBoolean();
+         if (exception) {
+            String error = "remoteSearch failed";             
+            LOG.error(error);
+            throw new IOException(error);
+         }          
+         // register listener associated with this request 
+         registeredMicroDiscoveryListeners.put(new Integer(myRequest), listener);
     }
 
-    /* (non-Javadoc)
+    /** 
+     * Cancel search and unregister specified listener 
+     * @param listener to unregister
      * @see ch.ethz.jadabs.jxme.microservices.MicroGroupService#cancelSearch(ch.ethz.jadabs.jxme.microservices.MicroDiscoveryListener)
      */
     public void cancelSearch(MicroDiscoveryListener listener)
     {
-        // TODO Auto-generated method stub
-
+        //  prepare message and sent it
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(bout);
+        short myRequest;
+        synchronized(connection) {
+            myRequest = nextSequenceNumber++;
+            try {
+                out.writeShort(myRequest);
+                out.writeShort(Constants.CANCEL_SEARCH);
+                out.writeShort(groupNumber);
+                out.writeShort(0);		// dummy length
+                out.close();
+                bout.close();
+                byte[] array = bout.toByteArray();
+                array[6] = (byte)((array.length >> 8) & 0xff);
+                array[7] = (byte)(array.length & 0xff);
+                connection.sendBytes(array);
+            } catch (IOException e) { 
+                LOG.debug("cannot send CANCEL_SEARCH message.");
+                return;
+            }
+            
+            // remove listener locally 
+            // (this is really ugly but on J2ME/MIDP there does not appear to exist a better solution)
+            Enumeration keys= registeredMicroDiscoveryListeners.keys();
+            while (keys.hasMoreElements()) {
+                Object key = keys.nextElement();
+                if (registeredMicroDiscoveryListeners.get(key) == listener) {
+                    registeredMicroDiscoveryListeners.remove(key);
+                }
+            }
+            
+            // wait for reply
+            while (requestResponse != myRequest) {
+                try {
+                    connection.wait();
+                } catch (InterruptedException e) { }
+            }      
+            if (responseData[7] == 1) {
+                LOG.error("cancel failed.");
+            }            
+            // also notify dispatcher thread
+            connection.notifyAll();
+            requestResponse = -1;
+        }    
     }
 
-    /* (non-Javadoc)
-     * @see ch.ethz.jadabs.jxme.microservices.MicroGroupService#create(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    /**
+     * Create and publish a {@link NamedResource#GROUP}
+     * {@link NamedResource#PIPE}or a resource defined by Applications.
+     * Typically, a resource defined by an application should be created by the
+     * application itself.
+     * 
+     * @param resourceType
+     *            one of {@link NamedResource#GROUP},
+     *            {@link NamedResource#PIPE}or {@link NamedResource#OTHER}
+     * 
+     * @param resourceName
+     *            the name of the resource being created, need not be unique
+     * 
+     * 
+     * @param precookedID
+     *            pre-defined id string  of the resource being created. Can be null.
+     * 
+     * @param arg
+     *            an optional arg depending upon the type of resource being
+     *            created. For example, for {@link NamedResource#PIPE}, this
+     *            would be the type of {@link NamedResource#PIPE}that is to be
+     *            created. For example, <code>JxtaUniCast</code> and
+     *            <code>JxtaPropagate</code> are commonly-used values. This
+     *            parameter can be <code>null</code>.
+     * 
+     * @return JXTA-ID string
+     *  
      */
     public String create(String resourceType, String resourceName, String precookedID, String arg)
     {
-        // TODO Auto-generated method stub
-        return null;
+        // prepare message and sent it
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(bout);
+        short myRequest;
+        byte response[];
+        String jxtaID = null;
+        try {
+            synchronized(connection) {        
+                myRequest = nextSequenceNumber++;
+                out.writeShort(myRequest);
+                out.writeShort(groupNumber);
+                out.writeShort(Constants.CREATE);
+                out.writeShort(0);	// dummy length
+                out.writeUTF(resourceType);
+                out.writeUTF(resourceName);
+                out.writeUTF(precookedID);
+                out.writeUTF(arg);
+                out.close();
+                bout.close();
+                byte[] array = bout.toByteArray();
+                array[6] = (byte)((array.length >> 8) & 0xff);
+                array[7] = (byte)(array.length & 0xff);
+                connection.sendBytes(array);
+		        
+                // wait for reply
+                while (requestResponse != myRequest) {
+                    try {
+                        connection.wait();
+                    } catch (InterruptedException e) { }
+                }      
+                response = responseData;
+                // also notify dispatcher thread
+                connection.notifyAll();
+                requestResponse = -1;
+            }
+            // process response
+            DataInputStream din = new DataInputStream(new ByteArrayInputStream(response));
+            din.readBoolean(); 	// skip, it is a reply message anyway
+            short request = din.readShort();
+            if (myRequest != request) {
+                // match request field
+                String error = "invalid reply received to CREATE: request# do not match. "+
+		        			"expected: "+myRequest+", received: "+request;             
+                LOG.error(error);
+                throw new IOException(error);
+            }
+            short groupNr = din.readShort();
+            short requestType = din.readShort();
+            if (requestType != Constants.CREATE) {
+                String error = "invalid reply received to CREATE: request type does not match. "+
+		     			"expected: "+Constants.CREATE+", received: "+requestType;             
+                LOG.error(error);
+                throw new IOException(error);
+            }
+            boolean exception = din.readBoolean();
+            din.readShort();	// skip length
+            if (exception) {
+                String error = "create failed";             
+                LOG.error(error);
+                throw new IOException(error);
+            }
+            jxtaID = din.readUTF();
+            din.close();
+        } catch(IOException e) { 
+            LOG.error("IOException during create!");
+        }		  
+		  return jxtaID;
     }
 
-    /* (non-Javadoc)
-     * @see ch.ethz.jadabs.jxme.microservices.MicroGroupService#join(java.lang.String, java.lang.String)
+    /**
+     * Join a peer group and publishes peer's advertisement in the peer group.
+     * 
+     * A peer can join a group by issuing this request. Currently there is no
+     * leave command, but could decide to leave the group if there are no more
+     * active clients using that group.
+     * 
+     * <b> Note this method is not implemented yet. </b>
+     * 
+     * @param groupID
+     *            JXTA-ID string of group to join. The group to be joined can be got by either: Creating
+     *            it using the {@linl #create}or Searching a group
+     *            advertisement using the {@link #search}
+     * 
+     * @param password
+     *            the password required to join the group, if one is required.
+     *            Otherwise, it is ignored. (Note: currently it is always
+     *            ignored.
+     * 
+     * @return returns a new GroupService handler for the group joined. (currently it always returns zero)
      */
     public MicroGroupService join(String groupID, String password)
     {
-        // TODO Auto-generated method stub
+        // prepare message and sent it
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(bout);
+        short myRequest;
+        byte response[];
+        String jxtaID = null;
+        try {
+            synchronized(connection) {        
+                myRequest = nextSequenceNumber++;
+                out.writeShort(myRequest);
+                out.writeShort(groupNumber);
+                out.writeShort(Constants.JOIN);
+                out.writeShort(0);	// dummy length
+                out.writeUTF(groupID);
+                out.writeUTF(password);
+                out.close();
+                bout.close();
+                byte[] array = bout.toByteArray();
+                array[6] = (byte)((array.length >> 8) & 0xff);
+                array[7] = (byte)(array.length & 0xff);
+                connection.sendBytes(array);
+		        
+                // wait for reply
+                while (requestResponse != myRequest) {
+                    try {
+                        connection.wait();
+                    } catch (InterruptedException e) { }
+                }      
+                response = responseData;
+                // also notify dispatcher thread
+                connection.notifyAll();
+                requestResponse = -1;
+            }
+            // process response
+            DataInputStream din = new DataInputStream(new ByteArrayInputStream(response));
+            din.readBoolean(); 	// skip, it is a reply message anyway
+            short request = din.readShort();
+            if (myRequest != request) {
+                // match request field
+                String error = "invalid reply received to JOIN: request# do not match. "+
+		        			"expected: "+myRequest+", received: "+request;             
+                LOG.error(error);
+                throw new IOException(error);
+            }
+            short groupNr = din.readShort();
+            short requestType = din.readShort();
+            if (requestType != Constants.CREATE) {
+                String error = "invalid reply received to JOIN: request type does not match. "+
+		     			"expected: "+Constants.JOIN+", received: "+requestType;             
+                LOG.error(error);
+                throw new IOException(error);
+            }
+            boolean exception = din.readBoolean();
+            din.readShort();	// skip length
+            if (exception) {
+                String error = "join failed";             
+                LOG.error(error);
+                throw new IOException(error);
+            }
+            int newgroupNumber = din.readShort();
+            din.close();
+        } catch(IOException e) { 
+            LOG.error("IOException during create!");
+        }		  
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
+     * Send data to the specified Pipe.
+     * 
+     * @param pipeID,
+     *            JXTA-ID string of {@link Pipe} to which data is to be sent.
+     * 
+     * @param data
+     *            a {@link Message}containing an array of {@link Element}s
+     *            which contain application data that is to be sent.
+     * 
+     * @throws IOException
+     *             if there is a problem sending the message
      * @see ch.ethz.jadabs.jxme.microservices.MicroGroupService#send(java.lang.String, ch.ethz.jadabs.jxme.microservices.MicroMessage)
      */
     public void send(String pipeID, MicroMessage data) throws IOException
     {
-        // TODO Auto-generated method stub
-
+        //  prepare message and sent it
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(bout);
+        short myRequest;
+        synchronized(connection) {
+            myRequest = nextSequenceNumber++;
+            try {
+                out.writeShort(myRequest);
+                out.writeShort(Constants.SEND);
+                out.writeShort(groupNumber);
+                out.writeShort(0);		// dummy length
+                out.writeUTF(pipeID);
+                out.writeUTF(data.toXMLString());
+                out.close();
+                bout.close();
+                byte[] array = bout.toByteArray();
+                array[6] = (byte)((array.length >> 8) & 0xff);
+                array[7] = (byte)(array.length & 0xff);
+                connection.sendBytes(array);
+            } catch (IOException e) { 
+                LOG.debug("cannot send SEND message.");
+                return;
+            }
+            
+            // wait for reply
+            while (requestResponse != myRequest) {
+                try {
+                    connection.wait();
+                } catch (InterruptedException e) { }
+            }      
+            if (responseData[7] == 1) {
+                LOG.error("send failed.");
+            }            
+            // also notify dispatcher thread
+            connection.notifyAll();
+            requestResponse = -1;
+        }    
     }
 
-    /* (non-Javadoc)
+    /**
+     * Register a listener for the pipe and start listening on the pipe.
+     * 
+     * @param pipeID
+     *            JXTA-ID {@link Pipe}on which to listen for incoming messages
+     * 
+     * @param listener
+     *            listener for incoming messages.
+     * 
+     * @throws IOException
+     *             if a communication error occurs
      * @see ch.ethz.jadabs.jxme.microservices.MicroGroupService#listen(java.lang.String, ch.ethz.jadabs.jxme.microservices.MicroListener)
      */
     public void listen(String pipeID, MicroListener listener) throws IOException
     {
-        // TODO Auto-generated method stub
-
+        //  prepare message and sent it
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(bout);
+        short myRequest;
+        synchronized(connection) {
+            myRequest = nextSequenceNumber++;
+            try {
+                out.writeShort(myRequest);
+                out.writeShort(Constants.LISTEN);
+                out.writeShort(groupNumber);
+                out.writeShort(0);		// dummy length
+                out.writeUTF(pipeID);
+                out.close();
+                bout.close();
+                byte[] array = bout.toByteArray();
+                array[6] = (byte)((array.length >> 8) & 0xff);
+                array[7] = (byte)(array.length & 0xff);
+                connection.sendBytes(array);
+            } catch (IOException e) { 
+                LOG.debug("cannot send LISTEN message.");
+                return;
+            }
+                                   
+            // wait for reply
+            while (requestResponse != myRequest) {
+                try {
+                    connection.wait();
+                } catch (InterruptedException e) { }
+            }      
+            if (responseData[7] == 1) {
+                LOG.error("listen failed.");
+            } else {
+                registeredMircoListeners.put(pipeID, listener);
+            }
+            // also notify dispatcher thread
+            connection.notifyAll();
+            requestResponse = -1;
+        }         
     }
 
-    /* (non-Javadoc)
+    /**
+     * resolves an output pipe.
+     * 
+     * Waits for timeout period to resolve a pipe and returns back true if a
+     * pipe is resolved, false other wise.
+     * 
+     * @param pipeID
+     *            JXTA-ID of {@link Pipe} on which to listen for incoming messages
+     * 
+     * @param timeout
+     *            in ms
+     * 
+     * @return true if a pipe is resolved, false otherwise.
+     * 
+     * @throws IOException
+     *             if a communication error occurs
      * @see ch.ethz.jadabs.jxme.microservices.MicroGroupService#resolve(java.lang.String, int)
      */
     public boolean resolve(String pipeID, int timeout) throws IOException
     {
-        // TODO Auto-generated method stub
-        return false;
+        // prepare message and sent it
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(bout);
+        short myRequest;
+        byte response[];
+        boolean resolved = false;
+        try {
+            synchronized(connection) {        
+                myRequest = nextSequenceNumber++;
+                out.writeShort(myRequest);
+                out.writeShort(groupNumber);
+                out.writeShort(Constants.RESOLVE);
+                out.writeShort(0);	// dummy length
+                out.writeUTF(pipeID);
+                out.writeInt(timeout);
+                out.close();
+                bout.close();
+                byte[] array = bout.toByteArray();
+                array[6] = (byte)((array.length >> 8) & 0xff);
+                array[7] = (byte)(array.length & 0xff);
+                connection.sendBytes(array);
+		        
+                // wait for reply
+                while (requestResponse != myRequest) {
+                    try {
+                        connection.wait();
+                    } catch (InterruptedException e) { }
+                }      
+                response = responseData;
+                // also notify dispatcher thread
+                connection.notifyAll();
+                requestResponse = -1;
+            }
+            // process response
+            DataInputStream din = new DataInputStream(new ByteArrayInputStream(response));
+            din.readBoolean(); 	// skip, it is a reply message anyway
+            short request = din.readShort();
+            if (myRequest != request) {
+                // match request field
+                String error = "invalid reply received to RESOLVE: request# do not match. "+
+		        			"expected: "+myRequest+", received: "+request;             
+                LOG.error(error);
+                throw new IOException(error);
+            }
+            short groupNr = din.readShort();
+            short requestType = din.readShort();
+            if (requestType != Constants.CREATE) {
+                String error = "invalid reply received to RESOLVE: request type does not match. "+
+		     			"expected: "+Constants.RESOLVE+", received: "+requestType;             
+                LOG.error(error);
+                throw new IOException(error);
+            }
+            boolean exception = din.readBoolean();
+            din.readShort();	// skip length
+            if (exception) {
+                String error = "resolve failed";             
+                LOG.error(error);
+                throw new IOException(error);
+            }
+            resolved = din.readBoolean();
+            din.close();
+        } catch(IOException e) { 
+            LOG.error("IOException during create!");
+        }	
+        return resolved;
     }
 
-    /* (non-Javadoc)
+    /**
+     * Close a resource such as input Pipe. It removes any
+     * listeners added for resource
+     * 
+     * @param stringID 
+     * 				JXTA-ID string of resource to be closed
+     * @throws IOException
+     *             if a communication error occurs.
      * @see ch.ethz.jadabs.jxme.microservices.MicroGroupService#close(java.lang.String)
      */
     public void close(String stringID) throws IOException
     {
-        // TODO Auto-generated method stub
-
+        // prepare message and sent it
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(bout);
+        short myRequest;
+        synchronized(connection) {
+            myRequest = nextSequenceNumber++;
+            try {
+                out.writeShort(myRequest);
+                out.writeShort(groupNumber);
+                out.writeShort(Constants.CLOSE);
+                out.writeShort(0);	// dummy length
+                out.writeUTF(stringID);
+                out.close();
+                bout.close();
+                byte[] array = bout.toByteArray();
+                array[6] = (byte)((array.length >> 8) & 0xff);
+                array[7] = (byte)(array.length & 0xff);
+                connection.sendBytes(array);
+            } catch (IOException e) { 
+                LOG.debug("cannot send CLOSE message.");
+                return;
+            }
+            
+            // locally unregister listener
+            registeredMircoListeners.remove(stringID);
+            
+            // wait for reply
+            while (requestResponse != myRequest) {
+                try {
+                    connection.wait();
+                } catch (InterruptedException e) { }
+            }  
+            if (responseData[7] == 1) {
+                LOG.error("close failed.");
+            }
+            // also notify dispatcher thread
+            connection.notifyAll();
+            requestResponse = -1;
+        }
     }
 
     /* (non-Javadoc)
@@ -320,7 +904,6 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
     public void handleMessage(MicroMessage message, String listenerId)
     {
         // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)
@@ -329,7 +912,6 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
     public void handleSearchResponse(String namedResourceName)
     {
         // TODO Auto-generated method stub
-
     }
     
     /** 
@@ -371,18 +953,64 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
                     LOG.error("error in dispatcher thread when reading data.");
                     return;
                 }
-                short request = (short)((d[0]<<8) | d[1]);
-                synchronized(connection) {
-                    while (requestResponse != -1) {
-                        // wait until other threads have processed *last* response
-                        try {
-                            connection.wait();
-                        } catch(InterruptedException e) { }
-                    }
-                    responseData = d;
-                    requestResponse = request;
-                    connection.notifyAll();
+                if (d.length < 5) {
+                    LOG.error("message with invalid length received from core (length="+d.length+")");
+                    continue;
                 }
+                boolean isreply = d[0]==1;
+                short request = (short)((d[1]<<8) | d[2]);
+                short groupNumber = (short)((d[3]<<8) | d[4]);
+                short type = (short)((d[5]<<8) | d[6]);
+                if (isreply) {
+                    // (synchronous) reply message                    
+                    synchronized(connection) {
+                        
+                        while (requestResponse != -1) {
+                            // wait until other threads have processed *last* response
+                            try {
+                                connection.wait();
+                            } catch(InterruptedException e) { }                        
+                        }
+                        responseData = d;		// add message data to global buffer
+                        requestResponse = request;
+                        connection.notifyAll();
+                    }
+                } else {
+                    // (asynchronous) message)
+                    try{
+                       DataInputStream din = new DataInputStream(new ByteArrayInputStream(d, 9, d.length-9));
+	                    switch(type) {
+	                    case Constants.SEARCH_RESPONSE:
+	                    case Constants.NAME_RESOURCE_LOSS:
+	                        String resourceType = din.readUTF();
+	                    		String resourceName = din.readUTF();
+	                    		String resourceId   = din.readUTF();
+	                    		din.close();
+	                    		MicroDiscoveryListener listener = 
+	                    		    	(MicroDiscoveryListener)registeredMicroDiscoveryListeners.get(
+	                    		    	        new Integer(request));
+	                    		if (listener != null) {
+	                    		    if (type == Constants.SEARCH_RESPONSE) {
+	                    		        listener.handleSearchResponse(resourceType, resourceName, resourceId);
+	                    		    } else {
+	                    		        listener.handleNamedResourceLoss(resourceType, resourceName, resourceId);
+	                    		    }
+	                    		}
+	                        break;	                   
+	                    case Constants.MESSAGE:
+	                        String pipeID = din.readUTF();	                    		
+	                    		MicroMessage micromessage = MicroMessage.read(din);
+	                    		String listenerID = din.readUTF();
+	                    		MicroListener l = (MicroListener)registeredMircoListeners.get(pipeID);
+	                    		if (l != null) {
+	                    		    l.handleMessage(micromessage, listenerID);
+	                    		}
+	                        break;
+	                    default:
+	                        LOG.error("skipping invalid ASYNC_MSG received, invalid type "+type);                    	
+	                    }
+                    } catch (IOException e) { /* cannot happen since stream is ByteArrayInputStream */ }                 
+                }                               
             }
         }    
     }
