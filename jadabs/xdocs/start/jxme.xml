@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME-OSGi Introduction</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+    <section name="JXME-OSGi Overview">
+    <p>
+        For the communication layer we use a peer to peer concept 
+        as proposed in <a href="http://www.jxta.org">JXTA</a>. Due to its large footprint JXTA cannot
+        be run on small devices like a PDA or a mobile phone. A 
+        proposed smaller implemenation by the JXTA community is 
+        known as <a href="http://jxme.jxta.org">JXME</a>.
+    </p>
+    <p>
+        With this JXME-OSGi package we have taken over code and 
+        ideas by the JXME project and revised it to use it in a 
+        container like OSGi. Furthermore, the original code has 
+        been devided into a core package and a service API and 
+        service Impl package. The hardcoded network layer has 
+        been disassembled and supports now different pluggable 
+        network implementation.
+    </p>
+    <p>
+        Currently JXME-OSGi nor JXME is fully message compatible 
+        with a JXTA node. A proxy or gateway is still needed 
+        which connects the JXME communities with the JXTA community. 
+    </p>
+    <p>
+        As shown in Figure below the JXME-OSGi implementation has
+        been devided into different layers. The lowest layer represents
+        the different possible connection possibilities like UDP, TCP,
+        or Bluetooth. The second layer represents the core Jxme layer
+        with the <b><i>EndpointService</i></b> and the highest layer provides 
+        the <b><i>Resolver-, Pipe-, and Group-Service</i></b>.
+    </p>
+    
+    <center>
+    <img src="../images/jxme-services.jpg" alt="Jxme-Services"/>
+    </center>
+    
+    <subsection name="Using the different layers">
+    <p>
+        As we are using OSGi as the runtime on J2ME/CDC and J2SE devices
+        we are now able to add more Jxme layers when required at runtime.
+    </p>
+    <p>
+        To start with Jxme at least the <b><i>Jxme-Core</i></b> layer 
+        is required. The network layers like <b><i>UDP, TCP, or Bluetooth</i></b> can
+        be installed and started at a later time. The same holds for
+        the <b><i>Jxme-Services</i></b>. For example on small devices like
+        a mobile phone the Jxme-Core layer with the Bluetooth implementation
+        is required for a simple messaging.
+    </p>
+    
+    <table><tr><th>Jxme-Core Example</th></tr></table>
+    <p>
+        When the <b><i>Jxme-Core</i></b> layer is started two services
+        get registered in OSGi: <b><i>PeerNetwork, EndpointService</i></b>.
+        The details for these services can be looked up in the 
+        <a href="/multiproject/jxme-osgi/index.html">Jxme-OSGi subproject</a>.
+    
+    </p>
+    <p>
+        This example shows a simple way to access the EndpointService
+        and send out a propagation message through UDP. The example
+        can also be found in bundle <i>jxme-udp-test-VERSION.jar</i> or
+        <i>/jadabs/bundles/jxme-osgi/udp/test-osgi</i>.
+    </p>
+    <p>
+        First, we show the configuration to startup the example. The 
+        different packages are OSGi bundled as specified in the 
+        configuration.
+    </p>
+<source>
+<![CDATA[
+-istart  log4j/jars/log4j-1.2.8-osgi.jar
+-install jadabs/jars/concurrent-VERSION.jar
+-istart jadabs/jars/jxme-osgi-VERSION.jar
+-istart jadabs/jars/jxme-udp-VERSION.jar
+-istart jadabs/jars/jxme-test-VERSION.jar
+]]>
+</source>
+    
+    <p>
+        The following code shows first how the EndpointService is 
+        gathered through OSGi in the <b><i>start(..)</i></b> method. 
+        With the EndpointService a message is propagated in the 
+        <b><i>send()</i></b> method.
+    </p>
+    <p>
+        As you may have noted in our test example code we do
+        not refer to a concrete network implementation. This
+        is hidden through the service registration mechanism
+        provided by OSGi. The only place where it has to be specified
+        is in the configuration as shown above.
+    </p>
+<source>
+<![CDATA[
+public void start(BundleContext bc) throws Exception
+{
+    ServiceReference sref = bc.getServiceReference(
+        EndpointService.class.getName());
+    endptsvc = (EndpointService)bc.getService(sref);
+    
+    endptsvc.addListener("testlistener",this);
+    
+    send();
+}
+
+public void send()
+{
+    Element[] elm = new Element[3];
+    elm[0] = new Element("tag1", "hello", Message.JXTA_NAME_SPACE);
+    elm[1] = new Element("tag2", "world", Message.JXTA_NAME_SPACE);
+    elm[2] = new Element("tag3", "!", Message.JXTA_NAME_SPACE);
+    Message msg = new Message(elm);
+    
+    LOG.debug("call now propagate message: " + msg);
+            
+    try
+    {
+        EndpointAddress endptlistener = new EndpointAddress(
+                "udp","127.0.0.1", 9000, "testlistener",null);
+        
+        // multicast udp
+        endptsvc.propagate(elm, endptlistener);
+        
+        // unicast udp
+        //endptsvc.send(msg, new EndpointAddress[] {endptlistener});
+        
+    } catch (IOException e)
+    {
+        e.printStackTrace();
+    }
+}
+
+public void handleMessage(Message message, String listenerId)
+{
+    LOG.debug("udptransporttest got message: "+message.toXMLString());
+    LOG.debug("listener params: "+listenerId);
+}
+]]>
+</source>
+
+    <table><tr><th>Jxme-Services Example</th></tr></table>
+    <p>
+        In this example we use the Jxme-Service layer to take
+        advantage of the <b><i>Resolver-, Pipe-, and 
+        Group-Service</i></b>. This example
+        can also be found in bundle <i>jxme-services-test-VERSION.jar</i> or
+        <i>/jadabs/bundles/jxme-osgi/services/test-osgi</i>. To
+        start the test go in that directory to the bin, bin2 folder.
+    </p>
+    <p>
+        As can be seen in the configuration for this example
+        the Jxme-Service layer is devided into an API and an 
+        Implementation bundle. The API bundle consists only of
+        the GroupService class.
+    </p>
+<source>
+<![CDATA[
+-istart   log4j/jars/log4j-1.2.8-osgi.jar
+-install  jadabs/jars/concurrent-VERSION.jar
+-istart   jadabs/jars/jxme-osgi-VERSION.jar
+-istart   jadabs/jars/jxme-udp-VERSION.jar
+-install  jadabs/jars/jxme-services-api-VERSION.jar
+-istart   jadabs/jars/jxme-services-impl-VERSION.jar
+-istart   jadabs/jars/jxme-services-test-VERSION.jar
+]]>
+</source>
+    
+    <p>
+        1.) We get the GroupService through the OSGi service
+        registration mechanism.
+    </p>
+<source>
+<![CDATA[
+public void start(BundleContext bc) throws Exception
+{
+    TestActivator.bc = bc;
+    
+    ServiceReference sref = bc.getServiceReference(
+        "ch.ethz.jadabs.jxme.services.GroupService");
+    groupsvc = (GroupService)bc.getService(sref);
+    
+    sref = bc.getServiceReference(PeerNetwork.class.getName());
+    PeerNetwork peernetwork = (PeerNetwork)bc.getService(sref);
+    
+    peername = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
+    
+    
+    // testpipe
+    if (peername.equals("peer1"))
+    {
+        peer1listeners = new Peer1Listeners();
+        testPipePeer1();
+    } 
+    else if (peername.equals("peer2"))
+    {
+        peer2listeners = new Peer2Listeners();
+        groupsvc.remoteSearch(
+            NamedResource.PEER, "Name", "", 1, 
+            peer2listeners);
+        testPipePeer2();
+    } 
+}
+]]>
+</source>
+    
+    <p>
+        2.) In <b>Peer1</b> we create first a Pipe and publish this
+        one remotely.
+    </p>
+    
+<source>
+<![CDATA[
+public void testPipePeer1()
+{
+    // propagation pipe
+    Pipe proppipe = (Pipe)groupsvc.create(NamedResource.PIPE, 
+            "testpipe", null,Pipe.PROPAGATE);
+    
+    groupsvc.remotePublish(proppipe);
+            
+    try
+    {
+        groupsvc.listen(proppipe, peer1listeners);
+    } catch (IOException e)
+    {
+        e.printStackTrace();
+    }
+}
+]]>
+</source>
+    
+    <p>
+        3.) In <b>Peer2</b> we do a remoteSearch for the Pipe create by Peer1.
+        We pass as a parameter the <i>Peer2Listeners</i> which is called
+        when a pipe is found.
+    </p>
+    
+<source>
+<![CDATA[
+public void testPipePeer2()
+{
+    try
+    {
+        groupsvc.remoteSearch(
+            NamedResource.PIPE, "Name", "", 1, 
+            peer2listeners);
+    } catch (IOException e)
+    {
+        e.printStackTrace();
+    }
+}
+]]>
+</source>
+    
+    <p>
+        4.) In <b>Peer2</b> the method <i>handleSearchResponse</i>
+        is called once a pipe has been found. We then <i>resolve</i>
+        the pipe and then send message.
+    </p>
+    
+<source>
+<![CDATA[    
+class Peer2Listeners implements DiscoveryListener, Listener
+{
+    
+    public void handleSearchResponse(NamedResource namedResource)
+    {
+        LOG.debug("found namedresource: " + namedResource.getName());
+        
+        LOG.debug("group: "+namedResource.getID().getGroupID());
+        
+        if (namedResource instanceof Pipe)
+        {
+            Pipe pipe = (Pipe)namedResource;
+            
+            try
+            {
+                groupsvc.resolve(pipe,100000);
+                
+                Element[] elms = new Element[]{
+                    new Element("testa","testval",
+                        Message.JXTA_NAME_SPACE)};
+                
+                groupsvc.send(pipe,new Message(elms));
+                
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }        
+}
+]]>
+</source>
+    
+    <p>
+        5.) In <b>Peer1</b> we just Log the message received by Peer2
+    </p>
+    
+<source>
+<![CDATA[
+class Peer1Listeners implements Listener
+{
+   
+    public void handleMessage(Message message, String listenerId)
+    {
+        LOG.debug("PropagationListener: "+ message.toXMLString());
+    }
+
+    public void handleSearchResponse(NamedResource namedResource)
+    {
+        LOG.debug("called Peer1Listeners handleSearchResponse");
+        
+    }
+}    
+]]>
+</source>
+
+    </subsection>
+    
+    </section>
+  	
+ 	</body>
+</document>

@@ -28,9 +28,10 @@
   		
   		<item name="Getting Started" 				href="/start/index.html" collapse="true">
   			<item name="User Guide" 				href="/start/userguide.html"/>
-  			<item name="Design Principles"			href="/start/design.html"/>
+  		    <item name="JXME"						href="/start/jxme.html"/>
   			<item name="AOP"						href="/start/aop.html"/>
   			<item name="SOA"						href="/start/soa.html"/>
+  			<!--<item name="Design Principles"			href="/start/design.html"/> -->
   			<item name="Build" 						href="/start/buildjadabs.html"/>
   			<item name="Maven-OSGi-Plugin" 			href="http://mavenosgiplugin.berlios.de"/>
   		</item>
