@@ -78,6 +78,13 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     */
    private BundleLoaderImpl() {
       infoSources.add(new Repository());
+      try {
+         infoSources.add(new HttpClient());
+      } catch (Exception e) {
+         System.out.println("-------------------------------------");
+         e.printStackTrace();
+         System.out.println("-------------------------------------");
+      }
 
       Bundle[] bundles = BundleLoaderActivator.bc.getBundles();
       for (int i = 0; i < bundles.length; i++) {

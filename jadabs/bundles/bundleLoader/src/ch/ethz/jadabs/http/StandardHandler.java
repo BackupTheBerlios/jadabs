@@ -58,6 +58,9 @@ public class StandardHandler implements HttpRequestHandler {
       if (request.file.startsWith("/favicon.ico")) {
          File favicon = new File(repolocation.substring(5) + File.separatorChar + ".." + File.separatorChar + "htdocs" + File.separatorChar + "favicon.ico");
          request.sendFile(favicon, "image/ico", null);
+      } else if (request.file.startsWith("/repository.xml")) {
+         File repoxml = new File(repolocation.substring(5) + File.separatorChar + "repository.xml");
+         request.sendFile(repoxml, "text/xml", null);
       } else {
          request.send404();
       }
