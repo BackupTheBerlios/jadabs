@@ -13,10 +13,10 @@
   <body>
   
   	<links>
-  		<item name="berliOS" 						href="https://developer.berlios.de/projects/jadabs"/>
+  		<item name="BerliOS" 						href="https://developer.berlios.de/projects/jadabs"/>
   		<item name="Jadabs-CLDC" 					href="http://jadabs.berlios.de/jadabs-cldc/"/>
   		<item name="OSGi-Repository" 				href="http://osgirepo.berlios.de"/>
-  		<item name="Maven-OSGi-Plugin" 				href="../../plugins/maven-osgi/"/>
+  		<item name="Maven-OSGi-Plugin" 				href="http://mavenosgiplugin.berlios.de"/>
 <!--  		<item name="PDF Documentation" 				href="/jadabs.pdf" img="/images/pdf.gif"/>-->
   	</links>
   
@@ -61,7 +61,7 @@
 		</item>
 	</menu>
 	
-	<menu name="Project Documentation">
+	<menu name="Project Admin">
 		<item name="Mailing Lists" 					href="https://developer.berlios.de/mail/?group_id=2534"/> -->
 		<item name="Project Team"					href="/team-list.html" />
 		<item name="berliOS Services"				href="https://developer.berlios.de/projects/jadabs" />
