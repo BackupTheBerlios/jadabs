@@ -210,7 +210,7 @@ public class ServiceManagerImpl implements ServiceManager, Listener
         }
         
         elm[0] = new Element(SERVICE_TYPE, JAR_REQ, Message.JXTA_NAME_SPACE);
-        elm[1] = new Element(SERVICE_FILTER, sref.getID(), Message.JXTA_NAME_SPACE);
+        elm[1] = new Element(SERVICE_ID, sref.getID(), Message.JXTA_NAME_SPACE);
                 
         try
         {
@@ -285,7 +285,6 @@ public class ServiceManagerImpl implements ServiceManager, Listener
 	            
             }
 
-// TODO buggy
             	//send running OBRs
             if ((smfilter.indexOf("OBR".toString()) > -1) && 
                     ( ( (smfilter.indexOf(ServiceManager.RUNNING_SERVICES.toString()) > -1)) ||
@@ -308,8 +307,7 @@ public class ServiceManagerImpl implements ServiceManager, Listener
                 
                 matchAndSendServiceAdvertisement(en, ServiceManager.PROVIDING_SERVICES, filter, SERVICE_OPD);
             }
-
-// TODO buggy               
+            
             	//send providing OBRs
             if ((smfilter.indexOf("OBR".toString()) > -1) && 
                     ( ( (smfilter.indexOf(ServiceManager.PROVIDING_SERVICES.toString()) > -1)) ||
@@ -466,6 +464,7 @@ public class ServiceManagerImpl implements ServiceManager, Listener
     
     private void saveJarInCache(byte[] data, String id, BundleInformation binfo)
     {
+        
         String group = id.substring(0,id.indexOf(":"));
         id = id.substring(id.indexOf(":")+1);
         String name = id.substring(0,id.indexOf(":"));
@@ -475,9 +474,21 @@ public class ServiceManagerImpl implements ServiceManager, Listener
         String filename = name + "-" + version + ".jar";
         
         
-        String absfilepath = repoCacheDir.getAbsolutePath() + File.separatorChar +
-        	group + File.separatorChar + "jars" + File.separatorChar +
-        	filename;
+        // init folder
+        StringBuffer sb = new StringBuffer();
+        sb.append(repoCacheDir.getAbsolutePath() + 
+                File.separatorChar +group);
+        
+        File groupdir = new File(sb.toString());
+        groupdir.mkdir();
+        
+        sb.append(File.separatorChar + "jars");
+        File opddir = new File(sb.toString());
+        opddir.mkdir();
+        
+        // save file
+        sb.append(File.separatorChar + filename);
+        String absfilepath = sb.toString();
         
         // set filepath in BundleInformation
         binfo.setBundleCacheLocation(absfilepath);

@@ -21,11 +21,19 @@ public class ServiceReferenceImpl implements ServiceReference
     
     private String rptype;
     
+    private String uuid;
+    
+    public ServiceReferenceImpl(String uuid)
+    {
+        this.uuid = uuid;
+    }
+    
     public ServiceReferenceImpl(ServiceAdvertisement serviceAdv, String peer, String rptype)
     {
         this.serviceAdv = serviceAdv;
         this.peer = peer;
         this.rptype = rptype;
+        this.uuid = serviceAdv.getID();
     }
 
     /*
@@ -61,7 +69,7 @@ public class ServiceReferenceImpl implements ServiceReference
     
     public String getID()
     {
-        return serviceAdv.getID();
+        return uuid;
     }
     
     public String getRPType()

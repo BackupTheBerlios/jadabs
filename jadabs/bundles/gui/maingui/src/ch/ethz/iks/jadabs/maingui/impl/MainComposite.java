@@ -67,7 +67,9 @@ import ch.ethz.jadabs.remotefw.BundleInfoListener;
 import ch.ethz.jadabs.remotefw.Framework;
 import ch.ethz.jadabs.remotefw.RemoteFrameworkListener;
 import ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener;
+import ch.ethz.jadabs.servicemanager.ServiceListener;
 import ch.ethz.jadabs.servicemanager.ServiceReference;
+import ch.ethz.jadabs.servicemanager.impl.ServiceReferenceImpl;
 
 /**
  * This code was generated using CloudGarden's Jigloo SWT/Swing GUI Builder,
@@ -108,6 +110,8 @@ public class MainComposite extends Composite
 
     private Button uninstallButton;
 
+    private Button getServiceButton;
+    
     private Composite composite1;
 
     protected Tree peertree;
@@ -141,6 +145,7 @@ public class MainComposite extends Composite
             startButton = new Button(composite1, SWT.PUSH | SWT.CENTER);
             stopButton = new Button(composite1, SWT.PUSH | SWT.CENTER);
             uninstallButton = new Button(composite1, SWT.PUSH | SWT.CENTER);
+            getServiceButton = new Button(composite1, SWT.PUSH | SWT.CENTER);
             peertree = new Tree(this, SWT.SINGLE | SWT.BORDER);
 
             this.setSize(new org.eclipse.swt.graphics.Point(507, 526));
@@ -177,7 +182,7 @@ public class MainComposite extends Composite
             composite1.setLayoutData(composite1LData);
             composite1.setSize(new org.eclipse.swt.graphics.Point(334, 46));
 
-            RowData updateButtonLData = new RowData(57, 39);
+            RowData updateButtonLData = new RowData(50, 39);
             updateButton.setLayoutData(updateButtonLData);
             updateButton.setText("update");
             updateButton.setSize(new org.eclipse.swt.graphics.Point(57, 39));
@@ -203,7 +208,7 @@ public class MainComposite extends Composite
                 }
             });
 
-            RowData startButtonLData = new RowData(57, 39);
+            RowData startButtonLData = new RowData(35, 39);
             startButton.setLayoutData(startButtonLData);
             startButton.setText("start");
             startButton.setSize(new org.eclipse.swt.graphics.Point(57, 39));
@@ -216,7 +221,7 @@ public class MainComposite extends Composite
                 }
             });
 
-            RowData stopButtonLData = new RowData(57, 39);
+            RowData stopButtonLData = new RowData(35, 39);
             stopButton.setLayoutData(stopButtonLData);
             stopButton.setText("stop");
             stopButton.setSize(new org.eclipse.swt.graphics.Point(57, 39));
@@ -241,6 +246,20 @@ public class MainComposite extends Composite
                     uninstallButtonWidgetSelected(evt);
                 }
             });
+            
+            RowData getServiceButtonLData = new RowData(50, 39);
+            getServiceButton.setLayoutData(getServiceButtonLData);
+            getServiceButton.setText("get service");
+            getServiceButton.setSize(new org.eclipse.swt.graphics.Point(57, 39));
+            getServiceButton.addSelectionListener(new SelectionAdapter()
+            {
+
+                public void widgetSelected(SelectionEvent evt)
+                {
+                    getServiceButtonWidgetSelected(evt);
+                }
+            });
+            
             RowLayout composite1Layout = new RowLayout(256);
             composite1.setLayout(composite1Layout);
             composite1Layout.type = SWT.HORIZONTAL;
@@ -424,7 +443,6 @@ public class MainComposite extends Composite
             
             if (titem.getText().equals(ITEM_SERVICE_NAME))
             {
-                System.out.println("called getservices");
                 TreeItem pitem = titem.getParentItem();
                 
 	            // get Bundles for the selection
@@ -491,7 +509,6 @@ public class MainComposite extends Composite
             }
             else if (titem.getText().equals(ITEM_PROVIDED_BUNDLES))
             {
-                System.out.println("called get bundles-available");
                 
                 TreeItem pitem = titem.getParentItem();
                 
@@ -711,6 +728,41 @@ public class MainComposite extends Composite
 
     }
 
+    protected void getServiceButtonWidgetSelected(SelectionEvent evt)
+    {        
+        TreeItem titem;
+        if ( peertree.getSelection().length > 0 &&
+            (titem = peertree.getSelection()[0]).getParentItem() != null &&
+            ( (peertree.getSelection()[0]).getParentItem().getParentItem()) != null)
+        {
+            String peername = titem.getParentItem().getParentItem().getText();
+            String uuid = titem.getText();
+            
+            ServiceReferenceImpl sref = new ServiceReferenceImpl(uuid);
+            
+            System.out.println("selection: "+uuid);
+            
+            Activator.serviceManager.getService(peername, sref, new ServiceListener()
+                    {
+
+                        public void receivedService(ServiceReference sref)
+                        {
+                            System.out.println("got service: "+ sref.getID());
+                            
+                        }
+                
+                    });
+            
+//            StringTokenizer st = new StringTokenizer(bundlestr, ": ");
+//            long bid = new Long(st.nextToken()).longValue();
+//
+//            fw = Activator.rmanager.getFrameworkByPeername(peername);
+//            fw.uninstallBundle(bid);
+
+        } else
+            System.out.println("do a proper selection");
+    }
+    
     //
     // helper function
     //
