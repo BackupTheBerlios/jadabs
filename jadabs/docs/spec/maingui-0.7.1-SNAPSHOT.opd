@@ -9,7 +9,7 @@
 	
 
 	<Extension-Point 
-		id="Extension/swt" />
+		id="Extension/id:swt" />
 <!--	
 	<Extension 
 		id="GroupService" 

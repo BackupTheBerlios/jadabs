@@ -20,7 +20,7 @@
 	/>
 	
 	<Extension-Point
-	    id="Extension/EndpointService"
+	    id="Extension/id:EndpointService"
 	    service="ch.ethz.jadabs.jxme.EndpointService"
 	    description="requires connection to Jxme Layer"
 	/>

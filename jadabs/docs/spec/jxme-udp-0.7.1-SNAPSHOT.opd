@@ -13,7 +13,7 @@
 	/>
 	
 	<Extension-Point
-	    id="Extension/PeerNetwork"
+	    id="Extension/id:PeerNetwork"
 	    service="ch.ethz.jadabs.jxme.PeerNetwork,
 	        ch.ethz.jadabs.jxmeEndpointService"    	
 	/>

@@ -8,7 +8,7 @@
 	provider-name="ETHZ-IKS">
 	
 	<Extension-Point 
-		id="Extension/PeerNetwork" 
+		id="Extension/id:PeerNetwork" 
 		service="ch.ethz.jadabs.jxme.PeerNetwork"/>
 		
 	<Extension 
