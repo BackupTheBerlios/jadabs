@@ -21,15 +21,14 @@
 		<osgi.export.service>ch.ethz.jadabs.servicemanager.ServiceManager</osgi.export.service>
 		<osgi.bundle.category>jxme</osgi.bundle.category>
 		
-		<!-- for eclipse osgi plugins 
-		<eclipse.bundle.symbolicname>ch.ethz.jadabs.jxme</eclipse.bundle.symbolicname>
-		<eclipse.require.bundle>org.eclipse.osgi</eclipse.require.bundle>
+		<!-- for eclipse osgi plugins -->
+		<eclipse.bundle.symbolicname>ch.ethz.jadabs.servicemanager</eclipse.bundle.symbolicname>
+		<eclipse.require.bundle>org.eclipse.osgi,ch.ethz.jadabs.bundleloader,ch.ethz.jadabs.pluginloader</eclipse.require.bundle>
 		<eclipse.autostart>true</eclipse.autostart>
-		<eclipse.bundle.activator>ch.ethz.jadabs.jxme.JxmeActivator</eclipse.bundle.activator>
-		<eclipse.export.service>ch.ethz.jadabs.jxme.PeerNetwork,ch.ethz.jadabs.jxme.EndpointService</eclipse.export.service>
-		<eclipse.export.package>org.apache.log4j,ch.ethz.jadabs.jxme</eclipse.export.package>
-		<eclipse.import.package>org.osgi.framework</eclipse.import.package>
-		-->
+		<eclipse.bundle.activator>ch.ethz.jadabs.servicemanager.impl.ServiceManagerActivator</eclipse.bundle.activator>
+		<eclipse.export.service>ch.ethz.jadabs.servicemanager.ServiceManager</eclipse.export.service>
+		<eclipse.export.package>ch.ethz.jadabs.servicemanager,ch.ethz.jadabs.servicemanager.impl</eclipse.export.package>
+		<eclipse.import.package>org.apache.log4j,org.osgi.framework,ch.ethz.jadabs.jxme,ch.ethz.jadabs.jxme.services,ch.ethz.jadabs.bundleloader,ch.ethz.jadabs.pluginloader</eclipse.import.package>
 	</properties>
 
   	<dependencies>
@@ -44,6 +43,9 @@
       		<groupId>jadabs</groupId>
       		<artifactId>servicemanager</artifactId>
       		<version>${pom.currentVersion}</version>
+			<properties>
+	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
+	      	</properties>      		
 		</dependency>
 				
     	<dependency>
@@ -58,7 +60,7 @@
 		<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>bundleloader</artifactId>
-      		<version>${pom.currentVersion}</version>
+      		<version>${pom.currentVersion}</version>    		
 		</dependency>						
 
     	<dependency>

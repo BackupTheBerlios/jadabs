@@ -63,7 +63,8 @@ public class ServiceManagerImpl implements ServiceManager, Listener
     public static String SERVICE_RP_TYPE = "rptype";
     
     /** Service holder */
-    public static String SERVICE_PEER = "peer";
+    public static String SERVICE_TO_PEER = "svctopeer";
+    public static String SERVICE_FROM_PEER = "svcfrompeer";
     
     /** default Filter */
     private static String FILTER_DEFAULT = "|OPD,OBR,A";
@@ -162,7 +163,7 @@ public class ServiceManagerImpl implements ServiceManager, Listener
      * 
      * In case filter is null default is: "|OPD,OBR,A"
      */
-    public boolean getServiceAdvertisements(String filter, ServiceAdvertisementListener serviceListener)
+    public boolean getServiceAdvertisements(String peername, String filter, ServiceAdvertisementListener serviceListener)
     {
         if (filter == null)
             filter = FILTER_DEFAULT;
@@ -171,10 +172,12 @@ public class ServiceManagerImpl implements ServiceManager, Listener
         
         addListener(filter, serviceListener);
         
-        Element[] elm = new Element[2];
+        Element[] elm = new Element[4];
         
         elm[0] = new Element(SERVICE_TYPE, SERVICE_REQ, Message.JXTA_NAME_SPACE);
         elm[1] = new Element(SERVICE_FILTER, filter, Message.JXTA_NAME_SPACE);
+        elm[2] = new Element(SERVICE_TO_PEER, peername, Message.JXTA_NAME_SPACE);
+        elm[3] = new Element(SERVICE_FROM_PEER, ServiceManagerActivator.peername, Message.JXTA_NAME_SPACE);
         
         try
         {
@@ -195,22 +198,23 @@ public class ServiceManagerImpl implements ServiceManager, Listener
 
     /*
      */
-    public boolean getService(String fromPeer, ServiceReference sref, ServiceListener listener)
+    public boolean getService(String toPeer, ServiceReference sref, ServiceListener listener)
     {
         // save servicelistener for the givcen sref id
         mapId2SvcListener.put(sref.getID(), listener);
         mapId2SvcReference.put(sref.getID(), sref);
         
         // send out request
-        Element[] elm = new Element[2];
-        if (fromPeer != null)
+        Element[] elm = new Element[3];
+        if (toPeer != null)
         {
-            elm = new Element[3];
-            elm[2] = new Element(SERVICE_PEER, fromPeer, Message.JXTA_NAME_SPACE);
+            elm = new Element[4];
+            elm[3] = new Element(SERVICE_TO_PEER, toPeer, Message.JXTA_NAME_SPACE);
         }
         
         elm[0] = new Element(SERVICE_TYPE, JAR_REQ, Message.JXTA_NAME_SPACE);
         elm[1] = new Element(SERVICE_ID, sref.getID(), Message.JXTA_NAME_SPACE);
+        elm[2] = new Element(SERVICE_FROM_PEER, ServiceManagerActivator.peername, Message.JXTA_NAME_SPACE);
                 
         try
         {
@@ -262,105 +266,109 @@ public class ServiceManagerImpl implements ServiceManager, Listener
         
         String type = new String(msg.getElement(SERVICE_TYPE).getData());
         
-        	// Plugin-Request
-        //TODO include a callback function to the pluginloader
-        // to match the ExtensionPoint filter.
-        if (type.equals(SERVICE_REQ))
-        {         
-            	// match agains the provided filter
-            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
-            
-            	// service manager filter
-            String smfilter = filter.substring(filter.lastIndexOf("|")+1);
-                        
-            	// send running OPDs
-            if ((smfilter.indexOf("OPD".toString()) > -1) && 
-                    ( ( (smfilter.indexOf(ServiceManager.RUNNING_SERVICES.toString()) > -1)) ||
-                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
-            {
-                	//  enum over installed plugins
-                Enumeration en = ServiceManagerActivator.pluginLoader.getOSGiPlugins();
-
-                matchAndSendServiceAdvertisement(en, ServiceManager.RUNNING_SERVICES, filter, SERVICE_OPD);
-	            
-            }
-
-            	//send running OBRs
-            if ((smfilter.indexOf("OBR".toString()) > -1) && 
-                    ( ( (smfilter.indexOf(ServiceManager.RUNNING_SERVICES.toString()) > -1)) ||
-                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
-            {
-                	//  enum over installed plugins
-                Enumeration en = ServiceManagerActivator.bundleLoader.getBundleAdvertisements();
-
-                matchAndSendServiceAdvertisement(en, ServiceManager.RUNNING_SERVICES, filter, SERVICE_OBR);
-	            
-            }
-            
-            	// send providing OPDs
-            if ((smfilter.indexOf("OPD".toString()) > -1) && 
-                    ( ( (smfilter.indexOf(ServiceManager.PROVIDING_SERVICES.toString()) > -1)) ||
-                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
-            {
-                	//  enum over providing plugins
-                Enumeration en = providingPlugins.elements();
-                
-                matchAndSendServiceAdvertisement(en, ServiceManager.PROVIDING_SERVICES, filter, SERVICE_OPD);
-            }
-            
-            	//send providing OBRs
-            if ((smfilter.indexOf("OBR".toString()) > -1) && 
-                    ( ( (smfilter.indexOf(ServiceManager.PROVIDING_SERVICES.toString()) > -1)) ||
-                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
-            {
-                	//  enum over providing bundles
-                Enumeration en = providingBundles.elements();
-                
-                matchAndSendServiceAdvertisement(en, ServiceManager.PROVIDING_SERVICES, filter, SERVICE_OBR);
-            }
-        }
-        	// Plugin-Ack
-        else if (type.equals(SERVICE_ACK))
-        {            
-            String peer = new String(msg.getElement(SERVICE_PEER).getData());
-            String adv = new String(msg.getElement(SERVICE_ADV).getData());
-            
-            String rptype = new String(msg.getElement(SERVICE_RP_TYPE).getData());
-            
-            String id = new String(msg.getElement(SERVICE_ID).getData());
-            
-            String idsuffix = id.substring(id.lastIndexOf(":") + 1);
-            
-            ServiceAdvertisement svcAdv = ServiceAdvertisement.initAdvertisement(adv);
- 
-            if (idsuffix.equals("opd"))
-                svcAdv = OSGiPlugin.initAdvertisement(adv);
-            else if (idsuffix.equals("obr"))
-                svcAdv = BundleInformation.initAdvertisement(adv);
-            else
-                LOG.error("unknown id type:"+id);
-            
-//            svcAdv = ServiceManagerActivator.pluginLoader.parsePluginAdvertisement(adv);
-//            plugin.setAdvertisement(adv);
-            
-            // per default save the opd in the repocache
-            saveServiceAdvInCache(svcAdv);
-            
-            ServiceReference sref = new ServiceReferenceImpl(svcAdv, peer, rptype);
-
-            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
-            
-            // call listeners
-            notifyListeners(filter, sref);
-            
-        }
-    		// JAR-Request
-        else if (type.equals(JAR_REQ))
+        String topeer = new String(msg.getElement(SERVICE_TO_PEER).getData());
+        String frompeer = new String(msg.getElement(SERVICE_FROM_PEER).getData());
+        
+        if (topeer.equals(ServiceManagerActivator.peername))
         {
-            String peer = new String(msg.getElement(SERVICE_PEER).getData());
-            
-            if (peer.equals(ServiceManagerActivator.peername))
-            {
+        
+	        	// Plugin-Request
+	        //TODO include a callback function to the pluginloader
+	        // to match the ExtensionPoint filter.
+	        if (type.equals(SERVICE_REQ))
+	        {         
+	            	// match agains the provided filter
+	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
+	            
+	            	// service manager filter
+	            String smfilter = filter.substring(filter.lastIndexOf("|")+1);
+	                        
+	            	// send running OPDs
+	            if ((smfilter.indexOf("OPD".toString()) > -1) && 
+	                    ( ( (smfilter.indexOf(ServiceManager.RUNNING_SERVICES.toString()) > -1)) ||
+	                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
+	            {
+	                	//  enum over installed plugins
+	                Enumeration en = ServiceManagerActivator.pluginLoader.getOSGiPlugins();
+	
+	                matchAndSendServiceAdvertisement(frompeer, en, ServiceManager.RUNNING_SERVICES, filter, SERVICE_OPD);
+		            
+	            }
+	
+	            	//send running OBRs
+	            if ((smfilter.indexOf("OBR".toString()) > -1) && 
+	                    ( ( (smfilter.indexOf(ServiceManager.RUNNING_SERVICES.toString()) > -1)) ||
+	                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
+	            {
+	                	//  enum over installed plugins
+	                Enumeration en = ServiceManagerActivator.bundleLoader.getBundleAdvertisements();
+	
+	                matchAndSendServiceAdvertisement(frompeer, en, ServiceManager.RUNNING_SERVICES, filter, SERVICE_OBR);
+		            
+	            }
+	            
+	            	// send providing OPDs
+	            if ((smfilter.indexOf("OPD".toString()) > -1) && 
+	                    ( ( (smfilter.indexOf(ServiceManager.PROVIDING_SERVICES.toString()) > -1)) ||
+	                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
+	            {
+	                	//  enum over providing plugins
+	                Enumeration en = providingPlugins.elements();
+	                
+	                matchAndSendServiceAdvertisement(frompeer, en, ServiceManager.PROVIDING_SERVICES, filter, SERVICE_OPD);
+	            }
+	            
+	            	//send providing OBRs
+	            if ((smfilter.indexOf("OBR".toString()) > -1) && 
+	                    ( ( (smfilter.indexOf(ServiceManager.PROVIDING_SERVICES.toString()) > -1)) ||
+	                    (smfilter.indexOf(ServiceManager.ALL_SERVICES.toString()) > -1) ))
+	            {
+	                	//  enum over providing bundles
+	                Enumeration en = providingBundles.elements();
+	                
+	                matchAndSendServiceAdvertisement(frompeer, en, ServiceManager.PROVIDING_SERVICES, filter, SERVICE_OBR);
+	            }
+	        }
+	        	// Plugin-Ack
+	        else if (type.equals(SERVICE_ACK))
+	        {            
+//	            String peer = new String(msg.getElement(SERVICE_PEER).getData());
+	            String adv = new String(msg.getElement(SERVICE_ADV).getData());
+	            
+	            String rptype = new String(msg.getElement(SERVICE_RP_TYPE).getData());
+	            
+	            String id = new String(msg.getElement(SERVICE_ID).getData());
+	            
+	            String idsuffix = id.substring(id.lastIndexOf(":") + 1);
+	            
+	            ServiceAdvertisement svcAdv = ServiceAdvertisement.initAdvertisement(adv);
+	 
+	            if (idsuffix.equals("opd"))
+	                svcAdv = OSGiPlugin.initAdvertisement(adv);
+	            else if (idsuffix.equals("obr"))
+	                svcAdv = BundleInformation.initAdvertisement(adv,false);
+	            else
+	                LOG.error("unknown id type:"+id);
+	            
+	//            svcAdv = ServiceManagerActivator.pluginLoader.parsePluginAdvertisement(adv);
+	//            plugin.setAdvertisement(adv);
+	            
+	            // per default save the opd in the repocache
+	            saveServiceAdvInCache(svcAdv);
+	            
+	            ServiceReference sref = new ServiceReferenceImpl(svcAdv, frompeer, rptype);
+	
+	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
+	            
+	            // call listeners
+	            notifyListeners(filter, sref);
+	            
+	        }
+	    		// JAR-Request
+	        else if (type.equals(JAR_REQ))
+	        {
+//	            String peer = new String(msg.getElement(SERVICE_PEER).getData());
+	            
                 String id = new String(msg.getElement(SERVICE_ID).getData());
                 
                 BundleInformation binfo = ServiceManagerActivator.bundleLoader.getBundleInfo(id);
@@ -373,7 +381,7 @@ public class ServiceManagerImpl implements ServiceManager, Listener
 	                
 	                LOG.debug("file data size:"+data.length);
 	                
-	                Element[] elms = new Element[3];
+	                Element[] elms = new Element[5];
 	                
 	                elms[0] = new Element(SERVICE_TYPE, 
 	                        JAR_ACK, 
@@ -382,7 +390,12 @@ public class ServiceManagerImpl implements ServiceManager, Listener
 	                        id, Message.JXTA_NAME_SPACE);
 	                elms[2] = new Element(SERVICE_CODE, 
 	                        data, Message.JXTA_NAME_SPACE, Element.TEXTUTF8_MIME_TYPE);
-	
+	                elms[3] = new Element(SERVICE_FROM_PEER, 
+	                        ServiceManagerActivator.peername, 
+	                        Message.JXTA_NAME_SPACE);
+	                elms[4] = new Element(SERVICE_TO_PEER, 
+	                        frompeer, 
+	                        Message.JXTA_NAME_SPACE);
 			        try
 			        {                    
 			            ServiceManagerActivator.groupService.send(ServiceManagerActivator.groupPipe, new Message(elms));
@@ -395,32 +408,32 @@ public class ServiceManagerImpl implements ServiceManager, Listener
 	            {
 	                LOG.error("couldn't append File to Event", ioe);
 	            }
-            }
-        }
-        	// JAR-Ack
-        else if (type.equals(JAR_ACK))
-        {
-	        byte[] data = msg.getElement(SERVICE_CODE).getData();
-	        String id = new String(msg.getElement(SERVICE_ID).getData());
-	
-	        BundleInformation binfo = ServiceManagerActivator.bundleLoader.getBundleInfo(id);
-	        
-	        saveJarInCache(data, id, binfo);
-	        
-	        // TODO call bundleloader for the received bundle
-	        
-	        ServiceListener svcListener = (ServiceListener)mapId2SvcListener.remove(id);
-	        ServiceReference sref = (ServiceReference)mapId2SvcReference.remove(id);
-	        
-	        svcListener.receivedService(sref);
-	        
-//	        ByteArrayInputStream bin = new ByteArrayInputStream(data);
-//	        bc.installBundle(filename, bin);
-	
+	        }
+	        	// JAR-Ack
+	        else if (type.equals(JAR_ACK))
+	        {
+		        byte[] data = msg.getElement(SERVICE_CODE).getData();
+		        String id = new String(msg.getElement(SERVICE_ID).getData());
+		
+		        BundleInformation binfo = ServiceManagerActivator.bundleLoader.getBundleInfo(id);
+		        
+		        saveJarInCache(data, id, binfo);
+		        
+		        // TODO call bundleloader for the received bundle
+		        
+		        ServiceListener svcListener = (ServiceListener)mapId2SvcListener.remove(id);
+		        ServiceReference sref = (ServiceReference)mapId2SvcReference.remove(id);
+		        
+		        svcListener.receivedService(sref);
+		        
+	//	        ByteArrayInputStream bin = new ByteArrayInputStream(data);
+	//	        bc.installBundle(filename, bin);
+		
+	        }
         }
     }
 
-    private void matchAndSendServiceAdvertisement(Enumeration en, String rptype, String filter, String service)
+    private void matchAndSendServiceAdvertisement(String topeer, Enumeration en, String rptype, String filter, String service)
     {
         
         // send a message for each running service, 
@@ -441,14 +454,15 @@ public class ServiceManagerImpl implements ServiceManager, Listener
 		        String id = svcAdv.getID();
 		        System.out.println("id: "+id);
 		        
-		        Element[] elm = new Element[6];
+		        Element[] elm = new Element[7];
 		        
 		        elm[0] = new Element(SERVICE_TYPE, SERVICE_ACK, Message.JXTA_NAME_SPACE);
 		        elm[1] = new Element(SERVICE_ADV, adv, Message.JXTA_NAME_SPACE);
 		        elm[2] = new Element(SERVICE_RP_TYPE, rptype, Message.JXTA_NAME_SPACE);
 		        elm[3] = new Element(SERVICE_FILTER, filter, Message.JXTA_NAME_SPACE);
-		        elm[4] = new Element(SERVICE_PEER, ServiceManagerActivator.peername, Message.JXTA_NAME_SPACE);
-		        elm[5] = new Element(SERVICE_ID, id, Message.JXTA_NAME_SPACE);
+		        elm[4] = new Element(SERVICE_TO_PEER, topeer, Message.JXTA_NAME_SPACE);
+		        elm[5] = new Element(SERVICE_FROM_PEER, ServiceManagerActivator.peername, Message.JXTA_NAME_SPACE);		        
+		        elm[6] = new Element(SERVICE_ID, id, Message.JXTA_NAME_SPACE);
 		        
 		        try
 		        {                    

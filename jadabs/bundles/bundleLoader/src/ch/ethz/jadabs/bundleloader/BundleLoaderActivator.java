@@ -58,7 +58,7 @@ public class BundleLoaderActivator implements BundleActivator
 		// OSGi API is provided by knopflerfish
 		sysBundles.add(new String("osgi-framework-1.2"));
 		// this is a hack
-		sysBundles.add(new String("log4j-cdc-0.7.1-SNAPSHOT"));
+		sysBundles.add(new String("log4j-cdc-0.7.1"));
 		
 		// start a http daemon to answer bundle loader requests
 		new HttpDaemon(new BundleLoaderHandler()).start();

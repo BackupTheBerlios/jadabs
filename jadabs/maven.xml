@@ -78,7 +78,7 @@
 	<goal name="jadabs:eclipse-plugins">
 	
 		<maven:reactor basedir="${basedir}"
-				includes="bundles/jxme-osgi/impl/project.xml,bundles/jxme-osgi/udp/project.xml,bundles/jxme-osgi/services/impl/project.xml,bundles/remotefw/impl/project.xml"
+				includes="bundles/jxme-osgi/impl/project.xml,bundles/jxme-osgi/udp/project.xml,bundles/jxme-osgi/services/impl/project.xml,bundles/remotefw/impl/project.xml,bundles/service-manager/impl/project.xml,bundles/bundleLoader/project.xml,bundles/pluginLoader/project.xml"
 				excludes=""
 				goals="eclipse:plugin"
 				banner="Eclipse Plugin generation"

@@ -471,7 +471,7 @@ public class MainComposite extends Composite
                 else
                 {
                     //TODO: should be changed to register only once
-                    Activator.serviceManager.getServiceAdvertisements(null, this);
+                    Activator.serviceManager.getServiceAdvertisements(peername, null, this);
                 }
                 
                 
@@ -538,7 +538,7 @@ public class MainComposite extends Composite
                 else
                 {
                     //TODO: should be changed to register only once
-                    Activator.serviceManager.getServiceAdvertisements("|OBR,A", this);
+                    Activator.serviceManager.getServiceAdvertisements(peername, "|OBR,A", this);
                 }
             }
             

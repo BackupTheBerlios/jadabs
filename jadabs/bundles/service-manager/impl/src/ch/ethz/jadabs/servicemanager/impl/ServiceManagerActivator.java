@@ -22,6 +22,9 @@ import ch.ethz.jadabs.pluginloader.PluginLoader;
 public class ServiceManagerActivator implements BundleActivator
 {
 
+    private static String GM_PIPE_NAME_DEFAULT = "gmpipe";
+    private static long GM_PIPE_ID_DEFAULT = 23;
+    
     static BundleContext bc;
 
     static GroupService groupService;
@@ -35,6 +38,7 @@ public class ServiceManagerActivator implements BundleActivator
     
     static String peername;
     
+    
     /*
      */
     public void start(BundleContext bc) throws Exception
@@ -43,17 +47,24 @@ public class ServiceManagerActivator implements BundleActivator
         
         peername = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
                 
+        //  set pipe name
+        String gmpipeName;
+        if ((gmpipeName = bc.getProperty("ch.ethz.jadabs.servicemanager.gmpipe.name")) == null)
+            gmpipeName = GM_PIPE_NAME_DEFAULT;
+        
+        // set pipe id
+        long gmpipeID = GM_PIPE_ID_DEFAULT;
+        String prop;
+        if ((prop = bc.getProperty("ch.ethz.jadabs.servicemanager.gmpipe.id")) != null)
+                gmpipeID = Long.parseLong(prop);
+        
         // GroupService
         ServiceReference sref = bc.getServiceReference(
                 "ch.ethz.jadabs.jxme.services.GroupService");
         groupService = (GroupService)bc.getService(sref);
         
-        //  create Pipe
-        String gmpipeName = bc.getProperty("ch.ethz.jadabs.servicemanager.gmpipe.name");
-        long gmpipeID = Long.parseLong(bc.getProperty("ch.ethz.jadabs.servicemanager.gmpipe.id"));
-        
+        // Create Pipe
         groupPipe = groupService.createGroupPipe(gmpipeName, gmpipeID);
-        
         
         // create and publish ServiceManager
         serviceManager = new ServiceManagerImpl();

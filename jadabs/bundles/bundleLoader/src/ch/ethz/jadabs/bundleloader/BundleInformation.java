@@ -39,12 +39,18 @@ public class BundleInformation extends ServiceAdvertisement
 
     protected Vector bundleDependencies = new Vector();
 
+    
+    // use bound to use in bundleDependecnies the BundleInformation
+    // References otherwise use in bundleDeps uuid as string
+    private boolean bound = true;
+    
     protected String filename;
 
     private KXmlParser parser;
 
     /** location of the cached jar file */
     private String cachedFilePath;
+
     
     private BundleInformation()
     {
@@ -146,7 +152,7 @@ public class BundleInformation extends ServiceAdvertisement
         try
         {
             reader = new FileReader(file);
-            BundleInformation binfo = initAdvertisement(reader);
+            BundleInformation binfo = initAdvertisement(reader, true);
             
             binfo.setAdvertisement(file);
             
@@ -160,20 +166,23 @@ public class BundleInformation extends ServiceAdvertisement
         return null;
     }
 
-    public static ServiceAdvertisement initAdvertisement(String adv)
+    public static ServiceAdvertisement initAdvertisement(String adv, boolean bind)
     {
+        
         StringReader reader = new StringReader(adv);
-        BundleInformation binfo = initAdvertisement(reader);
+        BundleInformation binfo = initAdvertisement(reader, bind);
         
         binfo.setAdvertisement(adv);
         
         return binfo;
     }
     
-    private static BundleInformation initAdvertisement(Reader reader)
+    private static BundleInformation initAdvertisement(Reader reader, boolean bind)
     {
+        
         BundleInformation newbinfo = new BundleInformation();
-
+        newbinfo.bound = false;
+        
         newbinfo.parser = new KXmlParser();
 
         try
@@ -290,11 +299,16 @@ public class BundleInformation extends ServiceAdvertisement
         {
             String uuid = parser.getText().trim();
             try
-            {
-               if (LOG.isDebugEnabled()) 
-                  LOG.debug("Dependency:" + uuid);
-               BundleInformation dependency = new BundleInformation(uuid);
-                bundleDependencies.add(dependency);
+            { 
+               LOG.debug("Dependency:" + uuid);
+               if (bound)
+               {
+                   BundleInformation dependency = new BundleInformation(uuid);
+                   bundleDependencies.add(dependency);
+               }
+               else 
+                   bundleDependencies.add(uuid);
+               
             } catch (Exception e)
             {
                 LOG.error("malformed bundle uuid: " + uuid);

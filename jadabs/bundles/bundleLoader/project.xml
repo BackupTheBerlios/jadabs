@@ -13,6 +13,15 @@
 	<properties>
 		<osgi.import.service></osgi.import.service>		
 		<osgi.export.service>ch.ethz.jadabs.bundleLoader.IBundleLoader</osgi.export.service>
+
+		<!-- for eclipse osgi plugins -->
+		<eclipse.bundle.symbolicname>ch.ethz.jadabs.bundleloader</eclipse.bundle.symbolicname>
+		<eclipse.require.bundle>org.eclipse.osgi</eclipse.require.bundle>
+		<eclipse.autostart>true</eclipse.autostart>
+		<eclipse.bundle.activator>ch.ethz.jadabs.bundleloader.BundleLoaderActivator</eclipse.bundle.activator>
+		<eclipse.export.service>ch.ethz.jadabs.bundleloader.BundleLoader</eclipse.export.service>
+		<eclipse.export.package>org.kxml2.io,org.xmlpull.v1,ch.ethz.jadabs.bundleloader</eclipse.export.package>
+		<eclipse.import.package>org.apache.log4j,org.osgi.framework</eclipse.import.package>
 	</properties>
 	
 	
@@ -28,6 +37,9 @@
       		<groupId>kobjects</groupId>
       		<artifactId>kxml2</artifactId>
       		<version>2.1.9-osgi</version>
+			<properties>
+	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
+	      	</properties>        		
 		</dependency>
 		    		
 		<dependency>

@@ -12,7 +12,16 @@
 
 	<properties>
 		<osgi.import.service></osgi.import.service>		
-		<osgi.export.service>ch.ethz.jadabs.pluginLoader.IPluginLoader</osgi.export.service>		
+		<osgi.export.service>ch.ethz.jadabs.pluginLoader.IPluginLoader</osgi.export.service>	
+			
+		<!-- for eclipse osgi plugins -->
+		<eclipse.bundle.symbolicname>ch.ethz.jadabs.pluginloader</eclipse.bundle.symbolicname>
+		<eclipse.require.bundle>org.eclipse.osgi,ch.ethz.jadabs.bundleloader</eclipse.require.bundle>
+		<eclipse.autostart>true</eclipse.autostart>
+		<eclipse.bundle.activator>ch.ethz.jadabs.pluginloader.PluginLoaderActivator</eclipse.bundle.activator>
+		<eclipse.export.service>ch.ethz.jadabs.pluginloader.PluginLoader</eclipse.export.service>
+		<eclipse.export.package>ch.ethz.jadabs.pluginloader</eclipse.export.package>
+		<eclipse.import.package>org.kxml2.io,org.xmlpull.v1,org.apache.log4j,org.osgi.framework,ch.ethz.jadabs.bundleloader</eclipse.import.package>
 	</properties>
 	
 	

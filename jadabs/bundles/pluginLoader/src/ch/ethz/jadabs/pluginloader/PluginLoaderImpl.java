@@ -47,56 +47,59 @@ public class PluginLoaderImpl extends Thread implements PluginLoader {
 
       File file = new File("." + File.separatorChar + starter);
 
-      parser = new KXmlParser();
-
-      try {
-         BufferedReader reader = new BufferedReader(new FileReader(file));
-         String line;
-         while ((line = reader.readLine()) != null) {
-            if (line.startsWith("-usepad")) {
-               if (LOG.isDebugEnabled())
-                  LOG.debug("Opening " + "." + File.separatorChar
-                     + line.substring(7).trim());
-               File padfile = new File("." + File.separatorChar
-                     + line.substring(7).trim());
-               FileReader padreader = new FileReader(padfile);
-               parser.setInput(padreader);
-
-               parsePlatform();
-               parser = null;
-               padreader = null;
-            } else if (line.startsWith("-startopd")) {
-               String id = line.substring(9).trim();
-               if (LOG.isDebugEnabled())
-                  LOG.debug("Starting Plugin " + id);
-               // TODO: Get OSGiBundle, resolve it and start it.
-
-               String group = id.substring(0, id.indexOf(":"));
-               id = id.substring(id.indexOf(":") + 1);
-               String name = id.substring(0, id.indexOf(":"));
-               id = id.substring(id.indexOf(":") + 1);
-               String version = id.substring(0, id.indexOf(":"));
-               String rest = id.substring(id.indexOf(":") + 1);
-
-               String repopath = PluginLoaderActivator.b_context
-                     .getProperty("org.knopflerfish.gosg.jars");
-
-               String opdpath = repopath.substring(5) + group
-                     + File.separatorChar + "opds" + File.separatorChar + name
-                     + "-" + version + ".opd";
-               if (LOG.isDebugEnabled())
-                  LOG.debug("opdpath: " + opdpath);
-
-               File opdfile = new File(opdpath);
-
-               if (LOG.isDebugEnabled())
-                  LOG.debug("opdfile: " + opdfile.getAbsolutePath());
-
-               loadPlugin(opdfile);
-            }
-         }
-      } catch (Exception err) {
-         err.printStackTrace();
+      if (file.exists())
+      {
+	      parser = new KXmlParser();
+	
+	      try {
+	         BufferedReader reader = new BufferedReader(new FileReader(file));
+	         String line;
+	         while ((line = reader.readLine()) != null) {
+	            if (line.startsWith("-usepad")) {
+	               if (LOG.isDebugEnabled())
+	                  LOG.debug("Opening " + "." + File.separatorChar
+	                     + line.substring(7).trim());
+	               File padfile = new File("." + File.separatorChar
+	                     + line.substring(7).trim());
+	               FileReader padreader = new FileReader(padfile);
+	               parser.setInput(padreader);
+	
+	               parsePlatform();
+	               parser = null;
+	               padreader = null;
+	            } else if (line.startsWith("-startopd")) {
+	               String id = line.substring(9).trim();
+	               if (LOG.isDebugEnabled())
+	                  LOG.debug("Starting Plugin " + id);
+	               // TODO: Get OSGiBundle, resolve it and start it.
+	
+	               String group = id.substring(0, id.indexOf(":"));
+	               id = id.substring(id.indexOf(":") + 1);
+	               String name = id.substring(0, id.indexOf(":"));
+	               id = id.substring(id.indexOf(":") + 1);
+	               String version = id.substring(0, id.indexOf(":"));
+	               String rest = id.substring(id.indexOf(":") + 1);
+	
+	               String repopath = PluginLoaderActivator.b_context
+	                     .getProperty("org.knopflerfish.gosg.jars");
+	
+	               String opdpath = repopath.substring(5) + group
+	                     + File.separatorChar + "opds" + File.separatorChar + name
+	                     + "-" + version + ".opd";
+	               if (LOG.isDebugEnabled())
+	                  LOG.debug("opdpath: " + opdpath);
+	
+	               File opdfile = new File(opdpath);
+	
+	               if (LOG.isDebugEnabled())
+	                  LOG.debug("opdfile: " + opdfile.getAbsolutePath());
+	
+	               loadPlugin(opdfile);
+	            }
+	         }
+	      } catch (Exception err) {
+	         err.printStackTrace();
+	      }
       }
    }
 

@@ -30,11 +30,12 @@ public interface ServiceManager
      * 
      * In case the filter is null the default is: "|OPD,OBR,A"
      * 
+     * @param peername
      * @param filter
      * @param serviceListener
      * @return
      */
-    boolean getServiceAdvertisements(String filter, ServiceAdvertisementListener serviceListener);
+    boolean getServiceAdvertisements(String peername, String filter, ServiceAdvertisementListener serviceListener);
     
     /**
      * Remove Service Listener, which has been added to the internal
