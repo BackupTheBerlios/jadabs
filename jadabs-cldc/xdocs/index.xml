@@ -60,7 +60,7 @@
          with simple games or ring tones. </p>
       
       <p>The Jadabs system allows that component bundles can be dynamically 
-         installed and started. <a href="http://wlab.ethz.ch/jadabs">Jadabs</a> is a 
+         installed and started. <a href="http://jadabs.berlios.de">Jadabs</a> is a 
          dynamic lightweight container for small devices. Combined with the JXME messaging
          system it can be used to build applications and service for a dynamical 
          environment as described above. JXME messaging uses a messaging format 

@@ -22,7 +22,7 @@
     
       <shortDescription>Jadabs-CLDC - Java ADhoc Application BootStrap for CLDC</shortDescription>
     
-      <url>http://jadabs.berlios.de</url>
+      <url>http://jadabs.berlios.de/jadabs-cldc</url>
 
       <siteAddress>shell.berlios.de</siteAddress>
       <siteDirectory>
@@ -98,6 +98,7 @@
   
   <reports>
   	<report>maven-javadoc-plugin</report>
+  	<report>maven-changes-plugin</report>
 <!--   
   	<report>maven-changes-plugin</report>
   	<report>maven-changelog-plugin</report>

@@ -235,18 +235,20 @@
   <goal name="jadabs:release">
   	<attainGoal name="jadabs:clean"/>
   	<attainGoal name="jadabs:buildall"/>
-  	<attainGoal name="jadabs:dist"/>
+<!--  	<attainGoal name="jadabs:dist"/> -->
   	
   	<!-- copy new releases to docu -->
+<!--
   	<ant:copy todir="${jadabs.releases.dir}/">
 			<ant:fileset dir="${maven.dist.dir}/" includes="**"/>
 	</ant:copy>
 	<ant:copy todir="target/docs/releases/">
 			<ant:fileset dir="${jadabs.releases.dir}/" includes="*.gz"/>
 	</ant:copy>
-  	
+-->
   	<attainGoal name="multiproject:site"/>
   	<attainGoal name="site:deploy" />
+  	<attainGoal name="pdf"/>
   </goal>
   
   
