@@ -11,7 +11,7 @@
 	<shortDescription>Command line shell for handling jadabs.</shortDescription>
 	
 	<properties>
-		<osgi.bundle.category>service</osgi.bundle.category>
+		<osgi.bundle.category>shell</osgi.bundle.category>
 		<osgi.export.service>ch.ethz.iks.jadabs.shell.svc.IShellPluginService</osgi.export.service>
 	</properties>
 	

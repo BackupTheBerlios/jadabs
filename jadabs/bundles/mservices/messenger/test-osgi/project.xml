@@ -10,6 +10,9 @@
 
 	<shortDescription>Messenger-Test</shortDescription>
 	
+	<properties>
+		<osgi.bundle.category>mservices-test</osgi.bundle.category>
+	</properties>
 
   	<dependencies>
   	

@@ -16,6 +16,7 @@
 		<!-- for osgi bundles -->
 		<osgi.export.service>ch.ethz.jadabs.jxme.services.GroupService</osgi.export.service>
 		<osgi.import.service>ch.ethz.jadabs.jxme.PeerNetwork,ch.ethz.jadabs.jxme.EndpointService</osgi.import.service>
+		<osgi.bundle.category>jxme</osgi.bundle.category>
 		
 		<!-- for eclipse osgi plugins -->
 		<eclipse.bundle.symbolicname>ch.ethz.jadabs.jxme.services</eclipse.bundle.symbolicname>

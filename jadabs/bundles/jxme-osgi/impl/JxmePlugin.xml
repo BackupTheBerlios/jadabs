@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OSGiPlugin 
+	id="ch.ethz.jadabs.jxme"
+	name="Jxme"
+	version="0.1.0"
+	description=""
+	provider-name="ETHZ-IKS">
+	
+	<Extension-Point
+	    id="Extension/PeerNetwork"
+	    service="ch.ethz.jadabs.jxme.PeerNetwork" 	       	    
+	/>
+	
+	<Extension
+	    id="GroupService"
+        service="ch.ethz.jadab.jxme.services.GroupService"
+    />
+
+    <PluginActivatorBundle
+        bundle-name="jxme-osgi"
+        bundle-version="0.7.1-SNAPSHOT"
+        bundle-group="jadabs"
+    />
+
+</OSGiPlugin>

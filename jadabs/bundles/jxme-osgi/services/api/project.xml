@@ -13,7 +13,7 @@
 	<shortDescription>JXME-Services API</shortDescription>
 
 	<properties>
-
+		<osgi.bundle.category>jxme</osgi.bundle.category>
 	</properties>
 
   	<dependencies>

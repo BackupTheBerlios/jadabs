@@ -12,6 +12,7 @@
 
 	<properties>
 		<osgi.import.service>ch.ethz.jadabs.remotefw.FrameworkManager</osgi.import.service>
+		<osgi.bundle.category>gui</osgi.bundle.category>
 	</properties>
 
    <dependencies>

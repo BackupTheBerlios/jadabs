@@ -12,6 +12,10 @@
 	
     <shortDescription>RemoteFramework API</shortDescription>
 	
+	<properties>
+		<osgi.bundle.category>remotefw</osgi.bundle.category>
+	</properties>
+	
   	<dependencies>
 	    
 	    <dependency>

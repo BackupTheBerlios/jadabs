@@ -10,7 +10,9 @@
 
 	<shortDescription>Jadabs-JXME transport UDP</shortDescription>
 
-	<properties>		
+	<properties>	
+		<osgi.bundle.category>jxme</osgi.bundle.category>	
+		
 		<!-- for eclipse osgi plugins -->
 		<eclipse.bundle.symbolicname>ch.ethz.jadabs.jxme.udp</eclipse.bundle.symbolicname>
 		<eclipse.require.bundle>org.eclipse.osgi,ch.ethz.jadabs.jxme</eclipse.require.bundle>

@@ -10,6 +10,10 @@
 
 	<shortDescription>MobileServices-SMTPGateway Test TCP</shortDescription>
 
+	<properties>
+		<osgi.bundle.category>mservices-test</osgi.bundle.category>
+	</properties>
+	
   	<dependencies>
   	
     	<dependency>

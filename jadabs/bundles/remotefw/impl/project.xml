@@ -16,6 +16,7 @@
 		<!-- for osgi bundles -->
 		<osgi.import.service>ch.ethz.jadabs.jxme.services.GroupService</osgi.import.service>
 		<osgi.export.service>ch.ethz.jadabs.remotefw.FrameworkManager</osgi.export.service>
+		<osgi.bundle.category>remotefw</osgi.bundle.category>
 		
 		<!-- for eclipse osgi plugins -->
 		<eclipse.bundle.symbolicname>ch.ethz.jadabs.jxme.remotefw</eclipse.bundle.symbolicname>

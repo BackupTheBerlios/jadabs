@@ -10,6 +10,10 @@
 
 	<shortDescription>JXME transport TCP</shortDescription>
 
+	<properties>
+		<osgi.bundle.category>jxme</osgi.bundle.category>
+	</properties>
+	
   	<dependencies>
   	
     	<dependency>

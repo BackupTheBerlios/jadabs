@@ -8,10 +8,11 @@
   	<artifactId>log4j-cdc</artifactId>
   	<name>Log4j-CDC</name>
 
-  	<shortDescription>Log4j-CDC small implementation</shortDescription>
+  	<shortDescription>Log4j-CDC Micro-Implementation</shortDescription>
 
 	<properties>
 		<osgi.import.package>org.osgi.framework</osgi.import.package>
+		<osgi.bundle.category>logging</osgi.bundle.category>
 	</properties>
 	
 	
