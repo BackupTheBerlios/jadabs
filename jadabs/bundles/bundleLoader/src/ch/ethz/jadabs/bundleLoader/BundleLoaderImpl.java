@@ -540,7 +540,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
       } else {
          uuid = loc;
       }
-
+      
       if (LOG.isDebugEnabled())
          LOG.debug("###########  BUNDLE STATE CHANGED ... " + uuid + " to "
                + bevent.getType());
@@ -571,7 +571,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     */
    private static String location2uuid(String loc) {
       int pos = loc.lastIndexOf(File.separatorChar);
-
+      
       if (pos > -1) {
          String filename = loc.substring(pos + 1);
          int pos2 = filename.indexOf(".opd");
@@ -587,6 +587,10 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          }
          String name = filename.substring(0, pos2);
          String version = filename.substring(pos2 + 1);
+         
+         int idx;
+         if ((idx = version.indexOf(".jar")) > -1)
+             version = version.substring(0, idx);
 
          String group = loc.substring(0, pos);
          pos2 = group.lastIndexOf(File.separatorChar);
