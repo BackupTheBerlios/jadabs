@@ -71,14 +71,17 @@
 	<goal name="jadabs:buildbundles">
 		<j:set var="goal" value="osgi:install"/>
 		<attainGoal name="multiproject:goal" />
-	<!--
+	</goal>
+
+	<goal name="jadabs:eclipse-plugins">
+	
 		<maven:reactor basedir="${basedir}"
-				includes="bundles/**/project.xml"
-				excludes="bundles/sip/**,bundles/shell/**,old/**"
-				goals="osgi:install"
-				banner="Building"
+				includes="bundles/jxme-osgi/impl/project.xml,bundles/jxme-osgi/udp/project.xml,bundles/jxme-osgi/services/impl/project.xml,bundles/remotefw/impl/project.xml"
+				excludes=""
+				goals="eclipse:plugin"
+				banner="Eclipse Plugin generation"
 				ignoreFailures="false"/>
-	-->
+
 	</goal>
 
   <!--==================================================================-->

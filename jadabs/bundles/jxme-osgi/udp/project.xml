@@ -10,6 +10,16 @@
 
 	<shortDescription>Jadabs-JXME transport UDP</shortDescription>
 
+	<properties>
+		<!-- for eclipse osgi plugins -->
+		<eclipse.bundle.symbolicname>ch.ethz.jadabs.jxme.udp</eclipse.bundle.symbolicname>
+		<eclipse.require.bundle>org.eclipse.osgi,ch.ethz.jadabs.jxme</eclipse.require.bundle>
+		<eclipse.autostart>true</eclipse.autostart>
+		<eclipse.bundle.activator>ch.ethz.jadabs.jxme.udp.UDPActivator</eclipse.bundle.activator>
+		<eclipse.export.package>ch.ethz.jadabs.jxme.udp</eclipse.export.package>
+		<eclipse.import.package>org.apache.log4j,ch.ethz.jadabs.jxme,org.osgi.framework</eclipse.import.package>
+	</properties>
+
   	<dependencies>
   	
   	    <dependency>
@@ -34,6 +44,9 @@
       		<groupId>jadabs</groupId>
       		<artifactId>concurrent</artifactId>
       		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
+	      	</properties>
 		</dependency>
 		
   	</dependencies>

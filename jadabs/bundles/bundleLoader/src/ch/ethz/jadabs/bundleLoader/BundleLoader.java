@@ -24,7 +24,7 @@ import org.osgi.framework.*;
  */
 
 public class BundleLoader implements IBundleLoader {
-	protected static final String repository = "/home/rjan/.maven/repository"; 
+	protected static final String repository = "/home/andfrei/.maven/repository"; 
 	private static HashSet availableBundles = new HashSet();
 	private static HashSet systemBundles = new HashSet();
 	private static LinkedList installationQueue = new LinkedList(); 

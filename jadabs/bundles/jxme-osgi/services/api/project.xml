@@ -7,7 +7,7 @@
 	<url></url>
 
 	<groupId>jadabs</groupId>
-	<id>jxme-services-api</id>
+	<artifactId>jxme-services-api</artifactId>
 	<name>JXME-Services API</name>
 
 	<shortDescription>JXME-Services API</shortDescription>
