@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>eventsystem-api</id>
+  <name>EventSystem API</name>
+  <package>ch.ethz.iks.eventsystem</package>
+
+  <shortDescription>EventSystem API</shortDescription>
+
+	<properties>
+		<osgi.bundle.category>interface</osgi.bundle.category>
+	</properties>
+	
+  <dependencies>
+  
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+		
+  </dependencies>
+
+  
+</project>

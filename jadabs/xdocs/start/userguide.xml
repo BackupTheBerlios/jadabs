@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+
+  <properties>
+		<title>Getting Started - OSGi</title>
+		<author email="frei@inf.ethz.ch">Andreas Frei</author>
+	</properties>
+
+	<body>
+		<section name="Getting Started - Jadabs/OSGi">
+   
+		<p>
+			<ul>
+				<li><a href="#Service Oriented Architecture (SOA)">Service Oriented Architecture (SOA)</a></li>
+				<li><a href="#Aspect Oriented Programming (AOP)">Aspect Oriented Programming (AOP)</a></li>
+				<li><a href="#Services">Services</a></li>
+				<li><a href="#Building OSGi Bundles">Building OSGi Bundles</a></li>
+			</ul>
+      	</p>
+		</section>
+		
+		<section name="Service Oriented Architecture (SOA)">
+
+		<p>
+			We built up our system on the OSGi implementation of <a href="http://knopflerfish.">Knopflefish</a>.
+		</p>
+		<p>
+			In OSGi the deployable unit is a bundle which is packaged in a jar file. The manifest of such 
+			a jar file gives some meta information about the bundle. At activation of such a bundle the main-class
+			has to been known, or the dependecies have to be stated in the manifest to allow the classloader
+			to find the required classes. The main-class has then to implement the <b>BundleActivator</b> as seen below.
+			The BundleActivator contains the start and stop methods with the argument type 
+			<b>BundleContext</b>. Over this BundleContext the bundle gets access to other bundles or the
+			container itself.
+		</p>
+<source><![CDATA[
+public interface BundleActivator
+{
+	void start(BundleContext bc);
+
+	void stop(BundleContext bc);
+}
+]]></source>   
+		<p>
+			Usually bundles contain services which are registered through the BundleContext. By registering
+			such services other bundles can then use these services by looking them up. See following example
+			where a Service Provider registers a service and a Service Client looks up that service and calls
+			a method thereupon.
+		</p>
+		
+<source><![CDATA[
+/**
+ *  ServiceProvider which creates and registers the TestService.
+ */
+public class ServiceProvider implements BundleActivator
+{
+	void start(BundleContext bc)
+	{
+		// create the TestSerivce 
+        TestService testservice = new TestServiceImpl();
+        
+        // register the TestService with the Interface
+		ServiceRegistration sreg = bc.registerService(
+			TestService.class.getName(),
+            testservice, null);
+	}
+
+	void stop(BundleContext bc) { }
+}
+
+
+/**
+ *  ServiceClient which looksup the TestService and calls method.
+ */
+public class ServiceClient implements BundleActivator
+{
+	void start(BundleContext bc)
+	{
+		// get the reference to the TestService
+		ServiceReference sref = bc.getServiceReference(TestService.class.getName());
+
+		TestService service = (TestService)context.getService(sref);
+		
+		// call the method through the interface
+		service.foo();
+	}
+
+	void stop(BundleContext bc) { }
+}
+
+
+/**
+ *  The TestService Interface published by the ServiceProvider 
+ *  and used by the ServiceClient.
+ */
+interface TestService
+{
+	public String foo();
+}
+
+
+/**
+ *  Implements the TestService Interface
+ */
+public class TestServiceImpl implements TestService
+{
+	public TestServiceImpl()
+	{
+	}
+
+	public String foo()
+	{
+		return "I'm the TestService";
+	}
+}
+
+]]></source>
+
+		<p>
+			In the example above we used the interface to register the service.
+			This is not needed but is strongly recommended when developing 
+			services and components. One of the design principles
+			propagates the separation of interface and implementation. More
+			about design philosophies can be found on the design principles
+			page.
+		</p>
+		
+		<p>
+			More information about programming in SOA can also be found on following sites:
+			<ul>
+				<li><a href="http://knopflerfish.org/programming.html">http://knopflerfish.org/programming.html</a></li>
+			</ul>
+		</p>
+ 
+		</section>
+
+		<section name="Aspect Oriented Programming (AOP)">
+		
+		<p>
+			With AOP in the core Jadabs layer we are able to extend services with crosscutting
+			concerns and change the behavior of running services without restarting them.
+			AOP is mainly categorized in two types, the static and dynamic changes. Whereas
+			static is a compile time or load time weaving mechanism and dynamic allows 
+			weaving/unweaving in already running code. Many AOP frameworks exists so fare
+			and have their advantages and disadvantages.
+		</p>
+		<p>
+			In the core Jadabs layer we support therefore the two AOP types.
+			For static weaving we use <a href="http://eclipse.org/aspectj/">AspectJ</a>
+			and for dynamic AOP the proxy approach from <a href="http://nanning.sourceforge.net/">Nanning</a>.
+			With this two differnt approaches we can cover a wide range of possible
+			crosscutting concerns and runtime behavior changes.
+			In fact even the core Jadabs layer is built with this philosophy in mind. Whereas
+			OSGi, Knopflerfish and Nanning are two open source projects we built and tweeked their 
+			interfaces and implementations to the core layer.
+			On the dynamic resouce layer of Jadabs both, AspectJ and Nanning, can be used.
+		</p>
+		<p>
+			Following example shows the usage of dynamic AOP inside OSGi. Refere
+			to the <a href="AOP.html">AOP</a> page for more information.
+			It is importent to note that the developer of the service is responsible 
+			for registering the services as an AOP service. As we use the proxy approach
+			we only allow dynamic AOP on interfaces. An AOP service has therefore
+			to register these interfaces. For the <i>ServiceClient</i> nothing changes
+			he is not even aware that he is calling the target method through a proxy. The
+			service <b>must</b> be looked up now with the interface, compared to without AOP 
+			any class can be looked up, this forces the developers to follow the interface 
+			and implementation separation principle.
+		</p>
+		
+<source><![CDATA[
+public AOPServiceProvider implements BundleActivator
+{
+	void start(BundleContext bc)
+	{
+	    // create the TestService as usual
+        TestService testservice = new TestServiceImpl();
+
+        // register the service with the AOPContext.registerAOPService(..)
+        AOPServiceRegistration testsvcreg = 
+        	((AOPContext) bc).registerAOPService(
+				TestService.class,
+              	testservice, null);
+	}
+
+	void stop(BundleContext bc) { } 
+}
+
+]]></source>   
+		
+		</section>
+      
+      	<section name="Services">
+      		<img src="../images/jadabs_overview.jpg" alt="Jadabs"/>
+      	<p>
+      		The Figure shows the different layers available with Jadabs.
+      		Basically two layers are supported, a messaging layer and
+      		the event system. This two layers are message or event oriented.
+      		Additional streaming layers are not yet implemented as services.
+      	</p>
+      	<p>
+      		The services provided with Jadabs are some basic ones. Fourther
+      		more enhanced services can be developed with same concept based
+      		on the already existing services by extending them or adding
+      		new independent services.
+      	</p>
+      	<p>
+      		Different services can now be plugged into the event system and
+      		message layer like additional implemtations for messaging or
+      		an extended discovery event system. Following list gives
+      		a short introduction to the services. For fourther information
+      		look into the appropriate sub-project site.
+      	</p>
+      	<p>
+      		For example to use the event system one has to lookup its
+      		service and can then use the publish/subscribe methods.
+      	</p>
+<source><![CDATA[
+
+    /* Usage of the EventService in an application.
+     */
+    public void start(BundleContext bc) throws Exception
+    {        
+    	// lookup the EventService
+        ServiceReference sref = bc.getServiceReference(IEventService.class.getName());
+        IEventService eventsvc = (IEventService)bc.getService(sref);
+        
+        // subscribe to the EventService for a PeerEvent
+        PeerEvent pevent = new PeerEvent();
+        pevent.setMasterName("peer2");
+        Filter filter = new FilterImpl(pevent);
+        
+        eventsvc.subscribe(filter, listener);
+        
+        // create and publish an event
+        PeerEvent thispeerevent = new PeerEvent("peer1");
+        eventsvc.publish(thispeerevent);
+ 
+    }
+]]></source>
+
+      	</section>
+
+		<section name="Building OSGi Bundles">
+		<p>
+			Building OSGi conform bundles can be quite tedious
+			when done by hand or with ant solutions. We use 
+			<a href="http://maven.apache.org">maven</a> to compile
+			and generate our projects.
+			We are working on the 
+			<a href="../../plugins/maven-osgi/">maven-osgi-plugin</a>
+			which takes from you the burden of coding all the
+			nasty manifest and dependencies things.
+		</p>
+		<p>
+			Basically you have to write a simple project.xml file like the
+			one shown below. 
+		</p>
+		
+<source><![CDATA[
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+	<extend>${basedir}/../project.xml</extend>
+
+	<groupId>jadabs</groupId>
+	<id>eventsystem-svc</id>
+	<name>EventSystem Service</name>
+	<package>ch.ethz.iks.eventsystem.svc</package>
+
+	<shortDescription>EventSystem Service</shortDescription>
+
+	<dependencies>
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>jadabs</artifactId>
+			<version>${pom.currentVersion}</version> 		
+		</dependency>
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>jxme-api</artifactId>
+			<version>${pom.currentVersion}</version>    		
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.8</version>
+			<url>http://jakarta.apache.org/log4j</url>
+		</dependency>
+	</dependencies>
+
+</project>
+]]></source>
+	
+		<p>
+			This will compile the source code, generate the manifest and 
+			package all in a .jar which is placed in the subprojects target 
+			directory and in the .maven/repository directory.
+		</p>
+				
+<source><![CDATA[
+> maven osgi:install
+]]></source>
+	
+		<p>
+			In case the automatically generated manifest does not reflect
+			the desired meta-information some properties can be set in
+			the project.xml file and overwriting taking precedence over
+			the generated values.
+		</p>
+	
+<source><![CDATA[
+	<properties>
+		<osgi.bundle.category>service</osgi.bundle.category>
+		<osgi.bundle.activator>ch.ethz.iks.eventsystem.impl.Activator</osgi.bundle.activator>
+		<osgi.export.service>ch.ethz.iks.eventsystem.IEventService</osgi.export.service>
+		<osgi.import.service>ch.ethz.iks.jxme.IPeerNetwork</osgi.import.service>
+		<osgi.export.package>ch.ethz.iks.eventsystem.impl</osgi.export.package>
+		<osgi.import.package>
+			org.osgi.framework,ch.ethz.iks.concurrent,
+			ch.ethz.iks.utils,ch.ethz.iks.jxme,ch.ethz.iks.jxme.impl,
+			ch.ethz.iks.eventsystem,org.apache.log4j
+		</osgi.import.package>
+	</properties>
+]]></source>
+
+		</section>
+
+ </body>
+</document>

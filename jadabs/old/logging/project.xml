@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <artifactId>commons-logging</artifactId>
+  <name>Commons IKS-Logging</name>
+  <package>ch.ethz.iks.logger</package>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>Common IKS, Logging</shortDescription>
+
+	<properties>
+		<osgi.export.package>ch.ethz.iks.logger</osgi.export.package>
+	</properties>
+	
+  <dependencies>
+
+  </dependencies>
+  
+</project>

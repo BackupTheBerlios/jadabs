@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>bundles-iks</groupId>
+  <id>commons-adapter</id>
+  <name>Commons Adapter</name>
+  <package>ch.ethz.iks.concurrent</package>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>Common Adapter</shortDescription>
+
+  <dependencies>
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jadabs-migration</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>bundles-iks</groupId>
+      		<artifactId>commons-utils</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+  </dependencies>
+
+  
+</project>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Goals</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+	<body>
+	    
+  	<section name="Jadabs">
+		<p>
+			Jadabs is a dynamic lightweight container for small devices in a 
+			distributed environment. Many distributed infrastructures exists
+			so fare like Jini, Jxta, Messaging Systems, etc. All of them
+			lack so fare the possibility to be run on small devices. 
+		</p>
+		<p>
+		    With Jadabs a two layered approach is taken. The first layer
+		    is a dynamic lightweight container using <a href="http://www.osgi.org">
+		    OSGi</a> and <a href="start/aop.html">dynamic AOP</a>.
+		    The second layer consists of bundles which can be loaded, 
+		    activated, stopped, and removed again. A core distributed framework is
+		    provided which follows the core JXTA specifications. The distributed
+		    framework uses part of JXME.
+		</p>
+	    <p>
+		    The scenario shown below represents a typical mobile infrastructure.
+		    With Jadabs and <a href="http://wlab.ethz.ch/jadabs-cldc">Jadabs-CLDC</a> 
+		    we can provide a middleware for such distributed mobile infrastructures.
+		</p>
+		
+		<center>
+		<img src="images/mobile-infrastructure.jpg" alt="Mobile Services"/>
+		</center>
+		
+	</section>
+		
+	</body>
+</document>

@@ -1,0 +1,320 @@
+#! /bin/bash
+#
+#
+# (history at the end)
+#
+# $Id: jprose,v 1.3 2003/10/07 19:25:10 anicoara Exp $
+#
+
+# Summary:
+# 1. source help functions
+# 2. parsing of java args
+# 3. find prose ressources
+# 4. check jvm compatibility
+# 5. construct new args and exec java
+# 6. THE SCRIPT
+
+#---------------------------------------------
+# Utility Functions
+#---------------------------------------------
+
+
+
+
+if  type cygpath >/dev/null 2>&1
+then
+LDIR=$(cygpath "$0")
+LDIR=$(dirname "$LDIR")
+else
+LDIR=$(dirname "$0")
+fi
+
+PROSE_UTIL_FUNCTIONS="$LDIR/../lib/prose_sh_functions.sh"
+source "$PROSE_UTIL_FUNCTIONS"
+
+PROSE_CONFIG="$LDIR/../lib/prose.conf"
+[ -f "$PROSE_CONFIG" ] && source "$PROSE_CONFIG"
+
+#---------------------------------------------
+#  USAGE
+#bin\
+prose_usage()
+{
+
+    prose_msg "Usage:     pvm [-Xnoprose -Xquietprose] <java-options>" \
+              "Options:" \
+              "           -Xnoprose             (optional)  do not launch prose" \
+              "           -Xquietprose          (optional)  do not print messages" \
+	      "           -Dprose.port=<port>   (optional)  start prose with an rmi server for weaving aspects" \
+              "Variables: "\
+              "           PROSE_JAVA_HOME             (optional)  the top of the JDK tree"\              "           PROSE_JAVA_INT              (optional)  the java interpreter, defaults to 'java'"
+}
+
+#---------------------------------------------
+#  READ JAVA ARGS
+#  creates the vars 'java_args' and 'initial_java_args'
+
+
+prose_readargs()
+{
+# acumulate in 'java args' the java args prose will NOT change
+# accumulate in 'initial_java_args' the initial, non-prose java args
+java_args="";
+while [ $# -gt 0 ]
+do
+    case $1 in
+      -Xquietprose)
+        ARG_QUIET=$1;
+	;;
+
+      -Xnoprose)
+	ARG_NOPROSE=$1;
+	;;
+
+      -h|-help)
+        prose_usage;
+	;;
+
+      -Xdebug)
+        ARG_DEBUG=$1;
+        ;;
+
+      -Xnoagent)
+	 ARG_NOAGENT=$1;
+	;;
+
+      -Djava.compiler=*)
+	ARG_COMPILER=$1;
+	;;
+
+      -classic*)
+        [ "$1" = '-classic' ] && ARG_VMIMPL="-classic";
+	;;
+
+      -server)
+        [ "$1" = '-server' ] && ARG_VMIMPL="-server";
+	;;
+
+      -client*)
+        [ "$1" = '-client' ] && ARG_VMIMPL="-client";
+	;;
+
+      -Xbootclasspath/a:*)
+        ARG_BOOTCPATH=$1;
+	;;
+
+      -classpath|-cp)
+        shift;
+        ARG_CPATH="$1";
+	;;
+
+      -Djava.library.path=*)
+        ARG_DLPATH="$1";
+	;;
+
+      -Xrunjdwp*)
+        ARG_JDWP=$1;
+	;;
+
+      -Dch.ethz.inf.project.home=*)
+        #ignore this one
+        ;;
+
+      -Dprose.port=*)
+        ARG_PORT="$1";
+        ;;
+
+      -Djava.security.policy=*)
+        ARG_POLICY="$1";
+	;;
+      
+      -Xnoclassgc)
+        ARG_GC="$1";
+	;;
+      
+      *)
+        java_args="$java_args $1";	;;
+    esac
+
+    # build the initial arguments
+    case $1 in
+      -Xnoprose|-Xquietprose)
+       ;;
+       *)
+       initial_java_args="$initial_java_args $1";
+    esac
+    shift
+done
+}
+
+#---------------------------------------------
+#  WRITE NEW JAVA ARGS  ENVIRONMENT
+#
+#  sets 'new_java_args' (a modified version of the
+#  original java args)
+
+prose_create_new_args()
+{
+if [ -z "$ARG_DEBUG" ]
+then
+    prose_msg "Using -Xdebug"
+    ARG_DEBUG="-Xdebug"
+fi
+
+
+if [ -z "$ARG_GC" ]
+then
+    ARG_GC="-Xnoclassgc"
+fi
+
+
+if [  "$JAVA_VERSION" = "1.2.*" ]
+then
+
+   [ -n "$ARG_JDWP"  ] && prose_err "With jvms prior to 1.4.*, prose cannot work with JDWP "\
+				    "Your argument was: $ARG_JDWP";
+
+   [ -z "$ARG_NOAGENT" ]  && prose_msg "Using -Xnoagent";
+    ARG_NOAGENT="-Xnoagent";
+
+
+   [ "$ARG_COMPILER" = '-Djava.compiler=NONE' ] || prose_msg "using -Djava.compiler=NONE"
+     ARG_COMPILER="-Djava.compiler=NONE";
+fi
+
+
+# perform vm-specific transformations
+# 1. change the VM impl. Depending on the version from server to client, or from client to classic
+if [  "$JAVA_VERSION" = "1.3.*" ]
+then
+
+   [ -n "$ARG_JDWP"  ]             && prose_err "With jvms prior to 1.4.*, prose cannot work with JDWP "\
+				                "Your argument was: $ARG_JDWP";
+
+   [ -z "$ARG_NOAGENT" ]  && prose_msg "Using -Xnoagent";
+    ARG_NOAGENT="-Xnoagent";
+
+
+   [ "$ARG_VMIMPL" = '-classic' ]   && prose_msg "using -classic vm instead of $ARG_VMIMPL";
+   ARG_VMIMPL="-classic";
+
+   [ "$ARG_COMPILER" = '-Djava.compiler=NONE' ] || prose_msg "using -Djava.compiler=NONE"
+   ARG_COMPILER="-Djava.compiler=NONE";
+
+fi
+
+
+if [ "$JAVA_VERSION" = "1.4.0" ]
+ then
+   [ "$ARG_VMIMPL" = '-server' ]   && prose_msg "using -client vm instead of $ARG_VMIMPL";
+fi
+
+if [ "$JAVA_VERSION" = "1.4.0" -o  "$JAVA_VERSION" = "1.4.1" -o "$JAVA_VERSION" = "1.4.2" ]
+then
+    [ -n "$ARG_JDWP" ]  && XRUNPROSE="-Xrunprosevm"
+fi
+
+# 2. adapt class path and library path variables
+ARG_CPATH="${ARG_CPATH:+-classpath $ARG_CPATH$CPS$PROSE_CPATH}"
+ARG_CPATH=$(echo $ARG_CPATH | perl -pe '{s/-classpath\s*//}')
+export CLASSPATH="${CLASSPATH:+$CLASSPATH:}$PROSE_CPATH"
+
+ARG_DLPATH="${ARG_DLPATH:+$ARG_DLPATH$CPS$PROSE_LDPATH}"
+ARG_DLPATH="${ARG_DLPATH:--Dprose.library.path=UNDEFINED}"
+
+if [ $OS_ARCH = "x86" ]
+then
+ENV_LDPATH=$(cygpath  "$PROSE_LDPATH")
+else
+ENV_LDPATH="$PROSE_LDPATH"
+fi
+
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$ENV_LDPATH"
+
+#only under win32
+
+if [ $OS_ARCH = "x86" ]
+then
+export PATH=$PATH:$(cygpath "$PROSE_LDPATH")
+fi
+
+ARG_BOOTCPATH="${ARG_BOOTCPATH:--Xbootclasspath/a}:$PROSE_BOOTCPATH"
+
+
+}
+
+
+################################################################################
+# THIS IS THE REAL SCRIPT. ALL  ABOVE ARE HELP FUNCTIONS
+################################################################################
+
+# 3. Parse the args
+prose_readargs "$@"
+
+# 1. Find the jvm
+prose_find_jvm
+
+# 2. Set the OSARCH & EGREP
+prose_arch_specific
+
+
+
+
+
+
+# 4. Create the java args
+if [ -z "$ARG_NOPROSE" ]
+then
+    # we use prose
+    prose_check_jvm
+    prose_set_prosepath
+    prose_create_new_args
+    final_java_args=$new_java_args
+
+
+    if [ -z "$ARG_POLICY" -a -n "$ARG_PORT" ]
+    then
+    # 3. Parse the args
+    prose_msg \
+"BY SPECIFYING '$ARG_PORT' YOU START AN RMI SERVER" \
+"THAT ALLOWS UPLOADING ASPECTS IN THIS VM. THE SECURITY" \
+"POLICY IN USE BY DEFAULT ($PROSE_TOP/lib/testpolicy)" \
+"SHOULD NOT BE USED IN A PRODUCTION ENVIRONMENT. IN A" \
+"PRODUCTION ENVIRONMENT, PLEASE SPECIFY AN ALTERNATIVE" \
+"POLICY USING '-Djava.security.policy'"
+
+    ARG_POLICY="-Djava.security.policy=$PROSE_TOP/lib/testpolicy";
+    fi
+
+
+    if [ -z "$PROSE_FIX_OUTPUT" ]
+    then
+     exec "$PROSE_JAVA_HOME/bin/$PROSE_JAVA_INT" \
+     $XRUNPROSE \
+     $ARG_VMIMPL \
+     $ARG_DEBUG \
+     $ARG_GC \
+     ${ARG_POLICY:+"$ARG_POLICY"} \
+     ${ARG_PORT:+$ARG_PORT -Dch.ethz.prose.ESSystem.1=ch.ethz.prose.tools.RemoteProseComponent} \
+     $ARG_NOAGENT "$ARG_BOOTCPATH" \
+     ${ARG_CPATH:+-classpath "$ARG_CPATH"} \
+     $ARG_COMPILER "$ARG_DLPATH" \
+     $ARG_JDWP  "-Dch.ethz.inf.project.home=$PROSE_TOP" $java_args
+    else
+     exec "$PROSE_JAVA_HOME/bin/$PROSE_JAVA_INT" \
+     $XRUNPROSE \
+     $ARG_VMIMPL \
+     $ARG_DEBUG \
+     $ARG_GC \
+     ${ARG_POLICY:+"$ARG_POLICY"} \
+     ${ARG_PORT:+$ARG_PORT -Dch.ethz.prose.ESSystem.1=ch.ethz.prose.tools.RemoteProseComponent} \
+     $ARG_NOAGENT "$ARG_BOOTCPATH" \
+     ${ARG_CPATH:+-classpath "$ARG_CPATH"} \
+     $ARG_COMPILER "$ARG_DLPATH" \
+     $ARG_JDWP  "-Dch.ethz.inf.project.home=$PROSE_TOP" $java_args | cat 2>&1
+    fi
+
+else
+    final_java_args=$initial_java_args;
+    exec $PROSE_JAVA_HOME/bin/$PROSE_JAVA_INT $final_java_args
+fi

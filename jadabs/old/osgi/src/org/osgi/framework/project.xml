@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../../project.xml</extend>
+
+  <id>osgi-framework</id>
+  <name>OSGi Framework</name>
+  <package>org.osgi.framework</package>
+	<currentVersion>1.2</currentVersion>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>OSGi Framework</shortDescription>
+
+  <description>
+OSGi Framework
+  </description>
+	
+		<build>
+		<sourceDirectory>${basedir}</sourceDirectory>
+		  <sourceModifications>
+		  	<sourceModification>
+      			<className>*.java</className>
+			</sourceModification>
+		</sourceModifications>
+
+	</build>
+	
+  <dependencies>
+
+  </dependencies>
+
+  
+</project>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Build - Jadabs</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+  
+   <section name="Building Jadabs">
+   
+   <p>
+        To build Jadabs you need to install <a href="http://maven.apache.org/">maven</a>
+        first.
+   </p>
+   
+   <p>
+        We are using an OSGi plugin for maven to build the bundles. Download the
+        <a href="http://wlab.ethz.ch/plugins/maven-osgi/install.html">maven-osgi-plugin</a> 
+        as described.
+   </p>
+   
+   <p>
+   		Checkout Jadabs from the wlab/cvsmaster
+<source><![CDATA[
+> cvs co jadabs
+]]></source>  
+   </p>
+   
+   	<p>
+	   	Compile with maven. This downloads many required jars from the internet.
+	   	Be sure to do this compile step otherwise the dependencies will be missing
+	   	in eclipse.
+   	</p>
+<source><![CDATA[
+> cd jadabs
+> maven
+]]></source> 
+   
+	</section>
+	
+	<section name="Build distribution">
+	<p>
+		To build a distribution you need first to checkout the maven repository
+		which contains some more bundles from Knopflerfish into the workspace.
+		This will create a directory like jadabs/jadabs-x.x.x.
+		Packaged files are stored in jadabs/target/distributions.
+	</p>
+<source><![CDATA[
+> cd workspace
+> cvs co maven
+> cd jadabs
+> maven jadabs:dist
+]]></source> 
+	
+	</section>
+	
+ 	</body>
+</document>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME-OSGi</title>
+  </properties>
+
+  <body>
+    <section name="JXME-OSGi">
+      <p>
+		Properties
+		<table>
+          <tr><th>property</th><th>default</th><th>description</th></tr>
+          
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.multicastAddr</td>
+          	<td>224.0.1.95</td>
+          	<td></td>
+          </tr>
+          
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.multicastPort</td>
+          	<td>9000</td>
+          	<td></td>
+          </tr>
+          
+      </table>
+      
+      </p>
+    </section>
+  </body>
+</document>

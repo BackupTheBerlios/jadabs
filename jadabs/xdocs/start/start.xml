@@ -1,0 +1,278 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Getting Started - Jadabs</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+      <section name="Download">
+      <p>
+        Jadabs is currently distributed in two versions. The minimal
+        version includes the OSGi/dAOP/Jxme/RemoteFW and
+        can be used on small devices in a distributed 
+        environment. In the full version we added all the Knopflerfish
+        services running on the AOP framework and a runtime AOP implementation.
+        The full versions need to be run on a more powerfull node like laptop.
+      </p>
+      
+      <table>
+          <tr><th>configuration</th><th>Description</th><th>AOP</th><th>download</th></tr>
+          
+          <tr>
+          	<td>minimal</td>
+          	<td>OSGi/dAOP, JXME, RemoteFW</td>
+          	<td>AspectJ/Nanning</td>
+          	<td><a href="../releases/">jadabs-x.x.x-minimal.tar.gz</a></td>
+          </tr>
+          
+          <tr>
+          	<td>full</td>
+          	<td>OSGi/dAOP, JXME, RemoteFW, all Knopflerfish Bundles</td>
+          	<td>AspectJ/Nanning</td>
+          	<td><a href="../releases/">jadabs-x.x.x-full.tar.gz</a></td>
+          </tr>
+          
+          <tr>
+          	<td>full-prose</td>
+          	<td>OSGi/dAOP/Prose, JXME, RemoteFW, all Knopflerfish Bundles</td>
+          	<td>AspectJ/Nanning/Prose</td>
+          	<td><a href="../releases/">jadabs-x.x.x-fullprose.tar.gz</a></td>
+          </tr>
+          
+      </table>
+      
+    </section>
+      
+  	<section name="Start">
+		<p>
+			For a Quick-Start download one of the above releases.
+		</p>
+		
+		<table><tr><th>Default Execution</th></tr></table>
+<source><![CDATA[
+linux> runpeer.sh
+or
+win32> runpeer.bat
+]]></source>
+
+    <table><tr><th>Configured Execution</th></tr></table>
+    <p>
+        For a special configuration see table below and start accordingly.
+    </p>
+    
+<source><![CDATA[
+linux> runpeer.sh <configuration>
+or
+win32> runpeer.bat <configuration>
+]]></source>
+
+
+
+  	</section>
+  	
+  	<section name="Configuration">
+  	    <p>
+  	        Depending on which version you downloaded you have different possibilities to 
+  	        start the container.
+  	    </p>
+  	    <p>
+  	        Depending on which version you downloaded you have different possibilities to 
+  	        start the container.
+  	    </p>
+  	
+  	<table>
+          <tr><th>Download</th><th>Configuration</th><th>Bundles</th><th>Description</th></tr>
+          
+          <tr>
+          <td>minimal</td>
+          <td>init (default for all)</td>
+          <td>OSGi/dAOP, JXME, RemoteFW</td>
+            <td>
+              <p>
+                  This configuration starts the dynamic lightweight container 
+                  which can be administrated remotely.
+              </p>
+              <p>
+                  This version has a very small footprint and can be easely run on a 
+                  PDA with a Java VM compatible to Java 1.3, e.g. J2ME/CDC on an iPAQ.
+              </p>
+            </td>
+          </tr>
+                    
+          <tr>
+          <td>full</td>
+          <td>init-gui-linux, init-gui-win32</td>
+          <td>OSGi/dAOP, JXME, RemoteFW, MainGUI</td>
+            <td>
+              <p>
+                  This configuration starts the dynamic lightweight container with
+                  a simple GUI console to do remote administration.
+              </p>
+              <p>
+                  Use the -linux.xargs for a linux machine and -win32.xargs for
+                  a WindowsXP machine.
+              </p>
+            </td>
+          </tr>
+          
+          <tr>
+          <td>full</td>
+          <td>init-kf</td>
+          <td>OSGi/dAOP, JXME, RemoteFW, all Knopflerfish Bundles</td>
+            <td>
+              <p>
+                  This configuration starts the dynamic lightweight container with
+                  the Knopflerfish GUI including the remote framework for administration.
+              </p>
+            </td>
+          </tr>
+          
+          <tr>
+          <td>full-prose</td>
+          <td>
+              <ul>
+                  <li>init prose</li>
+                  <li>init-kf prose</li>
+                  <li>init-gui-linux prose</li>
+              </ul>
+          </td>
+          <td>OSGi/dAOP/Prose, JXME, RemoteFW, all Knopflerfish Bundles</td>
+            <td>
+              <p>
+                  This configuration starts the dynamic lightweight container running
+                  with PROSE including the remote framework for administration. With the
+                  second configuration (init-kf prose) the Knopflerfish GUI is started
+              </p>
+            </td>
+          </tr>
+          
+    </table>
+  	
+  	</section>
+  	
+  	   <section name="Supported Devices and Platforms">
+
+      <p>
+        Jadabs goal is to create a dynamic lightweight container for small
+        mobile devices. We gradualy extend the list below of supported devices
+        platforms and devices.       
+      </p>
+      
+      <table>
+          <tr><th></th><th>Device</th><th>Platform</th><th>Features</th><th>Version</th></tr>
+          
+          <tr>
+          	<td><center><img src="../images/ipaq-ppc.jpg" alt="iPAQ" hight="150" /></center></td>
+          	<td>iPAQ: H3970, H3870, H5500</td>
+          	<td>
+          	    <ul>
+            	    <li>Familiar-Linux 0.7.1, Sun J2ME-CDC</li>
+            	    <li>PocketPC 2003, J9 (CDC)</li>
+            	 </ul>
+            </td>
+            <td>
+            	<ul>
+            	    <li>AspectJ, Nanning</li>
+            		<li>Jxme-UDP, Jxme-TCP, Jxme-Bluetooth (only on Linux)</li>
+            		<li>Jxme-Services, RemoteFW</li>
+            	</ul>
+            </td>
+            <td>newest!</td>
+          </tr>
+          
+          <tr>
+          	<td><img src="../images/Stargate.jpg" alt="Stargate" width="150" /></td>
+          	<td>Stargate</td>
+          	<td>Platformx Project (Linux)/ Sun J2ME-CDC (CVM)</td>
+            <td>
+            	<ul>
+            	    <li>AspectJ, Nanning</li>
+            		<li>Jxme-UDP, Jxme-TCP</li>
+            		<li>Jxme-Services, RemoteFW</li>
+            	</ul>
+            </td>
+            <td>newest!</td>
+          </tr>
+          
+          <tr>
+          	<td></td>
+          	<td>Laptop/Desktop</td>
+          	<td>Linux >= JRE 1.3.1</td>
+            <td>
+            	<ul>
+            	    <li>AspectJ, Nanning, PROSE</li>
+            		<li>Jxme-UDP, Jxme-TCP, Jxme-Bluetooth</li>
+            		<li>Jxme-Services, RemoteFW</li>
+            	</ul>
+            </td>
+            <td>newest!</td>
+          </tr>
+          
+          <tr>
+          	<td></td>
+          	<td>Laptop/Desktop</td>
+          	<td>Windows >= JRE 1.3.1</td>
+            <td>
+             	<ul>
+            	    <li>AspectJ, Nanning</li>
+            		<li>Jxme-UDP, Jxme-TCP</li>
+            		<li>Jxme-Services, RemoteFW</li>
+            	</ul>
+            </td>
+            <td>newest!</td>
+          </tr>
+          
+          <tr>
+          	<td></td>
+          	<td>Laptop/Desktop</td>
+          	<td>.NET-Framework</td>
+            <td>
+            	<ul>
+            		<li>Jxme-UDP, Jxme-TCP</li>
+            	</ul>
+            </td>
+            <td>we are working on a release</td>
+          </tr>
+          
+          <tr>
+          	<td></td>
+          	<td>PocketPC</td>
+          	<td>.NET-CompactFramework</td>
+            <td>
+            	<ul>
+            		<li>Jxme-UDP, Jxme-TCP</li>
+            	</ul>
+            </td>
+            <td>we are working on a release</td>
+          </tr>
+          
+          <tr>
+          	<td><center><img src="../images/nokia6600.jpg" alt="Nokia6600" hight="100" /></center></td>
+          	<td>Mobile Phones with the platform specified, tested on:
+          	     <ul>
+            		<li>Nokia 6600</li>
+            	</ul>          	 
+          	 </td>
+          	<td>J2ME/CLDC1.0, MIDP1.0, JSR-82 (BT-API)</td>
+            <td>
+            	<ul>
+            		<li>Jxme-BT, Chat, SmartSMS</li>
+            	</ul>
+            </td>
+            <td><a href="http://wlab.ethz.ch/jadabs-cldc/">see for more details</a></td>
+          </tr>
+          
+        </table>
+      
+    </section>
+  	
+ 	</body>
+</document>

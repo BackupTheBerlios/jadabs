@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>jxme-tcp</id>
+  <name>JXME TCP</name>
+  <package>ch.ethz.iks.jxme.tcp</package>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>JXME TCP</shortDescription>
+
+  <description>
+JXME TCP
+  </description>
+
+	<properties>
+		<osgi.export.service>ch.ethz.iks.jxme.IPeerNetwork</osgi.export.service>
+	</properties>
+
+  <dependencies>
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-impl</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>commons-utils</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8</version>
+      		<url>http://jakarta.apache.org/log4j</url>
+    	</dependency>
+  </dependencies>
+
+  
+</project>

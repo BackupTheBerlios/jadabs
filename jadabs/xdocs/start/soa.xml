@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ *
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs - SOA</title>
+  </properties>
+
+  <body>
+  
+    <section name="Service Oriented Architecture">
+    <p>
+    	Abbreviated SOA, it is an application architecture locally or in a 
+    	distributed infrastructure. An application is nowedays built up
+    	of many components which can be plugged together at compilation
+    	or runtime. Services are special components which are self-contained
+    	and maintain its own state. They provide their functionality as a
+    	well defined interface to other services or components.
+    </p>
+    <p>
+    	Whereas SOA concept is characterized into local and remote architecture
+    	the same principles can be applied.
+    </p>
+   	<p>
+		Though built on similar principles, SOA is not the same as Web services, 
+		which indicates a collection of technologies, such as SOAP and XML. SOA 
+		is more than a set of technologies and runs independent of any specific 
+		technologies. Web services is regarded as an implementation of SOA.
+	</p>
+ 
+ 	<subsection name="Service">
+ 	<p>
+ 	A service in SOA is an exposed piece of functionality with three properties:
+	<ol>
+		<li>A service contains a well defined interface whereof the service
+		can be used by other services or components.</li>
+   		<li>A service can be dynamically located and invoked.</li>
+   		<li>A service is self-contained. That is, the service maintains its own state.</li>
+ 	</ol>
+ 	</p>
+ 	
+ 	<table>
+ 		<tr><th>Local View</th><th>Distributed Environment</th></tr>
+ 		
+ 	</table>
+ 	
+ 	</subsection>
+ 
+    </section>
+    
+    <section name="Links">
+    
+    <p>
+	<h4>Local Architectures</h4>
+		<ul>
+			<li><a href="http://oscar-osgi.sourceforge.net/tutorial/index.html">
+                OSCAR: OSGi and Gravity Service Binder Tutorial</a></li>
+            <li><a href="http://www.knopflerfish.org/programming.html">
+                Knopflerfish: Develop OSGi bundles</a></li>
+			<li><a href="http://java.sun.com/j2me/docs/pdf/tutorialwin.pdf">
+                Suns Java Embedded Server technology</a></li>
+		</ul>
+	</p>
+        
+    <p>
+    <h4>Web Services Architectures</h4>
+		<ul>
+		    <li><a href="http://www-106.ibm.com/developerworks/webservices/newto/">
+                New to SOA and Web services</a></li>
+            <li><a href="http://weblogs.cs.cornell.edu/AllThingsDistributed/archives/000120.html">
+                Service-Oriented Architecture: A brief introduction</a></li>
+		    <li><a href="http://www.ondotnet.com/pub/a/dotnet/2003/08/18/soa_explained.html">
+				Service-Oriented Architecture Explained</a></li>
+			<li><a href="http://www-106.ibm.com/developerworks/library/ws-soaintro.html">
+				Service-Oriented Architecture expands the vision of Web services, Part 1</a></li>
+			<li><a href="http://www-106.ibm.com/developerworks/webservices/library/ws-migratesoa/">
+				Migrating to a service-oriented architecture, Part 1</a></li>
+			<li><a href="http://www-106.ibm.com/developerworks/webservices/library/ws-migratesoa2/">
+				Migrating to a service-oriented architecture, Part 2</a></li>
+			<li><a href="http://www-106.ibm.com/developerworks/library/ws-soad1/">
+				Elements of Service-Oriented Analysis and Design</a></li>	
+			<li><a href="http://www.middlewareresearch.com/soa-blueprints/">
+				Service-Oriented Architecture Blueprints at Middleware-Research</a>
+			</li>
+			<li><a href="http://www-106.ibm.com/developerworks/websphere/techjournal/0310_brown/brown.html">
+				IBM WebSphere Developer Technical Journal: Web Services Architectures and Best Practices</a>
+			</li>
+		
+		</ul>
+	</p>
+		
+    </section>
+    
+  </body>
+</document>

@@ -1,0 +1,5 @@
+<configuration>
+	<DJunit>
+		<Server port="3942"/>
+	</DJunit>
+</configuration>

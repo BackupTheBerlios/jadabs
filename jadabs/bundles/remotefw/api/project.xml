@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+    <extend>${basedir}/../../../project.xml</extend>
+
+    <groupId>jadabs</groupId>
+    <artifactId>remotefw-api</artifactId>
+  
+    <name>RemoteFramework API</name>
+	<package>ch.ethz.jadabs.remotefw</package>
+	
+    <shortDescription>RemoteFramework API</shortDescription>
+	
+  	<dependencies>
+	    
+	    <dependency>
+			<groupId>osgi</groupId>
+			<artifactId>osgi-framework</artifactId>
+			<version>1.2</version>
+		</dependency>
+	    
+    </dependencies>
+
+</project>

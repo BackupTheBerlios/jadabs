@@ -1,0 +1,8 @@
+<configuration>
+	<DJunit>
+		<TestHost host="localhost" port="3939"/>
+		<TestHost host="localhost" port="3940"/>
+		<TestHost host="localhost" port="3941"/>
+		<TestHost host="localhost" port="3942"/>
+	</DJunit>
+</configuration>

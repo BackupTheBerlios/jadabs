@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../../project.xml</extend>
+
+	<groupId>jadabs</groupId>
+	<artifactId>jxme-tcp-test</artifactId>
+	<name>Jadabs-JXME-TCP-Test</name>
+
+	<shortDescription>Jadabs-JXME transport TCP Test</shortDescription>
+
+  	<dependencies>
+  	
+  		<dependency>
+      		<groupId>junit</groupId>
+      		<artifactId>junit</artifactId>
+      		<version>3.8.1</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8-osgi</version>
+		</dependency>
+		
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+    	
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+  	</dependencies>
+
+  
+</project>

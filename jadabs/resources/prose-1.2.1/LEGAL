@@ -1,0 +1,125 @@
+			LICENSE AND LEGAL
+
+1. Licensing summary
+====================
+
+   'prose' is open-source software, provided under the MOZILLA PUBLIC
+   LICENSE. The distribution of 'prose' contains the Jakarta-Regexp
+   module provided under the APACHE SOFTWARE LICENSE.
+
+2. How to obtain the source
+===========================
+
+   This is a binary distribution. The source code for PROSE can be
+   obtained from http//prose.ethz.ch/
+
+
+3. Code covered by the Mozilla Public License
+==============================================
+
+   All "ch.ethz.*" packages are governed by the Mozilla Public License,
+   Version 1.1 (the "License"); you may not use these files except in
+   compliance with the License. You may obtain a copy of the License
+   at http://www.mozilla.org/MPL/
+
+   Software distributed under the License is distributed on an "AS IS"
+   basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+   the License for the specific language governing rights and limitations
+   under the License.
+
+   The Initial Developer is Andrei Popovici.
+
+
+4. DISCLAIMER OF WARRANTY (see also the MPL license)
+===================================================
+
+   COVERED CODE IS PROVIDED UNDER THIS LICENSE ON AN "AS IS'' BASIS,
+   WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED,
+   INCLUDING, WITHOUT LIMITATION, WARRANTIES THAT THE COVERED CODE IS
+   FREE OF DEFECTS, MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE OR
+   NON-INFRINGING. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE
+   OF THE COVERED CODE IS WITH YOU. SHOULD ANY COVERED CODE PROVE
+   DEFECTIVE IN ANY RESPECT, YOU (NOT THE INITIAL DEVELOPER OR ANY
+   OTHER CONTRIBUTOR) ASSUME THE COST OF ANY NECESSARY SERVICING,
+   REPAIR OR CORRECTION. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN
+   ESSENTIAL PART OF THIS LICENSE. NO USE OF ANY COVERED CODE IS
+   AUTHORIZED HEREUNDER EXCEPT UNDER THIS DISCLAIMER.
+
+5.  LIMITATION OF LIABILITY (see also the MPL license)
+======================================================
+
+   UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER TORT
+   (INCLUDING NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL YOU, THE
+   INITIAL DEVELOPER, ANY OTHER CONTRIBUTOR, OR ANY DISTRIBUTOR OF
+   COVERED CODE, OR ANY SUPPLIER OF ANY OF SUCH PARTIES, BE LIABLE TO
+   ANY PERSON FOR ANY INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
+   DAMAGES OF ANY CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR
+   LOSS OF GOODWILL, WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION,
+   OR ANY AND ALL OTHER COMMERCIAL DAMAGES OR LOSSES, EVEN IF SUCH
+   PARTY SHALL HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGES.
+   THIS LIMITATION OF LIABILITY SHALL NOT APPLY TO LIABILITY FOR DEATH
+   OR PERSONAL INJURY RESULTING FROM SUCH PARTY'S NEGLIGENCE TO THE
+   EXTENT APPLICABLE LAW PROHIBITS SUCH LIMITATION. SOME JURISDICTIONS
+   DO NOT ALLOW THE EXCLUSION OR LIMITATION OF INCIDENTAL OR
+   CONSEQUENTIAL DAMAGES, SO THIS EXCLUSION AND LIMITATION MAY NOT
+   APPLY TO YOU.
+
+6. Code covered by the Apache Software License
+==============================================
+
+   This product uses the 'jakarta-regexp' Java package. THEREFORE:
+
+   !!! This product includes software developed by the
+   !!! Apache Software Foundation (http://www.apache.org/)."
+
+   The org.jakarta.regexp.* classes in the jar archive
+   '<topdir>/lib/jdk-prose-loc.jar are govenered by the following
+   license:
+
+
+
+ * The Apache Software License, Version 1.1
+ *
+ * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. The end-user documentation included with the redistribution, if
+ *    any, must include the following acknowlegement:
+ *       "This product includes software developed by the
+ *        Apache Software Foundation (http://www.apache.org/)."
+ *    Alternately, this acknowlegement may appear in the software itself,
+ *    if and wherever such third-party acknowlegements normally appear.
+ *
+ * 4. The names "The Jakarta Project", "Jakarta-Regexp", and "Apache Software
+ *    Foundation" must not be used to endorse or promote products derived
+ *    from this software without prior written permission. For written
+ *    permission, please contact apache@apache.org.
+ *
+ * 5. Products derived from this software may not be called "Apache"
+ *    nor may "Apache" appear in their names without prior written
+ *    permission of the Apache Group.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.

@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ *
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Design Principles</title>
+  </properties>
+
+  <body>
+  
+    <section name="Design Principles">
+		<p>
+			<ul>
+				<li><a href="#APIImpl">Interface - Implementation Separation</a></li>
+				<li><a href="#IoC">IoC: Inversion of Control</a></li>
+				<li><a href="#AOP">AOP: Aspect Oriented Programming</a></li>
+				<li><a href="#DeP">DeP: Declarative Programming</a></li>
+				<li><a href="#cC">Good Citizen</a></li>
+				<li><a href="#EBP">EBP: Event Based Programming</a></li>
+				<li><a href="#COP">COP: Component Oriented Programming</a></li>
+				<li><a href="#SOP">SOP: Service Oriented Programming</a></li>
+			</ul>
+      	</p>
+ 	
+    
+    <table>
+    	<tr><th><a name="APIImpl">Interface - Implementation Separation</a></th></tr>
+    </table>
+		<p>
+			Separate the API from the implementation to get better and
+			clearer code. Only talk about interfaces, the implementations
+			are secondary and may change depending on the underlying system.
+      	</p>
+      	
+      	<h4>Links</h4>
+      	<p>
+      		<ul>
+      			<li><a href="http://avalon.apache.org/framework/cop/guide-patterns-soii.html">
+      				Avalon Framework's definition</a></li>
+      			<li><a href="http://c2.com/cgi/wiki?SeparateInterfacesFromImplementation">
+      				Separate Interfaces from Implementation</a></li>
+      			<li><a href="http://lavape.sourceforge.net/doc/html/SepItfImpl.htm">
+      				From Modula-2, Ada, Java to Lada</a></li>
+      		</ul>
+      	</p>
+ 	
+ 	<table>
+    	<tr><th><a name="IoC">Inversion of Control (IoC)</a></th></tr>
+    </table>
+		<p>
+			A designer sets up a chain among objects that can all react 
+			to certain messages in a delegation hierarchy. There is one major 
+			semantic detail: Inversion of Control refers to a parent object 
+			controlling a child object.
+      	</p>
+      	<p>
+      		A second nickname for IoC is The Hollywood Principle 
+      		(Don't call us we'll call you).
+      	</p>
+      	<p>
+      		A component designed according to IoC does not go off and 
+      		get other components that it needs in order to do its job.
+      		It instead declares these dependencies, and the container 
+      		supplies them. Thus the name IoC/DIP/Hollywood Principle. 
+      		The control of the dependencies for a given component is 
+      		inverted. It is no longer the component itself that 
+      		establishes its own dependencies, but something on the 
+      		outside. That something could be a container like PicoContainer, 
+      		but could easily be normal code instantiating the component in 
+      		an embedded sense. (statement from PicoContainer)
+      	</p>
+      	
+      	<h4>Links</h4>
+      	<p>
+      		<ul>
+      			<li><a href="http://www.martinfowler.com/articles/injection.html">
+      				Inversion of Control Containers and the Dependency Injection</a></li>
+      			<li><a href="http://www.picocontainer.org/Inversion+of+Control">
+      				Picocontainer/IoC</a></li>
+      			<li><a href="http://www.objectmentor.com/resources/articles/dip.pdf">
+      				Dependency Inversion Principle (DIP)</a></li>
+      		</ul>
+      	</p>
+ 	
+ 	 <table>
+    	<tr><th><a name="AOP">Aspect Oriented Programming (AOP)</a></th></tr>
+    </table>
+		<p>
+
+      	</p>
+      	
+      	<h4>Links</h4>
+      	<p>
+      		<ul>
+      			<li></li>
+      		</ul>
+      	</p>
+    
+    <table>
+    	<tr><th><a name="DeP">Declarative Programming (DeP)</a></th></tr>
+    </table>
+    <p>
+    	where you use a declarative-style language (usually xml) 
+    	to determine things like component wiring (i.e. your average 
+    	tomcat config file, generalized)
+    </p>
+	
+	<table>
+    	<tr><th><a name="gC">Good Citizen</a></th></tr>
+    </table>
+	<p>
+		<a href="http://www.picocontainer.org/Good+Citizen">Good Citizen</a>
+    </p>
+    
+	<table>
+    	<tr><th><a name="EBP">Event Based Programming (EBP)</a></th></tr>
+    </table>
+	<p>
+		basically making the inter-object method call asynchronous and 
+		encapsulating such a call into some kind of event object that 
+		can be queued, modified, etc
+    </p>
+    
+	<table>
+    	<tr><th><a name="COP">Component Oriented Programming (COP)</a></th></tr>
+    </table>
+	
+	<p>
+		the idea that you decompose your software into components
+	</p>
+	
+	<table>
+    	<tr><th><a name="SOP">Service Oriented Programming (SOP)</a></th></tr>
+    </table>
+			<p>
+
+      	</p>
+      	
+      	<h4>Links</h4>
+      	<p>
+      		<ul>
+      			<li><a href="http://www-106.ibm.com/developerworks/webservices/library/ws-migratesoa/">
+      				Migrating to a service-oriented architecture, Part 1</a></li>
+      		</ul>
+      	</p>
+    
+    </section>
+  </body>
+</document>

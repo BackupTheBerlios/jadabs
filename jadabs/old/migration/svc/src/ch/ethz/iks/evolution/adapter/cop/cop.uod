@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ObjectDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" metadata="nsuml-1.4" initialized="true">
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="104,71" size="45,32" targetConnections="//@children.6/@sourceConnections.1" itemName="client" fieldId2value="{}" stateName="">
+    <sourceConnections xsi:type="editmodel:FlowEditModel" connectionRouterKind="Manhattan" source="//@children.0" target="//@children.3" targetEnd="//@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@sourceConnections.0/@children.0" labelValue="">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="40,32" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="51,-1"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:ObjectAssociationEditModel" targetConnections="//@children.7/@sourceConnections.0" connectionRouterKind="Manhattan" source="//@children.0" target="//@children.2" targetEnd="//@children.0/@sourceConnections.1/@children.1" label="//@children.0/@sourceConnections.1/@children.2" sourceEnd="//@children.0/@sourceConnections.1/@children.0" labelValue="">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="45,16" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="-1,16"/>
+      <children xsi:type="editmodel:WireLabelEditModel" size="1,0" fontInfo="Arial-8-0" anchorKind="MiddlePart"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="581,69" size="43,32" targetConnections="//@children.2/@sourceConnections.0" itemName="bean" fieldId2value="{}" stateName="">
+    <sourceConnections xsi:type="editmodel:ObjectAssociationEditModel" connectionRouterKind="Manhattan" source="//@children.1" target="//@children.5" targetEnd="//@children.1/@sourceConnections.0/@children.1" label="//@children.1/@sourceConnections.0/@children.2" sourceEnd="//@children.1/@sourceConnections.0/@children.0" labelValue="listeners">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="21,32" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="50,-1"/>
+      <children xsi:type="editmodel:WireLabelEditModel" size="39,12" fontInfo="Arial-8-0" anchorKind="MiddlePart"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="276,71" size="82,32" targetConnections="//@children.0/@sourceConnections.1" itemName="proxy4_bean" fieldId2value="{}" actif="true" stateName="">
+    <sourceConnections xsi:type="editmodel:ObjectAssociationEditModel" connectionRouterKind="Manhattan" source="//@children.2" target="//@children.1" targetEnd="//@children.2/@sourceConnections.0/@children.1" label="//@children.2/@sourceConnections.0/@children.2" sourceEnd="//@children.2/@sourceConnections.0/@children.0" labelValue="">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="82,11" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="-1,21"/>
+      <children xsi:type="editmodel:WireLabelEditModel" size="1,0" fontInfo="Arial-8-0" anchorKind="MiddlePart"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="245,213" size="138,32" targetConnections="//@children.0/@sourceConnections.0" itemName="proxy4_ListenerInterface" fieldId2value="{}" stateName=""/>
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="553,210" size="95,32" targetConnections="//@children.6/@sourceConnections.0" itemName="listenerInterface" fieldId2value="{}" stateName="">
+    <sourceConnections xsi:type="editmodel:ObjectAssociationEditModel" connectionRouterKind="Manhattan" source="//@children.4" target="//@children.5" targetEnd="//@children.4/@sourceConnections.0/@children.1" label="//@children.4/@sourceConnections.0/@children.2" sourceEnd="//@children.4/@sourceConnections.0/@children.0" labelValue="" type="Aggregation">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="67,-1" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="29,32"/>
+      <children xsi:type="editmodel:WireLabelEditModel" size="1,0" fontInfo="Arial-8-0" anchorKind="MiddlePart"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="552,147" size="100,32" targetConnections="//@children.1/@sourceConnections.0 //@children.4/@sourceConnections.0" itemName="listenerCollection" fieldId2value="{}" stateName=""/>
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="402,147" size="131,32" itemName="unstable_proxy4_Client" fieldId2value="{}" actif="true" stateName="">
+    <sourceConnections xsi:type="editmodel:FlowEditModel" connectionRouterKind="Manhattan" source="//@children.6" target="//@children.4" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0" labelValue="">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="84,32" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="34,-1"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:ObjectAssociationEditModel" connectionRouterKind="Manual" source="//@children.6" target="//@children.0" targetEnd="//@children.6/@sourceConnections.1/@children.1" label="//@children.6/@sourceConnections.1/@children.2" sourceEnd="//@children.6/@sourceConnections.1/@children.0" labelValue="">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="-2,3" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="45,21" anchorKind="FixedAtEdge"/>
+      <children xsi:type="editmodel:WireLabelEditModel" size="1,0" fontInfo="Arial-8-0" anchorKind="MiddlePart"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="132,30" size="155,22" note="subscribe(ListenerInterface)">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" connectionRouterKind="Manual" source="//@children.7" target="//@children.0/@sourceConnections.1" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="37,22" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="59,0" anchorKind="FixedAtEdge" attachSource="true"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="353,113" size="101,22" note="eventReceived()"/>
+</editmodel:ObjectDiagramEditModel>

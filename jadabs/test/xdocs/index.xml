@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>EventSystem</title>
+  </properties>
+
+  <body>
+    <section name="EventSystem">
+      <p>
+        
+		This page gives a short introduction to the EventSystem based on JXME.
+  
+      </p>
+    </section>
+  </body>
+</document>

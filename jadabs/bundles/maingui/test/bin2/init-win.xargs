@@ -1,0 +1,54 @@
+#
+# Generated from template.xargs
+# Knopflerfish release 1.3.0a4
+#
+
+-Dorg.knopflerfish.verbosity=0
+
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.debug.startlevel=false
+-Dorg.knopflerfish.framework.debug.ldap=false
+
+-Dorg.osgi.framework.system.packages=ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
+
+-Dorg.knopflerfish.http.dnslookup=false
+-Dorg.osgi.service.http.port=8080
+
+-Dorg.knopflerfish.startlevel.use=true
+
+-Dorg.knopflerfish.log.out=false
+-Dorg.knopflerfish.log.level=info
+-Dorg.knopflerfish.log.grabio=true
+-Dorg.knopflerfish.log.file=true
+
+-Dch.ethz.jadabs.jxme.peeralias=peer2
+-Dch.ethz.jadabs.jxme.tcp.port=9001
+-Dch.ethz.jadabs.jxme.seedURIs=tcp://ikdesk3.inf.ethz.ch:9002
+
+-init
+
+## Basic KF bundles
+
+## jxme-eventsystem
+-initlevel 1
+-install swt/jars/swt-3.0RC1-win32-osgi.jar
+-install xpp3/jars/xpp3-1.1.3.3_min-osgi.jar
+-istart xstream/jars/xstream-1.0.1-osgi.jar
+-istart  log4j/jars/log4j-1.2.8-osgi.jar
+-install jadabs/jars/concurrent-0.6.8.jar
+-istart  jadabs/jars/jxme-osgi-0.6.8.jar
+-istart  jadabs/jars/jxme-udp-0.6.8.jar
+-install  jadabs/jars/jxme-services-api-0.6.8.jar
+-istart  jadabs/jars/jxme-services-impl-0.6.8.jar
+-install jadabs/jars/remotefw-api-0.6.8.jar
+-istart  jadabs/jars/remotefw-impl-0.6.8.jar
+-istart  jadabs/jars/jadabs-maingui-0.6.8.jar
+
+-launch
+
+-launch
+-start 1
+
+

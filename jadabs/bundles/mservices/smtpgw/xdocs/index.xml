@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Mobile Services SMTP-Gateway</title>
+  </properties>
+
+  <body>
+    <section name="Mobile Services SMTP-Gateway">
+      <p>The SMTP-Gateway is an OSGi component that uses the 
+         <a href="http://java.sun.com/products/javamail/javadocs/index.html">JavaMail API</a>
+         to send mail messages to an SMTP server. </p>
+         
+      <p>Email messages can either be sent using the service method provided by the 
+         SMTP-Gateway component or using the Jadabs-JXME Enpoint Service where this
+         the component registers itself as endpoint address receipient <code>smtpgatway</code>.
+         It thus can be easily used from any JXME-aware component using an endpoint address, e.g.</p>
+         
+<source>tcp://myhost:1234/smtpgateway/</source>
+
+	<subsection name="Sending email directly over SMTP-Gateway">
+      
+      <p>The SMTP-Gateway component provides a service method 
+         <code>sendMailMessage(ch.ethz.jadabs.jxme.Message message)</code> to send 
+         JXME messages as email messages.</p>
+<source>/**
+ * Send JXME message to the SMTP Gateway. Message must contain 
+ * the following manatory elements "to", "from", "subject" and "body"
+ * (all have MIME-Format Element.TEXTUTF8_MIME_TYPE).
+ * @param message message to send
+ */      	      
+public void sendMailMessage(ch.ethz.jadabs.jxme.Message message);</source>
+
+		<p>The argument <code>message</code> is a JXME-Message that must contain following <b>mandatory</b>
+         elements:  	
+      </p>
+      
+      <table>
+         <tr>
+            <th>Name</th> <th>example</th> <th>Name-Space</th> <th>MIME-Type</th>
+         </tr>
+         <tr>
+            <td><code>to</code></td> <td><code>"torvalds@transmeta.com"</code> <td><code>null</code></td></td> 
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>
+         <tr>
+            <td><code>from</code></td> <td><code>"alan.cox@linux.org"</code></td> <td><code>null</code></td>
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>
+         <tr>
+            <td><code>subject</code></td> <td><code>"Kernel 2.6.8.1"</code></td> <td><code>null</code></td>
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>
+         <tr>
+            <td><code>subject</code></td> <td><code>"Hi Linus, ..."</code></td> <td><code>null</code></td>
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>         
+      </table>
+      
+      <p>An example that directly uses the service method is available as 
+         <a href="../smtpgw-test/index.html">SMTPGW-Test</a>.          
+      </p>
+      
+    </subsection>
+    
+    <subsection name="Sending email using the endpoint service">
+     	<p>The SMTP-Gateway component registers itself in the endpoint service 
+         with JXTA/JXME recipient name <code>smtpgateway</code>.  Thus 
+         an email message can be sent over the SMTP-Gateway by encapsulating
+         the email within a JXME message (as in the direct case described 
+         above) that is sent to the message service endpoint address of the 
+         Gateway, e.g. <code>tcp://myhost:1234/smtpgateway/</code>. The following 
+         code snippet illustrates the necessary steps:         
+      </p>
+
+<source>/* compose message */
+Element[] elms = new Element[4];
+elms[0] = new Element("from", "torvalds@transmeta.com".getBytes(), 
+                      null, Element.TEXTUTF8_MIME_TYPE);
+elms[1] = new Element("to", "alan.cox@linux.org".getBytes(), null, 
+                      Element.TEXTUTF8_MIME_TYPE);
+elms[2] = new Element("subject", "Kernel 2.6.8.1"..getBytes(), null, 
+                      Element.TEXTUTF8_MIME_TYPE);
+elms[3] = new Element("body", "Hi".getBytes(), null, 
+                      Element.TEXTUTF8_MIME_TYPE);
+Message msg = new Message(elms);
+
+/* get endpoint service */
+ServiceReference sref = bc.getServiceReference(EndpointService.class.getName());
+EndpointService endptsvc = (EndpointService)bc.getService(sref); 
+
+/* compose endpoint address and send message to the specified endpoint */
+EndpointAddress endptlistener = new EndpointAddress(
+   "tcp","192.168.1.79", 9001, "smtpgateway",null);        
+endptsvc.send(msg, new EndpointAddress[] {endptlistener});</source>             
+
+    	<p>An example that directly uses the endpoint service is available as 
+         <a href="../smtpgw-test-tcp/index.html">SMTPGW-Test-TCP</a>.          
+      </p>
+    </subsection>
+    
+    
+    <subsection name="Discovery of SMTP-Gateway">
+    <p>In some circumstances peers must be able to figure out whether a 
+       a JXME-peer provides the SMTP-Gateway service. For instance a 
+       portable device, that connects to an infrastructure peer wants
+       to figure out whether the infrastructure peer has an 
+       SMTP-Gatway component installed that can be used for sending 
+       emails. Since there is no notification of the sender 
+       when JXME/JXTA messages cannot be delivered, e.g. if the 
+       specified endpoint service "smtpgateway" is not present, an
+       echoing mechanism has to be provided by the SMTP-Gateway itself.      
+    </p>
+    
+    <p>In order detect an SMTP-Gateway the client may send a <i>Discovery</i>
+      message to the peer that is assumed to provide the service. A discovery message
+      is a JXME/JXTA-Message that contains two elements:  </p>
+
+		<table>
+         <tr>
+            <th>Name</th> <th>example</th> <th>Name-Space</th> <th>MIME-Type</th>
+         </tr>
+         <tr>
+            <td><code>type</code></td> <td><code>"DISCOVERY_MESSAGE"</code> <td><code>null</code></td></td> 
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>
+         <tr>
+            <td><code>replyto</code></td> <td><code>e.g. "tcp://clientpeer:1234/discoveryendpoint/"</code> <td><code>null</code></td></td> 
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>    
+		</table>                  
+	<p>This discovery message can be sent over any protocol (e.g. <code>btspp</code>, 
+      <code>tcp</code> or <code>udp</code>) to the <code>smtpgateway</code> endpoint. 
+      The SMTP-Gateway will then send a <code>DISCOVERY_REPLY_MESSAGE</code> to the 
+      <code>replyto</code> endpoint address specified in the 
+      <code>DISCOVERY_MESSAGE</code>. The reply message contains only a type element:
+	</p>        
+   	<table>
+         <tr>
+            <th>Name</th> <th>example</th> <th>Name-Space</th> <th>MIME-Type</th>
+         </tr>
+         <tr>
+            <td><code>type</code></td> <td><code>"DISCOVERY_MESSAGE_REPLY"</code> <td><code>null</code></td></td> 
+            <td><code>Element.TEXTUTF8_MIME_TYPE</code></td>
+         </tr>
+		</table>                  
+
+	<p>When a client peer receives the reply message it obviously knows that 
+      there is a SMTP-Gateway.</p>      
+    </subsection>
+    
+    
+    <subsection name="Configuration of SMTP server">
+    <p>The SMTP server that is contacted by the SMTP-Gateway
+       has to be specified as Java Property 
+       <code>ch.ethz.jadabs.mservices.smtpgw.smtphost</code>. 
+       This property usually is set in the <code>init.xargs</code> configuartion
+       file of Knopflerfish: </p>  
+
+<source>-Dch.ethz.jadabs.mservices.smtpgw.smtphost=smtp.inf.ethz.ch</source>
+
+     <p>See <code>init.xargs</code> in the two test components
+        <a href="../smtpgw-test/index.html">SMTPGW-Test</a>  
+        and <a href="../smtpgw-test-tcp/index.html">SMTPGW-Test-TCP</a>.
+         </p>  
+    </subsection>
+    
+    </section>
+  </body>
+</document>

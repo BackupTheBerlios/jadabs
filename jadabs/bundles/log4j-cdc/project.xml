@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../project.xml</extend>
+
+  	<groupId>jadabs</groupId>
+  	<artifactId>log4j-cdc</artifactId>
+  	<name>Log4j-CDC</name>
+
+  	<shortDescription>Log4j-CDC small implementation</shortDescription>
+
+	<properties>
+		
+	</properties>
+	
+	
+  	<dependencies>
+  	
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+		
+  	</dependencies>
+  
+</project>

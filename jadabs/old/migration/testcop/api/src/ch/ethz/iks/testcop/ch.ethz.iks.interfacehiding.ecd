@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" size="913,512" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#/" metadata="emf-1.0" initialized="true" showWireOptions="1">
+  <children xsi:type="editmodel:ClassEditModel" location="136,239" size="92,29" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//JavaFile" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" connectionRouterKind="Manual" source="//@children.0" target="//@children.3" targetEnd="//@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="46,-1" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="31,29"/>
+    </sourceConnections>
+    <model href="test.ecore#//JavaFile"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="20,86" size="112,29" targetConnections="//@children.3/@sourceConnections.1" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//Comparable" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <model href="test.ecore#//Comparable"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="225,85" size="110,29" targetConnections="//@children.3/@sourceConnections.2" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//Serializable" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <model href="test.ecore#//Serializable"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="151,141" size="63,29" targetConnections="//@children.0/@sourceConnections.0" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//File" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" connectionRouterKind="Manual" source="//@children.3" target="//@children.4" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="31,-1" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="41,29"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" connectionRouterKind="Manual" source="//@children.3" target="//@children.1" targetEnd="//@children.3/@sourceConnections.1/@children.1" sourceEnd="//@children.3/@sourceConnections.1/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,-1" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="26,29"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" connectionRouterKind="Manual" source="//@children.3" target="//@children.2" targetEnd="//@children.3/@sourceConnections.2/@children.1" sourceEnd="//@children.3/@sourceConnections.2/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="63,24" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="6,-1"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" connectionRouterKind="Manual" source="//@children.3" target="//@children.5" targetEnd="//@children.3/@sourceConnections.3/@children.1" sourceEnd="//@children.3/@sourceConnections.3/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="63,0" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//InvocationHandler.1/proxy" attachSource="true" navigable="true" multiplicityLabel="//@children.3/@sourceConnections.3/@children.0/@children.1" roleLabel="//@children.3/@sourceConnections.3/@children.0/@children.0">
+        <children xsi:type="editmodel:LabelEditModel" size="28,12" fontInfo="Arial-8-0" anchorKind="FirstPart"/>
+        <children xsi:type="editmodel:LabelEditModel" size="19,12" fontInfo="Arial-8-0" anchorKind="FirstPart"/>
+        <model href="test.ecore#//InvocationHandler.1/proxy"/>
+      </children>
+      <children xsi:type="editmodel:AssociationEndEditModel" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//File/implementor" navigable="true" multiplicityLabel="//@children.3/@sourceConnections.3/@children.1/@children.1" roleLabel="//@children.3/@sourceConnections.3/@children.1/@children.0">
+        <children xsi:type="editmodel:LabelEditModel" size="57,12" fontInfo="Arial-8-0" anchorKind="LastPart"/>
+        <children xsi:type="editmodel:LabelEditModel" size="19,12" fontInfo="Arial-8-0" anchorKind="LastPart"/>
+        <model href="test.ecore#//File/implementor"/>
+      </children>
+    </sourceConnections>
+    <model href="test.ecore#//File"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="141,38" size="82,29" targetConnections="//@children.3/@sourceConnections.0" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//IProxy" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <model href="test.ecore#//IProxy"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="293,189" size="150,29" targetConnections="//@children.3/@sourceConnections.3" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//InvocationHandler.1" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" connectionRouterKind="Manual" source="//@children.5" target="//@children.6" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="150,9" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//File.1/adapter" attachSource="true" navigable="true" multiplicityLabel="//@children.5/@sourceConnections.0/@children.0/@children.1" roleLabel="//@children.5/@sourceConnections.0/@children.0/@children.0">
+        <children xsi:type="editmodel:LabelEditModel" size="36,12" fontInfo="Arial-8-0" anchorKind="FirstPart"/>
+        <children xsi:type="editmodel:LabelEditModel" size="19,12" fontInfo="Arial-8-0" anchorKind="FirstPart"/>
+        <model href="test.ecore#//File.1/adapter"/>
+      </children>
+      <children xsi:type="editmodel:AssociationEndEditModel" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//InvocationHandler.1/hidden" navigable="true" multiplicityLabel="//@children.5/@sourceConnections.0/@children.1/@children.1" roleLabel="//@children.5/@sourceConnections.0/@children.1/@children.0">
+        <children xsi:type="editmodel:LabelEditModel" size="32,12" fontInfo="Arial-8-0" anchorKind="LastPart"/>
+        <children xsi:type="editmodel:LabelEditModel" size="19,12" fontInfo="Arial-8-0" anchorKind="LastPart"/>
+        <model href="test.ecore#//InvocationHandler.1/hidden"/>
+      </children>
+    </sourceConnections>
+    <model href="test.ecore#//InvocationHandler.1"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="536,139" size="63,29" targetConnections="//@children.5/@sourceConnections.0 //@children.7/@sourceConnections.0" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//File.1" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" connectionRouterKind="Manual" source="//@children.6" target="//@children.8" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="-1,-1" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="88,29"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" connectionRouterKind="Manual" source="//@children.6" target="//@children.9" targetEnd="//@children.6/@sourceConnections.1/@children.1" sourceEnd="//@children.6/@sourceConnections.1/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="59,-1" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="26,29"/>
+    </sourceConnections>
+    <model href="test.ecore#//File.1"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="521,240" size="92,29" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//JavaFile.1" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" connectionRouterKind="Manual" source="//@children.7" target="//@children.6" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="40,-1" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="37,29"/>
+    </sourceConnections>
+    <model href="test.ecore#//JavaFile.1"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="407,83" size="112,29" targetConnections="//@children.6/@sourceConnections.0" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//Comparable.1" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <model href="test.ecore#//Comparable.1"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="599,84" size="110,29" targetConnections="//@children.6/@sourceConnections.1" id="platform:/resource/jadabs/src_cop/ch/ethz/iks/test/test.ecore#//Serializable.1" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <model href="test.ecore#//Serializable.1"/>
+    <classifierPreferences xsi:type="editmodel:EMFClassDiagramClassifierPreference" attributeSorter="Natural" methodSorter="Natural"/>
+  </children>
+  <model href="test.ecore#/"/>
+  <classDiagramPreferences xsi:type="editmodel:EMFClassDiagramPreference" attributeSorter="Natural" methodSorter="Natural"/>
+</editmodel:ClassDiagramEditModel>

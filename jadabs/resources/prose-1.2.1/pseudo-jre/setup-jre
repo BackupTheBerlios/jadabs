@@ -1,0 +1,182 @@
+#!/bin/bash
+
+# $Id: setup-jre,v 1.1.1.1 2003/07/02 15:30:49 apopovic Exp $
+
+
+#
+# Synopsis
+#
+# setup-jre [-useOwnJre]
+#
+
+#
+# Description
+#
+# create symlins to a realjre. If used with '-useOwnJre' then
+# it generates a script for a JRE contained withing prose. This
+# corresponds to a 'relocatable' package. However, to use it
+# with this option, one must install the JRE under <prose>/lib
+# and run the 'setup-jre' in such a way that 'java' can be
+# found in the <prose>/lib/jre-<some-version>
+#
+
+
+
+# pseudo-jre location
+PseudoJreDir="$(dirname $0)";
+BashLocation="$(which bash)";
+
+echo "$PseudoJreDir";
+
+# figure out where the java home is
+JBIN="$(which java)"
+JHOME=$(dirname "$JBIN")
+JABSHOME=$(cd "$JHOME"/..; pwd);
+PROSE_JAVA_HOME=${PROSE_JAVA_HOME:-"$JABSHOME"}
+
+
+# go to the pseudojre dir
+cd "$PseudoJreDir"
+
+# first create full links to the target jre
+for i in $PROSE_JAVA_HOME/*;
+do
+    ln -s $i `basename $i`;
+done
+
+# do the same work once again for the 'bin' directory
+rm bin;
+mkdir bin;
+cd bin;
+
+for i in $PROSE_JAVA_HOME/bin/*;
+do
+    ln -s $i `basename $i`;
+done
+
+# now remove the link to java, and dump a new java version
+# (note that extra precaution is taken under windows)
+type cygpath >/dev/null 2>&1 || rm java
+[ -f java.exe ] && { rm java.exe; }
+cp ../../programs/jprose.exe java.exe >/dev/null 2>&1|| cp ../../bin/jprose.exe java.exe
+
+if [ "$1" = "-useOwnJre" ]
+then
+PROSE_REAL_JVM="<prose>/lib/"
+else
+PROSE_REAL_JVM=$PROSE_JAVA_HOME
+fi
+
+
+# here starts the common part of the java script
+cat <<EOF >java
+#!$BashLocation
+
+
+cat <<EOF_1
+prose: *Message* : You are starting jprose from the prose pseudo-jre. This
+                   script is named 'java' for convenience only. It indirectly
+		   calls the actual java executable and adds significant funct-
+		   ionality to java, by allowing run-time weaving using the de-
+		   bugger interface (JVMDI). The Java(TM) 2 Runtime Environment
+		   Software, complete and unmodified, can be found under
+                        $PROSE_REAL_JVM
+                   Please read  README.FIRST in <prose>/pseudo-jre
+EOF_1
+
+
+if  type cygpath >/dev/null 2>&1
+then
+LDIR=\$(cygpath "\$0")
+LDIR=\$(dirname "\$LDIR")
+else
+LDIR=\$(dirname "\$0")
+fi
+
+
+JproseProgram="\$LDIR"/../../bin/jprose
+if [ !  -x "\$JproseProgram"  ]
+then
+    # we are not in the release tree
+    JproseProgram="\$LDIR"/../../programs/jprose
+    if [ ! -x "\$JproseProgram" ]
+    then
+       echo "prose: *Message* : jprose is not correctly installed! Exiting..."
+       exit 1
+    fi
+fi
+
+EOF
+
+# here starts the standard/non-standard part of the jre. If using its
+# own jre, then it must be located in <prose>/lib/jre-<version>
+type cygpath >/dev/null 2>&1 && WIN32=true
+
+if [ "$1" = "-useOwnJre" ]
+then
+
+# this is at iks
+cat >>java <<EOF
+
+export PROSE_JAVA_HOME="\$LDIR"/../../lib/$(basename "$PROSE_JAVA_HOME")
+exec "\$JproseProgram" \${1+"\$@"} ${WIN32:+| cat 2>&1}
+
+EOF
+
+
+cat > ../README.PSEUDOJRE-LOG <<EOF
+This pseudo-jre uses the unmodified JRE in
+
+../lib/$(basename $PROSE_JAVA_HOME)
+
+EOF
+
+
+cat >> ../../lib/prose.conf <<EOF
+PROSE_JAVA_HOME=\${PROSE_JAVA_HOME:-"\$LDIR"/../lib/$(basename "$PROSE_JAVA_HOME")}
+EOF
+
+else
+
+cat >>java <<EOF
+export PROSE_JAVA_HOME=$PROSE_JAVA_HOME
+exec "\$JproseProgram" \${1+"\$@"}  ${WIN32:+| cat 2>&1}
+
+EOF
+
+cat > ../README.PSEUDOJRE-LOG <<EOF
+This pseudo-jre uses the unmodified JRE in
+
+$PROSE_JAVA_HOME
+
+EOF
+
+fi
+
+
+chmod a+x java
+
+#
+#$Log: setup-jre,v $
+#Revision 1.1.1.1  2003/07/02 15:30:49  apopovic
+#Imported from ETH Zurich
+#
+#Revision 1.4  2003/06/25 14:26:47  popovici
+#Usage of '<prose>/lib/prose.conf' added
+#
+#Revision 1.3  2003/06/25 09:08:21  popovici
+#Adaptation for windows
+#
+#Revision 1.2  2003/06/23 16:09:58  popovici
+#Release updated for 'useOwnJre'
+#
+#Revision 1.1  2003/06/07 15:39:46  popovici
+#Adaptations for windows compatibility
+#
+#Revision 1.3  2003/02/17 17:40:48  popovici
+#Fix in order for the program to work both in the release and dev. tree
+#
+#Revision 1.2  2003/02/17 17:10:34  popovici
+#Revision with support for both relative and absolute JREs
+#
+#

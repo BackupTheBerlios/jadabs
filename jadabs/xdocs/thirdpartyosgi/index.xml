@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Third-party OSGi Bundles</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+    <section name="Third-party OSGi Bundles">
+      <p>
+        We list here packages and other projects which have been bundled for 
+        OSGi. In most cases we only had to extend the MANIFEST-INF with
+        the OSGi Bundle-MetaInformation like Bundle-Export and Bundle-Import.
+        In some cases we also added an Activator to start the bundle, i.g., Log4j.
+      </p>
+
+      <table>
+          <tr><th>Bundle</th><th>Description</th><th>Links</th><th>Vendor</th></tr>
+          
+          <tr>
+              <td><a href="http://wlab.ethz.ch/maven/repository/log4j/jars/log4j-1.2.8-osgi.jar">Log4J-1.2.8</a></td>
+              <td>The Apache Log4J logging mechanism has been integrated with an Acitvator.</td>
+              <td></td>
+              <td><a href="http://logging.apache.org/log4j/docs/">Apache</a></td>
+          </tr>
+          
+      </table>
+        
+    </section>
+    
+ </body>
+</document>

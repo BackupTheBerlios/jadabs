@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../../../project.xml</extend>
+
+  <id>osgi-service-permissionadmin</id>
+  <name>OSGi Service PermissionAdmin</name>
+  <package>org.osgi.service.permissionadmin</package>
+	<currentVersion>1.1</currentVersion>
+	
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>OSGi Service PermissionAdmin</shortDescription>
+	
+		<build>
+		<sourceDirectory>${basedir}</sourceDirectory>
+		  <sourceModifications>
+		  	<sourceModification>
+      			<className>*.java</className>
+			</sourceModification>
+		</sourceModifications>
+
+	</build>
+	
+  <dependencies>
+
+  </dependencies>
+
+  
+</project>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+      <pomVersion>3</pomVersion>
+  
+      <name>jadabs</name>
+      <artifactId>jadabs</artifactId>
+      <currentVersion>0.7.0</currentVersion>
+  
+      <organization>
+        <name>ETHZ-IKS</name>
+        <url>http://www.iks.inf.ethz.ch</url>
+        <logo>/images/logo_ethz_iks.jpg</logo>
+      </organization>
+      
+      <logo>/images/logo_jadabs.gif</logo>
+      
+      <inceptionYear>2004</inceptionYear>
+      <package>ch.ethz.jadabs</package>
+    
+      <shortDescription>Jadabs - Java ADhoc Application BootStrap</shortDescription>
+    
+      <url>http://jadabs.berlios.de</url>
+
+      <siteAddress>wlab.ethz.ch</siteAddress>
+      <siteDirectory>
+        /home/groups/jadabs/htdocs
+      </siteDirectory>
+  
+      <repository>
+        <!--
+        <connection>
+          scm:cvs:ext:afrei@cvs.jadabs.berlios.de:/cvsroot/jadabs:jadabs
+        </connection>
+        -->
+      </repository>
+
+      <developers>
+
+        <developer>
+          <name>Andreas Frei</name>
+          <id>andfrei</id>
+          <email>frei_inf.ethz.ch</email>
+          <roles>
+            <role>Creator</role>
+            <role>Java Developer</role>
+    		<role>Release Manager</role>
+          </roles>
+          <url>http://www.inf.ethz.ch/~frei/</url>
+          <timezone>+1</timezone>
+          <organization>ETHZ</organization>
+        </developer>
+        
+        <developer>
+          <name>Daniel Kaeppeli</name>
+          <id>daniel</id>
+          <email>daniel_kaeppe.li</email>
+          <roles>
+            <role>Bluetooth developer</role>
+            <role>Distributed Junit</role>
+          </roles>
+          <timezone>+1</timezone>
+          <organization></organization>
+        </developer>
+        
+        <developer>
+          <name>Micha Trautweiler</name>
+          <id>tmicha</id>
+          <email>michatrauti_web.de</email>
+          <roles>
+            <role>Migration Framework</role>
+          </roles>
+          <timezone>+1</timezone>
+          <organization></organization>
+        </developer>
+        
+        <developer>
+          <name>Jan S. Rellermeyer</name>
+          <id>rjan</id>
+          <email>jrellermeyer_student.ethz.ch</email>
+          <roles>
+            <role>Jacl Discovery Service</role>
+          </roles>
+          <timezone>+1</timezone>
+          <organization>ETHZ</organization>
+        </developer>
+    
+        <developer>
+          <name>Michael Duller</name>
+          <id>dullerm</id>
+          <email>michael_duller.net</email>
+          <roles>
+            <role>Log4j Service</role>
+          </roles>
+          <timezone>+1</timezone>
+          <organization>ETHZ</organization>
+        </developer>
+    
+        <developer>
+            <name>René Müller</name>
+            <id>muellren</id>
+            <email>muellren_student.ethz.ch</email>
+            <roles>
+                <role>J2ME/MIDP, Bluetooth developer</role>
+                <role>XDocs Expert</role>
+            </roles>
+            <url>http://www.cs.fh-aargau.ch/~muellerr</url>
+            <timezone>+1</timezone>
+            <organization>ETHZ</organization>
+        </developer>
+    
+    </developers>
+
+    <dependencies>
+	
+    </dependencies>
+
+
+  <build>
+
+    <sourceDirectory>${basedir}/src/</sourceDirectory>
+
+    <unitTestSourceDirectory>${basedir}/test/src</unitTestSourceDirectory>
+    
+     <resources>
+     <!--
+     	<resource>
+        	<directory>${eclipse.workspace}/jadabs</directory>
+            <includes>
+                <include>log4j.properties</include>
+            </includes>
+        </resource>
+	 -->
+     </resources>
+     
+  </build>
+  
+  <reports>
+  	<report>maven-javadoc-plugin</report>
+  	<report>maven-changes-plugin</report>
+  	<report>maven-changelog-plugin</report>
+  	<report>maven-file-activity-plugin</report>
+  	<report>maven-developer-activity-plugin</report>
+  </reports>
+  
+</project>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/* This is the Documentation of the SMTP-Gateway component. 
+ * Rene Mueller, 2004-10-15
+ * Semester work: JXME-Bluetooth for a Mobile Phone (J2ME/CLDC)
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Mobile Services SMTP-Gateway-Direct-Test</title>
+  </properties>
+
+  <body>
+    <section name="Mobile Services SMTP-Gateway-Direct-Test">
+      <p>This component is a test component tests the SMTP-Gateway component by sending a 
+         email message by calling directly the service method <code>sendMailMessage</code>. 
+     </p>
+     
+     <p>The application can be started using the <code>start.sh</code> script in the 
+      <code>smtpgw/test-direct/bin</code> directory. </p>
+      
+     <p>Note that since Knopflerfish does not allow paths cantaining <code>~</code> 
+      (UNIX home directory) the relative path <code>/home/muellerr</code> specified 
+      int <code>init.xargs</code> has to modified appropriately.</p>
+      
+     <p>The SMTP server host as well as the sender and receiver address, message
+        subject and message body can also be specified in the <code>init.xargs</code>
+        with properties:</p>
+        
+<source>-Dch.ethz.jadabs.mservices.smtpgw.smtphost=smtp.inf.ethz.ch
+-Dch.ethz.jadabs.mservices.smtpgw.test.to=torvalds@transmeta.com
+-Dch.ethz.jadabs.mservices.smtpgw.test.from=torvalds@transmeta.com
+-Dch.ethz.jadabs.mservices.smtpgw.test.subject=What Subject?
+-Dch.ethz.jadabs.mservices.smtpgw.test.body=The Body
+</source>        
+     
+    </section>
+  </body>
+</document>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME</title>
+  </properties>
+
+  <body>
+    <section name="JXME Implementation">
+      <p>
+				This page gives a short introduction to JXME Implementation.
+      </p>
+    </section>
+  </body>
+</document>

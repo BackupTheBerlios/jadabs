@@ -1,0 +1,287 @@
+<project name="jadabs-junit" default="compileAll" basedir="../">
+    
+    <!-- ##########################################
+	#
+    #    Definitions
+    #
+    ############################################# -->
+    
+    <!-- directories -->
+	<property name="libs" value="${basedir}/libs" />
+	<property name="tmp" value="${basedir}/tmp" />
+	<property name="doc" value="${basedir}/doc" />
+	
+	<property name="bin" value="${basedir}/bin" />
+	<property name="binlib" value="${bin}/lib" />
+	<property name="binext" value="${bin}/ext" />
+	<property name="binjunit" value="${bin}/junit" />
+	<property name="pcoprep" value="${bin}/pcoprep" />
+	<property name="proxy" value="${bin}/proxies" />
+	
+	<!-- source dirs -->
+	<property name="src_boot" value="${basedir}/src_boot" />
+	<property name="src_cop" value="${basedir}/src_cop" />
+	<property name="src_aop" value="${basedir}/src_aop" />
+	<property name="junit_boot" value="${basedir}/junit_boot" />
+	<property name="junit_cop" value="${basedir}/junit_cop" />
+
+	<!-- local libraries -->
+	<property name="jadabs-jar" value="${basedir}/bin/lib/jadabs.jar" />
+	<property name="jadabs-ext-jar" value="${basedir}/bin/lib/jadabs-ext.jar" />
+	<property name="testcop-jar" value="${binext}/testcop.jar" />
+	<property name="evolution-jar" value="${basedir}/bin/lib/evolution.jar" />
+	
+	<!-- ext libraries -->
+	<property name="log4j-jar" value="${libs}/log4j-1.2.8.jar" />
+	<property name="junit-jar" value="${libs}/junit-3.8.1.jar" />
+	<property name="prose-jar" value="${libs}/prose.jar" />
+	<property name="idev_bluez-jar" value="${libs}/idev_bluez.jar" />
+	<property name="jxta-cdc-jar" value="${libs}/jxta-cdc.jar" />
+	<property name="cdc-jar" value="${libs}/cdc-1.0.1.jar" />
+	<property name="javassit-jar" value="${libs}/javassist.jar" />
+	<property name="sdk-tools" value="${libs}/tools.jar" /> 
+	
+		
+    <!-- ##########################################
+	#
+    #    JARS
+    #
+    ############################################# -->
+	
+	<!-- Creates JxmeServiceTest component jar file -->
+	<property name="jxmesvc-jar" value="${binext}/jxmesvc.jar" />
+	<property name="jxmesvcrtest-jar" value="${binjunit}/jxmesvcrtest.jar" />
+	<target name="JxmeSvcRTestJar" description="Creates Jxme Service  Test component jar file">
+
+		<property name="cop-version" value="1" />
+		<property name="cop-mainclass" value="ch.ethz.iks.jxme.JxmeServiceRemoteTest" />
+	
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" 	deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar};${junit-jar};${prose-jar};${baselib-jar};${cdc-jar};${jadabs-jar};${jxmesvc-jar}" >
+			
+		<src path="${junit_cop}"/>
+			<include name="ch/ethz/iks/jxme/JxmeServiceRemote*"/>
+		</javac>   		
+   		
+		<!--<jar basedir="${tmp}/" jarfile="${testcop-jar}" />-->
+		
+		<jar destfile="${jxmesvcrtest-jar}" basedir="${tmp}/">
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/>
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="baselib.jar jxmesvc.jar" />
+    		</manifest> 
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+		<!-- Creates Foo component jar file -->
+	<property name="fooapi-jar" value="${binjunit}/fooapi.jar" />
+	<target name="FooAPIJar" description="Creates Foo API component jar file">
+
+		<property name="cop-version" value="1" />
+		<property name="cop-mainclass" value="ch.ethz.iks.FooAPI.FooMain" />
+	
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" 	deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar};${jadabs-jar}" >
+			
+		<src path="${junit_cop}"/>
+			<include name="ch/ethz/iks/FooAPI/*"/>
+		</javac>   		
+   		
+		<!--<jar basedir="${tmp}/" jarfile="${testcop-jar}" />-->
+		
+		<jar destfile="${fooapi-jar}" basedir="${tmp}/">
+    		<manifest>
+    			<!-- <attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/> -->
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="" />
+    		</manifest> 
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	<!-- Creates Foo component jar file -->
+	<property name="foospi-jar" value="${binjunit}/foospi.jar" />
+	<target name="FooSPIJar" description="Creates Foo SPI component jar file">
+
+		<property name="cop-version" value="1" />
+		<property name="cop-mainclass" value="ch.ethz.iks.FooSPI.FooMain" />
+	
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" 	deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar};${jadabs-jar};${fooapi-jar};${fooproxy-jar}" >
+			
+		<src path="${junit_cop}"/>
+			<include name="ch/ethz/iks/FooSPI/*"/>
+		</javac>   		
+   		
+		<!--<jar basedir="${tmp}/" jarfile="${testcop-jar}" />-->
+		
+		<jar destfile="${foospi-jar}" basedir="${tmp}/">
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/>
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="fooapi.jar fooproxy.jar" />
+    		</manifest> 
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+		<!-- Creates Foo component jar file -->
+	<property name="fooImplA-jar" value="${binjunit}/fooimplA.jar" />
+	<property name="fooproxy-jar" value="${binjunit}/fooproxy.jar" />
+	<target name="FooProxyJar" description="Creates Foo Proxy component jar file">
+
+		<property name="cop-version" value="1" />
+		<property name="cop-mainclass" value="ch.ethz.iks.FooProxy.FooProxy" />
+	
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" 	deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar};${jadabs-jar};${fooapi-jar};${fooImplA-jar}" >
+			
+		<src path="${junit_cop}"/>
+			<include name="ch/ethz/iks/FooProxy/*"/>
+		</javac>   		
+   		
+		<!--<jar basedir="${tmp}/" jarfile="${testcop-jar}" />-->
+		
+		<jar destfile="${fooproxy-jar}" basedir="${tmp}/">
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/>
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="fooapi.jar fooimplA.jar" />
+    		</manifest> 
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+		<!-- Creates Foo component jar file -->
+	<target name="FooImplAJar" description="Creates Foo ImplA component jar file">
+
+		<property name="cop-version" value="1" />
+		<property name="cop-mainclass" value="ch.ethz.iks.FooImplA.FooImplA" />
+	
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" 	deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar};${jadabs-jar};${fooapi-jar}" >
+			
+		<src path="${junit_cop}"/>
+			<include name="ch/ethz/iks/FooImplA/*"/>
+		</javac>   		
+   		
+		<!--<jar basedir="${tmp}/" jarfile="${testcop-jar}" />-->
+		
+		<jar destfile="${fooImplA-jar}" basedir="${tmp}/">
+    		<manifest>
+    			<!-- <attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/> -->
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="fooapi.jar" />
+    		</manifest> 
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	<!-- Creates Foo component jar file -->
+	<property name="fooImplB-jar" value="${binjunit}/fooimplB.jar" />
+	<target name="FooImplBJar" description="Creates Foo ImplA component jar file">
+
+		<property name="cop-version" value="1" />
+		<property name="cop-mainclass" value="ch.ethz.iks.FooImplB.FooImplB" />
+	
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" 	deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar};${jadabs-jar};${fooapi-jar};${fooproxy-jar}" >
+			
+		<src path="${junit_cop}"/>
+			<include name="ch/ethz/iks/FooImplB/*"/>
+		</javac>   		
+   		
+		<!--<jar basedir="${tmp}/" jarfile="${testcop-jar}" />-->
+		
+		<jar destfile="${fooImplB-jar}" basedir="${tmp}/">
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/>
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="fooapi.jar fooproxy.jar" />
+    		</manifest> 
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	<!-- ##########################################
+	#
+    #    Initialization and Cleanup
+    #
+    ############################################# -->
+    
+    <!-- 
+	#   Setup Paths
+	-->
+
+	<target name="prepare" description="Creates output directory">
+		<!--<mkdir dir="${bin}"/>-->
+		<mkdir dir="${binjunit}"/>
+	</target>
+	
+	<!-- 
+	#   Compile all
+	-->
+	<target name="compileAll" depends="prepare" description="initialize and compile the jadabs project">
+		
+		<!-- base components -->
+		<antcall target="JxmeSvcTestJar" />
+		
+	<!-- javadoc 
+		<antcall target="javadoc" />-->
+	</target>
+	
+    <!-- 
+	#   Clean up everything
+	-->
+	<target name="clean" description="clean up everything: junit">
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${binjunit}"/>
+		</delete>
+	
+	</target>
+	
+</project>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME</title>
+  </properties>
+
+  <body>
+    <section name="JXME UDP Service">
+      <p>
+				This page gives a short introduction to the UDP Service
+				implemention of JXME.
+      </p>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ *
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs - AOP</title>
+  </properties>
+
+  <body>
+  
+    <section name="Jadabs - AOP">
+	<p>
+		A core feature of Jadabs is its integrated AOP capabilities.
+		We look at AOP in two different ways. First, as a static
+		way of extending software components with new functionality.
+		Second, as a behavior change at runtime which would otherwise
+		lead to a restart of a running component.
+	</p>
+	<p>
+		On the <a href="download.html">download</a> page different
+		AOP configurations are supported.
+		Following we discuss how we support the two AOP types static and
+		dynamic.
+	</p>	
+		<subsection name="static AOP">
+		<p>
+			The Jadabs core has been built by using AspectJ itself. The
+			core platform consists therefore of the AspectJ runtime library 
+			per default.
+		</p>
+		</subsection>
+ 
+ 		<subsection name="dynamic AOP">
+ 		<p>
+			As a basic dynamic AOP concept Nanning is supported. As Nanning
+			runs on J2ME-CDC VMs it is included per default.
+		</p>
+		<p>
+			For nodes with VMs running on the normal VM the dynamic AOP approach
+			from Prose can be included.
+		</p>
+ 		</subsection>
+ 
+    </section>
+    
+  </body>
+</document>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+	<extend>${basedir}/../../project.xml</extend>
+
+  	<name>jadabsgui</name>
+  	<groupId>jadabs</groupId>
+  	<id>jadabs-maingui</id>
+
+	<shortDescription>Jadabs-MainGUI for local and remote bundles.</shortDescription>
+
+	<properties>
+		<osgi.import.service>ch.ethz.jadabs.remotefw.FrameworkManager</osgi.import.service>
+	</properties>
+
+   <dependencies>
+   
+        <dependency>
+            <groupId>osgi</groupId>
+            <artifactId>framework</artifactId>
+            <version>1.2</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>swt</groupId>
+            <artifactId>swt</artifactId>
+            <version>3.0RC1-osgi</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>remotefw-api</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>remotefw-impl</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+	    
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.8-osgi</version>
+        </dependency>
+	    
+	</dependencies>
+  
+  	<build>
+		<resources>
+	     
+	     	<resource>
+	        	<directory>resources/</directory>
+	            <includes>
+	                <include>logo_jadabs.png</include>
+	            </includes>
+	        </resource>
+		 
+	     </resources>
+     </build>
+     
+</project>

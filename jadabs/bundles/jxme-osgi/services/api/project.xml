@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../../project.xml</extend>
+
+	<url></url>
+
+	<groupId>jadabs</groupId>
+	<id>jxme-services-api</id>
+	<name>JXME-Services API</name>
+
+	<shortDescription>JXME-Services API</shortDescription>
+
+	<properties>
+
+	</properties>
+
+  	<dependencies>
+  	
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+  	</dependencies>
+  
+</project>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+
+<document>
+
+  <properties>
+    <title>News and Status</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+
+    <section name="News and Status">
+      <p>
+        This document contains the latest news and status regarding the
+        Jadabs project.  It is here you'll find announcements related to
+        Jadabs.
+      </p>
+
+      <subsection name="Current Release 0.6.7">
+        <p>
+          We are currently working on Jadabs 0.6.x. Basically on bugfix releases
+          and testing code for next major release. For more detailed information and patches see the
+          <a href="changes-report.html">
+          changes-report</a>.
+        </p>
+      </subsection>
+
+      <subsection name="08 April 2004 - Jadabs 0.6.0 released!">
+        <p>
+        With this new release we moved to the OSGi standard. The Jadabs-core
+      	is superseded by the OSGi-API and <a href="http://www.knopflerfish.org/">Knopfelfish</a>
+      	implementation. All further development will take usage of the OSGi-API. The
+      	messaging-layer and the eventsystem have been transformed onto
+      	the new API.
+        </p>
+      </subsection>
+      
+      <subsection name="29 March 2004 - Jadabs 0.5.0 released!">
+        <p>
+          The first open release!
+        </p>
+      </subsection>
+      
+    </section>
+
+  </body>
+</document>

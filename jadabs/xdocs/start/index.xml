@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Getting Started with Jadabs</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+    <section name="Getting Started with Jadabs">
+      <p>
+        This document (as well as the others in this section) provide
+        an introduction to Jadabs and how to use it for your mobile device.
+      </p>
+
+
+      <subsection name="Overview of the Getting Started Documentation">
+        <table>
+          <tr><th>Document</th><th>Description</th></tr>
+          <tr><td><a href="start.html">Start</a></td>
+            <td>
+              Before you can start using Jadabs in any form, you'll have
+              to download and install the Jadabs distribution to your system (unless
+              you plan on building Jadabs from source).
+            </td>
+          </tr>
+          <tr><td><a href="userguide.html">User Guide</a></td>
+            <td>
+              This user guide gives a short introduction to the use of Jadabs.
+              Examples are shown for dynamic AOP, building bunles, and starting
+              the container with new bundles.
+            </td>
+          </tr>
+          <tr><td><a href="build.html">Build</a></td>
+            <td>
+              For the adventurous (its actually quite easy), you can
+              build Jadabs from source.
+              This document provides you with step by step instructions
+              to build and generate the documentation for Jadabs.
+            </td>
+          </tr>
+        </table>
+      </subsection>
+    </section>
+ </body>
+</document>

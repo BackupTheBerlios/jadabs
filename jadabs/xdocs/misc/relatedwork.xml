@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Getting Started - Jadabs</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+	<body>
+	
+	<section name="Small Footprint - Component and Service Frameworks/Containers">
+  	
+  	    <table>
+          <tr><th>Project</th><th>Description</th></tr>
+          <tr><td><a href="http://www.osgi.org">OSGi</a></td>
+            <td>
+              <ul>
+              	<li>Knopflerfish</li>
+              	<li>IBM-SMF</li>
+              	<li>OSCAR</li>
+              	<li>Eclipse-Equinox</li>
+              </ul>
+            </td>
+          </tr>
+          <tr><td><a href="http://www.picocontainer.org">Picocontainer</a></td>
+            <td>
+              
+            </td>
+          </tr>
+          <tr><td><a href="http://fractal.objectweb.org">Fractal</a></td>
+            <td>
+              
+            </td>
+          </tr>
+        </table>
+
+   	</section>
+   	
+  	<section name="Server Containers with Micro-Kernel">
+  	
+  	    <table>
+          <tr><th>Project</th><th>Description</th></tr>
+          <tr><td><a href="http://jboss.org">JBoss</a></td>
+            <td>
+              
+            </td>
+          </tr>
+          <tr><td><a href="http://www.springframework.org/">Spring</a></td>
+            <td>
+              
+            </td>
+          </tr>
+          <tr><td><a href="http://avalon.apache.org/merlin">Merlin</a></td>
+            <td>
+              
+            </td>
+          </tr>
+        </table>
+
+   	</section>
+   	
+   	<section name="AOP Projects used in Containers">
+  	
+  	    <table>
+  	    
+          <tr><th>Project</th><th>Description</th></tr>
+          
+          <tr><td><a href="http://eclipse.org/aspectj/">AspectJ</a></td>
+            <td>
+              
+            </td>
+          </tr>
+          
+          <tr><td><a href="http://aspectwerkz.codehaus.org">AspectWerkz</a></td>
+            <td>
+              
+            </td>
+          </tr>
+          
+          <tr><td><a href="http://www.jboss.org/products/aop">JBoss</a></td>
+            <td>
+              
+            </td>
+          </tr>
+          
+          <tr><td><a href="http://prose.ethz.ch">Prose</a></td>
+            <td>
+              
+            </td>
+          </tr>
+          
+        </table>
+
+   	</section>
+   	
+   	
+ 	</body>
+</document>

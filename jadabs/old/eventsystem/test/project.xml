@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>eventsystem-test</id>
+  <name>EventSystem-Test</name>
+
+  <shortDescription>EventSystem Test</shortDescription>
+
+  <dependencies>
+  
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+      		<url>http://www.osgi.org</url>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>eventsystem-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+				
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>eventsystem-impl</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8</version>
+      		<url>http://jakarta.apache.org/log4j</url>
+    	</dependency>
+    	
+  </dependencies>
+
+  
+</project>

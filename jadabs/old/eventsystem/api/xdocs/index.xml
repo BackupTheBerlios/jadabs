@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>EventSystem-API</title>
+  </properties>
+
+  <body>
+    <section name="EventSystem Usage">
+     
+		<p>
+	 	The event system package contains the API for a basic 
+	 	Event System interface. The IEventService is the main
+	 	service of the event system. To use this service a reference
+	 	can be looked up through the BundleContext by querying 
+	 	with IEventService.class.getName().
+	 	</p>
+	 	<p>
+	 	To <b>publish</b> an event use the IEventService.publish(event).
+	 	Be sure the event type is also on the other node or no
+	 	filter will match.
+	 	</p>
+	 	<p>
+	 	To <b>subscribe</b> for an event, create first an instance of
+	 	the interested event, specify the attributes and from this the filter.
+	 	</p>
+<source><![CDATA[
+ 	StringEvent event = new StringEvent();
+ 	Filter filter = new FilterImpl(event);
+ 	
+ 	eventsvc.subscribe(filter, listener);
+]]></source>
+      
+    </section>
+    
+  </body>
+</document>

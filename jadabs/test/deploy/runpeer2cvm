@@ -1,0 +1,6 @@
+#! /bin/bash
+  
+cvm -Djxme.peername=peer2 -Dprodtest \
+  -Xbootclasspath/a:/home/andfrei/.maven/repository/cdc/jars/foundation-cdc-1.0.1.jar \
+  -Djava.class.path=$OSGI_KF:/home/andfrei/.maven/repository/nanning/jars/nanning-core-1.0-beta-1.jar \
+  org.knopflerfish.framework.Main -xargs es-min-init.xargs

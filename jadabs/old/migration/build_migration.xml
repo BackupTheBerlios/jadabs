@@ -1,0 +1,786 @@
+<project name="jadabs runtime evolution" default="EVOLUTION-Jar" basedir="./../..">
+    
+    <!-- ##########################################
+	#
+    #    Definitions
+    #
+    ############################################# -->
+
+	<!-- variables -->
+
+	<property name="Attribute_cmdlineargs" value="ARGS" />
+	<property name="Attribute_upgradeable" value="Upgradeable" />
+	<property name="Value_upgradeable_none" value="NONE" />
+
+	<property name="migr_prefix" value="adapter2_" />
+    <property name="proxy_prefix" value="proxy4_" />
+   
+    <!-- component binary names (without jar suffix) -->
+	<property name="jadabs" value="jadabs" />
+    <property name="tc" value="testcop" />
+	<property name="copwithdeps" value="copWithDependency" />
+	<property name="es" value="eventsystem" />
+	<property name="jxme" value="jxme" />
+	<property name="base" value="commons" />
+	<property name="migration" value="evolution" />
+   
+    <!-- directories -->
+ 
+	<property name="libs" value="${basedir}/libs" />
+	<property name="tmp" value="${basedir}/tmp" />
+	
+	<property name="build" value="${basedir}/build" />
+	<property name="bin" value="${basedir}/bin" />
+	<property name="binlib" value="${bin}/lib" />
+	<property name="binext" value="${bin}/ext" />
+	<property name="pcoprep" value="${bin}/pcoprep" />
+	<property name="proxy" value="${bin}/proxies" />
+	<property name="migr" value="${bin}/adapters" />
+	
+	<property name="impl" value="svc/src" />
+	<property name="api" value="api/src" />
+	<property name="test" value="test" />
+	<property name="bmark" value="bmark" />
+	<property name="adapter" value="adapter/src" />
+	
+	
+	<!-- source dirs -->
+	<property name="src_cop" value="${basedir}/bundles" />
+	<property name="src_boot" value="${src_cop}/common/utils/src" />
+	<property name="src_evolution" value="${src_cop}/migration" />
+	<property name="src_migr" value="${src_evolution}/test-evolution" />
+	<property name="junit_evolution" value="${src_evolution}/test-proxy" />
+
+
+	<!-- local libraries -->
+	<property name="jadabs-jar" value="${binlib}/${jadabs}.jar" />
+
+	<property name="baselib-jar" value="${binext}/${base}.jar" />
+	<property name="jxmeudp-jar" value="${binext}/${jxme}udp.jar" />
+	<property name="escop-jar" value="${binext}/${es}.jar" />
+	
+	<property name="evolution-jar" value="${binext}/${migration}.jar" />
+	
+	<property name="testcop-jar" value="${binext}/${tc}.jar" />
+	<property name="dependencycop-jar" value="${binext}/${copwithdeps}.jar" />
+
+
+	
+	<!-- tests -->
+	<property name="testproxy-jar" value="${binext}/proxycreationTest.jar" />
+	<property name="testwrapping-jar" value="${binext}/wrapexternalTest.jar" />
+	
+	<property name="esevolution-jar" value="${binext}/esEvolutionTest.jar" />
+	<property name="tcevolution-jar" value="${binext}/tcEvolutionTest.jar" />
+	<property name="esevolutionadapter-dir" value="${migr}/${migr_prefix}esEvolutionTest" />
+
+	<!-- benchmarks -->
+	<property name="proxyinvocationbm-jar" value="${binext}/bmTransparentProxy.jar" />
+	<property name="reflectinvocationbm-jar" value="${binext}/bmDynamicProxy.jar" />
+	<property name="invocationbm-jar" value="${binext}/bmWithoutProxy.jar" />
+	<property name="ifcinvocationbm-jar" value="${binext}/bmInterfaceProxy.jar" /> 
+	
+	
+	<!-- adapters, customizers -->
+	<property name="baseadapter-dir" value="${migr}/${migr_prefix}${base}" />
+	<property name="esadapter-dir" value="${migr}/${migr_prefix}${es}" />
+	<property name="jxmeadapter-dir" value="${migr}/${migr_prefix}${jxme}udp" />
+	<property name="testcopadapter-dir" value="${migr}/${migr_prefix}${tc}" />
+	<property name="migr2_escop-dir" value="${migr}/${migr_prefix}v3_${es}" />
+	<property name="migr2_testcop-dir" value="${migr}/${migr_prefix}v2_${tc}" />
+	
+	
+	<!-- upcoming versions of components (evolution targets) -->
+	<property name="testcop-v2" value="${binext}/V2_${tc}.jar" />
+	<property name="escop-v3" value="${binext}/V3_${es}.jar" />
+	
+	<!-- ext libraries -->
+	<property name="log4j-jar" value="${libs}/log4j-1.2.8.jar" />
+	<property name="junit-jar" value="${libs}/junit-3.8.1.jar" />
+	<property name="prose-jar" value="${libs}/prose.jar" />
+	<property name="idev_bluez-jar" value="${libs}/idev_bluez.jar" />
+	<property name="jxta-cdc-jar" value="${libs}/jxta-cdc.jar" />
+	<property name="cdc-jar" value="${libs}/cdc-1.0.1.jar" />
+	<property name="javassit-jar" value="${libs}/javassist-2.6.jar" />
+
+	
+	<!-- ##########################################
+	#
+    #    Run Programs
+    #
+    ############################################# -->
+
+
+	
+    <!-- ##########################################
+	#
+    #    JARS
+    #
+    ############################################# -->
+
+	
+	<target name="common-Jar" description="Creates Base Library jar file">
+	
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" 	deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar}" srcdir="${src_cop}/${base}/utils/src;${src_cop}/${base}/logging/src" />
+			<!-- <include name="ch/ethz/iks/concurrent/**"/>	
+			<include name="ch/ethz/iks/utils/**"/>	-->
+	  		
+		
+		<jar destfile="${baselib-jar}" basedir="${tmp}/">
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+
+	<!-- compile jadabs bootstrap library -->  
+	<target name="JADABS-Jar" description="Creates jadabs bootstrap jar file">
+
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" 	deprecation="on" destdir="${tmp}" 
+   			classpath="${log4j-jar};${cdc-jar};${baselib-jar}" 
+            srcdir="${basedir}/${jadabs}/${api};${basedir}/${jadabs}/impl;${src_cop}/${base}/logging/src" />
+   			
+		<jar basedir="${tmp}/" jarfile="${jadabs-jar}" >
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.jadabs.Jadabs"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      		    <attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+      			<!-- command line args -->
+      			<attribute name="${Attribute_cmdlineargs}" value="-pcoprep pcoprep -peername MyFirstPeer -proxy ifc -adapt reflect" />
+    		</manifest>
+		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	<!-- runtime component migration framework -->
+	<target name="EVOLUTION-Jar" description="creates evolution.jar file: framework for runtime component migration">
+
+
+	<property name="src_impl" value="${src_evolution}/${impl}" />
+
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true"	deprecation="on" destdir="${tmp}" 
+   			classpath="${log4j-jar};${cdc-jar};${prose-jar};${jadabs-jar};${junit-jar};${javassit-jar}"  >
+   			<src path="${src_impl}" />
+   		</javac>
+   			
+		<jar basedir="${tmp}/" jarfile="${evolution-jar}">
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.evolution.mgr.ComponentEvolutionMain"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      		    <attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+      		<!-- command line args 
+      		 TRANSPARENT PROXY  <attribute name="${Attribute_cmdlineargs}" value="-proxy ifc -adapt hash" />  -->
+      		<!--  DYNAMIC PROXY  -->   <attribute name="${Attribute_cmdlineargs}" value="-adapt reflect" />
+    		</manifest>
+		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	
+	<!-- creates test component jar file -->
+	<target name="testcopJar" description="Creates test component jar file">	
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" deprecation="on" destdir="${tmp}" 
+   			classpath="${log4j-jar};${jadabs-jar}" >
+   			<src path="${src_evolution}/${tc}/${api}" />
+   			<src path="${src_evolution}/${tc}/${impl}" /> 
+   		</javac>
+   			
+		<jar basedir="${tmp}/" jarfile="${testcop-jar}" >
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.testcop.TestComponentMain"/>
+      			<attribute name="Implementation-Version" value="1"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${base}.jar" />
+    		</manifest>
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	
+	<!-- Creates test with dependency component jar file -->
+	<target name="copWithDependencyJar" description="Creates test dependency component jar file">	
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true"	deprecation="on" srcdir="${src_evolution}/${copwithdeps}/${impl}" 
+			destdir="${tmp}" 
+   			classpath="${log4j-jar};${testcop-jar};${jadabs-jar};${baselib-jar}" />
+		
+		<jar destfile="${dependencycop-jar}" basedir="${tmp}/">
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.testclient.ComponentUsingAnotherOne"/>
+      			<attribute name="Implementation-Version" value="1"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${tc}.jar ${base}.jar" />
+    		</manifest>
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	
+	<!-- Creates jxme component jar file API and UDP impl in one jar -->
+	<target name="jxmeudpJar" description="Creates Eventsystem component jar file version 1">
+
+		<property name="cop-version" value="1" />
+		<property name="cop-mainclass" value="ch.ethz.iks.jxme.udp.UDPPeerNetwork" />
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar};${jadabs-jar};${baselib-jar}" >
+				<src path="${src_cop}/${jxme}/${api}" />
+				<src path="${src_cop}/${jxme}/udp" />
+				<src path="${src_cop}/${jxme}/impl" /> 
+				 <!--   <exclude name="ch/ethz/iks/jxme/bluetooth/**" /> j2me later library only -->
+		</javac>
+   			
+		<jar destfile="${jxmeudp-jar}" basedir="${tmp}/">
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/>
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${base}.jar" />
+    		</manifest>
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	<!-- Creates eventsytem component jar file API and impl in one jar -->
+	<target name="esJar" description="Creates Eventsystem component jar file version 1">
+
+		<property name="cop-version" value="1" />
+		<property name="cop-mainclass" value="ch.ethz.iks.eventsystem.svc.EventServiceImpl" />
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar};${jadabs-jar};${baselib-jar};${jxmeudp-jar}" >
+			<src path="${src_cop}/${es}/${impl}" />
+			<src path="${src_cop}/${es}/${api}" /> 
+		</javac>
+   			
+		<jar destfile="${escop-jar}" basedir="${tmp}/">
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/>
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${jxme}udp.jar" />
+    		</manifest>
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	<!-- ##########################################
+	#
+    #    Test cases
+    #
+    ############################################# -->
+	<!--
+		Test case for the <code>package evolution</code> 
+		tests wrapping of external objects and component depenency replacement
+ 		This Testcase may be run as an ordinary Jadabs component to simplify testing. 
+ 		Important: srcdir must NOT include ch.ethz.iks.testclient.ComponentUsingAnotherOne
+ 	-->
+	
+	<target name="wrapexternalTestJar" description=" create Testcase component for external object wrapping jar file">
+		
+		<mkdir dir="${tmp}"/>
+		
+		<javac debug="true"	deprecation="on" srcdir="${junit_evolution}" 
+			destdir="${tmp}" 
+   			classpath="${log4j-jar};${prose-jar};${jadabs-jar};${baselib-jar};${junit-jar};${evolution-jar};${testcop-jar};${dependencycop-jar};${javassit-jar}" />
+   			
+		<jar basedir="${tmp}" jarfile="${testwrapping-jar}">
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.proxy.TransparentProxyTest"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${migration}.jar ${copwithdeps}.jar ${tc}.jar" /> 
+      			<attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+    		</manifest>
+		</jar>
+		
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	
+	<target name="proxycreationTestJar" description=" create Testcase component for proxy creation jar file">
+		
+		<mkdir dir="${tmp}"/>
+		
+		<javac debug="true"	deprecation="on" srcdir="${junit_evolution}" 
+			destdir="${tmp}" 
+   			classpath="${log4j-jar};${prose-jar};${jadabs-jar};${baselib-jar};${junit-jar};${evolution-jar};${testcop-jar};${dependencycop-jar};${javassit-jar}" />
+   			
+		<jar basedir="${tmp}" jarfile="${testproxy-jar}">
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.proxy.ProxyCreatorTest"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${migration}.jar ${tc}.jar" /> 
+      			<attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+    		</manifest>
+		</jar>
+		
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	
+	<target name="esEvolutionTest" description=" create Testcase component jar file for eventsystem migration">
+		<mkdir dir="${tmp}"/>
+		
+		<javac debug="true" deprecation="on"  destdir="${tmp}" 
+   			classpath="${log4j-jar};${prose-jar};${jadabs-jar};${baselib-jar};${escop-jar};${jxmeudp-jar};${junit-jar};${evolution-jar}" >
+   			
+   			<src path="${src_migr}/${es}/${test}" />
+   			<src path="${src_migr}/common/src" />
+   				<!-- <exclude name="TestCopReplaceTest.java" />
+   				<exclude name="Adapter4_EventSystemReplaceTest.java" /> -->
+   		</javac>
+   			
+		<jar basedir="${tmp}/" jarfile="${esevolution-jar}">
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.evolution.test.EventSystemReplaceTest"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${migration}.jar ${es}.jar" /> 
+      			<attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+    		</manifest>
+		</jar>
+		
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	
+	<target name="tcEvolutionTest" description=" create Testcase component jar file for testcop upgrade">
+		
+		<mkdir dir="${tmp}"/>
+		
+		<javac debug="true" deprecation="on" destdir="${tmp}" 
+   			classpath="${log4j-jar};${prose-jar};${jadabs-jar};${baselib-jar};${testcop-jar};${junit-jar};${evolution-jar}" >
+   			
+   			<src path="${src_migr}/${tc}/${test}" />
+   			<src path="${src_migr}/common/src" />
+				<!-- <exclude name="EventSystemReplaceTest.java" />
+				<exclude name="Adapter4_EventSystemReplaceTest.java" /> -->
+		</javac>
+   			
+		<jar basedir="${tmp}/" jarfile="${tcevolution-jar}">
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.evolution.test.TestCopReplaceTest"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${migration}.jar ${tc}.jar" /> 
+      			<attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+    		</manifest>
+		</jar>
+		
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	<!-- ##########################################
+	#
+    #    Benchmarking 
+    #
+    ############################################# -->
+	
+	<target name="bmTransparentProxy" description=" create transparent proxy invocation benchmarking jar file">
+		<mkdir dir="${tmp}"/>
+		
+		<javac debug="true" deprecation="on" srcdir="${src_evolution}/${bmark}/common;${src_evolution}/${bmark}/transparent" 
+			destdir="${tmp}" 
+   			classpath="${log4j-jar};${jadabs-jar};${baselib-jar};${escop-jar};${junit-jar};${evolution-jar};${testcop-jar}" />
+   			
+		<jar basedir="${tmp}/" jarfile="${proxyinvocationbm-jar}">
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.proxy.bm.TransparentProxyConfig"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${es}.jar ${tc}.jar ${migration}.jar" /> 
+      			<attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+    		</manifest>
+		</jar>
+		
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	
+	<target name="bmInterfaceProxy" description=" create interface-based proxy invocation benchmarking jar file">
+		
+		<mkdir dir="${tmp}"/>
+		
+		<javac debug="true"	deprecation="on" srcdir="${src_evolution}/${bmark}/common;${src_evolution}/${bmark}/interface" 
+			destdir="${tmp}" 
+   			classpath="${log4j-jar};${jadabs-jar};${baselib-jar};${escop-jar};${junit-jar};${evolution-jar};${testcop-jar}" />
+   			
+		<jar basedir="${tmp}/" jarfile="${ifcinvocationbm-jar}">
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.proxy.bm.InterfaceProxyConfig"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${es}.jar ${tc}.jar ${migration}.jar" /> 
+      			<attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+    		</manifest>
+		</jar>
+		
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	
+	<target name="bmWithoutProxy" description=" create original invocation benchmarking jar file">
+		
+		<mkdir dir="${tmp}"/>
+		
+		<javac debug="true"	deprecation="on" srcdir="${src_evolution}/${bmark}/common;${src_evolution}/${bmark}/without" 
+			destdir="${tmp}" 
+   			classpath="${log4j-jar};${jadabs-jar};${baselib-jar};${escop-jar};${junit-jar};${evolution-jar};${testcop-jar}" />
+   			
+		<jar basedir="${tmp}/" jarfile="${invocationbm-jar}">
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.proxy.bm.ConfigWithoutProxy"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${es}.jar ${tc}.jar" /> 
+      			<attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+    		</manifest>
+		</jar>
+		
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+		<target name="bmDynamicProxy" description=" create dynamic proxy invocation benchmarking jar file">
+		
+		<mkdir dir="${tmp}"/>
+		
+		<javac debug="true"	deprecation="on" srcdir="${src_evolution}/${bmark}/common;${src_evolution}/${bmark}/dynamic" 
+			destdir="${tmp}" 
+   			classpath="${log4j-jar};${jadabs-jar};${baselib-jar};${escop-jar};${junit-jar};${evolution-jar};${testcop-jar}" />
+   			
+		<jar basedir="${tmp}/" jarfile="${reflectinvocationbm-jar}">
+			<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="ch.ethz.iks.proxy.bm.DynamicProxyConfig"/>
+      			<attribute name="Implementation-Version" value="0"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${es}.jar ${tc}.jar" /> 
+      			<attribute name="${Attribute_upgradeable}" value="${Value_upgradeable_none}" />
+    		</manifest>
+		</jar>
+		
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+	<!-- ##########################################
+	#
+    #    Custom components, specific migration
+    #
+    ############################################# -->
+    
+    <!-- Creates Eventsystem component jar file VERSION 3 -->
+	
+	<target name="escopV3" description="Creates Eventsystem component jar file version 3">
+
+		<property name="cop-version" value="3" />
+		<property name="cop-mainclass" value="ch.ethz.iks.eventsystem.svc.EventServiceImpl" />
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" deprecation="on" destdir="${tmp}" 
+			classpath="${log4j-jar};${jadabs-jar};${baselib-jar};${jxmeudp-jar}" >
+			<src path="${src_cop}/${es}/${impl}" />
+			<src path="${src_cop}/${es}/${api}" />
+		</javac>
+   			
+		<jar destfile="${escop-v3}" basedir="${tmp}/">
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/>
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+      			<attribute name="Class-Path" value="${jxme}udp.jar" />
+    		</manifest>
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+    
+	
+	<!-- Creates test component jar file VERSION 2  -->
+	
+	<target name="testcopV2" description="Creates test component jar file version 2">
+	
+		<property name="cop-version" value="2" />
+		<property name="cop-mainclass" value="ch.ethz.iks.test.TestComponentMain" />
+		<mkdir dir="${tmp}"/>
+    
+		<javac debug="true" 	deprecation="on" srcdir="${src_evolution}/${tc}/${api};${src_evolution}/${tc}/${impl}" 
+			destdir="${tmp}" 
+   			classpath="${log4j-jar};${prose-jar};${jadabs-jar}" />
+   				
+		<jar destfile="${testcop-v2}" basedir="${tmp}/">
+    		<manifest>
+    			<attribute name="Content-Type" value="jadabs-cop" />
+    			<attribute name="Main-class" value="${cop-mainclass}"/>
+      			<attribute name="Implementation-Version" value="${cop-version}"/> 
+      			<attribute name="Built-By" value="${user.name}"/>
+    		</manifest>
+  		</jar>
+    
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${tmp}" />
+		</delete>
+	</target>
+	
+    	
+	<!-- ##########################################
+	#
+    #    adapter and evolution customization components
+    #
+    ############################################# -->
+    
+	<!-- Creates adapter component jar file  for eventsystem evolution to version 3 -->
+
+	<target name="migrEScop" description="Creates adapter component jar file  for ${es} migration">
+	
+		<mkdir dir="${migr2_escop-dir}"/>
+		<mkdir dir="${migr2_escop-dir}/META-INF"/>
+    
+		<javac debug="true"	deprecation="on" srcdir="${src_migr}/${es}/migr" 
+			destdir="${migr2_escop-dir}" 
+   			classpath="${log4j-jar};${junit-jar};${prose-jar};${jadabs-jar};${baselib-jar};${escop-jar};${jxmeudp-jar};${evolution-jar}" />
+   			
+	</target>
+	
+	
+	<target name="migrtestcop" description="Creates adapter component jar file  for ${tc} migration">
+	
+		<mkdir dir="${migr2_testcop-dir}"/>
+		<mkdir dir="${migr2_testcop-dir}/META-INF"/>
+    
+		<javac debug="true"	deprecation="on" srcdir="${src_migr}/${tc}/migr" 
+			destdir="${migr2_testcop-dir}" 
+   			classpath="${log4j-jar};${junit-jar};${prose-jar};${jadabs-jar};${baselib-jar};${testcop-jar};${evolution-jar}" />
+   			
+	</target>
+
+	
+	<!-- initial adapters -->
+	
+	<target name="esAdapter" description="Creates initial custom adapter component for ${es} ">
+		
+		<mkdir dir="${esadapter-dir}" />
+		
+		<javac debug="true"	deprecation="on" srcdir="${src_cop}/${es}/${adapter}" 
+			destdir="${esadapter-dir}" 
+   			classpath="${log4j-jar};${jadabs-jar};${escop-jar};${evolution-jar};${jxmeudp-jar}" />
+   			
+	</target>
+	
+	
+	<target name="jxmeAdapter" description="Creates initial custom adapter component for ${jxme}">
+    
+    	<mkdir dir="${jxmeadapter-dir}" />
+    
+		<javac debug="true"	deprecation="on" srcdir="${src_cop}/${jxme}/${adapter}" 
+			destdir="${jxmeadapter-dir}" 
+   			classpath="${log4j-jar};${jadabs-jar};${evolution-jar};${jxmeudp-jar}" />
+   			
+	</target>
+	
+	
+	<target name="baseAdapter" description="Creates initial custom adapter component for ${base}">
+    	
+    	<mkdir dir="${baseadapter-dir}"/>
+    	
+		<javac debug="true"	deprecation="on" srcdir="${src_cop}/${base}/${adapter}" 
+			destdir="${baseadapter-dir}" 
+   			classpath="${log4j-jar};${jadabs-jar};${evolution-jar};${baselib-jar}" />
+
+	</target>
+	
+	
+	<target name="tcAdapter" description="Creates initial custom adapter component for ${tc}">
+	
+		<mkdir dir="${testcopadapter-dir}"/>
+    
+		<javac debug="true"	deprecation="on" srcdir="${src_evolution}/${tc}/${adapter}" 
+			destdir="${testcopadapter-dir}" 
+   			classpath="${log4j-jar};${jadabs-jar};${testcop-jar};${evolution-jar}" />
+ 
+	</target>
+	
+	
+	<target name="esEvolutionTestAdapter" description="Creates initial custom adapter component for esEvolutionTest">
+	
+		<mkdir dir="${esevolutionadapter-dir}" />
+    
+		<javac debug="true"	deprecation="on"  
+			destdir="${esevolutionadapter-dir}" 
+   			classpath="${log4j-jar};${jadabs-jar};${esevolution-jar};${escop-jar};${evolution-jar};${junit-jar}" >
+   			<src path="${src_migr}/${es}/${adapter}" />
+   			<!--	<exclude name="TestCopReplaceTest.java" />
+   				<exclude name="EventSystemReplaceTest.java" />
+   				<exclude name="OnlineUpgradeTest.java" />
+   				<exclude name="TransparentProxyTest.java" />
+   			 -->
+   		</javac>
+
+	</target>
+	
+	
+    <!-- ##########################################
+	#
+    #    Initialization and Cleanup
+    #
+    ############################################# -->
+    
+    <!-- 
+	#   Setup Paths
+	-->
+
+	<target name="prepare" description="Creates output directories">
+		<mkdir dir="${bin}"/>
+		<mkdir dir="${binlib}"/>
+		<mkdir dir="${binext}"/>
+		<mkdir dir="${pcoprep}" />
+		<mkdir dir="${proxy}" />
+		<mkdir dir="${migr}" />
+	</target>
+	
+	
+	
+    <!-- 
+	#   Build everthing
+	-->
+	<target name="benchmarkJars" description="compile the evolution framework (incl. sample evolutions and benchmarks)">
+		<!-- benchmarking -->
+		<antcall target="bmWithoutProxy" />
+		<antcall target="bmDynamicProxy" />
+		<antcall target="bmTransparentProxy" />
+		<antcall target="bmInterfaceProxy" />
+	</target>
+	
+	<target name="sampleTESTCOPevolutionJars" description="compile the evolution framework (incl. sample evolutions and benchmarks)">
+		<!-- sample evolution of testcop v1 to v2 -->
+		<antcall target="copWithDependencyJar" />
+		<antcall target="tcEvolutionTest" />
+		<antcall target="testcopV2" /> <!-- cp ext/V2_testcop pcoprep/testcop.jar -->
+		<antcall target="migrtestcop" />
+	</target>
+	
+	<target name="sampleESCOPevolutionJars" description="compile the evolution framework (incl. sample evolutions and benchmarks)">
+		<!-- sample evolution of escop v1 to v3 -->
+		<antcall target="esEvolutionTest" />
+		<antcall target="esEvolutionTestAdapter" />
+		<antcall target="escopV3" />  <!-- cp ext/V3_escop pcoprep/escop.jar -->
+		<antcall target="migrEScop" />
+	</target>
+	
+	
+	<target name="COMPILE-ALL" depends="prepare" description="compile the evolution framework (incl. sample evolutions and benchmarks)">
+		
+		<!-- jadabs core -->
+		<antcall target="common-Jar" />
+		<antcall target="JADABS-Jar" />
+		
+		<!-- evolution framework -->
+		<antcall target="EVOLUTION-Jar" />
+		
+		<!-- components -->
+		<antcall target="testcopJar" />
+		<antcall target="copWithDependencyJar" />
+		<antcall target="jxmeudpJar" />
+		<antcall target="esJar" />
+		
+		<!-- adapters, customizers of components. Required for evolution with transparent proxy -->
+		<antcall target="baseAdapter" />
+		<antcall target="tcAdapter" />
+		<antcall target="jxmeAdapter" />
+		<antcall target="esAdapter" />
+		
+		<!-- sample evolution of testcop v1 to v2 -->
+		<antcall target="sampleTESTCOPevolutionJars" />
+		
+		<!-- sample evolution of escop v1 to v3 -->
+		<antcall target="sampleESCOPevolutionJars" />
+		
+		<!-- proxy testing -->
+		<antcall target="proxycreationTestJar" />
+		<antcall target="wrapexternalTestJar" />
+		
+		<!-- benchmarking -->
+		<antcall target="benchmarkJars" />
+
+	</target>
+	
+    <!-- 
+	#   Clean up everything
+	-->
+	<target name="clean" description="clean up everything: binext, binlib, proxies, adapters">
+		<delete includeEmptyDirs="true" >
+			<fileset dir="${binext}" />
+			<fileset dir="${binlib}" />
+			<fileset dir="${proxy}" />
+			<fileset dir="${migr}" />
+		</delete>
+	
+	</target>
+	
+</project>

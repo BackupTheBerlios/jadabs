@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ObjectDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" metadata="nsuml-1.4" initialized="true" zoom="0.922972972972973">
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="8,71" size="112,47" targetConnections="//@children.6/@sourceConnections.0" id="wilab3tmichajadabs178" itemName="client" fieldId2value="{}" actif="true" multiInstance="true" stateName="idle">
+    <sourceConnections xsi:type="editmodel:ObjectAssociationEditModel" connectionRouterKind="Manhattan" source="//@children.0" target="//@children.2" targetEnd="//@children.0/@sourceConnections.0/@children.1" label="//@children.0/@sourceConnections.0/@children.2" sourceEnd="//@children.0/@sourceConnections.0/@children.0" labelValue="service">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="112,29" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="-1,17"/>
+      <children xsi:type="editmodel:WireLabelEditModel" size="33,12" fontInfo="Arial-8-0" anchorKind="MiddlePart"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="615,64" size="120,47" targetConnections="//@children.3/@sourceConnections.0 //@children.7/@sourceConnections.0" id="wilab3tmichajadabs178" itemName="service" fieldId2value="{}" stateName="idle"/>
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="230,72" size="88,47" targetConnections="//@children.4/@sourceConnections.0 //@children.0/@sourceConnections.0" id="wilab3tmichajadabs1417" itemName="proxy" fieldId2value="{}" stateName="idle">
+    <sourceConnections xsi:type="editmodel:ObjectAssociationEditModel" connectionRouterKind="Manual" source="//@children.2" target="//@children.3" targetEnd="//@children.2/@sourceConnections.0/@children.1" label="//@children.2/@sourceConnections.0/@children.2" sourceEnd="//@children.2/@sourceConnections.0/@children.0" labelValue="proxyHandler">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="88,27" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="-1,19"/>
+      <children xsi:type="editmodel:WireLabelEditModel" size="64,12" fontInfo="Arial-8-0" anchorKind="MiddlePart"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ObjectInstanceEditModel" location="418,68" size="149,47" targetConnections="//@children.2/@sourceConnections.0 //@children.5/@sourceConnections.0" id="wilab3tmichajadabs1426" itemName="handler" fieldId2value="{}" stateName="idle">
+    <sourceConnections xsi:type="editmodel:ObjectAssociationEditModel" connectionRouterKind="Manual" source="//@children.3" target="//@children.1" targetEnd="//@children.3/@sourceConnections.0/@children.1" label="//@children.3/@sourceConnections.0/@children.2" sourceEnd="//@children.3/@sourceConnections.0/@children.0" labelValue="original">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="149,19" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="-1,27"/>
+      <children xsi:type="editmodel:WireLabelEditModel" size="34,12" fontInfo="Arial-8-0" anchorKind="MiddlePart"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="193,140" size="165,58" note="dynamically compiled class&#xA;object serves as a transparent&#xA;proxy for the evolvable object&#xA;of the service component">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" connectionRouterKind="Manual" source="//@children.4" target="//@children.2" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="35,-3" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="84,47"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="409,137" size="163,66" note="maps proxies to objects &#xA;of the original component&#xA;redirects method invocations &#xA;on proxy to original">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" connectionRouterKind="Manual" source="//@children.5" target="//@children.3" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="25,-3" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="101,47"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="-20,153" size="169,70" note="object references the 'service' &#xA;object in another component&#xA;Thus, it's component specifies&#xA;the component of the 'service' &#xA;as its dependency component&#xA;">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" connectionRouterKind="Manual" source="//@children.6" target="//@children.0" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="48,-4" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="86,46"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="595,151" size="152,34" note="the 'service' object that &#xA;the 'client' wants to access.&#xA;">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" connectionRouterKind="Manual" source="//@children.7" target="//@children.1" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:ObjectEndEditModel" location="78,-2" attachSource="true"/>
+      <children xsi:type="editmodel:ObjectEndEditModel" location="54,46"/>
+    </sourceConnections>
+  </children>
+</editmodel:ObjectDiagramEditModel>

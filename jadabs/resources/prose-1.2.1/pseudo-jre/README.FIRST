@@ -1,0 +1,68 @@
+!!! Summary
+
+The files under prose/pseudo-jre is __not__ a real JRE. It is a
+directory with the same structure as a JRE, but using a real JRE from
+a different location.
+
+
+
+IN PARTICULAR, THE 'prose/pseudo-jre/bin/java' SCRIPT IS NOT THE TRUE
+JAVA EXECUTABLE OF A JRE. IT IS A SCRIPT THAT INDIRECTLY CALLS 'java'
+AND ALLOWS ANY JAVA PROGRAM TO BE ENHANCED WITH RUN-TIME ASPECTS.
+THE 'java' SCRIPT IN THIS DIRECTORY CORRESPONDS TO 'jprose'. THIS
+SCRIPT IS NAMED 'java' FOR CONVENIENCE ONLY. IT INDIRECTLY CALLS THE
+ACTUAL JAVA EXECUTABLE AND ADDS SIGNIFICANT FUNCTIONALITY TO JAVA,
+BY ALLOWING RUN-TIME WEAVING USING THE DEBUGGER INTERFACE (JVMDI).
+THE LOCATION OF THE USED JAVA(TM) 2 RUNTIME ENVIRONMENT SOFTWARE,
+COMPLETE AND UNMODIFIED, CAN BE FOUND IN THE FILE 'README.PSEUDOJRE-LOG'
+
+!!! Install
+
+!! Install procedure
+
+If this directory does not contain the typical JRE structure
+(bin,lib,etc..) then it cannot be used with a JRE. To *create*
+the JRE structure, call
+
+
+$ setup-jre
+
+
+This will create a jre structure that points to your current
+'java' installation (to figure our where your current java
+installation is, type 'which java' on a Unix-like system).
+
+If you want the pseudo-jre to be linked to a __different JRE than
+your standard java installation__, then call
+
+
+$ PROSE_JAVA_HOME=<alternative java home> setup-jre.sh
+
+
+
+!!! Uninstall
+
+To unset the link between the current JRE and the pseudo-jre,
+please call
+
+$ remove-jre
+
+
+!!! Additional info
+
+!! Which JDK/JRE version to use
+
+To make full use of the run-time weaving features of prose, please
+use Sun JDKs 1.4 or later. This will allow you to use any JPDA
+compliant debugger with your application
+
+!! How to use the pseudo-jre
+
+Many applications (e.g., eclipse, jakarta) allow you to use your favorite
+'java' installation. To use jprose from eclipse, specify
+
+
+<prose-install-dir>/pseudo-jre/
+
+
+as your JAVA_HOME.

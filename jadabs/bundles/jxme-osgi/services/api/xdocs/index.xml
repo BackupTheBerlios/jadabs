@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME-Services</title>
+  </properties>
+
+  <body>
+  
+    <section name="JXME-Services API">
+    
+    	<p>
+    		The JXME-Services API follows the JXTA specification with
+    		a Peer-Group concept. The JXME-Service API presents a simple
+    		layer for the use of the peergroup concept.
+    	</p>
+   
+      
+    </section>
+    
+  </body>
+</document>

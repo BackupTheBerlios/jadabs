@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>jxme-bluetooth</id>
+  <name>JXME Bluetooth</name>
+  <package>ch.ethz.iks.jxme.bluetooth</package>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>JXME Bluetooth</shortDescription>
+
+	<properties>
+		<osgi.export.service>ch.ethz.iks.jxme.IPeerNetwork</osgi.export.service>
+	</properties>
+
+  <dependencies>
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-impl</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>commons-utils</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>impronto</groupId>
+      		<artifactId>idev_bluez</artifactId>
+      		<version>1.3-osgi</version>
+		</dependency>
+		<dependency>
+      		<groupId>nanoxml</groupId>
+      		<artifactId>nanoxml-lite</artifactId>
+      		<version>2.2.3</version>
+		</dependency>
+		<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8</version>
+      		<url>http://jakarta.apache.org/log4j</url>
+    	</dependency>
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-configurator</artifactId>
+      		<version>${pom.currentVersion}</version>
+    	</dependency>
+    	
+  </dependencies>
+
+  
+</project>

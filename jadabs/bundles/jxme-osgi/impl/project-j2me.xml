@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../project.xml</extend>
+
+	<groupId>jadabs</groupId>
+	<id>jxme-osgi-j2me</id>
+	<name>JXME-OSGi-J2ME</name>
+
+	<shortDescription>JXME-OSGi J2ME</shortDescription>
+
+  	<dependencies>
+  	
+    	<dependency>
+      		<groupId>osgi</groupId>
+            <artifactId>osgi-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>log4j-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+  	</dependencies>
+
+  
+</project>

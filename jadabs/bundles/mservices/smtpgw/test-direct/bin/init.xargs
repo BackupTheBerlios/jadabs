@@ -1,0 +1,27 @@
+-Dorg.knopflerfish.verbosity=6
+-Dorg.knopflerfish.gosg.jars=file:/home/muellerr/.maven/repository/
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.system.export.all_13=false
+
+-Dlog4j.priority=DEBUG
+-Dch.ethz.jadabs.jxme.hostname=cronus
+-Dch.ethz.jadabs.mservices.smtpgw.smtphost=smtp.inf.ethz.ch
+-Dch.ethz.jadabs.mservices.smtpgw.test.to=muellren@student.ethz.ch
+-Dch.ethz.jadabs.mservices.smtpgw.test.from=muellren@student.ethz.ch
+-Dch.ethz.jadabs.mservices.smtpgw.test.subject=What Subject?
+-Dch.ethz.jadabs.mservices.smtpgw.test.body=The Body
+
+
+-init
+
+-istart   log4j/jars/log4j-1.2.8-osgi.jar
+-install  java/jars/javamail-all-1.3.1-osgi.jar
+-istart   jadabs/jars/jxme-osgi-j2se-0.6.6-SNAPSHOT.jar
+-istart   mservices/jars/smtpgw-0.6.6-SNAPSHOT.jar
+-istart   mservices/jars/smtpgw-test-0.6.6-SNAPSHOT.jar
+
+-launch
+
+

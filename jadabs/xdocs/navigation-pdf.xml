@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<project name="Jadabs">
+    <title>Jadabs</title>
+    <body>
+    
+  	<menu name="Overview">
+  		<item name="Goals" 							href="/index.html"/>
+  		<item name="News and Status"				href="/changes-report.html"/>
+  		<item name="Download" 						href="/start/download.html"/>
+  		
+  		<item name="Getting Started" 				href="/start/index.html" collapse="true">
+  			<item name="Start" 							href="/start/start.html"/>
+  			<item name="User Guide" 					href="/start/userguide.html"/>
+  			<item name="Design Principles"				href="/start/design.html"/>
+  			<item name="AOP"						href="/start/aop.html"/>
+  			<item name="SOA"						href="/start/soa.html"/>
+  			<item name="Build" 							href="/start/buildjadabs.html"/>
+  			<item name="Maven-OSGi-Plugin" 				href="http://wlab.ethz.ch/plugins/maven-osgi"/>
+  		</item>
+
+  		<item name="Misc" 							href="/misc/index.html" collapse="true">
+  			<item name="Related Work" 				href="/misc/relatedwork.html"/>
+  		</item>
+  		
+  		<item name="Projects Using Jadabs"			href="/lab/index.html"/>
+  	</menu>
+    </body>
+</project>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Commons Logging</title>
+  </properties>
+
+  <body>
+    <section name="Commons Logging">
+      <p>
+				This page gives a short introduction Commons-Logging.
+      </p>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,16 @@
+<project default="jadabs:buildall" 
+	xmlns:maven="jelly:maven"
+	xmlns:jar="jelly:jar"
+	xmlns:j="jelly:core" 
+	xmlns:util="jelly:util" 
+	xmlns:ant="jelly:ant"
+	xmlns:artifact="artifact">
+	
+	<!--
+	<pregoal name="jar:jar">
+		<ant:unjar src="${maven.repo.local}/osgi/jars/osgi-j2me-0.1.0.jar" dest="${maven.build.dir}/classes"/>
+		<ant:unjar src="${maven.repo.local}/jadabs/jars/jxme-0.1.0.jar" dest="${maven.build.dir}/classes"/>
+		<ant:unjar src="${maven.repo.local}/jadabs/jars/jxme-tcp-0.1.0.jar" dest="${maven.build.dir}/classes"/>
+	</pregoal>
+	-->
+</project>

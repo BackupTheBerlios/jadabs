@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <groupId>osgi</groupId>
+	<currentVersion>3.0</currentVersion>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>OSGi Framework</shortDescription>
+
+  <description>
+OSGi Framework
+  </description>
+	
+	<sourceDirectory>${basedir}/src/org/osgi/framework</sourceDirectory>
+	
+  <dependencies>
+
+  </dependencies>
+
+  
+</project>

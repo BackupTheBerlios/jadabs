@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>jxme-api</id>
+  <name>JXME API</name>
+  <package>ch.ethz.iks.jxme</package>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>JXME API</shortDescription>
+
+  <description>
+JXME API
+  </description>
+
+	<properties>
+		<osgi.bundle.category>interface</osgi.bundle.category>
+		<osgi.export.package>ch.ethz.iks.jxme</osgi.export.package>
+	</properties>
+
+  <dependencies>
+
+  </dependencies>
+
+  
+</project>

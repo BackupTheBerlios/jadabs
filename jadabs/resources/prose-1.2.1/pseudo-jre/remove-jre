@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# pseudo-jre location
+
+if  type cygpath >/dev/null 2>&1
+then
+LDIR=$(cygpath "$0")
+LDIR=$(dirname "$LDIR")
+FIND=/usr/bin/find
+LNK=".lnk"
+else
+LDIR=$(dirname "$0")
+FIND=find
+LNK=""
+fi
+ 
+PseudoJreDir="$LDIR";
+
+$FIND "$PseudoJreDir"  -type l -exec rm {} \;
+
+
+
+rm "$PseudoJreDir"/bin/* 
+rmdir "$PseudoJreDir/bin"
+rm "$PseudoJreDir/README.PSEUDOJRE-LOG"

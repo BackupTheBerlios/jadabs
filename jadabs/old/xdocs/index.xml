@@ -1,0 +1,80 @@
+		<p>
+			We propose to use a dynamic lightweight container which is able to
+			load at a later time new required functionalities. Such a functionality
+			could be for example to support Bluetooth once a Bluetooth adapter has
+			been inserted into the device. Another functionality could be to
+			turn a PDA into a gateway which allows a mobile phone to communicate over
+			Bluetooth with the PDA which then has a wireless connection to the Internet.
+			By adding such functionality at a later time the architecture on the device
+			gets much smaller and rare resources and processor power can be used for others.
+		</p>
+		<p>
+			To allow new functionality to be added and also removed at runtime
+			we use a Service Oriented Architecture (SOA). OSGi has standardized such an
+			architecture for small devices. Once new services are loaded we also require
+			a way to change the behavior of this services. As many services may depend
+			on other services they can not just stopped and restarted with a new
+			functionality. The already running service has therefore to be adapted at runtime.
+			By incorporating a dynamic AOP framework into the OSGi implementation we get
+			our dynamic lightweight container which has currently about 300 KBytes and is the
+			core layer needed for the Jadabs services.	
+		</p>
+		<p>
+			The Jadabs services take over concepts from other distributed systems like
+			Jxta/Jxme and Jini. By reimplementing some of these features we get services
+			which can be plugged in and removed as required. Such services are therefore
+			micro changes and have a usual size of a few 10 KKytes.	
+		</p>
+		
+		<p>
+			Currently Jadabs is a Java implementation and runs on different 
+			devices under Windows and Linux where at least the J2ME/CDC is 
+			supported.
+			The framework has also been ported to .NET/C# and is available 
+			for normal Windows desktops and PocketPC 2003.
+			As the loading mechanism of classes in .NET is different
+			than the Java classloading mechanism we are exploring the impact
+			of dynamically loading and unloading of components.
+		</p>
+		
+		<table>
+			<tr><th>Mobile-Service Scenario</th></tr>
+		</table>
+		<p>
+		The mobile service scenario shows a possible target scenario
+		of the Jadabs infrastructure. We are in the progress of implementing
+		a mobile service infrastructure where mobile phones, PDAs, Laptops,
+		and Servers are running Jadabs with different services on it.
+		Currently we are targeting services used in a university by students
+		or staffs.
+		<ul>
+			<li>A user should be able to send Messages to any other user
+			independent if that user is in this infrastructure or abroad
+			and reachable over the normal GSM net.</li>
+			<li>A user may subscribe to events, talks, or other news
+			and get notified when he enters a building.</li>
+			<li>Different mobile devices running on different platforms
+			have to be supported.</li>
+		</ul>
+		</p>
+		<center>
+		<img src="images/mservices.jpg" alt="Mobile Services"/>
+		</center>
+
+		<table>
+			<tr><th>Jadabs - Architecture (with upcoming Semantics)</th></tr>
+		</table>
+
+		<img src="images/jadabs_logic.jpg" alt="Jadabs"/>
+
+		<table>
+			<tr><th>Other Projects</th></tr>
+		</table>
+		
+		<p>
+			Jadabs or parts of it have been used in different projects:
+			<ul>
+				<li><a href="lab/index.html">Messenger Project</a></li>
+				<li><a href="lab/index.html">Robots Project</a>.</li>
+			</ul>
+		</p>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>jadabs</id>
+  <name>Jadabs Impl</name>
+  <package>ch.ethz.iks.jadabs</package>
+  <!-- <currentVersion>0.5.1</currentVersion> -->
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>Jadabs Implementation</shortDescription>
+  
+  <description>
+Jadabs Implementation
+  </description>
+  
+
+  <dependencies>
+		<dependency>
+      		<groupId>bundles-iks</groupId>
+      		<artifactId>commons-logging</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+  </dependencies>
+
+  
+</project>

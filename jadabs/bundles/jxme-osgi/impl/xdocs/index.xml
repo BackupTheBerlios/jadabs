@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME-OSGi</title>
+  </properties>
+
+  <body>
+    <section name="JXME-OSGi">
+      	<subsection name="Properties">
+		<table>
+          <tr><th>property</th><th>default</th><th>description</th></tr>
+          
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.defaultgroup</td>
+          	<td>PeerNetworkGroup</td>
+          	<td></td>
+          </tr>
+          
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.peeralias</td>
+          	<td>${HOSTNAME}</td>
+          	<td>specify this peeralias if you are running several
+          	jadabs instances on the same machine.</td>
+          </tr>
+          
+      </table>
+      </subsection>
+      
+    </section>
+  </body>
+</document>

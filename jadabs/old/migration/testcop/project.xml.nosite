@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>jadabs-migration-testcop</id>
+  <name>Migration-TestCop</name>
+  <package>ch.ethz.iks.evolution</package>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>Migration-TestCop</shortDescription>
+
+  <description>
+Migration Testcomponent
+  </description>
+  
+	<build>
+		<sourceDirectory>${basedir}</sourceDirectory>
+		  <sourceModifications>
+		  	<sourceModification>
+      			<className>*.java</className>
+				<includes>
+					<include>api/**</include>
+					<include>svc/**</include>
+				</includes>
+			</sourceModification>
+		</sourceModifications>
+
+	</build>
+
+  <dependencies>
+   		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jadabs</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8</version>
+      		<url>http://jakarta.apache.org/log4j</url>
+      		<properties>
+      			<osgi.manifest.classpath>true</osgi.manifest.classpath>
+    			</properties>
+    </dependency>
+  </dependencies>
+
+  
+</project>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../../../project.xml</extend>
+
+  <id>osgi-service-device</id>
+  <name>OSGi Device</name>
+  <package>org.osgi.service.device</package>
+	<currentVersion>1.1</currentVersion>
+	
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>OSGi Service Device</shortDescription>
+	
+		<build>
+		<sourceDirectory>${basedir}</sourceDirectory>
+		  <sourceModifications>
+		  	<sourceModification>
+      			<className>*.java</className>
+			</sourceModification>
+		</sourceModifications>
+
+	</build>
+	
+  <dependencies>
+		<dependency>
+    	<groupId>osgi</groupId>
+      <artifactId>osgi-framework</artifactId>
+      <version>1.2</version>
+		</dependency>
+  </dependencies>
+
+  
+</project>

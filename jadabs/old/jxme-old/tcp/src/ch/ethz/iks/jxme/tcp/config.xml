@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jxme:COP xmlns:jxme="http://jxme.iks.ethz.ch" type="jxme:ComponentConfig">
+
+    <PID>urn:jxme:peer1</PID>
+    <Name>peer1</Name>
+    <Desc>Test Peer1</Desc>
+    
+    <Interface technology="tcp">
+    	<Parameter key="Port" value="4162"/>
+    </Interface>
+    
+   	<Svc>
+   	   	<SvcID>Rendezvous</SvcID>
+    	<PID>urn:jxme:peer2</PID>
+    	<Name>peer2</Name>
+    	
+    	<Interface technology="tcp">
+    		<Parameter key="Port" value="4163"/>
+    	</Interface>
+    </Svc>
+    
+    <DJunit>
+    	</Server port="3939">
+		</TestHost host="localhost" port="3939">
+		</TestHost host="localhost" port="3940">
+    </DJunit>
+    
+</jxme:PA>

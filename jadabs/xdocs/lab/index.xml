@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs Applications</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+    <section name="Jadabs Applications">
+      <p>
+        This document shows the application of Jadabs and its services.
+      </p>
+
+
+      <subsection name="Overview of the Projects">
+        <table>
+          <tr><th>Document</th><th>Description</th></tr>
+          
+          <tr><td><a href="#Mindstorms-Robots">Mindstorms Robots</a></td>
+            <td>
+							The well known Lego-Mindstorms have also found an
+							application in our research. As a basis the robots are independent
+							vehicles. By adding new services or changing service
+							the robots can be adapted to perform more logic espacially
+							when more robots are in their communication range and
+							coordination is needed.
+            </td>
+          </tr>
+          
+          <tr><td><a href="#Multi-Homing">Multi-Homing Lab</a></td>
+            <td>
+							A device like a PDA or mobile phone has already at
+							least two communication possibilities like Wireless Lan,
+							Bluetooth, GMS, infrared, etc. The problem is now that
+							once one communication does not work we can not just 
+							switch to another one. We need to setup new connections
+							and maybe we can't even use the same connection layer like
+							IP. By changing the configuration and reconfiguring the environment
+							of such devices dynamically	we are able to keep connections
+							open on higher layers.
+            </td>
+          </tr>
+          
+          <tr><td><a href="#Former-Labs">Former-Labs</a></td>
+            <td>
+							We have given these projects as laboratory assignments
+							to many groups.
+            </td>
+          </tr>
+          
+
+        </table>
+      </subsection>
+    </section>
+    
+       <section name="Mindstorms-Robots">
+     <p>
+			In the Mindstorms Lab students get several robots built 
+			out of Lego Mindstorms kit. The robot contains an iPAQ 
+			as its brain to allow autonomous movements. As such the 
+			robot can be started to fullfill a basic task, for example 
+			moving randomly a grid. 
+		</p>
+		<p>
+			The goal of this lab is to extend the robot with new 
+			behaviour without to restart the whole robot application. 
+			Image two robots are moving on this grid and you want to 
+			connect that one robot follows the other. The second robot 
+			would therefore get a slave extension which allways copies 
+			the movements from the master robot. Jadabs allows to put 
+			new extensions into the system. By using Prose, a dynamic 
+			AOP system, it is also possible to crosscut the running 
+			application at different points to execute specific 
+			additional behaviour.
+     </p>
+		<img src="robotsellipsepicture.jpg" alt="Mindstorms Robot"/>
+		
+  </section>
+    
+  <section name="Multi-Homing">
+		<p>
+			During the PDA Bluetooth/WLan lab students use the Jadabs
+			framework to switch from Bluetooth to Wireless connections,
+			depending on the common sense. The students have to explore 
+			the possibilities of this framework and to write an application. 
+			An application has to detect the other PDAs, and upload extensions 
+			to the other PDAs to get a common layer of knowledge, like using 
+			Bluetooth for all or using one node as a bridge between the two 
+			different infrastructurs.
+     </p>
+		</section>
+    
+    <section name="Former-Labs">
+		<table>
+			<tr>
+				<th>Lab</th>
+				<th>Students</th>
+				<th>Documentation</th>
+			</tr>
+			
+			<tr>
+				<td>Robots SS 2004</td>
+				<td>
+					Michael Duller, René Müller, Jan S. Rellermeyer, Mario Tadey
+
+				</td>
+				<th><a href="http://wlab.ethz.ch/robots">website</a>, <a href="http://wlab.ethz.ch/robots/ara.pdf">pdf</a></th>
+			</tr>
+			
+			<tr>
+				<td>Multihoming WS 03/04</td>
+				<td>
+					Marc Kramis, Roland Schuler
+				</td>
+				<th><a href="http://www.iks.inf.ethz.ch/sda/labor/docs/multihomingWS0304.pdf">Documentation</a></th>
+			</tr>
+			
+			<tr>
+				<td>Robots WS 03/04</td>
+				<td>
+					Oliver Deak, Philipp Bolliger
+				</td>
+				<th><a href="http://www.iks.inf.ethz.ch/sda/labor/docs/robotsWS0304.pdf">Documentation</a></th>
+			</tr>
+
+			<tr>
+				<td>Robots (A): SS 2003</td>
+				<td>
+					Hannes Geissbuehler, Manuel Graber, Andrea Weisskopf,
+					Nicole Hatt, Luzius Meisser
+				</td>
+				<th><a href="http://www.iks.inf.ethz.ch/sda/labor/docs/BotGrASS03.pdf">Documentation</a></th>
+			</tr>
+			
+			<tr>
+				<td>Robots (B): SS 2003</td>
+				<td>
+					Vito Piraino, Kien Hung Ong, Christoph Pluess, Hao Zhou, 
+					Slavisa Maslic
+				</td>
+				<th><a href="http://www.iks.inf.ethz.ch/sda/labor/docs/BotGrBSS03.pdf">Documentation</a></th>
+			</tr>
+			
+		</table>
+	</section>
+    
+ </body>
+</document>

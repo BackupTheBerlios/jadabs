@@ -1,0 +1,8 @@
+#! /bin/bash
+  
+cvm -Dtestid=2 -Dbm.runs=100 -Dtcruns=10 -Drangefrom=10 -Drangeto=1000 -Drangeinc=10 \
+  -Dlog \
+  -Dtestname=cvm_ll -Djxme.peername=peer1 \
+  -Xbootclasspath/a:/home/andfrei/.maven/repository/cdc/jars/foundation-cdc-1.0.1.jar \
+  -Djava.class.path=$OSGI_KF:/home/andfrei/.maven/repository/nanning/jars/nanning-core-1.0-beta-1.jar \
+  org.knopflerfish.framework.Main -xargs es-min-init.xargs

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+	<extend>${basedir}/../../project.xml</extend>
+
+	<groupId>jadabs</groupId>
+	<id>benchmark</id>
+	<name>Benchmark Service</name>
+	<package>ch.ethz.iks.benchmark</package>
+
+	<inceptionYear>2004</inceptionYear>
+	<shortDescription>Benchmark Service</shortDescription>
+
+
+	<properties>
+		<osgi.export.service>ch.ethz.iks.benchmark.Benchmark</osgi.export.service>
+	</properties>
+
+
+	<dependencies>
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+	</dependencies>
+
+  
+</project>

@@ -1,0 +1,94 @@
+!!! SUMMARY
+
+This is a binary release of PROSE (PROgrammable extenSions of sErvices)
+See also: http//prose.ethz.ch/
+
+!! QUICK START
+
+'bin/jprose' is a program that activates PROSE in the Java Virtual
+Machine (JVM) your are using.  It calls Java and then runs YOUR
+program with java. It accepts a superset of the Java arguments.
+For example,
+
+    'jprose -claspath <mycpath> MyClass'
+
+is equivalent to
+
+    'java -classpath <mycpath> MyClass'
+
+If you run you Java programs with 'jprose' instead of 'java', you will
+be able to dynamically weave and unweave prose aspects to/from your Java
+applications.
+
+Note that 'jprose' is NOT a modified JVM: it weaves aspects using the
+*standard* interfaces of the JVM. Note also that 'jprose' is not a
+simple replacement of 'java'. It provides java applications with the
+ablity to be extended at run-time.
+
+!! COMPILING applications for prose
+
+Prose allows you to (i) write aspects as pure Java classes and (ii) weave
+these aspects at run-time through an application. To learn how to write
+prose aspects, please consult
+
+http://prose.ethz.ch
+
+When you compile such Java (aspect) classes, add the following jars to your
+classpath
+
+	'lib/prose/lib/jdk-prose-loc.jar'
+	'lib/prose/lib/jdk-jvmai-loc.jar'
+
+
+!! EXAMPLES
+
+in the directory 'docs/examples/basic' you find an example of
+how to compile and run a basic logging example with PROSE.
+
+
+!! TECHNICAL DATA
+
+This binary release supports the following OS/JVMs:
+
+ -------------------------------------------
+|   Supported OS   |      Supported JVMs    |
+ -------------------------------------------
+|  Linux/i*86	   |     Sun J2SE/J2EE	    |
+|  Sparc/Solaris   |  from 1.2.2  to  1.4.1 |
+|  Windows/i*86    |  from 1.2.3  to  1.4.1 |
+ -------------------------------------------
+
+The current release of prose supports cross-cutting of
+ - Method boundaries (entries, exits)
+ - Field sets (e.g., a.x=1);
+ - Field gets (e.g., int lv = a.x)
+ - Exception throws
+
+
+========================================================
+		LEGAL NOTICE
+========================================================
+This software may be distributed together with  a Java Runtime Environment (JRE).
+See  <prose>/pseudo-jre/README for additional information.
+
+In case it is distributed with a JRE,
+
+"This product includes code licensed from RSA Security, Inc.", and
+"Some portions licensed from IBM are available at
+ http://oss.software.ibm.com/icu4j/"
+
+Also, the files under <prose>/pseudo-jre is __not__ a real JRE. It is a
+directory with the same structure as a JRE, but using a real JRE from
+a different location.
+
+
+
+IN PARTICULAR, THE 'prose/pseudo-jre/bin/java' SCRIPT IS NOT THE TRUE
+JAVA EXECUTABLE OF A JRE. IT IS A SCRIPT THAT INDIRECTLY CALLS 'java'
+AND ALLOWS ANY JAVA PROGRAM TO BE ENHANCED WITH RUN-TIME ASPECTS.
+THE 'java' SCRIPT IN THIS DIRECTORY CORRESPONDS TO 'jprose'. THIS
+SCRIPT IS NAMED 'java' FOR CONVENIENCE ONLY. IT INDIRECTLY CALLS THE
+ACTUAL JAVA EXECUTABLE AND ADDS SIGNIFICANT FUNCTIONALITY TO JAVA,
+BY ALLOWING RUN-TIME WEAVING USING THE DEBUGGER INTERFACE (JVMDI).
+THE LOCATION OF THE USED JAVA(TM) 2 RUNTIME ENVIRONMENT SOFTWARE,
+COMPLETE AND UNMODIFIED, CAN BE FOUND IN THE FILE '<prose>/pseudo-jre/README.PSEUDOJRE-LOG'

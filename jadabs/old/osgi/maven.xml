@@ -1,0 +1,18 @@
+<project default="osgiapi:install" 
+	xmlns:maven="jelly:maven"
+	xmlns:jar="jelly:jar"
+	xmlns:j="jelly:core" 
+	xmlns:util="jelly:util" 
+	xmlns:ant="jelly:ant"
+	xmlns:artifact="artifact">
+
+  <goal name="osgiapi:install" >
+    <maven:reactor
+      basedir="${basedir}"
+      includes="**/project.xml"
+      excludes="project.xml"
+      goals="jar:install"
+      ignoreFailures="false"/>
+  </goal>
+  
+</project>

@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Development with Jadabs</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+  
+	<section name="Convention for creating packages">
+		<p>
+			Here we list some conventions for packaging of code like
+			interface and implementation or package names. This allows
+			to recognize packages written by others and read their code
+			more easaly.
+		</p>
+		
+		<table>
+          <tr><th>Convention</th><th>Description</th></tr>
+          
+          <tr>
+          	<td>API/Impl</td>
+            <td>
+            	In general interfaces and implementations are packaged
+            	separately. In the bundles directory two separat folders
+            	are created called <b>api</b> and <b>impl</b>. Ech of these
+            	folders contains the src directory.
+            </td>
+          </tr>
+          <tr>
+          	<td>Package Nameing</td>
+            <td>
+            	<p>
+            	API packages do not contain an additional package suffix.
+            	E.g. the Jxme-Service API package is named ch.ethz.jadabs.jxme.services
+            	and not ch.ethz.jadabs.jxme.services.api.
+            	</p>            	
+            	<p>
+            	Implementation packages contain the additional package suffix <b>.impl</b>.
+            	E.g. the Jxme-Service Implementation package is named ch.ethz.jadabs.jxme.services.impl.
+            	</p>
+            </td>
+          </tr>
+          <tr>
+          	<td>ArtifactId</td>
+            <td>
+            	<p>
+            	ArtifactIds (<artifactid></artifactid>)of bundles should describe in short the content of 
+            	the bundle and written in small letters.
+            	An API contains the suffix <b>-api</b> and the implementation
+            	<b>-impl</b>.
+            	</p>
+            	<p>
+            	Bundles where the API is not separated from the implementation 
+            	should take an ArtifactId without the suffix api or impl.
+            	</p>
+            </td>
+          </tr>
+          <tr>
+          	<td>Bundle Name</td>
+            <td>
+            	<p>
+            	A Bundle name (<name></name>) should contain big and small letters. 
+            	An API contains the suffix <b>-API</b> and the implementation
+            	<b>-Impl</b>.
+            	</p>
+            </td>
+          </tr>
+          <tr>
+          	<td>J2ME/CLDC Bundles</td>
+            <td>
+            	<p>
+            	Bundles generated for J2ME/CLDC should contain in the artifactid
+            	and bundle name the suffixes -j2me respectively -J2ME.
+            	</p>
+            </td>
+          </tr>
+         
+    </table>
+	
+	</section>
+	
+	<section name="Debugging of the OSGi container with Eclipse">
+	   <p>
+			Debugging of distributed applications can be complicated.
+			Running these applications in a container complicates the
+			debugging processes even more. We describe here a possibility to
+			debug your bundles with Eclipse.
+	   </p>
+	   <p>
+	   		First, it has to be noted that hotswap debugging is not supported
+	   		for bundles. Bundles need first to be compiled and packaged into
+	   		jars everytime a change is made.
+	   </p>
+	   <p>
+	   		You can configure your eclipse to startup the Knopflerfish 
+	   		in debugging mode. The packages will then be taken from the
+	   		folder specified in the init.xargs. You can set breakpoints
+	   		in eclipse and once a breakpoint is hit in KF the execution is
+	   		transfered to eclipse to handle the breakpoint.
+	   </p>
+	
+	</section>
+	
+ 	</body>
+</document>

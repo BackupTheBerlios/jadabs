@@ -1,0 +1,10 @@
+
+
+# In the release tree (you downloaded a binary version)
+
+#javac -classpath ../../../lib/prose-compile-loc.jar:. *.java
+
+
+# In the development tree (you compiled prose yourself)
+
+javac -classpath ../../../profiles/release/prose-compile/prose-compile-loc.jar:. *.java

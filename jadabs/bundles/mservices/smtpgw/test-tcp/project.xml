@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../../project.xml</extend>
+
+	<groupId>mservices</groupId>
+	<id>smtpgw-test-tcp</id>
+	<name>MobileServices-SMTPGW-Test-TCP</name>
+
+	<shortDescription>MobileServices-SMTPGateway Test TCP</shortDescription>
+
+  	<dependencies>
+  	
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+		
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-tcp</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+      
+      <dependency>
+         <groupId>log4j</groupId>
+         <artifactId>log4j</artifactId>
+         <version>1.2.8-osgi</version>         
+      </dependency>      
+		
+		
+  	</dependencies>
+
+  
+</project>

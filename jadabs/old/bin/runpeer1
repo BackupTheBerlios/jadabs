@@ -1,0 +1,12 @@
+#! /bin/bash
+
+# -Dw_proxy
+# -Dlog
+# -Dprodtest
+
+java -Dtestid=2 -Dbm.runs=100 -Dtcruns=1 -Drangefrom=1000 -Drangeto=10000 -Drangeinc=10 \
+  -Dlog -Dprodtest -Dw_proxy \
+  -Dtestname=jre_ll -Djxme.peername=peer1 \
+  -jar framework-1.3.0-aop.jar -xargs es-min-init.xargs
+  
+  

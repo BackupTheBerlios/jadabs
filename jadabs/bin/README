@@ -1,0 +1,44 @@
+Jadabs
+------
+
+see for more information http://wlab.ethz.ch/jadabs
+copyright by ETH, Andreas Frei
+
+Minimal
+--------
+With the minimal version you can start a peer like the following:
+
+linux> ./runpeer.sh
+win> runpeer.bat
+
+To start a second peer make a copy of this folder and change inside
+the runpeer -Dch.ethz.jadabs.jxme.peeralias=$HOSTNAME the HOSTNAME to an
+other name, e.g. peer2.
+
+
+
+Full
+----
+Contains all our libraries together with the ones from Knopflerfish (KF).
+You can start with KF-GUI or with a very simple RemoteBundle Admin tool.
+
+KF-GUI:
+
+linux> ./runpeer.sh init-kf
+win> runpeer.bat init-kf
+
+RemoteBundle-Admin GUI
+
+linux> ./runpeer.sh init-gui-linux
+win> runpeer.bat init-gui-win
+
+
+
+Full-Prose
+----------
+All the above scripts can also be run by adding prose as a parameter.
+Currently this works only for Linux.
+
+linux> ./runpeer.sh init prose
+linux> ./runpeer.sh init-kf prose
+linux> ./runpeer.sh init-gui-linux prose 

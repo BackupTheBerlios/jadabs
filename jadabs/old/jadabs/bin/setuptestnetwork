@@ -1,0 +1,93 @@
+#!/bin/bash
+
+IFCONFIG=/sbin/ifconfig
+IWCONFIG=/sbin/iwconfig
+
+IPTABLES=/sbin/iptables
+IPCHAINS=/sbin/ipchains
+
+ROUTE=/sbin/route
+FULLHOSTNAME=`hostname`
+#HOSTNAME=`basename $FULLHOSTNAME .inf.ethz.ch`
+#HOSTNAME=iknlab8
+
+IFACE=eth1
+IFACE_WLAB=eth1
+
+
+if [ "$1" = "start" ]
+then
+echo "..detected $NODETYPE/$LOCALIP" 
+#GATEWAY=192.168.55.8
+
+PEER="$2"
+
+if [ "$3" = "ad-hoc" ]
+then
+  MODE="ad-hoc"
+  ESSID="vortex"
+else
+  MODE="managed"
+  ESSID="public"
+fi
+
+
+# bring up our private demo setup
+
+
+case $PEER in
+iknlab8*)
+    echo "setting up $PEER for $MODE, $ESSID"
+    $IWCONFIG $IFACE mode $MODE
+    $IWCONFIG $IFACE essid $ESSID
+
+    PEERNAME=peer1
+    IP=192.168.55.8
+
+    echo "setting ip address $IP"
+    $IFCONFIG $IFACE up $IP
+
+    $IFCONFIG $IFACE netmask 255.255.255.0 
+    $ROUTE add -net 224.0.0.0 netmask 240.0.0.0 dev $IFACE
+    ;;
+*)
+    echo "setting up $PEER for $MODE, $ESSID"
+    $IWCONFIG $IFACE_WLAB mode $MODE
+    $IWCONFIG $IFACE_WLAB essid $ESSID
+
+    PEERNAME=peer$PEER
+    IP=192.168.55.12$PEER
+
+    echo "setting ip address $IP"
+    $IFCONFIG $IFACE_WLAB up $IP
+
+    $IFCONFIG $IFACE_WLAB netmask 255.255.255.0 
+    $ROUTE add -net 224.0.0.0 netmask 240.0.0.0 dev $IFACE_WLAB
+    ;;
+esac
+
+else 
+
+if [ "$1" = "stop" ]
+then
+echo "..restoring configuration on $NODETYPE/$LOCALIP" 
+
+case $HOSTNAME in
+iknlab4*)
+    ;;
+*)
+    $ROUTE del default
+    ;;
+esac
+
+$IWCONFIG $IFACE mode Managed
+$IWCONFIG $IFACE essid "ANY"
+$IFCONFIG $IFACE down
+
+/etc/sysconfig/network-scripts/ifup $IFACE
+
+else
+ echo "$0 start Peer [managed|ad-hoc]|stop"
+fi
+
+fi

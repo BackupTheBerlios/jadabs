@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>jxme-impl</id>
+  <name>JXME Impl</name>
+  <package>ch.ethz.iks.jxme.impl</package>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>JXME Impl</shortDescription>
+
+	<properties>
+		<!--<osgi.bundle.category>interface</osgi.bundle.category>-->
+		<osgi.export.package>ch.ethz.iks.jxme.impl</osgi.export.package>
+		<osgi.import.package>ch.ethz.iks.jxme,org.apache.log4j,ch.ethz.iks.concurrent,ch.ethz.iks.utils</osgi.import.package>
+		<osgi.dynimport.package>ch.ethz.iks.eventsystem.fwevents.impl</osgi.dynimport.package>
+	</properties>
+	
+  <description>
+JXME Implementation
+  </description>
+
+  	<dependencies>
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>commons-utils</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8-osgi</version>
+      		<url>http://jakarta.apache.org/log4j</url>
+    </dependency>
+  	</dependencies>
+
+  
+</project>

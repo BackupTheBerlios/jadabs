@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>jxme-test</id>
+  <name>JXME Test</name>
+  <package>ch.ethz.iks.jxme.udp</package>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>JXME Test</shortDescription>
+
+  <description>
+JXME Test
+  </description>
+
+	<properties>
+		<osgi.manifest.mainclass>ch.ethz.iks.jxme.udp.TestPeerNetwork</osgi.manifest.mainclass>
+	</properties>
+
+  <dependencies>
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jadabs</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+  	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+      			<osgi.manifest.classpath>true</osgi.manifest.classpath>
+      		</properties>
+		</dependency>
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-impl</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+      			<osgi.manifest.classpath>true</osgi.manifest.classpath>
+      		</properties>
+		</dependency>
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>commons-utils</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+      			<osgi.manifest.classpath>true</osgi.manifest.classpath>
+      		</properties>
+		</dependency>
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-udp</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+      			<osgi.manifest.classpath>true</osgi.manifest.classpath>
+      		</properties>
+		</dependency>
+  </dependencies>
+
+  
+</project>

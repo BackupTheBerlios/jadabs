@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>concurrent</id>
+  <name>Jadabs-Concurrent</name>
+
+  <shortDescription>Jadabs Concurrent</shortDescription>
+
+  <dependencies>
+
+  </dependencies>
+
+  
+</project>

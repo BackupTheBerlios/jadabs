@@ -1,0 +1,166 @@
+#!/bin/bash
+
+# Summmary
+# 1. source prose functions (double-check whether we are under windoze)
+
+
+if  type cygpath >/dev/null 2>&1
+then
+LDIR=$(cygpath "$0")
+LDIR=$(dirname "$LDIR")
+else
+LDIR=$(dirname "$0")
+fi
+
+# source the functions for customizing prose to various architectures
+PROSE_UTIL_FUNCTIONS="$LDIR/../lib/prose_sh_functions.sh"
+source "$PROSE_UTIL_FUNCTIONS"
+
+# source the config file for prose
+PROSE_CONFIG="$LDIR/../lib/prose.conf"
+[ -f "$PROSE_CONFIG" ] && source "$PROSE_CONFIG"
+
+usage()
+{
+cat <<EOF
+clprose
+  -classpath  <aspect classpath>
+  --address   <host:port>
+  --insert    <classname>
+  --insertId  <aspectId>
+  --withdraw  <number>
+  --txid      <txId>
+  --abort
+  --commit
+  --list
+  --help
+  --test
+EOF
+}
+
+# --------------------------------------------------------------------------------
+# THE SCRIPT STARTS HERE
+# ---------------------------------------------------------------------------------
+
+
+# acumulate in 'java args' the java args prose will NOT change
+# accumulate in 'initial_java_args' the initial, non-prose java args
+java_args="";
+ARG_INSTANCE=activeInstance
+while [ $# -gt 0 ]
+do
+    case $1 in
+      --commit)
+	ARG_ACTION="-Dfinishtx=commit";
+	;;
+      --abort)
+	ARG_ACTION="-Dfinishtx=abort";
+	;;
+      --txid)
+	shift;
+        ARG_TXID="-DtxId=$1";
+	;;
+      --insertId)
+      	shift;
+	ARG_ASPECTID="-DinsertId=$1";
+	;;
+      --list)
+        ARG_ACTION='-Dlist';
+	;;
+      --address)
+	shift;
+	ARG_ADDRESS="$1";
+	;;
+      --insert)
+      	shift;
+	ARG_ACTION="-Dinsert=$1";
+	;;
+      --withdraw)
+        shift;
+	ARG_ACTION="-Dwithdraw=$1"
+	;;
+      --test)
+      	ARG_INSTANCE=testInstance
+	;;
+      -classpath|-cp)
+        shift;
+        ARG_CPATH="$1";
+	;;
+      -Djava.security.policy=*)
+        ARG_POLICY="$1";
+	;;
+      -help|-h|--help)
+        usage;
+	exit;
+        ;;
+      *)
+        java_args="$java_args $1";	;;
+    esac
+    shift
+done
+
+# --------------------------------------------------------------------------------
+# CHECK ARGS
+# ---------------------------------------------------------------------------------
+
+[ -z  "$ARG_ACTION" ] &&  { usage; prose_err "Please specify an action (--insert,--list,--withdraw,--abort,--commit)"; }
+[ -z  "$ARG_ADDRESS" ] && { usage; prose_err "Please specify an address"; }
+
+
+
+# set everything according to the arch where we run
+prose_arch_specific;
+
+# set the classpath
+prose_set_prosepath;
+
+if [ -z "$ARG_POLICY" ]
+then
+    prose_msg "THE SECURITY POLICY IN USE: " \
+              "  -> $PROSE_TOP/lib/testpolicy" \
+	      "SHOULD NOT BE USED IN A PRODUCTION ENVIRONMENT. PLEASE" \
+	      "SPECIFY AN ALTERNATIVE POLICY USING '-Djava.security.policy'"
+    ARG_POLICY=-Djava.security.policy="$PROSE_TOP/lib/testpolicy"
+fi
+
+
+if [ -n "$ARG_CPATH" ]
+then
+
+# check whether the codebase parameter contains whitespace
+echo "$ARG_CPATH" | perl -pe '/ /g && exit 1' >/dev/null 2>&1 || \
+prose_msg "WARNING: whitespace has been detected in the classpath;" \
+           "this classpath is used as an URL for uploading bytecode" \
+           "This may lead to inconsistencies, since URLs cannot contain" \
+           "whitespace*"
+
+    ARG_CODEBASE=$(prose_codebasepath "$ARG_CPATH");
+fi
+
+prose_find_jvm;
+
+if [ -z "PROSE_FIX_OUTPUT" ]
+then
+"$PROSE_JAVA_HOME"/bin/"$PROSE_JAVA_INT"  -classpath "$ARG_CPATH$CPS$PROSE_TOOLS" \
+      -Djava.rmi.server.codebase="$ARG_CODEBASE" \
+      ${ARG_TXID:+"$ARG_TXID"}                   \
+      ${ARG_ASPECTID:+"$ARG_ASPECTID"}           \
+      "$ARG_POLICY"                              \
+      -Dprose.address=$ARG_ADDRESS               \
+      -Dprose.instance=$ARG_INSTANCE             \
+      $ARG_ACTION                                \
+      ${java_args:+$java_args}                   \
+      ch.ethz.prose.tools.CommandlineProseClient
+
+else
+"$PROSE_JAVA_HOME"/bin/"$PROSE_JAVA_INT"  -classpath "$ARG_CPATH$CPS$PROSE_TOOLS" \
+      -Djava.rmi.server.codebase="$ARG_CODEBASE" \
+      ${ARG_TXID:+"$ARG_TXID"}                   \
+      ${ARG_ASPECTID:+"$ARG_ASPECTID"}           \
+      "$ARG_POLICY"                              \
+      -Dprose.address=$ARG_ADDRESS               \
+      -Dprose.instance=$ARG_INSTANCE             \
+      $ARG_ACTION                                \
+      ${java_args:+$java_args}                   \
+      ch.ethz.prose.tools.CommandlineProseClient | cat 2>&1
+fi

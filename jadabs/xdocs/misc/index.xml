@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Miscellaneous</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+    <section name="Miscellaneous">
+      <p>
+        These are various informational documents about Jadabs, including
+        <ul>
+          <li><a href="relatedwork.html">Related Projects to Java</a></li>
+        </ul>
+      </p>
+    </section>
+ </body>
+</document>

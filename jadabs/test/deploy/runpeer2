@@ -1,0 +1,9 @@
+#! /bin/bash
+
+# -Dprodtest 
+# -Dw_proxy 
+
+java -Djxme.peername=peer2 \
+  -Djava.class.path=$OSGI_KF:/home/andfrei/.maven/repository/nanning/jars/nanning-core-1.0-beta-1.jar \
+  org.knopflerfish.framework.Main -xargs es-min-init.xargs
+  

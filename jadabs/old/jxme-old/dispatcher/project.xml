@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <extend>${basedir}/../../../project.xml</extend>
+
+  <groupId>jadabs</groupId>
+  <id>jxme-dispatcher</id>
+  <name>JXME Dispatcher Nanning</name>
+  <package>ch.ethz.iks.jxme.dispatcher</package>
+
+  <inceptionYear>2004</inceptionYear>
+  <shortDescription>JXME Dispatcher Nanning</shortDescription>
+
+	<properties>
+		<osgi.bundle.category>dispatcher</osgi.bundle.category>
+		<osgi.import.service>ch.ethz.iks.jxme.IPeerNetwork</osgi.import.service>
+		<osgi.export.package/>
+	</properties>
+	
+  <description>
+JXME Dispatcher Nanning
+  </description>
+
+  	<dependencies>
+  		<dependency>
+  			<groupId>osgi</groupId>
+  			<artifactId>osgi-framework</artifactId>
+  			<version>1.2</version>
+  		</dependency>
+  		
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+	    	<groupId>osgi</groupId>
+	      	<artifactId>osgi-aop</artifactId>
+	      	<version>0.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>nanning</groupId>
+			<artifactId>nanning-core</artifactId>
+			<version>1.0-beta-1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>nanning</groupId>
+			<artifactId>nanning-ext</artifactId>
+			<version>1.0-beta-1</version>
+		</dependency>
+	
+  	</dependencies>
+
+  
+</project>

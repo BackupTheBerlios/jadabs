@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../project.xml</extend>
+
+	<groupId>jxta</groupId>
+	<id>jxme-tcp-test</id>
+	<name>JXME-TCP-test</name>
+
+	<shortDescription>JXME-TCP-test</shortDescription>
+
+  	<dependencies>
+  	
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+    	
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-tcp</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+  	</dependencies>
+
+  	<build>
+  		<sourceDirectory>${basedir}/src</sourceDirectory>
+  	
+  	<!--
+		
+		  <sourceModifications>
+		  	<sourceModification>
+      			<className>*.java</className>
+				<excludes>
+					<exclude>net/jxta/j2me/transports/cldc/*.java</exclude>
+					<exclude>net/jxta/j2me/transports/cdc/*.java</exclude>
+				</excludes>
+				<includes>
+					<include>**</include>
+				</includes>
+			</sourceModification>
+		</sourceModifications>
+     
+          <resources>
+
+     	<resource>
+        	<directory>${maven.repo.local}</directory>
+            <includes>
+                <include>**/osgi-j2me-0.1.0.jar</include>
+                <include>**/jxme-0.1.0.jar</include>
+                <include>**/jxme-tcp-0.1.0.jar</include>
+            </includes>
+        </resource>
+
+     </resources>
+     -->
+  	</build>
+  
+</project>

@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+ 
+ <document>
+  <properties>
+    <title>Jadabs Changes</title>
+    <author email="frei@inf.ethz.ch">Andreas Frei</author>
+  </properties>
+  <body>
+
+    <section name="News and Status">
+      <p>
+        This document contains the latest news and status regarding the
+        Jadabs project.
+      </p>    
+    </section>
+    
+    <release version="0.7.0" date="2004-11-03" description="released to open source">
+		<action dev="andfrei" type="add">
+      		We released this project to the open source community hosted by
+      		berliOS.de. Any improvements and suggestions are welcome!
+      	</action>
+    </release>
+    
+    <release version="0.6.8" date="2004-11-03" description="remotefw,startup,docu">
+		<action dev="andfrei" type="update">
+      		RemoteFramework has been again implemented with the PeerNetworkService.
+      	</action>
+		<action dev="andfrei" type="update">
+      		The startup scripts have been adapted for an easier start.
+      	</action>
+      	<action dev="andfrei" type="update">
+      		The documentation has been improved but we are still a bit behind ;-)
+      	</action>
+    </release>
+    
+    <release version="0.6.7" date="2004-10-19" description="jxme.jxta.org integration">
+		<action dev="andfrei" type="update">
+      		The JXTA/JXME project has been integrated as new messaging layer.
+      		Instead of one jxme package, the services have been taken out and
+      		packaged seperately from the core messaging. 
+      	</action>
+		<action dev="andfrei" type="">
+      		Following packages have not yet been ported to new jxme service layer:
+      		eventsystem, remoteframework.
+      	</action>
+    </release>
+    
+    <release version="0.6.6" date="2004-07-09" description="Prose integration, Stargate">
+		<action dev="andfrei" type="add">
+      		Integrated Prose-1.2.1 into a new distribution. This allows now
+      		to run full dynamic runtime AOP on normal VMs combined with
+      		the already included AspectJ and Nanning.
+      	</action>
+		<action dev="andfrei" type="add">
+      		Stargate is a High-End Sensorboard used to coordinate sensors in its
+      		range with desktop machines. We successfully tested Jadabs on this
+      		board for following components: jxme-udp, jxme-tcp, eventsystem, nanning.
+      	</action>
+    </release>
+    
+    <release version="0.6.5" date="2004-06-17" description="Jadabs-MainGui, remotefw, shell">
+		<action dev="andfrei" type="update">
+      		Changed package name for eventsystem.svc to eventsystem.impl.
+      		New policy is not to use "I" anymore infront of the interfaces
+      		as the interfaces should be anyway in a api package.
+      	</action>
+		<action dev="andfrei" type="update">
+      		Moved Jadabs site to our new URL http://wlab.ethz.ch/jadabs
+      	</action>
+      	<action dev="andfrei" type="update">
+      		Thirdparty packages for osgi should now have all -osgi suffix.
+      	</action>
+      	<action dev="dullerm" type="add">
+      		Created a bundle for log4j to get one instance for whole
+      		OSGi container.
+      	</action>
+      	<action dev="andfrei" type="add">
+      		Generated an SWT bundle for win32, linux.
+      	</action>
+    	<action dev="andfrei" type="fix">
+      		JaclDiscovery layer had some minor bugs. Work now with offsets
+      		from remote machines.
+      	</action>
+    	<action dev="andfrei" type="add">
+      		The Jadabs-MainGUI has been added. Remote Peers can be be controlled
+      		over this GUI to start/stop/install/uninstall bundles remotely.
+      	</action>
+      	<action dev="rjan" type="shell">
+      		Shell has been adapted to the new remoteframework and extended 
+      		with a plugin mechanism for new commands.
+      	</action>
+      	<action dev="andfrei" type="update">
+      		The RemoteFramework has been adapted to fit the needs for a
+      		a active and reactive remoteframework.
+      	</action>
+    </release>
+        
+    <release version="0.6.4" date="2004-06-04" description="AOP-Extension, Documentation">
+      <action dev="andfrei" type="add">
+      	Jadabs has been extended with the possibilty to use dynamic AOP and
+      	AspectJ, see the Jadabs-AOP site for fourther information.
+      </action>
+      <action dev="andfrei" type="add">
+      	A new subproject has been added to integrate OSGi and Nanning.
+      </action>
+      <action dev="rjan" type="fix">
+      	Some fixes in the remote framework and discovery mechanism.
+      </action>
+      <action dev="andfrei" type="update">
+      	Documentation has been extended to reflect the AOP changes and related
+      	work/projects.
+      </action>
+    </release>
+    
+    <release version="0.6.3" date="2004-05-22" description="added services for RemoteFramework and discovery">
+      <action dev="andfrei, rjan" type="add">
+      	We added some testing code for a RemoteFramework which will take use
+      	of a discovery service.
+      </action>
+      <action dev="rjan" type="add">
+      	Jacl will get a new discovery service inside the eventsystem. It
+      	is quite similar to Jini concept but works on top of the Jxme layer.
+      	Once we have sorted out its functionality it should get an independent
+      	bundle.
+      </action>
+    </release>
+    
+    <release version="0.6.0" date="2004-04-08" description="move to OSGi">
+      <action dev="andfrei" type="update">
+      	With this new release we moved to the OSGi standard. The Jadabs-core
+      	is superseded by the OSGi-API and <a href="http://www.knopflerfish.org/">Knopfelfish</a>
+      	implementation. All further development will take usage of the OSGi-API. The
+      	messaging-layer and the eventsystem have been transformed onto
+      	the new API.
+      </action>
+    </release>
+
+    <release version="0.5.1" date="2004-04-02" description="bugfixes and new shell component">
+      <action dev="andfrei" type="fix">
+      	Some bugfixes concerning windows/linux platforms.
+      </action>
+      <action dev="andfrei" type="add">
+        Jadabs-Shell component to control the runtime components.
+      </action>           
+    </release>
+    
+    <release version="0.5.0" date="2004-03-29" description="first public release">
+      <action dev="andfrei" type="update">
+      	EventSystem will be bound to the UDPPeerNetwork. This will be
+      	changed at a later stage to dynamic PeerNetwork bynding.
+      </action>              
+    </release>
+
+<!--    <release version="1.0" date="2003-06-05">
+      <action dev="vmassol" type="add">
+        Added blah blah.
+      </action>              
+      <action dev="vmassol" type="fix">
+        Corrected bug blah blah.
+      </action>              
+      <action dev="vmassol" type="remove">
+        Removed blah blah.
+      </action>              
+    </release>
+-->
+
+  </body>
+</document>

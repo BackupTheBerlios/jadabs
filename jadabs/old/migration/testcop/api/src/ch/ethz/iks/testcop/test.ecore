@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="ch.ethz.iks.test"
+    nsURI="http://ch.ethz.iks.test" nsPrefix="ch.ethz.iks.test">
+  <eClassifiers xsi:type="ecore:EClass" name="Proxy"/>
+  <eClassifiers xsi:type="ecore:EClass" name="$proxy0" eSuperTypes="#//Proxy"/>
+  <eClassifiers xsi:type="ecore:EClass" name="JavaFile" eSuperTypes="#//File"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Serializable" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Comparable" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IFile" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvocationHandler" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="File">
+    <eReferences name="implementor" eType="#//InvocationHandler.1" resolveProxies="false"
+        eOpposite="#//InvocationHandler.1/proxy"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IProxy" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvocationHandler" interface="true">
+    <eReferences name="proxy" eType="#//File" resolveProxies="false" eOpposite="#//File/implementor"/>
+    <eReferences name="hidden" eType="#//File" resolveProxies="false" eOpposite="#//File.1/adapter"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="File">
+    <eReferences name="adapter" eType="#//InvocationHandler.1" eOpposite="#//InvocationHandler.1/hidden"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JavaFile" eSuperTypes="#//File.1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Comparable" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Serializable" interface="true"/>
+</ecore:EPackage>

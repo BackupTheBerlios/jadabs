@@ -1,0 +1,31 @@
+#!/bin/bash
+
+
+
+if  type cygpath >/dev/null 2>&1
+then
+LDIR=$(cygpath "$0")
+LDIR=$(dirname "$LDIR")
+else
+LDIR=$(dirname "$0")
+fi
+
+
+PROSE_UTIL_FUNCTIONS="$LDIR/../lib/prose_sh_functions.sh"
+source "$PROSE_UTIL_FUNCTIONS"
+
+PROSE_CONFIG="$LDIR/../lib/prose.conf"
+[ -f "$PROSE_CONFIG" ] && source "$PROSE_CONFIG"
+
+
+
+# set everything according to the arch where we run
+prose_arch_specific;
+
+# set the classpath
+prose_set_prosepath;
+
+# check whether the user wants us to run with a given jvm
+prose_find_jvm;
+
+"$PROSE_JAVA_HOME"/bin/"$PROSE_JAVA_INT"   -classpath "$PROSE_CPATH$CPS$PROSE_TOOLS"  -Dch.ethz.inf.project.home="$PROSE_TOP" ch.ethz.prose.tools.JMultipleProseClient

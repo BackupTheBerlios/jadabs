@@ -1,0 +1,13 @@
+#! /bin/bash
+
+# -Dw_proxy
+# -Dlog
+# -Dprodtest
+
+java -Dtestid=2 -Dbm.runs=100 -Dtcruns=1 -Drangefrom=1000 -Drangeto=10000 -Drangeinc=10 \
+  -Dlog -Dprodtest -Dw_proxy \
+  -Dtestname=jre_ll -Djxme.peername=peer1 \
+  -Djava.class.path=$OSGI_KF:/home/andfrei/.maven/repository/nanning/jars/nanning-core-1.0-beta-1.jar \
+  org.knopflerfish.framework.Main -xargs es-min-init.xargs
+  
+  

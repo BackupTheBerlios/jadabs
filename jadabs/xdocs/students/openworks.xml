@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>ETH Student-Works</title>
+    <author email="frei_inf.ethz.ch">Andreas Frei</author>
+  </properties>
+
+  <body>
+		<section name="ETH Studentenarbeiten">
+		<p>
+			Wir haben im Bereich Mobile Computing verschiedene Studenten Arbeiten
+			zu vergeben. Semester-, Diplom- und Master-Arbeiten können
+			jeder Zeit begonnen werden.
+		</p>
+		
+		<p>
+			Weitere Arbeiten sind in Vorbereitung. Melde dich einfach bei
+			<a href="mailto:frei_inf.ethz.ch">Andreas Frei</a>
+		</p>
+		
+		<subsection name="DA/MA: Sensor Netzwerk Integration in Jadabs">
+		<p>
+			Mit Jadabs wollen wir die Brücke schlagen zwischen den Kleinst-Geräten, den
+			Sensoren und den Desktop Maschinen. PDAs oder zum Beispiel der Stargate
+			aus der Sensor Netzwerk-Welt haben die Möglichkeit als "Middle-Nodes"
+			oder "Jadabs-Nodes"	zu operieren. Diese "Jadabs-Nodes" sollen nun die Möglichkeit haben
+			die Sensoren (Berkeley-Motes) dynamisch zu konfigurieren.
+		</p>
+		<img src="../images/mesh_network.jpg" alt="simulator/monitoring" width="300" />
+		<p>
+			Mitzubringen ist Know-How in Java, C und das Interesse
+			in die Sensor Welt abzutauchen.
+		</p>
+		</subsection>
+		
+		<subsection name="SIPHoc Turning a Symbian based mobile phone into a VoIP-peer using Bluetooth/SIP">
+		<p>
+			Currently, most mobile phones are equipped with more than one 
+			networking interface, like i.e. Bluetooth. One could imagine 
+			the phone to be smart and always choose the cheapest possible 
+			way to call a given user. As an example the mobile phone could 
+			use the existing Bluetooth connection to tunnel voice traffic 
+			through the internet whenever the remote device is connected to 
+			the internet.
+		</p>
+		<p>
+		    Proposal (<a href="http://wlab.ethz.ch/qos/students/voicetunnel.pdf">pdf</a>)
+		</p>
+		<img src="voicetunnel.gif" alt="voicetunnel" width="500" />
+
+		</subsection>	
+
+		</section>
+		
+ </body>
+</document>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ComponentDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" size="683,607" metadata="nsuml-1.4" initialized="true">
+  <children xsi:type="editmodel:GroupEditModel" location="132,73">
+    <children xsi:type="editmodel:ComponentEditModel" size="91,43" stereotype="framework" itemName="jadabs"/>
+    <children xsi:type="editmodel:ComponentEditModel" location="124,0" size="91,43" stereotype="framework" itemName="evolution"/>
+    <children xsi:type="editmodel:ComponentEditModel" location="126,279" size="91,43" stereotype="application" itemName="cop B"/>
+    <children xsi:type="editmodel:ComponentEditModel" location="124,185" size="93,43" stereotype="library" itemName="proxy4 cop A"/>
+    <children xsi:type="editmodel:ComponentEditModel" location="277,91" size="103,43" stereotype="library" itemName="cop A version 2"/>
+    <children xsi:type="editmodel:ComponentEditModel" location="261,1" size="132,43" stereotype="library" itemName="migr2 cop A version 2"/>
+  </children>
+  <children xsi:type="editmodel:ComponentEditModel" location="295,252" size="91,43" stereotype="application" itemName="cop B">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" connectionRouterKind="Manual" source="//@children.1" target="//@children.2" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:ComponentEndEditModel" location="46,-1" attachSource="true"/>
+      <children xsi:type="editmodel:ComponentEndEditModel" location="50,43"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" connectionRouterKind="Manual" source="//@children.1" target="//@children.4" targetEnd="//@children.1/@sourceConnections.1/@children.1" sourceEnd="//@children.1/@sourceConnections.1/@children.0">
+      <children xsi:type="editmodel:ComponentEndEditModel" location="91,34" attachSource="true"/>
+      <children xsi:type="editmodel:ComponentEndEditModel" location="-1,10"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ComponentEditModel" location="285,104" size="103,43" stereotype="library" targetConnections="//@children.1/@sourceConnections.0 //@children.6/@sourceConnections.0" itemName="cop A version 2"/>
+  <children xsi:type="editmodel:ComponentEditModel" location="146,104" size="91,43" stereotype="framework" targetConnections="//@children.5/@sourceConnections.0" itemName="jadabs"/>
+  <children xsi:type="editmodel:NotepadEditModel" location="436,252" size="159,46" targetConnections="//@children.1/@sourceConnections.1" note="component with dependency&#xA;Class-Path: copA.jar"/>
+  <children xsi:type="editmodel:NotepadEditModel" location="142,51" size="105,34" note="Ad hoc container&#xA;for components">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" connectionRouterKind="Manual" source="//@children.5" target="//@children.3" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:ComponentEndEditModel" location="44,34" attachSource="true"/>
+      <children xsi:type="editmodel:ComponentEndEditModel" location="53,-1"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="265,53" size="145,22" note="version 1 of a component">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" connectionRouterKind="Manual" source="//@children.6" target="//@children.2" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:ComponentEndEditModel" location="60,22" attachSource="true"/>
+      <children xsi:type="editmodel:ComponentEndEditModel" location="69,-1"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ComponentEditModel" location="471,103" size="103,43" stereotype="library" targetConnections="//@children.8/@sourceConnections.0" itemName="cop A version 2"/>
+  <children xsi:type="editmodel:NotepadEditModel" location="37,203" size="201,94" note="to replace the version 1 of cop A&#xA;by version 2, you need to stop copB&#xA;then stop the old version of cop A, &#xA;start the new version of cop A and &#xA;relaunch cop B (if it is compatible with&#xA;cop A's new version, else you have to&#xA;replace cop B, too)">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" connectionRouterKind="Manual" source="//@children.8" target="//@children.7" targetEnd="//@children.8/@sourceConnections.0/@children.1" sourceEnd="//@children.8/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:ComponentEndEditModel" location="201,13" attachSource="true"/>
+      <children xsi:type="editmodel:ComponentEndEditModel" location="-1,38"/>
+    </sourceConnections>
+  </children>
+</editmodel:ComponentDiagramEditModel>

@@ -1,0 +1,14 @@
+-Dorg.knopflerfish.verbosity=0
+-Dorg.knopflerfish.gosg.jars=file:jars/
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.system.export.all_13=false
+-Dorg.osgi.framework.system.packages=ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
+
+-Dorg.knopflerfish.startlevel.use=true
+
+-init
+
+
+-launch

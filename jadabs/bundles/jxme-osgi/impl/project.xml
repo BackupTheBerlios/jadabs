@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../project.xml</extend>
+
+      <organization>
+        <name>ETHZ-IKS</name>
+        <url>http://www.iks.inf.ethz.ch</url>
+        <logo>/images/logo_ethz_iks.jpg</logo>
+      </organization>
+      
+	<groupId>jadabs</groupId>
+	<id>jxme-osgi</id>
+	<name>JXME-OSGi</name>
+
+	<shortDescription>JXME-OSGi</shortDescription>
+
+	<properties>
+		<osgi.export.service>ch.ethz.jadabs.jxme.PeerNetwork,ch.ethz.jadabs.jxme.EndpointService</osgi.export.service>
+	</properties>
+
+  	<dependencies>
+  	
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+
+    	<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8</version>
+		</dependency>
+		
+  	</dependencies>
+
+  <reports>
+  	<report>maven-javadoc-plugin</report>
+  </reports>
+
+</project>

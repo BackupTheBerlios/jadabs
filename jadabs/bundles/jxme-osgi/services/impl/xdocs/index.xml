@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME-Services</title>
+  </properties>
+
+  <body>
+    <section name="JXME-Services">
+    
+    	<subsection name="Properties">
+		<table>
+          <tr><th>Property</th><th>Default</th><th>Description</th></tr>
+               
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.services.hopCount</td>
+          	<td>0</td>
+          	<td></td>
+          </tr>
+          
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.services.noNeighbors</td>
+          	<td>0</td>
+          	<td></td>
+          </tr>
+          
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.services.queryTableSize</td>
+          	<td>0</td>
+          	<td></td>
+          </tr>
+          
+      </table>
+      </subsection>
+      
+      <subsection name="Exported OSGi-Services">
+      <table>
+          <tr><th>Service</th><th>Registration</th><th>Description</th></tr>
+          
+          <tr>
+          	<td>GroupService</td>
+          	<td>ch.ethz.jadabs.jxme.services.GroupService</td>
+          	<td></td>
+          </tr>
+                    
+      </table>
+      </subsection>
+      
+      <subsection name="Imported OSGi-Services">
+      <table>
+          <tr><th>Service</th><th>Registration</th><th>Description</th></tr>
+          
+          <tr>
+          	<td>Peernetwork</td>
+          	<td>ch.ethz.jadabs.jxme.PeerNetwork</td>
+          	<td></td>
+          </tr>
+          
+          <tr>
+          	<td>EndpointService</td>
+          	<td>ch.ethz.jadabs.jxme.EndpointService</td>
+          	<td></td>
+          </tr>
+                    
+      </table>
+      </subsection>
+      
+    </section>
+  </body>
+</document>

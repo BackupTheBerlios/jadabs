@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME-OSGi</title>
+  </properties>
+
+  <body>
+    <section name="JXME-OSGi">
+      <p>
+		Properties
+		<table>
+          <tr><th>property</th><th>default</th><th>description</th></tr>
+          
+          <tr>
+          	<td>ch.ethz.jadabs.jxme.tcp.port</td>
+          	<td>9001</td>
+          	<td></td>
+          </tr>
+          
+      </table>
+      
+      </p>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>JXME-OSGi</title>
+  </properties>
+
+  <body>
+  
+    <section name="JXME-OSGi">
+    
+    	<p>
+    		The Logger bundle supports a simple implementation of
+    		as System.out.println Logger. It is conform to the 
+    		log4j core classes and methods.
+		</p>
+        <p>
+    		Use this package in devices with less memory.
+		</p>
+		
+    </section>
+    
+  </body>
+</document>

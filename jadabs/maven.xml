@@ -1,0 +1,270 @@
+<project default="jadabs:buildall" 
+	xmlns:maven="jelly:maven"
+	xmlns:jar="jelly:jar"
+	xmlns:j="jelly:core" 
+	xmlns:util="jelly:util" 
+	xmlns:ant="jelly:ant"
+	xmlns:artifact="artifact">
+
+
+  <!--==================================================================-->
+  <!-- Properties                                                       -->
+  <!--==================================================================-->
+  
+  <ant:property name="tmp.dir" value="tmp" />
+  
+  <!-- OSGi     -->
+  <ant:property name="osgi.currentVersion" value="3.0" />
+  <ant:property name="osgi.bundle.vendor" value="ETHZ-IKS" />
+  <ant:property name="osgi.bundle.docurl" value="http://www.inf.ethz.ch/andfrei/jadabs" />
+  <ant:property name="osgi.copyright" value="osgi_copyright.txt" />
+  
+  <!-- Knopflerfish -->
+  <!-- <ant:property name="knopflerfish.dir" value="${basedir}/knopflerfish" />
+  <ant:property name="knopflerfish.osgi.dir" value="${knopflerfish}/osgi" /> -->
+  <ant:property name="knopflerfish.framework.aop" value="framework-1.3.0-aop.jar" />
+  
+  <ant:property name="knopflerfish.copyright" value="license_knopflerfish.txt" />
+  <ant:property name="knopflerfish.bundles.dir" value="${knopflerfish.osgi.dir}/jars" />
+  
+  <!-- Licences -->
+  <ant:property name="licences.dir" value="${basedir}/xdocs/licences" />
+  
+  <!-- Jadabs   -->
+  <ant:tstamp>
+    <ant:format property = "bundle.date" 
+            pattern  = "EE MMMM d yyyy, HH:mm:ss"
+            locale   = "en"/>
+   </ant:tstamp>
+	
+	<ant:property name="jadabs.bin" value="${basedir}/jadabs/bin"/>
+	
+	
+	<ant:property name="jadabs.dist.name" value="jadabs-${pom.currentVersion}"/>
+	<ant:property name="jadabs.dist.dir" value="${tmp.dir}/${jadabs.dist.name}"/>
+	<ant:property name="jadabs.dist.repository" value="${jadabs.dist.dir}/repository"/>
+	
+	<ant:property name="jadabs.releases.dir" value="releases" />
+	
+	<ant:property name="jadabs.maven.inst.dir"
+		value="${maven.repo.local}/jadabs/jars"/>
+
+	<ant:property name="maven.repo.cvs" value="../maven/repository" />
+	<ant:property name="maven.dist.dir" value="${maven.build.dir}/distributions"/>
+
+  <!--==================================================================-->
+  <!-- Build goals                                                      -->
+  <!--==================================================================-->
+    <goal name="jadabs:buildall">
+    	<attainGoal name="deps:download" />
+		<attainGoal name="jadabs:buildbundles"/>
+    </goal>
+
+	<goal name="deps:download">
+			<maven:reactor basedir="${basedir}"
+				includes="project_deps_download.xml"
+				goals="java:compile"
+				banner="Dependency download"
+				ignoreFailures="false"/>
+	</goal>
+
+	<goal name="jadabs:buildbundles">
+		<maven:reactor basedir="${basedir}"
+				includes="bundles/**/project.xml"
+				excludes="bundles/shell/**,old/**"
+				goals="osgi:install"
+				banner="Building"
+				ignoreFailures="false"/>
+	</goal>
+
+  <!--==================================================================-->
+  <!-- Build jadabs distribution                                        -->
+  <!--==================================================================-->
+	<goal name="jadabs:dist">
+		
+		<!-- setup dist directory -->
+		<ant:mkdir dir="${maven.dist.dir}"/>
+		
+		<ant:mkdir dir="${jadabs.dist.dir}"/>
+		<ant:mkdir dir="${jadabs.dist.repository}"/>
+
+		
+		<!-- copy knopflerfish framework and copyrights -->
+		<ant:copy todir="${jadabs.dist.dir}">
+			<ant:fileset dir="${maven.repo.cvs}/osgi/jars" 
+				includes="${knopflerfish.framework.aop}"/>
+			<!--<ant:fileset dir="xdocs/licences" includes="${knopflerfish.copyright},${osgi.copyright}"/> -->
+		</ant:copy>
+		
+		<!-- copy log4j.properties, README -->
+		<ant:copy todir="${jadabs.dist.dir}">
+			<ant:fileset dir="bin" 
+				includes="log4j.properties, README"/>
+		</ant:copy>
+		
+		<!-- Licences -->
+		<ant:copy todir="${jadabs.dist.dir}/licences">
+			<ant:fileset dir="${licences.dir}" />
+		</ant:copy>
+		
+		<!-- copy bundles jadabs core, log4j, -->
+		<ant:copy todir="${jadabs.dist.repository}/jadabs/jars">
+			<ant:fileset dir="${jadabs.maven.inst.dir}/" 
+				includes="concurrent-*,jxme-osgi-*,jxme-udp-*,jxme-tcp-*,
+					jxme-services-api-*,jxme-services-impl-*,
+					remotefw-api-*,remotefw-impl-*"
+				excludes="*-test-*"
+			/>
+		</ant:copy>
+		
+		<ant:copy todir="${jadabs.dist.repository}/log4j/jars">
+			<ant:fileset dir="${maven.repo.local}/log4j/jars" includes="log4j-1.2.8-osgi.jar"/>
+		</ant:copy>
+		<ant:copy todir="${jadabs.dist.repository}/xpp3/jars">
+			<ant:fileset dir="${maven.repo.local}/xpp3/jars" includes="*-osgi.jar"/>
+		</ant:copy>
+		<ant:copy todir="${jadabs.dist.repository}/xstream/jars">
+			<ant:fileset dir="${maven.repo.local}/xstream/jars" includes="*-osgi.jar"/>
+		</ant:copy>
+		
+		<!-- copy init.xargs, runpeer.sh, runpeer.bat -->
+		<ant:copy todir="${jadabs.dist.dir}">
+			<ant:fileset dir="bin" 
+				includes="init.xargs,run*"/>
+		</ant:copy>
+		
+		<ant:chmod perm="+x" >
+			<ant:fileset dir="${jadabs.dist.dir}" includes="*.sh"/> 
+		</ant:chmod>
+
+		<!-- Create the minimal .tar file -->
+		<ant:tar longfile="gnu" tarfile="${maven.dist.dir}/${jadabs.dist.name}-minimal.tar">
+			<ant:tarfileset dir="${tmp.dir}"/>
+		<!-- doesn't work, maybe beceause of old ant used in maven-plugin
+			<ant:tarfileset dir="${tmp.dir}" mode="755" username="ant" group="ant">
+    			<ant:include name="${tmp.dir}/*.sh"/>
+  			</ant:tarfileset>
+		
+  			<ant:tarfileset dir="${tmp.dir}">
+  				<ant:include name="${tmp.dir}/**"/>
+    			<ant:exclude name="${tmp.dir}/*.sh"/> 
+  			</ant:tarfileset>
+		-->
+    	</ant:tar>
+    	
+		<!-- Create the full .tar file -->
+		
+		<!-- copy init-kf.xargs -->
+		<ant:copy todir="${jadabs.dist.dir}">
+			<ant:fileset dir="bin" 
+				includes="init-kf.xargs,init-gui-*"/>
+		</ant:copy>
+		
+		<!-- copy bundles jadabs maingui -->
+		<ant:copy todir="${jadabs.dist.repository}/jadabs/jars">
+			<ant:fileset dir="${jadabs.maven.inst.dir}/" 
+				includes="jadabs-maingui-*"
+			/>
+		</ant:copy>
+		
+		<!-- copy the swt libs -->
+		<ant:copy todir="${jadabs.dist.repository}/swt/jars">
+			<ant:fileset dir="${maven.repo.local}/swt/jars" includes="*-osgi.jar"/>
+		</ant:copy>
+		
+		<ant:tar longfile="gnu" tarfile="${maven.dist.dir}/${jadabs.dist.name}-full.tar">
+			<ant:tarfileset dir="${tmp.dir}"/>
+			
+			<ant:copy todir="${jadabs.dist.repository}/knopflerfish/">
+		 		<ant:fileset dir="../maven/repository/knopflerfish/" includes="**"/>
+			</ant:copy>
+
+    	</ant:tar>
+
+		<!-- Create the full-prose .tar file -->
+		
+		<!-- copy prose dir -->
+		<ant:tar longfile="gnu" tarfile="${maven.dist.dir}/${jadabs.dist.name}-fullprose.tar">
+			<ant:tarfileset dir="${tmp.dir}"/>
+			
+			<ant:copy todir="${tmp.dir}/${jadabs.dist.name}/prose-1.2.1/" recursive="true">
+		 		<ant:fileset dir="resources/prose-1.2.1/" includes="**"/>
+			</ant:copy>
+
+    	</ant:tar>
+    	
+    	<!-- generate the minimal distribution -->
+		<ant:gzip
+      		zipfile="${maven.dist.dir}/${jadabs.dist.name}-minimal.tar.gz"
+      		src="${maven.dist.dir}/${jadabs.dist.name}-minimal.tar"
+    	/>
+    	<ant:delete file="${maven.dist.dir}/${jadabs.dist.name}-minimal.tar"/>
+		
+		<!-- generate the full distribution -->
+		<ant:gzip
+      		zipfile="${maven.dist.dir}/${jadabs.dist.name}-full.tar.gz"
+      		src="${maven.dist.dir}/${jadabs.dist.name}-full.tar"
+    	/>
+    	<ant:delete file="${maven.dist.dir}/${jadabs.dist.name}-full.tar"/>
+		
+		<!-- generate the full-prose distribution -->
+		<ant:gzip
+      		zipfile="${maven.dist.dir}/${jadabs.dist.name}-fullprose.tar.gz"
+      		src="${maven.dist.dir}/${jadabs.dist.name}-fullprose.tar"
+    	/>
+    	<ant:delete file="${maven.dist.dir}/${jadabs.dist.name}-fullprose.tar"/>
+    	
+		<!-- Create a zip file 
+    	<ant:zip zipfile="${maven.dist.dir}/${jadabs.dist.name}.zip">
+      		<ant:zipfileset dir="${tmp.dir}"/>
+    	</ant:zip>
+    	-->
+    	
+		<ant:delete dir="${basedir}/${jadabs.dist.name}"/>
+		
+    	<ant:move todir="${basedir}/${jadabs.dist.name}">
+    		<fileset dir="${tmp.dir}/${jadabs.dist.name}"/>
+  		</ant:move>
+  		
+  		<ant:delete dir="${tmp.dir}"/>
+  
+	</goal>
+  
+  <goal name="jadabs:release">
+  	<attainGoal name="jadabs:superclean"/>
+  	<attainGoal name="jadabs:buildall"/>
+  	<attainGoal name="jadabs:dist"/>
+  	
+  	<!-- 
+  		copy new releases to docu 
+  	-->
+  	<ant:copy todir="${jadabs.releases.dir}/">
+			<ant:fileset dir="${maven.dist.dir}/" includes="**"/>
+	</ant:copy>
+	<ant:copy todir="target/docs/releases/">
+			<ant:fileset dir="${jadabs.releases.dir}/" includes="*.gz"/>
+	</ant:copy>
+  	
+  	<attainGoal name="multiproject:site"/>
+  	<attainGoal name="site:deploy" />
+  </goal>
+  
+  
+  <!--==================================================================-->
+  <!-- utility to clean the subprojects and local target                -->
+  <!--==================================================================-->    
+  
+  <goal name="jadabs:clean" prereqs="clean">
+  	<attainGoal name="multiproject:clean" />
+  </goal>
+  
+  <!-- 
+  		Remove also the jadabs-x.x.x, attention you may delete some of
+    	your working temporary stuff. 
+  -->
+  <goal name="jadabs:superclean" prereqs="clean">
+  	<!--<attainGoal name="multiproject:clean" />-->
+  	<ant:delete dir="${basedir}/${jadabs.dist.name}"/>
+  </goal>
+  
+</project>
