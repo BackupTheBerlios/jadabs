@@ -25,12 +25,12 @@
 	<classpathentry kind="src" path="bundles/gui/testmain/src"/>
 	<classpathentry kind="var" path="MAVEN_REPO/junit/jars/junit-3.8.1.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/java/jars/javamail-all-1.3.1-osgi.jar"/>
-	<classpathentry kind="var" path="MAVEN_REPO/xstream/jars/xstream-1.0.1-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/osgi/jars/osgi-framework-1.2.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/sip-api-1.1-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/sip/jars/nist-sip-1.2-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/swt/jars/swt-3.0.1-ppc.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/kobjects/jars/kxml2-2.1.9-osgi.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="MAVEN_REPO/jsx/jars/jsx-osgi-2.2.3.8.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

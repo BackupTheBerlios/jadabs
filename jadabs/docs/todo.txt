@@ -1,0 +1,46 @@
+
+
+BundleLoader commands, make eclipse conform
+--------------------------------------------
+
+osgi> help
+
+---Eclipse Runtime commands.---
+	diag - Displays unsatisfied constraints for the specified bundle(s).
+	active - Displays a list of all bundles currently in the ACTIVE state.
+Valid commands:
+---Controlling the OSGi framework---
+	launch - start the OSGi Framework
+	shutdown - shutdown the OSGi Framework
+	close - shutdown and exit
+	exit - exit immediately (System.exit)
+	gc - perform a garbage collection
+	init - uninstall all bundles
+	setprop <key>=<value> - set the OSGi property
+---Controlling Bundles---
+	install - install and optionally start bundle from the given URL
+	uninstall - uninstall the specified bundle(s)
+	start - start the specified bundle(s)
+	stop - stop the specified bundle(s)
+	refresh - refresh the packages of the specified bundles
+	update - update the specified bundle(s)
+---Displaying Status---
+	status - display installed bundles and registered services
+	ss - display installed bundles (short status)
+	services {filter} - display registered service details
+	packages {<pkgname>|<id>|<location>} - display imported/exported package details
+	bundles - display details for all installed bundles
+	bundle (<id>|<location>) - display details for the specified bundle(s)
+	headers (<id>|<location>) - print bundle headers
+	log (<id>|<location>) - display log entries
+---Extras---
+	exec <command> - execute a command in a separate process and wait
+	fork <command> - execute a command in a separate process
+---Controlling Start Level---
+	sl {(<id>|<location>)} - display the start level for the specified bundle, or for the framework if no bundle specified
+	setfwsl <start level> - set the framework start level
+	setbsl <start level> (<id>|<location>) - set the start level for the bundle(s)
+	setibsl <start level> - set the initial bundle start level
+
+---Controlling the Console---
+	more - More prompt for console output

@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: ResolverService.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
+ * $Id: ResolverService.java,v 1.3 2005/01/19 10:00:05 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -492,17 +492,23 @@ public class ResolverService extends Service implements Runnable, Listener
         
         try
         {
-            // add ResolverService as Service Handler to the URI
-            EndpointAddress[] uris = ServiceActivator.peernetwork.getPeer().getURIList();
-            for (int i = 0; i < uris.length; i++)
-            {
-                uris[i] = new EndpointAddress(uris[i], RESSERVICE_NAME, null);
-            }
+            // remotePublish should propagate the advertisement, no single send
+            // required
             
-            epService.send(elm, uris);
+            // add ResolverService as Service Handler to the URI
+//            EndpointAddress[] uris = ServiceActivator.peernetwork.getPeer().getURIList();
+//            for (int i = 0; i < uris.length; i++)
+//            {
+//                uris[i] = new EndpointAddress(uris[i], RESSERVICE_NAME, null);
+//            }
+//            epService.send(elm, uris);
+            
+            // propagagte advertisement
+            epService.propagate(elm, new EndpointAddress(null, RESSERVICE_NAME, null));
+            
         } catch (IOException e)
         {
-            LOG.debug("advertisement could not be sent on an endpoint.");
+            LOG.debug("advertisement could not be sent on an endpoint:"+e.getMessage());
         }
         
     }
@@ -561,8 +567,13 @@ public class ResolverService extends Service implements Runnable, Listener
        // always send also as multicast
             // I am an ISLAND. Try multicast if it works.
         
+        try {
             EndpointAddress endptaddr = new EndpointAddress(null, serviceName, serviceHandler);
             epService.propagate(elm, endptaddr);
+        }catch(IOException io)
+        {
+            LOG.warn("IOException in propagating message");
+        }
 //        } // else
     }
 

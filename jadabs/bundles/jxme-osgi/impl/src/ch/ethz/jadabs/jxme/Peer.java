@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: Peer.java,v 1.2 2004/11/25 16:35:26 afrei Exp $
+ * $Id: Peer.java,v 1.3 2005/01/19 10:00:05 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -73,7 +73,7 @@ public final class Peer extends NamedResource
     
     public static final String DESCTAG = "desc";
 
-    private EndpointAddress[] URIList = new EndpointAddress[0];
+//    private EndpointAddress[] URIList = new EndpointAddress[0];
 
     
     /**
@@ -108,34 +108,48 @@ public final class Peer extends NamedResource
         // The resolver will wrongly put the URIList in the advertisement.
 
         attributes.put(URITAG, URIList);
-        this.URIList = URIList;
+//        this.URIList = URIList;
         
     }
 
     public void addURI(EndpointAddress endptaddr)
     {
-        EndpointAddress[] newlist = new EndpointAddress[URIList.length + 1];
+        EndpointAddress[] list = (EndpointAddress[])attributes.get(URITAG);
         
-        for (int i = 0; i < URIList.length; i++)
+        int length = 0;
+        if (list != null)
+            length = list.length;
+        
+        EndpointAddress[] newlist = new EndpointAddress[length + 1];
+         
+        for (int i = 0; i < length; i++)
         {
-            newlist[i] = URIList[i];
+            newlist[i] = list[i];
         }
         
-        newlist[URIList.length] = endptaddr;
+        newlist[length] = endptaddr;
         
-        attributes.put(URITAG, URIList);
-        this.URIList = newlist;
+        attributes.put(URITAG, newlist);
     }
     
     public void removeURI(EndpointAddress endptaddr)
     {
-        EndpointAddress[] newlist = new EndpointAddress[URIList.length - 1];
+        
+        EndpointAddress[] list = (EndpointAddress[])attributes.get(URITAG);
+        
+        int length = 0;
+        if (list != null)
+            length = list.length;
+        
+        EndpointAddress[] newlist = new EndpointAddress[length - 1];
         int ndx = 0;
-        for (int i = 0; i < URIList.length ; i++)
+        for (int i = 0; i < length ; i++)
         {
-            if (!URIList[i].equals(endptaddr))
-                newlist[ndx++] = URIList[i];
+            if (!list[i].equals(endptaddr))
+                newlist[ndx++] = list[i];
         }
+        
+        attributes.put(URITAG, newlist);
     }
         
     /**
@@ -143,8 +157,7 @@ public final class Peer extends NamedResource
      */
     public EndpointAddress[] getURIList()
     {
-        //return (EndpointAddress[]) attributes.get(URITAG);
-        return URIList;
+        return (EndpointAddress[]) attributes.get(URITAG);
     }
 
     /**
@@ -156,7 +169,8 @@ public final class Peer extends NamedResource
         int numAttr = this.attributes.size();
         int URIsize = getURIList().length;
         String numURI = String.valueOf(URIsize);
-        Element[] elm = new Element[numAttr + 8];
+        Element[] elm = new Element[numAttr + URIsize + 8 - 1]; // -1, dont count attributes Element from URITAG
+        
         elm[0] = new Element(Message.MESSAGE_TYPE_TAG, Message.REQUEST_RESOLVE, Message.JXTA_NAME_SPACE);
         elm[1] = new Element(Message.TYPE_TAG, NamedResource.PEER, Message.JXTA_NAME_SPACE);
         elm[2] = new Element(Message.ATTRIBUTE_TAG, attr, Message.JXTA_NAME_SPACE);
@@ -168,7 +182,7 @@ public final class Peer extends NamedResource
         
         Enumeration keys = this.attributes.keys();
         Enumeration data = this.attributes.elements();
-
+        
         int ndx = 8;
         //System.out.println ("#attr: " + numAttr + " #elm: " + elm.length);
         // there seems to be a bug in java with this ndx++ in the loop combined with an if ?!
@@ -177,34 +191,29 @@ public final class Peer extends NamedResource
             //ndx++;
             String tag = (String) keys.nextElement();
             Object dataobj = data.nextElement();
-//            if (tag.equals(URITAG))
-//            {
-//                EndpointAddress[] URIList = (EndpointAddress[])dataobj;
-//                for (int i = 0; i < URIList.length; i++)
-//                {
-//                    elm[ndx + i] = new Element(URITAG + String.valueOf(i), URIList[i].toString().getBytes(),
-//                            Message.JXTA_NAME_SPACE, null);
-//                    
-//                }
-//                ndx = ndx + URIList.length - 1 ;
-//            }
-//            else
-            if (!tag.equals(URITAG))
+            
+            
+            if (tag.equals(URITAG))
             {
-                elm[ndx++] = new Element(tag, ((String)dataobj).getBytes(), Message.JXTA_NAME_SPACE, null);
+                EndpointAddress[] URIList = (EndpointAddress[])dataobj;
+                for (int i = 0; i < URIList.length; i++)
+                {
+                    
+                    elm[ndx] = new Element(URITAG + String.valueOf(i), URIList[i].toString().getBytes(),
+                            Message.JXTA_NAME_SPACE, null);
+                    
+                    ndx = ndx+1;
+                    
+                }
+            }
+            else
+            {
+                elm[ndx] = new Element(tag, ((String)dataobj).getBytes(), Message.JXTA_NAME_SPACE, null);
+                ndx = ndx + 1;
             }
         }
         
-        // add the endpointaddresses
-        EndpointAddress[] URIList = getURIList();
-        for ( int i = 0; i < URIsize; i++)
-        {
-            elm[ndx++] = new Element(URITAG + String.valueOf(i), URIList[i].toString().getBytes(),
-                    Message.JXTA_NAME_SPACE, null);
-        }
-        
-        
-        
+        System.out.println("b6");
         return elm;
     }
 

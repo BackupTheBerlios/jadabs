@@ -1,5 +1,5 @@
 /**
- * $Id: EndpointService.java,v 1.2 2004/11/19 08:16:36 afrei Exp $
+ * $Id: EndpointService.java,v 1.3 2005/01/19 10:00:05 afrei Exp $
  *
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -159,7 +159,7 @@ public class EndpointService extends Service implements Listener
      * @param destURI
      * @throws IOException
      */
-    public void send(Element[] elm, EndpointAddress[] URIList) throws IOException
+    public void send(Element[] elm, EndpointAddress[] uriList) throws IOException
     {
         boolean msgsent = false;
         
@@ -181,9 +181,9 @@ public class EndpointService extends Service implements Listener
         
         // Send on any one transport of the destination Peer
         int interfacesIndex = 0;
-        while (interfacesIndex < URIList.length)
+        while (interfacesIndex < uriList.length)
         {
-        	EndpointAddress destURI = URIList[interfacesIndex++];
+        	EndpointAddress destURI = uriList[interfacesIndex++];
             
             // We don't need it, just for JXTA compatibility
 
@@ -211,12 +211,14 @@ public class EndpointService extends Service implements Listener
 	                	// send message through this transport
 	                	Transport trans = (Transport)transports.get(urisrc);
 	              	    trans.send(new Message(elmNew), destURI);
-	              	    
+	              	  
 	              	    msgsent = true;
                     } catch (IOException e)
                     {
                         // try another interface, if this one failed
                         LOG.error("The interface of destination " + destURI + " failed: " + e);
+                        
+                        e.printStackTrace();
                         
                         continue;
                     }
@@ -278,8 +280,9 @@ public class EndpointService extends Service implements Listener
         Enumeration transen = transports.keys();
       	for (;transen.hasMoreElements();)
       	{
-      	    EndpointAddress uriaddr = (EndpointAddress)transen.nextElement();
       	    
+      	    EndpointAddress uriaddr = (EndpointAddress)transen.nextElement();
+     	  
       	    // set src address if the destURI matches the available transport URIs
       	    if (  (destURI.protocol == null) ||
       	          destURI.protocol.equals(uriaddr.protocol) )

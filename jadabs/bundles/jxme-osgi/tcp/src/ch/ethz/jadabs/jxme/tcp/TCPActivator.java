@@ -70,12 +70,12 @@ public class TCPActivator implements BundleActivator
         endptsvc = (EndpointService)bc.getService(sref);
         
         // create EndpointAddress for TCP
-//        String addr = bc.getProperty("ch.ethz.jadabs.jxme.hostname");
-//        if (addr == null)
-//        {
+        String addr = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
+        if (addr == null)
+        {
             InetAddress localhost = InetAddress.getLocalHost();
-            String addr = localhost.getHostAddress();
-//        }
+            addr = localhost.getHostAddress();
+        }
         
         String portstr = bc.getProperty("ch.ethz.jadabs.jxme.tcp.port");    
         if (portstr != null)

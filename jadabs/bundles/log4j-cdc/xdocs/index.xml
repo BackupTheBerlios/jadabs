@@ -24,6 +24,18 @@
     		Use this package in devices with less memory.
 		</p>
 		
+		<subsection name="Properties">
+		<table>
+          <tr><th>Property</th><th>Default</th><th>Description</th></tr>
+               
+          <tr>
+          	<td>log4j.priority</td>
+          	<td>Fatal|Error|Warn|Debug|Info</td>
+          	<td></td>
+          </tr>
+          
+        </table>
+		
     </section>
     
   </body>

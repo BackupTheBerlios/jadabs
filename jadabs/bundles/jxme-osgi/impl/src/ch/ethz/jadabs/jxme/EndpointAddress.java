@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: EndpointAddress.java,v 1.1 2004/11/08 07:30:34 afrei Exp $
+ * $Id: EndpointAddress.java,v 1.2 2005/01/19 10:00:05 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -304,6 +304,19 @@ public class EndpointAddress extends URI
         return protocol;
     }
 
+    public String getAddress()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(protocol);
+        sb.append("://");
+        sb.append(host);
+        
+        if (port != -1)
+            sb.append(":");
+        
+        return sb.toString();
+    }
+    
     /**
      * returns the host
      */
@@ -370,5 +383,6 @@ public class EndpointAddress extends URI
         if (recipient == null) return uri.recipient == null;
         if (recipientParam == null) return uri.recipientParam == null;
         return recipientParam.equals(uri.recipientParam);
+
     }
 }
