@@ -19,7 +19,7 @@
    
         <dependency>
             <groupId>osgi</groupId>
-            <artifactId>framework</artifactId>
+            <artifactId>osgi-framework</artifactId>
             <version>1.2</version>
         </dependency>
         
