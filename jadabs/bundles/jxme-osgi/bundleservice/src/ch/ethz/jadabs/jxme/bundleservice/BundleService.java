@@ -49,12 +49,17 @@ public class BundleService extends Service implements Listener
         Message msg = new Message(elm);
         
         try {
-            LOG.debug("send string now: "+msg.toXMLString());
-            BundleServiceActivator.groupService.send(msg, serviceName, "");
+            sendMessage(msg);
         } catch (IOException ioe)
         {
             LOG.error("could not send teststring");
         }
+    }
+    
+    private void sendMessage(Message message) throws IOException
+    {
+        LOG.debug("send string now: "+message.toXMLString());
+        BundleServiceActivator.groupService.send(message, serviceName, "");
     }
     
     //---------------------------------------------------

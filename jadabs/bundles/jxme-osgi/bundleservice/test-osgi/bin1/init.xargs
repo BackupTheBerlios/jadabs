@@ -5,6 +5,8 @@
 # load common properties
 -xargs props.xargs
 
+-Dch.ethz.jadabs.starter=BundleService.starter
+
 # load bin1 specifics
 
 # initialize bundles

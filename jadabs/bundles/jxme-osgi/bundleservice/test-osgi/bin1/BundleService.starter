@@ -1,0 +1,25 @@
+
+# iPAQ UDP/BT HotSpot
+-usepad Mservice-HS.pad
+#-usepad file:///home/...../pads/mservice-hs.pad
+
+-repository http://osgirepo.berlios.de/maven/repository.xml,http://www.knopflerfish.org/repo/repository.xml
+
+#
+# runlevel 1 should already be started through the init.xargs
+# with the local bundleloader and shell 
+#
+#-runlevel 1
+# local bundleloader
+#-istart  LocalBundleLoaderPlugin-0.1.0.xml
+#-istart  LocalShellPlugin-0.1.0.xml
+
+#-runlevel 2
+# use the jxme layer for RemoteBundleLoader
+#-startopd   jadabs:jxme-osgi:0.7.1-SNAPSHOT:
+#-startopd   jadabs:jxme-udp:0.7.1-SNAPSHOT:
+#-startopd   jadabs:jxme-services:0.7.1-SNAPSHOT:
+
+#-runlevel 3
+# start the MailService on this hotspot
+-startopd   jadabs:jxme-bundleservice:0.7.1-SNAPSHOT:
