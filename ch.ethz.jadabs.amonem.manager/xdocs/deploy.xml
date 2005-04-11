@@ -1,0 +1,146 @@
+<document>
+
+	<properties>
+
+		<title>Deploy</title>
+		<author>scherand</author>
+
+	</properties>
+
+	<body>
+
+		<section name="Deploy">
+
+			<p>
+				Der Deploy Teil der Amonem Anwendung ist dafuer verantwortlich, Peers die simuliert werden sollen zu &quot;deployen&quot;, also die
+				benoetigten Dateien zu kopieren und den Peer zu starten (d.h. eine neue Java Virtual Machine (JVM) zu starten). Weiter muss er an
+				bereits laufenden Peers Veraenderungen machen koennen (neue Bundles installieren, ein Bundle starten/stoppen oder ein Bundle
+				deinstallieren).<br />
+				Der Deploy verwaltet den Deploy-DAG. Dieser enthaelt nur Eintraege fuer Peers, die von Amonem simuliert werden, keine fuer
+				Peers die vom <a href="discovery.html">Discovery</a> entdeckt wurden.<br /><br />
+				Der Deploy wird vom Manager gestartet und erhaelt von diesem dabei die Root des Deploy-DAGs.
+			</p>
+			<p>
+				Der Deploy kann die fuer die Lauffaehigkeit eines Peers noetigen JAR-Dateien anhand einer URL (also entweder aus einem lokal
+				vorhandenen Verzeichnis oder vom Internet) kopieren und den Peer dann mit diesen starten. Die Liste der zur Verfuegung
+				stehenden JARs wird aus einem XML-Dokument nach ???berlios??? erstellt.<br />
+				Da der Deploy selbstverstaendlich nicht wissen kann, welche Bundles installiert werden sollen, muss der Benutzer dies angeben.
+			</p>
+
+			<subsection name="Grundidee">
+
+				<p>
+				Der Deploy soll nach Anweisung des Benutzers JAR-Dateien kopieren und neue Peers starten. Um den Speicherbedarf in Grenzen zu
+				halten soll er alle noetigen JAR-Dateien nur einmal kopieren. Um die Flexibilitaet zu steigern, soll es <i>moeglich</i> sein, als
+				Quelle fuer ein JAR eine URL ins Internet anzugeben. Die URL kann aber auch auf ein File auf der lokalen Platte zeigen.<br />
+				Dasselbe gilt fuer die Datei, welche angibt, welche JAR-Dateien zur Auswahl stehen und wo diese zu finden sind (wir nennen diese
+				Datei im Weiteren Repository-XML).
+				</p>
+				<p>
+				Urspruenglich sollte der Deploy auch Dateien auf ein entferntes System kopieren koennen. Diese Idee mussten wir aus Zeitgruenden
+				leider verwerfen, so dass im Moment nur in ein lokales Verzeichnis deployed werden kann.
+				</p>
+
+			</subsection>
+
+			<subsection name="Neuen Peer deployen">
+
+				<p>
+				Der Deploy bekommt ein vorgefertigtes <code>AmonemDeploySkeleton</code> mit allen fuer das Deployment wichtigen Informationen.
+				Diese umfassen
+				<ul>
+					<li>Name des Peers</li>
+					<li>JAR der Platform (UUID und URL)</li>
+					<li>UUIDs der zu installierenden JARs (Bundles)</li>
+					<li>URLs der zu installierenden JARs (Bundles)</li>
+					<li>temporaeres Verzeichnis</li>
+					<li>Deploy Verzeichnis</li>
+					<li>Pfad zum xargs-Template (muss lokal sein)</li>
+				</ul>
+				Das temporaere Verzeichnis wird benoetigt um Dateien (JARs) die heruntergeladen werden muessen zu speichern. Im Deploy
+				Verzeichnis wird ein Ordner mit dem Namen des Peers erstellt und darin alle fuer den Peer relevanten Daten abgelegt (xargs Datei
+				und die Runtime-Dateien). Die JARs werden direkt im Deploy Verzeichnis abgelegt (einmal fuer alle Peers mit diesem
+				Deploy-Verzeichnis).
+				Das xargs-Template ist eine Vorlage fuer das zu erstellende xargs-File. Es enthaelt an zwei Stellen Platzhalter, die dann ersetzt
+				werden. Die Platzhalter heissen <code>&lt;CH.EHTZ.JADABS.AMONEM.JARSPACE&gt;</code> und
+				<code>&lt;CH.EHTZ.JADABS.AMONEM.STARTSPACE&gt;</code>.<br />
+				<b>Achtung: Die Platzhalter heissen wirklich so (...EHTZ...), das ist ein Tippfehler den wir nicht mehr korrigieren konnten.</b>
+				</p>
+
+				<p><b>Erstellen der <code>xargs</code> Datei</b></p>
+				<p>
+				Die xargs Datei wird aus dem oben erwaehnten Template erstellt, indem die Platzhalter durch peerspezifische Anweisungen ersetzt
+				werden. <code>&lt;CH.EHTZ.JADABS.AMONEM.JARSPACE&gt;</code> wird dabei durch Eintaege der Form
+				<code>-install &lt;Pfad zum JAR File&gt;</code> ersetzt. <code>&lt;CH.EHTZ.JADABS.AMONEM.STARTSPACE&gt;</code> durch
+				<code>-start &lt;Nummer des JAR Files&gt;</code>.<br />
+				Hiermit werden zur Laufzeit alle Bundles mit einem <code>-install</code> Eintrag auf dem Peer installiert und alle mit einem
+				<code>-start</code> Eintrag zusaetzlich gestartet. In der momentanen Implementation wird für jeden <code>-install</code>
+				Eintrag auch ein <code>-start</code> Eintrag geschrieben.<br />
+				Dann wird das neue <code>xargs</code> File ins Deploy Verzeichnis in einen Ordner mit dem Namen des Peers kopiert.
+				</p>
+
+				<p><b>Kopieren der benoetigten Dateien</b></p>
+				<p>
+				Die noetigen JARs werden entweder von der angegebenen URL heruntergeladen (in das temporaere Verzeichnis). Dann werden
+				sie vom temporaeren Verzeichnis (oder wenn eine lokale URL angegeben wurde von dort) ins Deploy Verzeichnis kopiert. Existiert
+				im temporaeren Verzeichnis schon eine Datei mit demselben Namen wie eine, die heruntergeladen werden soll, wir diese <i>nicht</i>
+				heruntergeladen. Dasselbe gilt für das kopieren ins Deploy Verzeichnis: existiert dort schon eine Datei mit demselben Namen, wird
+				<i>nicht</i> kopiert.
+				</p>
+
+				<p><b>Starten des Peers</b></p>
+				<p>
+				Dann wird ueber <code>Runitme.exec</code> eine neue JVM gestartet. Hierbei muss darauf geachtet werden, dass (mindestens
+				auf WindowsXP) die Output-Streams (Ouput und Error) des Prozesses gelesen werden, da die Applikation sonst blockiert. Ein Aufruf
+				von <code>Runtime.exec</code> sieht ungefaehr folgendermassen aus:
+				<source>C:\Programme\Java\j2re1.4.2_05/bin/java -Dch.ethz.jadabs.jxme.peeralias=gintonic -Dorg.knopflerfish.gosg.jars=file:C:\tmp\ -jar C:\tmp\osgi/jars/framework-1.3.0-aop.jar -xargs C:\tmp\gintonic/gintonic.xargs</source>
+				</p>
+
+				<p><b>Schematische Darstellung</b></p>
+				<p align="center">
+					<img src="bilder/deploy.jpg" border="0" width="500" height="332" alt="Schema fuer Deploy"/>
+				</p>
+
+			</subsection>
+
+			<subsection name="Bestehenden Peer veraendern">
+
+				<p>
+				Bundles auf einem bestehenden (simulierten oder echten) Peer koennen veraendert werden. Es stehen folgende vier Moeglichkeiten
+				zur Verfuegung:
+				<ul>
+					<li>Bundle starten</li>
+					<li>Bundle stoppen</li>
+					<li>Bundle (de-)installieren</li>
+				</ul>
+				</p>
+
+				<p>
+				Diese Funktionalitaet wird von <code>ch.ethz.jadabs.remotefw.Framework</code> zur Verfuegung gestellt, der Deploy gibt nur die
+				Aufrufe weiter. Starten, stoppen und entfernen geschieht ueber die Bundle ID (BID), installieren braucht den (lokalen)
+				Pfad zum JAR File, das installiert werden soll.<br />
+				Da nur Datenpakete die maximal 8 KByte gross sind verschickt werden koennen, darf das zu installierende Bundle (bzw. das JAR)
+				hoechstens 8 KByte gross sein.<br /><br />
+				Aktuell scheint das Installieren von Bundles auf der Jadabs-Seite noch fehlzuschlagen. Auf jeden Fall gibt <code>installBundle</code>
+				konsequent -1 zurueck (hartcodiert).
+				</p>
+
+			</subsection>
+
+			<subsection name="Dateien">
+
+			<p>
+				<ul>
+					<li><code>xargs-Skeleton</code> <a href="deploy/xargs_skel.html">Beispiel</a></li>
+					<li><code>xargs</code> <a href="deploy/xargs_bsp.html">Beispiel</a></li>
+					<li><code>Repository-XML</code> <a href="deploy/repo_bsp.html">Beispiel</a></li>
+				</ul>
+			</p>
+
+			</subsection>
+
+		</section>
+
+	</body>
+
+</document>

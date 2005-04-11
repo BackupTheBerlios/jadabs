@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="axis/sbb/src"/>
+	<classpathentry kind="src" path="bundles/sbbmidlet/src"/>
+	<classpathentry kind="src" path="bundles/sbbproxy/src"/>
+	<classpathentry kind="lib" path="kSOAP/ksoap-1.2-j2se.zip"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="MAVEN_REPO/osgi/jars/osgi-framework-1.2.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/axis/jars/axis-all-1.2alpha-osgi.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/log4j-j2me-0.7.1-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/j2me/jars/midpapi-2.0.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/osgi/jars/osgi-j2me-0.7.1-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/jxme-bt-j2me-0.7.1-SNAPSHOT.jar"/>
+	<classpathentry kind="src" path="bundles/sbbservice/src"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

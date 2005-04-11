@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Project Goals</title>
+    <author email="vogt_stefan@student.ethz.ch">Stefan Vogt</author>
+  </properties>
+  
+  <body>
+
+  
+    <section>
+      <p>
+        As indicated in the abstract, we had the following two goals for our project:
+      </p>
+    </section>
+
+     
+    <section name="1. Web service infrastructure for Jadabs">
+      
+      <p>
+        The first goal was to offer a web service infrastructure which supported three classes of devices: A mobile device, a server and a proxy.
+      </p>
+      
+      <p>
+        <a href="images/jadabs-ws_overview_01.gif"><img src="images/jadabs-ws_overview_01.gif" width="600" height="280"/></a>
+      </p>
+      
+    </section>
+
+    
+    <section name="2. SBB WebService using our infrastructure">
+      
+      <p>
+        The second goal was the SBB WebService which offers the user timetable requests to the SBB server.
+      </p>
+      
+      <p>
+        <a href="images/jadabs-ws_overview_02.gif"><img src="images/jadabs-ws_overview_02.gif" width="600" height="400"/></a>
+      </p>
+      
+    </section>
+
+
+  </body>
+
+</document>

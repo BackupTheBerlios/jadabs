@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Used Products</title>
+    <author email="vogt_stefan@student.ethz.ch">Stefan Vogt</author>
+  </properties>
+  
+  <body>
+      
+    <section name="Jadabs">
+    
+      <p>
+        <img src="images/jadabs_logo.gif" width="98" height="32"/>
+      </p>
+    
+      <p>
+        Jadabs is a dynamic lightweight container for small devices in a distributed environment.
+      </p>
+    
+      <p>
+        Product homepage: <a href="http://jadabs.berlios.de">http://jadabs.berlios.de</a>
+      </p>
+    
+    </section>
+    
+    
+    <section name="Apache Axis">
+    
+      <p>
+        <img src="images/apache-axis_logo.gif" width="85" height="48"/>
+      </p>
+    
+      <p>
+        Converts Java Objects to SOAP data and back. Runs on a web server.
+      </p>
+    
+      <p>
+        Product homepage: <a href="http://ws.apache.org/axis">http://ws.apache.org/axis</a>. Version used in this project: 1.1
+      </p>
+    
+    </section>
+    
+    
+    <section name="Apache Jakarta Tomcat">
+    
+      <p>
+        <img src="images/apache-tomcat_logo.gif" width="65" height="46"/>
+      </p>
+    
+      <p>
+        Tomcat is a web server that functions as a servlet container.
+      </p>
+    
+      <p>
+        Product homepage: <a href="http://jakarta.apache.org/tomcat">http://jakarta.apache.org/tomcat</a>. Version used in this project: 5.5.4
+      </p>
+    
+    </section>
+    
+    
+    <section name="kSOAP">
+    
+      <p>
+        Converts Java Objects to SOAP data and back. Runs on very small devices like a mobile phone.
+      </p>
+    
+      <p>
+        Product homepage: <a href="http://ksoap.objectweb.org">http://ksoap.objectweb.org</a>. Version used in this project: 1.2
+      </p>
+    
+    </section>	
+  
+  </body>
+
+</document>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Abstract</title>
+    <author email="vogt_stefan@student.ethz.ch">Stefan Vogt</author>
+  </properties>
+  
+  <body>
+  
+    <section>
+    	
+      <p>
+        As the name implies, the Jadabs WebServices project integrates web services into Jadabs. 
+        It was developed at the Swiss Federal Institute of Technology (ETH) in Zurich.
+      </p>
+      
+      <p>
+        The first part of the project offers a general web service infrastructure.
+        Implementing a powerful new web service is facilitated by a collection of well documented interfaces, classes and protocols.
+        Three device classes are supported: A mobile device for the user (e.g. a cellular phone), a server that offers the service and
+        a proxy for the connection between the mobile device and the server.
+      </p>
+      
+      <p>
+        The second part of the project is an example web service based on the infrastructure mentioned above.
+        This web service gives the user the possibility to query the SBB (Swiss Federal Railway) timetable server.
+        The query is sent from a mobile device via Bluetooth and forwarded to a server by a proxy.
+        This server queries the SBB server, processes the results and sends them to the mobile device, again via the proxy.
+      </p>
+      	
+    </section>		
+  
+  </body>
+
+</document>

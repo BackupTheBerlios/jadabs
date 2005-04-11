@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Form style="SWT" ide="eclipse" builder="jigloo" version="2.7.2">
+<NonVisualComponents>
+		<Component class="java.lang.Object" name="object1" style="0">
+			<Constraints>
+				<LayoutConstraint/>
+			</Constraints>
+			<Properties>
+			</Properties>
+		</Component></NonVisualComponents>
+	<Component class="org.eclipse.swt.widgets.Composite" name="JadabsManagerComposite" style="0">
+		<Constraints>
+			<LayoutConstraint/>
+		</Constraints>
+		<Layout class="Grid">
+			<Property name="marginWidth" type="int" value="5"/>
+			<Property name="marginHeight" type="int" value="5"/>
+			<Property name="numColumns" type="int" value="3"/>
+			<Property name="makeColumnsEqualWidth" type="boolean" value="false"/>
+			<Property name="horizontalSpacing" type="int" value="5"/>
+			<Property name="verticalSpacing" type="int" value="5"/>
+		</Layout>
+		<Events>
+		</Events>
+		<Properties>
+			<Property name="size" type="Dimension">
+				<Dimension value="[329, 294]"/>
+			</Property>
+			<Property name="bounds" type="Rectangle">
+				<Rectangle value="[0, 0, 329, 294]"/>
+			</Property>
+			<Property name="background" type="Color">
+				<Color red="ad" green="ce" blue="f3"/>
+			</Property>
+			<Property name="foreground" type="Color">
+				<Color red="8a" green="c0" blue="da"/>
+			</Property>
+		</Properties>
+		<SubComponents>
+			<Component class="org.eclipse.swt.widgets.Composite" name="top" style="0">
+				<Constraints>
+					<Constraint verticalSpan=""/>
+					<Constraint horizontalAlignment=""/>
+					<Constraint width=""/>
+					<Constraint heightHint=""/>
+					<Constraint height=""/>
+					<Constraint verticalAlignment=""/>
+					<Constraint grabExcessVerticalSpace=""/>
+					<Constraint class="org.eclipse.swt.layout.GridData"/>
+					<Constraint grabExcessHorizontalSpace=""/>
+					<Constraint horizontalSpan=""/>
+					<Constraint widthHint=""/>
+					<Constraint horizontalIndent=""/>
+					<LayoutConstraint class="org.eclipse.swt.layout.GridData">
+						<Property name="verticalAlignment" type="int" value="2"/>
+						<Property name="horizontalAlignment" type="int" value="1"/>
+						<Property name="widthHint" type="int" value="199"/>
+						<Property name="heightHint" type="int" value="102"/>
+						<Property name="horizontalIndent" type="int" value="1"/>
+						<Property name="horizontalSpan" type="int" value="0"/>
+						<Property name="verticalSpan" type="int" value="2"/>
+						<Property name="grabExcessHorizontalSpace" type="boolean" value="false"/>
+						<Property name="grabExcessVerticalSpace" type="boolean" value="false"/>
+					</LayoutConstraint>
+				</Constraints>
+				<Layout class="Absolute">
+				</Layout>
+				<Events>
+				</Events>
+				<Properties>
+					<Property name="size" type="Dimension">
+						<Dimension value="[199, 102]"/>
+					</Property>
+					<Property name="bounds" type="Rectangle">
+						<Rectangle value="[75, 84, 199, 102]"/>
+					</Property>
+					<Property name="background" type="Color">
+						<Color red="ad" green="cf" blue="f7"/>
+					</Property>
+				</Properties>
+				<SubComponents>
+					<Component class="org.eclipse.swt.widgets.Button" name="startButton" style="16777224">
+						<Constraints>
+							<Constraint verticalSpan=""/>
+							<Constraint horizontalAlignment=""/>
+							<Constraint width=""/>
+							<Constraint heightHint=""/>
+							<Constraint height=""/>
+							<Constraint verticalAlignment=""/>
+							<Constraint grabExcessVerticalSpace=""/>
+							<Constraint grabExcessHorizontalSpace=""/>
+							<Constraint horizontalSpan=""/>
+							<Constraint widthHint=""/>
+							<Constraint horizontalIndent=""/>
+							<LayoutConstraint/>
+						</Constraints>
+						<Events>
+						</Events>
+						<Properties>
+							<Property name="text" type="String" value="start"/>
+							<Property name="size" type="Dimension">
+								<Dimension value="[75, 30]"/>
+							</Property>
+							<Property name="bounds" type="Rectangle">
+								<Rectangle value="[40, 22, 75, 30]"/>
+							</Property>
+							<Property name="visible" type="boolean" value="true"/>
+						</Properties>
+					</Component>
+					<Component class="org.eclipse.swt.widgets.Button" name="stopButton" style="16777224">
+						<Constraints>
+							<Constraint verticalSpan=""/>
+							<Constraint horizontalAlignment=""/>
+							<Constraint width=""/>
+							<Constraint heightHint=""/>
+							<Constraint height=""/>
+							<Constraint verticalAlignment=""/>
+							<Constraint grabExcessVerticalSpace=""/>
+							<Constraint grabExcessHorizontalSpace=""/>
+							<Constraint horizontalSpan=""/>
+							<Constraint widthHint=""/>
+							<Constraint horizontalIndent=""/>
+							<LayoutConstraint/>
+						</Constraints>
+						<Events>
+						</Events>
+						<Properties>
+							<Property name="text" type="String" value="stop"/>
+							<Property name="size" type="Dimension">
+								<Dimension value="[75, 30]"/>
+							</Property>
+							<Property name="bounds" type="Rectangle">
+								<Rectangle value="[40, 60, 75, 30]"/>
+							</Property>
+							<Property name="visible" type="boolean" value="true"/>
+						</Properties>
+					</Component>
+				</SubComponents>
+			</Component>
+			<Component class="org.eclipse.swt.widgets.Composite" name="composite1" style="0">
+				<Constraints>
+					<Constraint class="org.eclipse.swt.layout.GridData"/>
+					<LayoutConstraint class="org.eclipse.swt.layout.GridData">
+						<Property name="verticalAlignment" type="int" value="4"/>
+						<Property name="horizontalAlignment" type="int" value="4"/>
+						<Property name="widthHint" type="int" value="-1"/>
+						<Property name="heightHint" type="int" value="-1"/>
+						<Property name="horizontalIndent" type="int" value="1"/>
+						<Property name="horizontalSpan" type="int" value="3"/>
+						<Property name="verticalSpan" type="int" value="1"/>
+						<Property name="grabExcessHorizontalSpace" type="boolean" value="false"/>
+						<Property name="grabExcessVerticalSpace" type="boolean" value="false"/>
+					</LayoutConstraint>
+				</Constraints>
+				<Layout class="Form">
+					<Property name="marginWidth" type="int" value="0"/>
+					<Property name="marginHeight" type="int" value="0"/>
+					<Property name="spacing" type="int" value="0"/>
+				</Layout>
+				<Events>
+				</Events>
+				<Properties>
+					<Property name="size" type="Dimension">
+						<Dimension value="[298, 64]"/>
+					</Property>
+					<Property name="bounds" type="Rectangle">
+						<Rectangle value="[3, 5, 298, 64]"/>
+					</Property>
+					<Property name="background" type="Color">
+						<Color red="ad" green="cf" blue="f7"/>
+					</Property>
+				</Properties>
+				<SubComponents>
+					<Component class="org.eclipse.swt.widgets.Label" name="jadabsmanager" style="0">
+						<Constraints>
+							<Constraint class="org.eclipse.swt.layout.FormData"/>
+							<LayoutConstraint class="org.eclipse.swt.layout.FormData">
+								<Property name="height" type="int" value="40"/>
+								<Property name="width" type="int" value="212"/>
+								<Property name="left" class="org.eclipse.swt.layout.FormAttachment">
+									<Property name="numerator" type="int" value="266"/>
+									<Property name="denominator" type="int" value="1000"/>
+									<Property name="offset" type="int" value="0"/>
+									<Property name="control" type="String" value="null"/>
+									<Property name="alignment" type="int" value="-1"/>
+								</Property>
+								<Property name="right" class="org.eclipse.swt.layout.FormAttachment">
+									<Property name="numerator" type="int" value="978"/>
+									<Property name="denominator" type="int" value="1000"/>
+									<Property name="offset" type="int" value="0"/>
+									<Property name="control" type="String" value="null"/>
+									<Property name="alignment" type="int" value="-1"/>
+								</Property>
+								<Property name="top" class="org.eclipse.swt.layout.FormAttachment">
+									<Property name="numerator" type="int" value="242"/>
+									<Property name="denominator" type="int" value="1000"/>
+									<Property name="offset" type="int" value="0"/>
+									<Property name="control" type="String" value="null"/>
+									<Property name="alignment" type="int" value="-1"/>
+								</Property>
+								<Property name="bottom" class="org.eclipse.swt.layout.FormAttachment">
+									<Property name="numerator" type="int" value="867"/>
+									<Property name="denominator" type="int" value="1000"/>
+									<Property name="offset" type="int" value="0"/>
+									<Property name="control" type="String" value="null"/>
+									<Property name="alignment" type="int" value="-1"/>
+								</Property>
+							</LayoutConstraint>
+						</Constraints>
+						<Events>
+						</Events>
+						<Properties>
+							<Property name="text" type="String" value="Jadabs-Manager"/>
+							<Property name="size" type="Dimension">
+								<Dimension value="[212, 40]"/>
+							</Property>
+							<Property name="bounds" type="Rectangle">
+								<Rectangle value="[79, 15, 212, 40]"/>
+							</Property>
+							<Property name="visible" type="boolean" value="true"/>
+							<Property name="background" type="Color">
+								<Color red="ad" green="cf" blue="f7"/>
+							</Property>
+							<Property name="font" type="Font">
+								<Font name="Serif" size="22" style="0" strikeout="false" underline="false"/>
+							</Property>
+						</Properties>
+					</Component>
+				</SubComponents>
+			</Component>
+		</SubComponents>
+	</Component>
+</Form>

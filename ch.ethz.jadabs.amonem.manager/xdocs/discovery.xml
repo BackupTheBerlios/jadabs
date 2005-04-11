@@ -1,0 +1,108 @@
+<document>
+
+	<properties>
+
+		<title>Discovery</title>
+		<author>scherand</author>
+
+	</properties>
+
+	<body>
+
+		<section name="Discovery">
+
+			<p>
+				Der Discovery &quot;Service&quot; ist dafuer zustaendig, andere Jadabs-Knoten (Peers) zu entdecken und in den
+				Discovery-DAG einzufuegen, damit sie im GUI angezeigt werden koennen. Dabei wird nicht zwischen simulierten und
+				echten Peers unterschieden.<br />
+				Das heisst, auch von Amonem simulierte Peers werden erst im GUI sichtbar, nachdem sie vom Discovery Service erkannt wurden.
+				<br /><br />
+				Umgekehrt ist der Discovery Service auch fuer das Entfernen von Peers aus dem Discovery-DAG zustaendig. Dies bedeutet
+				insbesondere, dass ueber das GUI beendete Peers erst nach einer gewissen Zeit aus der Anzeige verschwinden.
+			</p>
+			<p>
+				Der Discovery Service reagiert v.a. auf Events des Jadabs-Service Bundles (<code>EnterFramework-</code> und
+				<code>LeaveFrameworkEvent</code> des <code>RemoteFrameworkListeners</code>). Aus diesem Grund ist er sehr abhaengig
+				vom Funktionieren dieses Bundles.
+			</p>
+			<p>
+				Weiter soll der Discovery Service verwendet werden koennen, um Gruppen von Peers zu erkennen. Da diese im Moment noch nicht
+				implementiert sind, ist diese Funktionalitaet nicht gewaehrleistet.<br />
+				Es werden einfach alle gefundenen Peers in die <code>WorldGroup</code> eingefuegt.
+			</p>
+
+			<subsection name="Die Grundidee">
+
+			<p>
+				Der Amonem Discovery Service ist selber ein Jadabs Knoten auf welchem die <code>ch.ehtz.jadabs.jxme.services</code> laufen.
+				So kann der Discovery ueber dieselben Mechanismen wie die &quot;richtigen&quot; Knoten herausfinden, welche Peers in seiner
+				Umgebung vorhanden sind. Aus diesem Grund erscheint die Amonem Applikation auch im Amonem-Graphen.<br />
+				Da (noch) keine Sicherheitsfunktionalitaet existiert, kann der Discovery auf diese Art und Weise unkompliziert alles herausfinden,
+				was das Amonem Tool ueber einen Peer wissen muss.
+			</p>
+			<p>
+				Der Discovery wird sobald das Plugin gestartet wird vom Amonem Manager gestartet. Von diesem bekommt er dann auch die
+				zur Erfuellung seiner Aufgaben noetigen Referenzen auf den <code>ch.ehtz.jadabs.jxme.services.GroupService</code> der
+				<code>WorldGroup</code> und den <code>ch.ethz.jadabs.remotefw.FrameworkManager</code>.
+			</p>
+
+			</subsection>
+
+
+			<subsection name="Peers einfuegen und entfernen">
+
+				<p><b>Neuer Peer kommt hinzu</b></p>
+				<p>
+				Kommt ein neuer Peer zum Netzwerk hinzu, loest dies in Jadabs einen <code>EnterFrameworkEvent</code> aus. Auf diesen Event
+				reagiert der Amonem Discovery Service.<br /><br />
+				Die folgenden Schritte werden in der Reihenfolge in der sie aufgelistet sind ausgefuehrt:
+				<ul>
+					<li>Ueberpruefen, ob im Discovery-DAG schon ein Peer mit diesem Namen existiert. Ist dies der Fall werden die fogenden
+					Schritte nicht mehr ausgefuehrt</li>
+					<li>Neuen Peer (DAGPeer Objekt) mit dem Namen des neuen Peers erstellen</li>
+					<li>Jadabs Framework &quot;merken&quot;, d.h. die Referenz die mit dem Event mitgeliefert wurde im DAGPeer Objekt
+					speichern</li>
+					<li>Einen <code>ch.ethz.jadabs.remotefw.BundleInfoListener</code> registrieren (damit Aenderungen an auf dem Peer
+					installierten Bundle angezeigt werden koennen) und die Referenz speichern, damit der Listener später wieder entfernt
+					werden kann</li>
+					<li>Den Peer analysieren (welche Bundles sind in welchem Zustand auf dem Peer)</li>
+				</ul>
+				Dabei ist anzumerken, dass der letzte Punkt einige Probleme aufweist. Das Problem ist, dass die Bundle-Informationen von
+				<code>ch.ethz.jadabs.remotefw.Framework</code> geliefert werden muessten, dies aber nur manchmal funktioniert.
+				Oft kommt der Event nicht oder zu einem unerwarteten Zeitpunkt (z.B. immer &quot;einen Event zu spaet&quot;).
+				</p>
+
+				<p></p>
+				<p><b>Peer verlaesst das Netzwerk</b></p>
+				<p>
+				Auf das Verlassen des Netzwerks durch einen Peer reagiert Jadabs ebenfalls mit einem Event (<code>LeaveFrameworkEvent</code>).
+				In dieser Situation werden folgende Schritte in der Reihenfolge in der sie aufgelistet sind ausgefuehrt:
+				<ul>
+					<li>Peer im Discovery-DAG suchen. Zuerst wird nach einem Peer mit demselben
+					<code>ch.ethz.jadabs.remotefw.Framework</code> gesucht, gibt es keinen solchen, wird nach einem mit demselben
+					Namen gesucht. Gibt es auch den nicht, werden die folgenden Schritte nicht ausgefuehrt.</li>
+					<li>Den <code>ch.ethz.jadabs.remotefw.BundleInfoListener</code> vom DAGPeer entfernen</li>
+					<li>Den Peer aus dem Discovery-DAG herausnehmen (Achtung: falls es einmal mehr Gruppen geben kann, muss hier Code
+					angepasst werden).</li>
+					<li>Den Amonem Manager informieren, dass sich etwas geaendert hat (Listener aufrufen).</li>
+				</ul>
+				</p>
+
+			</subsection>
+
+
+			<subsection name="Gruppen erkennen">
+
+				<p>
+				Diese Funktionalitaet ist nicht implementiert. Alle Peers befinden sich (ausschliesslich) in der <code>WorldGroup</code>, einer
+				immer existierenden Obergruppe. Es bleibt auch noch zu definieren, was mit einer Gruppe passiert, wenn ihr letztes Mitglied das
+				Netzwerk verlaesst.
+				</p>
+
+			</subsection>
+
+		</section>
+
+	</body>
+
+</document>

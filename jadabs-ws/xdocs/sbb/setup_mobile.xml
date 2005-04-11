@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<document>
+  <properties>
+    <title>How to setup the mobile device</title>
+    <author email="maierf@student.ethz.ch">Franz Maier</author>
+  </properties>
+  <body>
+
+    <section>
+      <p>
+        For setting up the mobile device, process the following steps:
+        Go to the provider of your mobile device and possibly install
+        a firmware for it. The mobile device should be JSR82 conform, to
+        support bluetooth communication. Dependent on the model, you have
+        to invest more or less effort on that (see instructions of the provider
+        of your mobile device).
+      </p>
+    </section>
+
+    <section name="1. Deploy the SBB Midlet on the mobile device.">
+
+        <p>
+         Copy the files SBBMidlet.jar and SBBMidlet.jad to your mobile device.
+        </p>
+
+    </section>
+
+    <section name="2. Install the SBB Midlet on the mobile device.">
+	<p>
+         Go to the folder where you copied the SBBMidlet.jar and SBBMidlet.jad file.
+         Click on the jad-file and follow the installation process of your mobile
+         device.
+        </p>
+
+    </section>
+
+      <section name="3. Run the SBBMidlet">
+        <p>
+          In the application window of your mobile device, click on the SBBMidlet
+          shortcut and start the application.
+        </p>
+    </section>
+  </body>
+</document>

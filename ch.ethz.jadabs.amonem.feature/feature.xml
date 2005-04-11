@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="ch.ethz.jadabs.amonem.feature"
+      label="Jadabs-Amonem Feature"
+      version="1.0.0"
+      provider-name="ETH Zürich">
+
+   <install-handler/>
+
+   <description url="[Enter Feature URL here.]">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="[Enter Copyright URL here.]">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="[Enter License URL here.]">
+      [Enter License Description here.]
+   </license>
+
+   <url>
+      <update label="jadabs-amonem feature" url="http://osgirepo.berlios.de/maven/repository/jadabs/eclipse-features"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.osgi"/>
+   </requires>
+
+   <plugin
+         id="ch.ethz.jadabs.amonem.manager"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"/>
+
+   <plugin
+         id="ch.ethz.jadabs.amonem.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"/>
+
+   <plugin
+         id="ch.ethz.jadabs.jxme"
+         download-size="0"
+         install-size="0"
+         version="0.7.2"/>
+
+   <plugin
+         id="ch.ethz.jadabs.jxme.remotefw"
+         download-size="0"
+         install-size="0"
+         version="0.7.2"/>
+
+   <plugin
+         id="ch.ethz.jadabs.jxme.services"
+         download-size="0"
+         install-size="0"
+         version="0.7.2"/>
+
+   <plugin
+         id="ch.ethz.jadabs.jxme.udp"
+         download-size="0"
+         install-size="0"
+         version="0.7.2"/>
+         
+   <plugin
+         id="ch.ethz.jadabs.bundleloader"
+         download-size="0"
+         install-size="0"
+         version="0.7.2"/>
+        
+   <plugin
+         id="ch.ethz.jadabs.pluginloader"
+         download-size="0"
+         install-size="0"
+         version="0.7.2"/>
+         
+   <plugin
+         id="ch.ethz.jadabs.servicemanager"
+         download-size="0"
+         install-size="0"
+         version="0.7.2"/>         
+
+</feature>

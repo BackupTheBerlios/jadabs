@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>SBB WebService Overview</title>
+    <author email="vogt_stefan@student.ethz.ch">Stefan Vogt</author>
+  </properties>
+  
+  <body>
+
+  
+    <section name="What it does">
+      <p>
+        This web service gives the user the possibility to query the SBB (Swiss Federal Railway) timetable server.
+        The query is sent from a mobile device via Bluetooth and forwarded to a server by a proxy.
+        This server queries the SBB server, processes the results and sends them to the mobile device, again via the proxy.
+      </p>
+    </section>
+
+  
+    <section name="Which objects are exchanged">
+      <p>
+        There are four types of objects that can be exchanged between client and server:
+        The <i>TimetableQuery</i> object is sent from client to server. It contains the user query like "I want to go from here to there at this time and date".
+        Additionally it tells the server whether to return an overview (the <i>TimetableOverview</i> object) or detailed information (the <i>TimetableDetails</i> object).
+        If the user enters an invalid query or one or both of the given stations are ambiguous, the server returns a <i>TimetableInquiry</i> object with a choice of possibilities what the user could have ment.
+      </p>
+      
+      <p>
+        Because the objects have to be serialized (see <i>How to serialize an object</i>) there are two versions from every class.
+        For example for the <i>TimetableQuery</i> class there is the <i>TimetableQuery_kSOAP</i> class for the client side and the <i>TimetableQuery_Bean</i> class for the server side.
+      </p>
+    </section>
+
+  
+    <section name="How it works">
+  
+      <subsection name="1. User">
+        <p>
+          The user enters the query.
+        </p>
+        <p>
+          <img src="../images/jadabs-ws_sbb-ws_01.gif"/>
+        </p>
+      </subsection>
+  
+    
+      <subsection name="2. Mobile phone">
+        <p>
+          The mobile phone creates a TimetableQuery_kSOAP object.
+          Then it creates the SOAP request with kSOAP and transforms this request into a String which is sent to the proxy. 
+        </p>
+        <p>
+          <img src="../images/jadabs-ws_sbb-ws_02.gif"/>
+        </p>
+      </subsection>
+  
+    
+      <subsection name="3. Proxy">
+        <p>
+          The proxy receives the SOAP String and forwards it via HTTP to the server. The proxy is very simple (intentional!), no kSOAP libraries are used here, all it does is forward.
+        </p>
+        <p>
+          <img src="../images/jadabs-ws_sbb-ws_03.gif"/>
+        </p>
+      </subsection>
+  
+    
+      <subsection name="4. Server">
+        <p>
+          The server receives the SOAP request. Now the HTMLFormSimulator creates a HTTP request and queries the SBB server.
+          The returned HTML document is parsed by the HTMLParser.
+          After this, a TimetableOverview_Bean response object is created and sent to the proxy as a SOAP object.
+  
+        </p>
+        <p>
+          <img src="../images/jadabs-ws_sbb-ws_04.gif"/>
+        </p>
+      </subsection>
+  
+    
+      <subsection name="5. Proxy">
+        <p>
+          Again, the proxy just forwards the response.
+        </p>
+        <p>
+          <img src="../images/jadabs-ws_sbb-ws_05.gif"/>
+        </p>
+      </subsection>
+  
+    
+      <subsection name="6. Mobile phone">
+        <p>
+          The mobile phone transforms the String into a TimetableOverview_kSOAP object and presents the results to the user.
+        </p>
+        <p>
+          <img src="../images/jadabs-ws_sbb-ws_06.gif"/>
+        </p>
+      </subsection>
+
+    </section>
+    
+    
+    <section name="Querying the SBB Server">
+      <p>
+        Because the HAFAS interface (the European time table standard) is not published
+        and the Swiss Federal Railway was not interested in cooperation (understandable, when our project started they were doing the biggest time table change in history)
+        we had to simulate the HTML form and to parse the returned HTML document.
+      </p>
+      <p>
+        Both the HTML Form Simulator as well as the HTML Parser can be controlled with the corresponding XML configuration file in the settings directory.
+      </p>
+      <p>
+        The following two drawings show the HTML Form Simulator and the HTML Parser.
+      </p>
+      <p>
+        <img src="../images/jadabs-ws_sbb-ws_form-simulator.gif"/>
+      </p>
+      <p>
+         
+      </p>
+      <p>
+        <img src="../images/jadabs-ws_sbb-ws_html-parser.gif"/>
+      </p>
+    </section>
+
+  </body>
+
+</document>

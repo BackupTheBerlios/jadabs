@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-Name: Amonem Plug-in
+Bundle-SymbolicName: ch.ethz.jadabs.amonem.ui;singleton=true
+Bundle-Version: 1.0.0
+Bundle-ClassPath: amonem.jar
+Bundle-Activator: ch.ethz.jadabs.amonem.ui.starter.AmonemPlugin
+Import-Service: ch.ethz.jadabs.jxme.PeerNetwork
+Import-Package: ch.ethz.jadabs.amonem,ch.ethz.jadabs.amonem.manager,ch.ethz.jadabs.amonem.deploy,
+ ch.ethz.jadabs.jxme,ch.ethz.jadabs.remotefw,ch.ethz.jadabs.remotefw.impl,
+ ch.ethz.jadabs.jxme.udp,ch.ethz.jadabs.jxme.services,
+ ch.ethz.jadabs.jxme.services.impl,ch.ethz.jadabs.servicemanager,
+ ch.ethz.jadabs.servicemanager.impl,
+ ch.ethz.jadabs.bundleloader,ch.ethz.jadabs.pluginloader
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ ch.ethz.jadabs.jxme,
+ ch.ethz.jadabs.jxme.udp,
+ ch.ethz.jadabs.jxme.services,
+ ch.ethz.jadabs.jxme.remotefw,
+ ch.ethz.jadabs.amonem.manager,
+ ch.ethz.jadabs.bundleloader,
+ ch.ethz.jadabs.pluginloader,
+ ch.ethz.jadabs.servicemanager
+Eclipse-AutoStart: true
+Bundle-Vendor: ETHZ-IKS

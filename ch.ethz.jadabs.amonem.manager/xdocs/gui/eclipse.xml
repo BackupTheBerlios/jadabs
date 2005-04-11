@@ -1,0 +1,154 @@
+<document>
+
+	<properties>
+	
+   		<title>GUI</title>
+    	<author>vmarkus</author>
+    	
+	</properties>
+	
+  	<body>
+		
+		<section name="Eclipse">
+   		
+   			<p>
+   				Eclipse bietet eine Vielzahl von Moeglichkeiten fuer die Integration von Plugins.
+   				Es koennen neue Menueeintraege, Knoepfe und sogar ganze Perspektiven in das Programm
+   				eingeführt werden (Perspektiven sind ganze Umgebungen, die sich aus verschiedenen Fenstern 
+   				(Views) zusammensetzen).
+   			</p>
+   			
+   			<p>
+   				Um die Entwicklung eines neuen Plugins moeglichst zu vereinfachen steht ein Plugin Wizard
+   				zur Verfügung. Dieser hilft bei der Zusammenstellung der verschiedenen Views und generiert
+   				automatisch ein <code>plugin.xml</code>, welches alle Informationen ueber das Plugin
+   				enthaelt. In dieser Datei müssen die Perspektiven und die Views definiert werden.
+   			</p>
+   			
+   			<subsection name="Perspective">
+   				
+   				<p>
+   					Eine stark vereinfachte Fassung einer <code>plugin.xml</code> Datei, in welcher eine Perspektive 
+   					deklariert wird.
+   				</p>
+   				 				
+   				<code>
+   					<source>	...
+	point="org.eclipse.ui.perspectives"
+   					
+	&lt;perspective&gt;
+		class="JadabsPerspective"
+		name="Jadabs-Amonem"
+		id="jadabs-amonem-perspective"
+	&lt;/perspective&gt;
+	...</source>
+   				</code>
+   				
+   				<p>
+   					<b>point: </b>
+   					Damit Eclipse weiss, um was fuer eine Art von Plugin es sich handelt, muss 
+   					man einen point deklarieren. Dieser gibt an, ob das Plugin eine neue Perspektive, ein Menueeintrag oder
+   					ein neuer Knopf sein soll.
+   				</p>
+   				<p>
+   					<b>class: </b>
+   					Deklarationen, welche die Perspektive und die Views beschreiben, reichen
+   					noch nicht aus um das Layout des Plugins zu beschreiben. Es wird noch
+   					eine Klasse benoetigt, in welcher die verschiedenen Views an bestimmten Orten
+   					in der Perspektive platziert werden. Damit Eclipse auch erkennen kann, dass es
+   					sich bei dieser Klasse um eine "Perspective Factory" handelt, muss sie von 
+   					<code>IPerspectiveFactory</code> erben.
+   				</p>
+   				<p>
+   					<b>name: </b>
+   					Name des Plugins.
+   				</p>
+   				<p>
+   					<b>id: </b>
+   					Das Plugin muss eine eindeutigen Identifikation haben.
+   				</p>
+   			
+   			</subsection>
+   			
+   			<subsection name="Views">
+   			
+   				<p>
+   					Eine stark vereinfachte Fassung einer <code>plugin.xml</code> Datei, in welcher zwei Views deklariert
+   					werden.
+   				</p>
+   				
+   				<code>
+   					<source>	...
+	&lt;view&gt;
+		class="GraphView"
+		category="jadabs"
+		name="Graph"
+		id="GraphViewId"&gt;
+	&lt;/view&gt;
+	&lt;view&gt;            	
+		class="NewPeerView"
+		category="jadabs"
+		name="New Peer"
+		id="NewPeerViewId"
+	&lt;/view&gt;
+	...</source>
+   				</code>
+   				
+   				<p>
+   					<b>class: </b>
+   					Jede View wird von einer Klasse beschrieben. Der Name diese Klasse muss hier
+   					angegeben werden. Damit Eclipse sie auch als solche erkennt, muss sie von
+   					<code>ViewPart</code> erben. 
+   					<code>ViewPart</code> ist eine abstrakte Klasse, die die Methode <code>createPartControl()</code>
+   					definiert. In dieser können alle SWT Elemente instanziert werden, die in den jeweiligen
+   					Views dargestellt werden sollen.
+   				</p>		
+   				<p>
+   					<b>category: </b>
+   					Eine View kann einer Kategorie zugeordnet werden. Dies dient der Uebersicht und kann 
+   					nützlich sein, wenn eine View geschlossen wird und man sie spaeter wieder oeffnen will.
+   					Gibt es viele Views, die keiner Kategorie zugewiesen wurden, so wird die Suche unuebersichtlich.
+   				</p>
+   				<p>
+   					<b>name: </b>
+   					Name der View.
+   				</p>
+   				<p>
+   					<b>id: </b>
+   					Die View muss eine eindeutigen Identifikation haben.
+   				</p>
+   				
+   			</subsection>
+   			
+   			<subsection name="Views registrieren">
+   				
+   				<p>
+   					Wie bereits in der Perspektive erwaehnt, gibt man eine Klasse an, die 
+   					von <code>IPerspectiveFactory</code> erbt. Hier wird konkret angegeben,
+   					wo in der Perspektive die verschiedenen Views plaziert werden sollen.
+   					Das folgende Beispiel soll zeigen, wie die "PeersView" von Amonem 
+   					registriert wird.
+   				</p>
+   				
+   				<code>
+   					<source>...
+IFolderLayout lists = layout.createFolder("List", IPageLayout.LEFT, (float) 0.26, editorArea);
+lists.addView("PeersViewId");
+...</source>
+   				</code>
+   				
+   				<p>
+   					Der Perspektive von Eclipse (<code>editorArea</code>) wurde nun ein neues Fenster zugeordnet. 
+   					Es befindet sich am linken Rand der Perspektive (<code>IPageLayout.LEFT</code>). Diesem Bereich
+   					kann man nun die benoetigten Views zuordnen, indem man sie mit der ViewId registriert 
+   					(<code>lists.addView("PeersViewId")</code>.   					
+   				</p>
+   				
+   			</subsection>
+         
+		</section>
+		
+		
+	</body>
+	
+</document>

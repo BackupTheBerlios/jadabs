@@ -1,0 +1,24 @@
+<document>
+
+	<properties>
+
+		<title>Installation</title>
+		<author>bam</author>
+
+	</properties>
+
+	<body>
+
+		<section name="Installation des Amonem-Features">
+
+			<p>
+				Da es sich bei Amonem um ein Eclipse-Feature handelt, ist die Installation einfach. Das Amonem Feature laesst sich analog zu
+				allen anderen Eclipse Features installieren (siehe auch <a href="http://www.eclipse.org">Eclipse Homepage</a>).<br /><br />
+				Das Feature muss in das Feature-Verzeichnis von Eclipse kopiert werden.
+			</p>
+
+		</section>
+
+	</body>
+
+</document>

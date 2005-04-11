@@ -1,0 +1,1 @@
+[Tue Dec 21 16:47:13 CET 2004] Submitting query "http://fahrplan.sbb.ch/bin/query.exe/en?REQ0JourneyStopsS0G%3DNiederweningen%26REQ0JourneyStopsZ0G%3DZ%C3%BCrich%26REQ0JourneyDate%3D10.11.2005%26REQ0JourneyTime%3D10%26REQ0HafasSearchForw%3D1%26REQ0JourneyStopsS0A%3D1%26REQ0JourneyStopsZ0A%3D1%26application%3DPRINTVIEW%26start"

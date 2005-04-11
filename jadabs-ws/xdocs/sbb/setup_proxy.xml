@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+<document>
+
+  <properties>
+    <title>How to setup the proxy</title>
+    <author email="maierf@student.ethz.ch">Franz Maier</author>
+  </properties>
+
+  <body>
+
+    <section>
+      <p>
+        For setting up the proxy, process the following steps:
+      </p>
+    </section>
+
+    <section name="1. Install and configure a Linux operating system.">
+        <p>
+          As a preconditon to run all kind of software needed on the proxy
+          you have to setup a suitable Linux distribution as the operating
+          system of the computer that works as your proxy. For detailed
+          information please see the installation instructions provided by
+          the vendor of your operating system.
+        </p>
+    </section>
+
+    <section name="2. Install and configure BlueZ">
+
+        <p>
+          BlueZ the official Bluetooth stack for Linux has to be installed as
+          the next step of the proxy setup process. A detailed description
+          how to do this can be found in the diploma thesis of Daniel Käppeli
+          (Daniel Käppeli, DA, 2004 p.41 - p.47)
+        </p>
+    </section>
+
+    <section name="3. Install and configure Impronto Developer Kit for Linux.">
+
+        <p>
+          For a working Bluetooth communication some additional libraries have to be
+          installed on you computer. A detailed description how to install them
+          can also be found within the work done by Daniel Käppeli (Daniel Käppeli,
+          DA, 2004 p.51 - p. 55)
+        </p>
+    </section>
+
+    <section name="4. Install and start the Jadabs framework on your proxy.">
+
+        <p>
+          The Jadabs framework as well as further bundles which are used for
+          the communication with the SBB Midlet have to be installed on your
+          system. Checkout (if possible) the latest stable release from CVS
+          and place it together with some other bundles under ~/.maven/repository/${bundle.name}/jars
+        </p>
+        <p>
+          Create a folder where to checkout the 'jadabs-ws' project from CVS
+          and checkout the complete project from CVS.
+          Change to the folder where you checked out the project and go to
+          "jadabs-ws/bundles/sbbproxy". There you will find 'start.sh', 'init.xargs'
+          and 'log4j.properties' as well as some other project related files.
+          To start the proxy run 'start.sh' and the Jadabs framework will come
+          up on your proxy.
+        </p>
+    </section>
+
+  </body>
+
+</document>

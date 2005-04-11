@@ -1,0 +1,55 @@
+<document>
+
+	<properties>
+	
+   		<title>GUI</title>
+    	<author>vmarkus</author>
+    	
+	</properties>
+	
+  	<body>
+		
+		<section name="Peer Liste">
+   		
+   			<p>
+   				Die "Peer Liste" enthaellt alle Informationen ueber die Peers, Gruppen und Untergruppen. Hier ist
+   				ersichtlich, welche Peers in welcher Gruppe sind und welche Bundles und Eigenschaften ein Peer hat.
+   				Um diese Informationen uebersichtlich darzustellen, kann man die Infofrmationen, ausgehend von zwei
+   				Wurzelelementen, abrufen.
+   			</p>
+   			
+   			<subsection name="World Group">
+   			
+   				<p>
+   					Die <code>WorldGroup</code> stellt die Struktur des DAGs dar. Hier ist ersichtlich, welche Elemente
+   					zu welcher Gruppe gehoeren. Dabei kann es vorkommen, dass ein Peer zweimal aufgelistet wird (da er 
+   					in mehreren Gruppen sein kann). 
+   				</p>
+   			
+   				<p align="center">
+					<img src="../bilder/listworld.jpg" border="0" width="130" height="170" alt="Beispiel der Worldgroup"/>
+				</p>
+   			
+   			</subsection>
+   			
+   			<subsection name="Peers">
+   			
+   				<p>
+   					In <code>Peers</code> werden alle Peers der <code>WorldGroup</code> aufgelistet. Von diesen aus
+   					koennen weitere Informationen ueber Bundles, Verbindungen und weitere Eigenschaften abgefragt 
+   					werden.
+   				</p>
+   				
+   				<p align="center">
+					<img src="../bilder/listpeers.jpg" border="0" width="170" height="210" alt="Beispiel einer Peerliste"/>
+				</p>
+   			
+   			</subsection>
+   			         
+		</section>
+		
+		
+		
+	</body>
+	
+</document>

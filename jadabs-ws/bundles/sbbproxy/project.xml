@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../project.xml</extend>
+
+	<pomVersion>3</pomVersion>
+
+	<groupId>jadabs-ws</groupId>
+	<artifactId>sbbproxy</artifactId>
+	<name>SBB Proxy</name>
+
+	<shortDescription>SBB Proxy</shortDescription>
+
+	<dependencies>
+	
+	    <dependency>
+	      	<groupId>jadabs</groupId>
+	      	<artifactId>jxme-osgi</artifactId>
+	      	<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+	      		<groupId>jadabs</groupId>
+	      		<artifactId>jxme-bt-j2me</artifactId>
+	      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>osgi</groupId>
+			<artifactId>osgi-framework</artifactId>
+			<version>1.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>jadabs</groupId>
+      		<artifactId>log4j-cdc</artifactId>
+      		<version>${pom.currentVersion}</version>
+        </dependency>
+        	
+	</dependencies>
+	
+</project>

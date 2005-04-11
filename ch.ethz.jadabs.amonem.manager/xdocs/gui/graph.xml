@@ -1,0 +1,81 @@
+<document>
+
+	<properties>
+	
+   		<title>GUI</title>
+    	<author>vmarkus</author>
+    	
+	</properties>
+	
+  	<body>
+		
+		<section name="Graph">
+   		
+   			<p>
+   				Die Generierung des Graphen bringt einige Probleme mit sich. Die groesste Schwierigkeit liegt 
+   				wahrscheinlich in der Tatsache, dass sich die Peers in Gruppen befinden. Es ist auch moeglich, 
+   				dass sich ein Peer  in mehreren Gruppen befindet. Dies macht es noetig, einen 
+   				<a href="../manager/dag.html">DAG</a> als Datenstruktur zur Speicherung der Peers zu benutzen. 
+   				Wie dieser DAG genau aussieht, wird in einem eigenen Kapitel behandelt (Kapitel <a href="../manager/dag.html">2.3.1 DAG</a>).
+   			</p>
+   			         	
+			<subsection name="Graph generieren">
+		
+				<p>
+					Die Grundidee des Algorithmus ist sehr einfach. 
+					Die <code>WorldGroup</code> (Wurzelelement des DAGs) hat direkte Nachfolger. Ein solches Element kann
+					ein Peer oder eine weitere Untergruppe sein. Diese werden nun, unabhaengig vom Typ, auf der zugrundeliegenden
+					Zeichenflaeche auf einem Kreis angeordnet.
+					Mit einer <code>WorldGroup</code>, bestehend aus vier Peers, wuerde sich folgendes Bild ergeben.		
+				</p>
+			
+				<p align="center">
+					<img src="../bilder/worldgroup.jpg" border="0" width="210" height="170" alt="Beispiel einer Worldgroup" />
+				</p>
+			
+				<p>
+					Beruecksichtigt man nun, dass es weitere Untergruppen in der <code>WorldGroup</code> geben kann, so wendet man
+					den Algorithmus einfach nochmals auf diese Untergruppe an (als Zeichenflaeche verwendet man jetzt einen kleineren 
+					Bereich um das Gruppenelement).
+					Mit dieser Strategie kann man solange weiterfahren, bis alle Gruppen behandelt wurden.
+					Mit einer Untergruppe, bestehend aus drei Peers, wuerde sich dann folgendes Bild ergeben:			
+				</p>
+				
+				<p align="center">
+					<img src="../bilder/komplexeWorldgroup.jpg" border="0" width="240" height="170" alt="Beispiel einer komplexen Worldgroup" />
+				</p>
+			
+				<p>
+					Befindet sich ein Peer in mehreren Gruppen, soll dieser natuerlich nur einmal im Graphen vorkommen.
+					Aus diesem Grund wird jeder Peer (zur Darstellung) nur einer Gruppe zugeordnet.
+				</p>
+			
+			</subsection>
+		
+			<subsection name="Methoden">
+		
+				<p>
+					Folgende drei Methoden wurden implementiert:
+				</p>
+				<p>	
+					Die Methode <b><code>generateGraph()</code></b> kann aufgerufen werden um den ganzen Graphen zu zeichnen.
+					Sie verwendet <code>computeGraph()</code> und <code>computeLocation()</code>. Als Argumente sind lediglich
+					die <code>WorldGroup</code> und die Zeichenflaeche notwendig.
+				</p>
+				<p>
+					<b><code>computeLocation()</code></b> nimmt eine Zeichenflaeche und einen Vector mit Gruppenelementen 
+					(Peers oder Untergruppen) entgegen. Die Positionen dieser Elemente werden so berechnet, dass sie auf
+					einem Kreis innerhalb der Zeichenflaeche zu liegen kommen werden.
+				</p>
+				<p>
+					<b><code>computeGraph()</code></b> unterscheidet zwischen Peers und Gruppen. Hier wird sichergestellt, 
+					dass Untergruppen korrekt behandelt werden.
+				</p>
+		
+			</subsection>	
+		
+		</section>	
+		
+	</body>
+	
+</document>

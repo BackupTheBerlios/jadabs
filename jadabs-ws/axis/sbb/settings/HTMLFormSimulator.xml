@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+
+<java version="1.4.2_04" class="java.beans.XMLDecoder"> 
+
+
+	<object class="ch.ethz.jadabs.webservices.sbb.html.HTMLFormSimulator"> 
+	
+	
+		<void property="queryURL"> 
+			<string>http://fahrplan.sbb.ch/bin/query.exe/en?</string> 
+		</void> 
+
+	
+		<void property="fieldNameFROM">
+			<string>REQ0JourneyStopsS0G</string> 
+		</void> 
+
+		
+		<void property="fieldNameTO"> 
+			<string>REQ0JourneyStopsZ0G</string> 
+		</void> 
+
+		
+		<void property="fieldNameDATE"> 
+			<string>REQ0JourneyDate</string> 
+		</void>
+
+		
+		<void property="fieldNameTIME"> 
+			<string>REQ0JourneyTime</string> 
+		</void>
+
+		
+		<!-- This field toggles the meaning of the given time: 0=Arrival, 1=Departure -->
+		<void property="fieldNameTIMETOGGLE"> 
+			<string>REQ0HafasSearchForw</string> 
+		</void>
+		
+						
+		<!-- REQ0JourneyStopsS0A and REQ0JourneyStopsZ0A can have the values {1,2,4,7}: 1=Station/Stop, 2=City/Street, 4=Point of Interest, 7=All -->
+		<void property="otherParameters"> 
+			<string>REQ0JourneyStopsS0A=1&amp;REQ0JourneyStopsZ0A=1&amp;application=PRINTVIEW&amp;start</string> 
+		</void>
+
+		
+	</object> 
+
+	
+</java>

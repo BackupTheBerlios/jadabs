@@ -1,0 +1,30 @@
+<document>
+
+	<properties>
+	
+   		<title>GUI</title>
+    	<author>vmarkus</author>
+    	
+	</properties>
+	
+  	<body>
+  	
+		<section name="GUI">
+   	
+   			<p>
+   				Das GUI fuer das Amonem Projekt wurde als Plugin in Eclipse implementiert. Dies war einerseits 
+   				eine Vorgabe, stellte sich aber spaeter als lohnenswert heraus, weil Eclipse einige Funktionalitaeten 
+   				wie CVS,... zur verfuegung stellt. Diese erleichtern das Arbeiten in der Gruppe.
+   				Eine weitere Bedingung war, das SWT (Standard Widget Toolkit) von IBM zu benutzen. 
+   			</p>
+                  
+            <p align="center">
+					<img src="bilder/plugin.jpg" border="0" width="531" height="384" alt="Amonem Plugin in Eclipse"/>
+			</p>
+                  
+		</section>
+		
+		
+	</body>
+	
+</document>

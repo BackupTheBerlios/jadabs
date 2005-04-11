@@ -1,0 +1,97 @@
+\documentclass[10pt]{article}
+
+\usepackage{a4}
+\usepackage{color}
+
+\author{Barbara Scheuner, Markus Vitalini, Andreas Scherrer}
+\title{jadabs-amonem}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{GUI}
+\subsection{Oberfl\"ache}
+[BILD]
+
+\subsection{Funktionalit\"at}
+Das GUI bietet folgende Funktionalit\"at:
+\begin{itemize}
+	\item Speichern/Laden von Simulationssetups
+	\item Anzeigen von (allen) Peers und deren Gruppenstruktur bzw. von Peers pro Gruppe
+	\item Erstellen eines neuen zu simulierenden Peers
+	\item Rekonfigurieren eines vorhandenen, simulierten Peers
+\end{itemize}
+
+\section{Master}
+\subsection{Aufgaben}
+Der Master ist die ``Anlaufstelle'' f\"ur alle anderen Funktionseinheiten. D.h. der Master weiss
+zu jeder Zeit, vieviele Peers vorhanden sind, wie diese heissen, was sie k\"onnen, zu welcher/welchen
+Gruppen sie geh\"oren, etc.
+\subsection{Schnittstellen}
+\subsubsection{Schnittstelle zum GUI}
+
+Interface f\"ur die Darstellung\\\\
+\textcolor{red}{Da es sich bei der Gruppenstruktur \emph{nicht} um einen Baum handelt geht das so nicht wirklich (Markus).
+Wir brauchen einen DAG.}\\
+Markus sieht sich \verb+http://sakharov.net/graph.html+ mal an.
+\begin{itemize}
+	\item Iterator \"uber alle Peers (gibt ``die'' PeerID und einen Vektor mit den IDs der Gruppen zu
+denen er geh\"ort (die ``worldgroup'' ist das erste Element) zur\"uck)\\
+Wie soll die Methode heissen?
+	\item ``Get\_Info'' f\"ur einen Peer (\"uber die ID), gibt zur\"uck, ob der Peer z.B. eine Bluetooth
+Device ist. Weiteres w\"are zu definieren.
+	\item ``Get\_Info'' f\"ur eine Gruppe (\"uber die ID), gibt den Namen der Gruppe zur\"uck. Weiteres
+w\"are zu definieren.
+	\item WIE SIEHT DIE ID AUS (integer, string, \ldots)? Oder sagen wir einfach es ist ein String
+(wenn's ein Integer ist machen wir halt einen String draus, Hauptsache es ist eindeutig)?
+\end{itemize}
+
+Interface f\"ur neuen Peer\\
+noch nicht definiert
+
+\subsubsection{Schnittstelle zum Discoverer}
+noch nicht definiert
+
+\subsubsection{Schnittstelle zum Deployer}
+noch nicht definiert
+
+\section{Discoverer}
+\subsection{Aufgaben}
+\subsection{Funktionsweise}
+
+\section{Deployer}
+\subsection{Aufgaben}
+\subsection{Funktionsweise}
+
+\section{Tipps and Tricks}
+
+\subsection{maven installieren}
+\begin{enumerate}
+	\item maven herunterladen (von maven.apache.org; Version 1.0, NEU 1.0.1)
+	\item osgi-plugin herunterladen \verb+(http://wlab.ethz.ch/maven/repository/maven+\ldots\\
+	\verb+/plugins/maven-osgi-plugin-0.3.1.jar)+
+	\item maven ``installieren'': unzippen in ein Directory \texttt{(=\$MAVEN\_HOME)}
+	\item osgi-plugin kopieren nach \texttt{\$MAVEN\_HOME/plugins}
+	\item Umgebungsvariablen und \texttt{\$PATH} setzen (in \verb+~/.bashrc oder ~/.bashrc\_profile?+), in Linux mit \verb+export+:\\
+	\texttt{\$MAVEN\_HOME}\\
+	\texttt{\$JAVA\_HOME}\\
+	\texttt{PATH=\$PATH:$MAVEN\_HOME/bin}
+\end{enumerate}
+
+\subsection{Neuen Peer ``installieren''}
+Unser Installer muss eine M\"oglichkeit geben, Bundles auszw\"ahlen, diese zuammensuchen (und z.B. zippen\footnote{Wie?}) und dann ``deployen'' (kann remote oder lokal sein, wobei wir das unterscheiden sollten, damit wir lokal nicht alle bundles 100-mal kopieren).\\
+Um einen weiteren Peer zu starten generieren wir ein File/eine Zeile wie in runpeer1.sh und ein xargs-File, dann starten wir den Peer mit execute\footnote{das habe ich noch nicht ganz verstanden\ldots V.a. m\"ussen wir im richtigen Verzeichnis sein.}.
+
+\subsection{Interessante Files}
+\texttt{jadabs/bundles/maingui/src/MainComposite.java}\\
+Hier wird das GUI ``gezeichnet'' und v.a. die Listener installiert (die wiederum Dinge erledigen, die wir auch m\"ussen).
+
+\subsection{n\"utzliche Befehle}
+\texttt{java.lang.Runtime.getRuntime()} und/oder \texttt{java.lang.Process proc = rt.exec()}
+
+\subsection{jadabs Co. aus dem CVS holen (Berlioz)}
+von \texttt{http://developer.berlios.de/cvs/?group\_id=2534} den Link\\ \texttt{pserver:anonymous@cvs.jadabs.berlios.de:/cvsroot/jadabs} nehmen.
+Setzt sich wiefolgt zusammen: \texttt{pserver} bei ``Connection Type'', \texttt{anonymous@cvs.berlios.de} bei host und \texttt{/cvsroot/jadabs} bei Repository Path angeben.
+
+\end{document}

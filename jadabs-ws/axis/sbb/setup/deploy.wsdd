@@ -1,0 +1,16 @@
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">  
+
+	<service name="SBBWebService" provider="java:RPC">
+	
+		<parameter name="className" value="ch.ethz.jadabs.webservices.sbb.SBBWebService"/>
+		<parameter name="allowedMethods" value="queryTimetable"/>
+		
+		<!-- Maps the Java class <languageSpecificType> to the XML QName <xmlns:ns>:<qname> -->
+	        <beanMapping xmlns:ns="http://sbb.webservices.jadabs.ethz.ch" qname="ns:TimetableQuery"    languageSpecificType="java:ch.ethz.jadabs.webservices.sbb.serializable.TimetableQuery_Bean"    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	        <beanMapping xmlns:ns="http://sbb.webservices.jadabs.ethz.ch" qname="ns:TimetableInquiry"  languageSpecificType="java:ch.ethz.jadabs.webservices.sbb.serializable.TimetableInquiry_Bean"  encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	        <beanMapping xmlns:ns="http://sbb.webservices.jadabs.ethz.ch" qname="ns:TimetableOverview" languageSpecificType="java:ch.ethz.jadabs.webservices.sbb.serializable.TimetableOverview_Bean" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	        <beanMapping xmlns:ns="http://sbb.webservices.jadabs.ethz.ch" qname="ns:TimetableDetails"  languageSpecificType="java:ch.ethz.jadabs.webservices.sbb.serializable.TimetableDetails_Bean"  encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	
+	</service>
+	
+</deployment>

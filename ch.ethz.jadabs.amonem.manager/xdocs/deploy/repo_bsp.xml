@@ -1,0 +1,55 @@
+<document>
+
+	<properties>
+
+		<title>Repository XML Beispiel</title>
+		<author>scherand</author>
+
+	</properties>
+
+	<body>
+
+		<section name="Beispiel fuer ein Repository-XML">
+
+			<source>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml-stylesheet type="text/xsl" href="repository.xsl"?&gt;
+
+
+&lt;bundles&gt;
+	&lt;repository-bundle-name&gt;OSGi-Repository&lt;/repository-bundle-name&gt;
+	&lt;date&gt;
+		Thu Dec 23 09:53:18 UTC 2004
+	&lt;/date&gt;
+	&lt;dtd-version&gt;1.0&lt;/dtd-version&gt;
+	
+	&lt;bundle&gt;
+		&lt;bundle-name&gt;swt&lt;/bundle-name&gt;
+		&lt;bundle-version&gt;3.0RC1-linux-osgi&lt;/bundle-version&gt;
+		&lt;bundle-uuid&gt;swt:swt:3.0RC1-linux-osgi:&lt;/bundle-uuid&gt;
+		&lt;bundle-updatelocation&gt;file:///home/bam/.maven/repository/swt/jars/swt-3.0RC1-linux-osgi.jar&lt;/bundle-updatelocation&gt;
+	&lt;/bundle&gt;
+
+...
+
+	&lt;bundle&gt;
+		&lt;bundle-name&gt;remotefw-impl&lt;/bundle-name&gt;
+		&lt;bundle-version&gt;0.7.1&lt;/bundle-version&gt;
+		&lt;bundle-uuid&gt;jadabs:remotefw-impl:0.7.1:&lt;/bundle-uuid&gt;
+		&lt;bundle-updatelocation&gt;file:///home/bam/.maven/repository/jadabs/jars/remotefw-impl-0.7.1.jar&lt;/bundle-updatelocation&gt;
+	&lt;/bundle&gt;
+	&lt;bundle&gt;
+		&lt;bundle-name&gt;jadabs-maingui&lt;/bundle-name&gt;
+		&lt;bundle-version&gt;0.7.1&lt;/bundle-version&gt;
+		&lt;bundle-uuid&gt;jadabs:jadabs-maingui:0.7.1:&lt;/bundle-uuid&gt;
+		&lt;bundle-updatelocation&gt;http://n.ethz.ch/student/scherand/download/jadabs-maingui-0.7.1.jar&lt;/bundle-updatelocation&gt;
+	&lt;/bundle&gt;
+
+&lt;/bundles&gt;
+			</source>
+
+		</section>
+
+	</body>
+
+</document>

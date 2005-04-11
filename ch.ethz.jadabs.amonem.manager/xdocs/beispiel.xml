@@ -1,0 +1,49 @@
+<document>
+
+	<properties>
+   	<title>Beispiel</title>
+	</properties>
+
+  	<body>
+	<section name="Beispiel">
+		<p>
+		Zur Illustration eines Benutzerinputs wird hier das Erstellen eines Peers exemplarisch gezeigt. Die verwendeten Umgebungsvariablen sollten aber immer angepasst werden.
+		</p>
+		
+		<subsection name="Erzeugen eines Peers">
+		<p>
+		Nach dem Starten des Features werden eventuell Peers angezeigt, welche schon aktiv im System vorhanden sind. Man sollte beim neuen Peer darauf achten, dass dieser nicht einen Namen bekommt, der schon an einen anderen Peer vergeben ist.<br />
+		Das Anwaehlen von "new Peer" laesst den oberen Teil des folgenden Dialogs erscheinen:
+		</p>
+		<img src="bilder/newPeer.jpg" align="center" alt="Screenshot" border="0" width="449" height="301"/>
+		<p>
+		Nun kann man die Umgebungsvariablen eingeben. Diese Variablen werden dann solange beibehalten, bis sie vom Benutzer wieder geaendert werden.
+		<ul>
+		<li><code>Repository: </code>Hier werden die URL's oder lokalen Pfade von XML-Dateien angegeben, welche die Informationen zu den benoetigten Bundles enthalten.
+		</li>
+		
+		<li><code>Location of maven repo: </code>Lokaler Pfad, der auf das Maven-Repository verweist.
+		</li>
+		
+		<li><code>Local deploy path: </code>Lokaler Pfad, der auf jenen Ordner verweist, in welchem die Informationen zu einem Peer gespeichert werden sollen.
+		</li>
+		
+		<li><code>xargs template: </code>Pfadname jener Datei, in der sich das "Skelett" des xargs-Files befindet.
+		</li>
+		
+		<li><code>Temp: </code>Pfadname des temporaeren Verzeichnisses, in welches die Repository-Files nach dem Downloaden gespeichert werden. Auch die Jas der Bundles werden dort gespeichert, sofern sie nicht schon vorhanden sind.
+		</li>
+		</ul>
+		Wenn alle diese Variablen gesetzt sind, waehlt man den <code>get</code>-Knopf. Nun werden die verschiedenen jars der durch <code>Repository</code> verfuegbaren Bundles aufgelistet.
+		</p>
+		
+		<p>
+		Nun kann man den Namen des Peers bestimmen und auswaehlen mit welcher Platform er laufen soll.<br />
+		Aus der Liste der JARs koennen die Gewuenschten ausgesucht werden. Zu beachten ist dabei, dass die Reihenfolge in der sie dann auf der rechten Seite erscheinen auch die Reihenfolge, ist in der die Bundles gestartet werden. <br />
+		Mit <code>ok</code> bestaetigt man die gemachten Definitionen, und der Peer wird daraufhin erzeugt und gestartet. Er escheint nach einigen Sekunden im Graph und in <a href="manager.html">beiden</a> Baeumen der linken Fensterseite.
+		</p>
+		
+		</subsection>
+	</section>
+	</body>
+</document>

@@ -1,0 +1,88 @@
+<document>
+
+	<properties>
+   	<title>Manager</title>
+	</properties>
+
+  	<body>
+		<section name="Manager">
+		<p>
+		Der Manager bildet die Schnittstelle zwischen <a href="deploy.html">Deployer</a>, <a href="discovery.html">Discoverer</a> und <a href="gui.html">GUI</a>. Er bietet dem GUI ueber sein Interface alle wichtigen Methoden von Deployer und Discoverer an. Darueber hinaus koordiniert er die Erzeugung von Peers, den Import und den Export von Konfigurationen und Einzelteilen der <a href="manager/dag.html">DAGs</a>.
+		</p>
+		
+		<subsection name="Aufgaben">
+		<p>
+			Die Hauptaufgabe des Managers ist die Verwaltung der DAGs. Davon gibt es zwei Instanzen, den DiscoveryDAG und den DeployDAG. <br />
+			Der <i>DeployDAG</i> enthaelt alle Peers, die vom Benutzer erzeugt wurden. Erzeugt werden kann direkt ueber ein View oder (wie spaeter erklaert) durch das laden eines XML-Files.
+			Der <i>DiscoveryDAG</i> speichert jene Peers, welche vom Discoverer entdeckt wurden. Diese Peers sind lokal oder remote aktiv. <br />
+			Diese beiden Datenstrukturen muessen unterschieden werden, denn ein vom Benutzer erzeugter Peer kann viel mehr Information enthalten, weil zum Starten eines Peers mehr Information noetig sind, als aus einem "nur" aktiven Peer vom Discoverer herausgelesen werden kann. Eine solche Information ist z.B. der Prozess, in dem der Peer laeuft. Dieser wird fuer das Stoppen der Entitaet benoetigt. Auch Informationen ueber die installierten Bundles mit der URL, wo sie sich befinden, werden in einem vom Benutzer erzeugten Peer gespeichert.
+		</p>
+		<p>
+			Der Manager ist auch dafuer verantwortlich, den Discoverer und den Deployer zu starten, und ihnen Zugang zum jeweiligen DAG zu gewaeren. Der Informationsfluss zwischen diesen beiden Objekten und dem GUI laeuft vollstaendig ueber den Manager. Das GUI propagiert die Inputs des Users nach unten zu den beiden Objekten. Umgekehrt wird das GUI informiert, wenn eines von ihnen an seinem DAG etwas geaendert hat (einfuegen/loeschen eines Peers, Aenderung von Bundle Informationen). Dies geschieht mittels <code>PeerListener</code>s und <code>GroupListener</code>s.
+		</p>
+		
+		</subsection>
+		
+		<subsection name="Methoden fuer das GUI">
+		<p>
+			<ul>
+			<li>
+			<code>start()</code>: Diese Methode dient dazu den Manager zu starten. Der Manager erzeugt dann die ROOT-Gruppen fuer die beiden DAGs, und einen Deployer und einen Discoverer.
+			</li>
+			<li>
+			Methoden fuer die Manipulation von Peers: Dieses Aufgabenpaket umfasst das Starten/Stoppen von Peers und das Kontrollieren dessen Bundles (installieren, starten, stoppen). Diese Methoden werden jeweils an die zustaendige Klasse (<a href="deploy.html">Deployer</a>, <a href="discovery.html">Discoverer</a>) weitergereicht. 
+			</li>
+			<li>
+			Methoden fuer das Importieren und Exportieren von Peers oder ganzen Konfigurationen. Hierfuer wurde <a href="http://java.sun.com/j2se/1.4.2/docs/api/org/xml/sax/package-summary.html">SAX</a> verwendet.
+			</li>
+			<li>
+			Eine Methode, welche die Bundle-Informationen eines XML-Files herausliest, und dem GUI als Vektor zurueckgibt. 
+			</li>
+			</ul>
+		</p>
+		</subsection>
+
+		<subsection name="Export">
+		<p>
+		Es koennen nur Peers exportiert werden, die sich im DeployDAG befinden. Dies bedeutet, dass eine speicherbare Konfiguration dem ganzen DeployDAG entspricht, und nicht dem DiscoveryDAG, also den aktiven Peers. Gruppen koennen nicht einzeln abgespeichert werden, da sie auch nicht erzeugt werden koennen. Im XML-File der ganzen Konfiguration treten Gruppen zwar auf, werden beim Einlesen aber im Moment noch ignoriert. Dies muesste zu dem Zeitpunkt angepasst werden, an dem die Gruppenerzeugung moeglich ist.<br />
+		Von einem Peer werden folgende Attribute abgespeichert: <code>name, deploypath, javapath, platform, bundles, parents</code>. Im Tag <code>&lt;bundles&gt;</code> werden die einzelnen Bundles mit ihren Attributen gespeichert. Dies sind: <code>bundle-name, update-location, uuid</code>. Der Tag <code>&lt;parents&gt;</code> enthaelt momentan bei allen Peers nur die ROOT-Gruppe.
+		</p>
+		
+		<p>
+		Das exportieren eines ganzen DAGs oder aber auch nur einzelner Peers funktioniert gleich. Dabei werden die folgenden Schritte ausgefuehrt:
+			<ul>
+			<li>Zuerst wird ein DOM-Dokument (<code>org.w3c.dom.Document</code>) erzeugt. Diese Struktur besteht aus Elementen, die den XML-Tags entsprechen. Der ganze DAG (oder aber auch nur ein einzelner Peer) wird dann gemaess der geforderten XML-Struktur in dieses Dokument uebertragen.
+			</li>
+			<li>Dieses Dokument wird dann in ein XML-File geschrieben. Wenn eine ganze Konfiguration gespeichert wird, bekommt diese vom Benutzer einen Namen. Daraufhin wird ein Ordner mit diesem Namen erzeugt, und darin die einzelnen XML-Files abgelegt. Es gibt ein File fuer die ganze Konfiguration, und je eines fuer die einzelnen Peers. Gruppen werden nicht einzeln abgespeichert. 
+			</li>
+			</ul>
+		</p>
+		</subsection>
+
+		<subsection name="Import">
+		<p>
+		Wie oben erwaehnt, werden beim Importieren nur die Peers wieder eingelesen. Bei diesem Vorgang wird auch geprueft, ob alle noetigen Tags vorhanden sind. Ist dies nicht der Fall, wird der Peer nicht geladen.
+		</p>
+		
+		<p>
+		Es gibt zwei Arten von Files die geladen werden koennen. Die eine enthaelt einen einzelnen Peer, die andere eine ganze Konfiguration. Diese beiden Faelle werden unterschiedlich behandelt. 
+		<ul>
+			<li>
+			Beim Laden einer Konfiguration werden zuerst alle Vorhandenen Peers im DeployDAG geloescht. Dann wird der DAG mit den eingelesenen Peers gefuellt.
+			</li>
+			<li>
+			Wird ein einzelner Peer geladen, dann wird der DeployDAG beibehalten. Es wird ueberprueft, ob sich in diesem DAG schon ein Peer mit demselben Namen befindet. Ist dies der Fall, wird der alte Peer durch den importierten ersetzt.
+			</li>
+		</ul>
+		In beiden Faellen kann der Benutzer waehlen, ob er die Peers nur laden, oder auch noch starten will. 
+		</p>
+		
+		<p>
+			Beim Importieren eines Files (egal ob ein Peer, oder eine ganze Konfiguration) wird zuerst mit einem Parser ein DOM-Dokument <code>org.w3c.dom.Document</code> generiert. <br />
+			Aus dessen Baumstruktur von Elementen werden dann die noetigen Informationen ausgelesen, und gleichzeitig auf ihr Vorhandensein geprueft.
+      		<source>Document D= DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(name))</source>
+		</p>
+		</subsection>
+	</section>
+	</body>
+</document>

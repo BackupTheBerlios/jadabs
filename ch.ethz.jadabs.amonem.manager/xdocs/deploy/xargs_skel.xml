@@ -1,0 +1,52 @@
+<document>
+
+	<properties>
+
+		<title>xargs Beispiel</title>
+		<author>scherand</author>
+
+	</properties>
+
+	<body>
+
+		<section name="Beispiel fuer ein xargs Skelett">
+
+			<source>
+#
+# Generated from template.xargs
+# Knopflerfish release 1.3.0a4
+#
+
+-Dorg.knopflerfish.verbosity=0
+
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.debug.startlevel=false
+-Dorg.knopflerfish.framework.debug.ldap=false
+
+-Dorg.osgi.framework.system.packages=ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
+
+-Dorg.knopflerfish.startlevel.use=true
+
+#-Dch.ethz.jadabs.jxme.peeralias=peer1
+-Dch.ethz.jadabs.jxme.tcp.port=9001
+-Dch.ethz.jadabs.jxme.seedURIs=tcp://ikdesk3.inf.ethz.ch:9002
+
+-init
+
+## Basic KF bundles
+
+## jxme-eventsystem
+-initlevel 1
+&lt;CH.EHTZ.JADABS.AMONEM.JARSPACE&gt;
+
+-launch
+&lt;CH.EHTZ.JADABS.AMONEM.STARTSPACE&gt;
+			</source>
+
+		</section>
+
+	</body>
+
+</document>

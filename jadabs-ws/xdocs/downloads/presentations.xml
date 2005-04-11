@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Presentations</title>
+    <author email="vogt_stefan@student.ethz.ch">Stefan Vogt</author>
+  </properties>
+  
+  <body>
+  
+    <section name="2nd Milestone">
+    	            
+      <p>
+        <ul>
+          <li><a href="jadabs-ws_ms2_presentation_part1.pdf">jadabs-ws_ms2_presentation_part1.pdf</a></li>
+          <li><a href="jadabs-ws_ms2_presentation_part2.pdf">jadabs-ws_ms2_presentation_part2.pdf</a></li>
+        </ul>
+      </p>
+      	
+    </section>
+
+
+    <section name="Final Presentation">
+    	            
+      <p>
+        <ul>
+          <li><a href="jadabs-ws_final_presentation.ppt">jadabs-ws_final_presentation.ppt</a></li>
+        </ul>
+      </p>
+      	
+    </section>
+    
+    
+  </body>
+
+</document>

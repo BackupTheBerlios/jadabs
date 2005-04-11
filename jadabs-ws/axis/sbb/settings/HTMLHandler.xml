@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<java version="1.4.2_04" class="java.beans.XMLDecoder"> 
+
+	<object class="ch.ethz.jadabs.webservices.sbb.html.HTMLHandler"> 
+		
+		<void property="tagsToParse"> 
+		<void method="clear"/> 
+			<void method="add"><string>*</string></void> 
+		</void> 
+		
+		<void property="tagsToIgnore"> 
+		<void method="clear"/> 
+			<void method="add"><string>div</string></void> 
+			<void method="add"><string>title</string></void> 
+			<void method="add"><string>script</string></void> 
+			<void method="add"><string>link</string></void> 
+			<void method="add"><string>meta</string></void> 
+		</void>
+		
+		<void property="attributesToParse"> 
+		<void method="clear"/> 
+			<void method="add"><string>*</string></void> 
+		</void> 
+	
+		<void property="attributesToIgnore"> 
+		<void method="clear"/>
+			<void method="add"><string>*</string></void>
+		</void>
+		
+		<void property="tabStop"> 
+			<int>5</int> 
+		</void>
+		
+		<void property="tabIndent"> 
+			<int>0</int> 
+		</void> 
+		
+		<void property="prettyPrint"> 
+			<boolean>false</boolean> 
+		</void> 
+		
+		<void property="textOnly"> 
+			<boolean>true</boolean> 
+		</void> 
+		
+		<!-- Text lines with a length below this threshold will be ignored. For example, is set to 1, no empty lines will be processed -->
+		<void property="lineLengthMin"> 
+			<int>1</int> 
+		</void> 
+		
+	</object>
+	
+</java> 

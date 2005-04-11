@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>How to create a new web service</title>
+    <author email="vogt_stefan@student.ethz.ch">Stefan Vogt</author>
+  </properties>
+  
+  <body>
+  
+    <section>
+      <p>
+        Before you create your own web service, it is a good idea to study our SBB WebService in detail.
+      </p>
+    </section>
+      
+    <section name="Checklist">
+      <p>
+        If you are ready to create your new web service, here is a list that gives you an idea how it could be done:
+      </p>
+      <p>
+        <ol>
+          <li>
+            Write your service for the server and test it, first without SOAP but with hard coded data.
+          </li>
+          <li>
+            Agree on the objects to be exchanged between client and server, write the corresponding classes and make them serializable.
+          </li>
+          <li>
+            Extend your service on the server side to handle SOAP, deploy your service in Axis and test it.
+          </li>
+          <li>
+            Write the client for your mobile device which creates and processes the correct SOAP messages with kSOAP.
+          </li>
+          <li>
+            You can possibly use the proxy from our SBB WebService without having to change it, otherwise do so.
+          </li>
+          <li>
+            Put the pieces together and try if the mobile device can communicate with the server.
+          </li>
+          <li>
+            Write the GUI for the mobile device.
+          </li>
+          <li>
+            Test and bugfix.
+          </li>
+        </ol>
+      </p>
+    </section>
+    
+    <section name="Hints">
+    
+      <subsection name="Team work">
+        <p>
+          If you work in a team, it is a good idea to distribute the tasks on the devices.
+          For example one team member could work on the mobile side, the other on the server side and you could meet on the proxy.
+          This is how we did it for our SBB WebService project.
+        </p>
+      </subsection>
+      
+      <subsection name="Object exchange">
+        <p>
+          It is a good idea to agree as early as possible on the objects which are to be exchanged between the client and the server.
+          If you want to send not only primitive types (e.g. strings and integers) over the wire, but a complex object,
+          be sure to calculate enough time for writing the serializable versions of the classes.
+          How to do this is explained in detail under <i>How to serialize an object</i>.
+        </p>
+      </subsection>
+      
+      <subsection name="Analyze the SOAP messages">
+        <p>
+          Don't know why your service isn't working?
+          Then it can be very helpful to monitor the HTTP traffic, extract the SOAP messages from it and analyze them.
+          To do so you can use the very handy TCPMonitor which is included in Axis.
+          Don't forget to set the correct environment variables and then call the TCPMonitor with
+  <source>java org.apache.axis.utils.tcpmon 8081 wlab.ethz.ch 8080</source>
+          Now all traffic sent to localhost at port 8081 is analyzed and forwarded to wlab.ethz.ch at port 8080, the same applies correspondingly to the response.
+        </p>
+      </subsection>
+      
+      <subsection name="Platform independence">
+        <p>
+          Although Tomcat and Axis are platform independent, always be aware of the fact, that the behaviour of your program could be different on another platform.
+          Be especially careful with special signs and umlauts.
+        </p>
+      </subsection>
+      
+    </section>
+    
+  </body>
+
+</document>

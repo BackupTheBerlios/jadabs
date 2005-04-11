@@ -1,0 +1,34 @@
+<project name="amonem">
+
+ 	<title>Amonem</title>
+  
+  <body>
+  
+  	<menu name="Überblick">
+		<item name="Motivation"						href="/index.html"/>
+		<item name="Installation"					href="/installation.html"/>
+	</menu>
+
+  	<menu name="Dokumentation">
+		<item name="Architektur"					href="/architektur.html"/>
+		<item name="GUI"							href="/gui.html">
+			<item name="Eclipse"					href="/gui/eclipse.html"/>	
+			<item name="Graph"						href="/gui/graph.html"/>
+			<item name="Peer Liste"					href="/gui/peerliste.html"/>
+		</item>
+		<item name="Manager"						href="/manager.html">
+			<item name="DAG"						href="/manager/dag.html"/>
+		</item>
+		<item name="Discovery"						href="/discovery.html"/>
+		<item name="Deploy"							href="/deploy.html">
+			<item name="xargs skeleton"				href="/deploy/xargs_skel.html"/>
+			<item name="xargs Beispiel"				href="/deploy/xargs_bsp.html"/>
+			<item name="repository"					href="/deploy/repo_bsp.html"/>
+		</item>
+		<item name="Beispiel"						href="/beispiel.html"/>
+	</menu>
+   
+      
+       
+  </body>
+</project>

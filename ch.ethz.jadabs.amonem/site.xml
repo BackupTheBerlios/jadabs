@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<feature
+		id="ch.ethz.jadabs.amonem"
+		version="1.0.0"
+		url="features/ch.ethz.jadabs.amonem.feature_1.0.0.jar">
+		<category name="ch.ethz.jadabs.amonem"/>
+	</feature>
+   <category-def name="ch.ethz.jadabs.amonem" label="Jadabs"/>
+</site>

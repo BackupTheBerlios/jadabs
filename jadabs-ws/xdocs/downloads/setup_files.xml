@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Setup Files</title>
+    <author email="maierf@student.ethz.ch">Franz Maier</author>
+    <author email="vogt_stefan@student.ethz.ch">Stefan Vogt</author>
+  </properties>
+
+  <body>
+
+    <section name="For the server">
+
+      <p>
+        <ul>
+          <li><a href="sbb_webservice_1.0_server.zip">SBB WebService 1.0 Server</a></li>
+          <li><a href="sbb_webservice_1.0_server_test.zip">SBB WebService 1.0 Server Test</a><br/></li>
+          <li><a href="jakarta-tomcat-5.5.4.tar.gz">Apache Jakarta Tomcat 5.5.4</a></li>
+          <li><a href="jakarta-tomcat-5.5.4-compat.tar.gz">Apache Jakarta Tomcat 5.5.4 Compatibility Pack</a></li>
+          <li><a href="axis-1_1.zip">Apache Axis 1.1</a></li>
+          <li><a href="jaf-1_0_2-upd.zip">JavaBeans Activation Framework 1.0.2</a></li>
+        </ul>
+      </p>
+
+    </section>
+
+
+    <section name="For the proxy">
+
+      <p>
+        <ul>
+          <li><a href="sbb_webservice_1.0_proxy.zip">SBB WebService 1.0 Proxy</a></li>
+        </ul>
+      </p>
+
+    </section>
+
+    <section name="For the mobile device">
+      <p>
+        <ul>
+          <li><a href="sbb_webservice_1.0_mobile.zip">SBB WebService 1.0 Mobile</a><br/></li>
+          <li><a href="ksoap-1.2-j2se.zip">kSOAP 1.2 J2SE</a></li>
+          <li><a href="ksoap-1.2-midp.zip">kSOAP 1.2 MIDP</a></li>
+          <li><a href="ksoap-1.2-doc.zip">kSOAP 1.2 Documentation</a></li>
+        </ul>
+      </p>
+
+    </section>
+
+  </body>
+
+</document>

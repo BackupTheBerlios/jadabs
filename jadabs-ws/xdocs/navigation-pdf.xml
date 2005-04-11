@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+
+
+<project name="jadabs-ws">
+
+  <title>Jadabs WebServices</title>
+  
+  <body>
+    
+    <menu name="Overview">  		
+      <item name="Abstract"      href="/index.html"/>
+      <item name="Project Goals" href="/goals.html"/>
+      <item name="Architecture"  href="/architecture.html"/>
+      <item name="Used Products" href="/products.html"/>
+    </menu>
+    
+    <menu name="Infrastructure">
+      <item name="How to create a new webservice" href="/infrastructure/create_new_ws.html"       collapse="false"/>
+      <item name="How to serialize an object"     href="/infrastructure/serialize_an_object.html" collapse="false"/>
+    </menu>
+    
+    <menu name="SBB WebService">
+      <item name="SBB WebService Overview"        href="/sbb/overview.html"     collapse="false"/>
+      <item name="How to use the SBB WebService"  href="/sbb/how_to_use.html"   collapse="false"/>
+      <item name="How to setup the server"        href="/sbb/setup_server.html" collapse="false"/>
+      <item name="How to setup the proxy"         href="/sbb/setup_proxy.html"  collapse="false"/>
+      <item name="How to setup the moblie device" href="/sbb/setup_mobile.html" collapse="false"/>
+    </menu>
+    
+  </body>
+  
+</project>

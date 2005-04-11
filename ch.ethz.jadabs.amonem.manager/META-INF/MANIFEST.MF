@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-Name: Manager Plug-in
+Bundle-SymbolicName: ch.ethz.jadabs.amonem.manager
+Bundle-Version: 1.0.0
+Bundle-ClassPath: amonem-manager.jar
+Bundle-Activator: ch.ethz.jadabs.amonem.manager.AmonemManagerActivator
+Bundle-Localization: plugin
+Import-Service: ch.ethz.jadabs.services.GroupService
+Export-Package: ch.ethz.jadabs.amonem,ch.ethz.jadabs.amonem.manager,ch.ethz.jadabs.amonem.deploy
+Import-Package: org.apache.log4j,ch.ethz.jadabs.jxme,ch.ethz.jadabs.remotefw,
+ ch.ethz.jadabs.remotefw.impl,ch.ethz.jadabs.jxme.services,
+ ch.ethz.jadabs.jxme.services.impl,ch.ethz.jadabs.servicemanager,
+ ch.ethz.jadabs.bundleloader,ch.ethz.jadabs.pluginloader
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ ch.ethz.jadabs.jxme.services,
+ ch.ethz.jadabs.jxme,
+ ch.ethz.jadabs.jxme.remotefw,
+ ch.ethz.jadabs.bundleloader,
+ ch.ethz.jadabs.pluginloader,
+ ch.ethz.jadabs.servicemanager
+Eclipse-AutoStart: true

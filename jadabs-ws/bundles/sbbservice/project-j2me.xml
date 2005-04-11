@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../project.xml</extend>	<!-- The location of the parent project -->
+
+	<pomVersion>3</pomVersion>			<!-- The current version of the Maven project descriptor. -->
+
+	<groupId>jadabs-ws</groupId>			<!-- The short name of the project group. This value is used to group all jars for a project in one directory. -->
+	<artifactId>sbbservice</artifactId>	        <!-- The unique id for an artifact produced by the project group, e.g. jboss-boot -->
+	<id>sbbservice</id>		         	<!-- The short name of the project. This value is used when naming jars and distribution files. -->
+	<name>SBB Service</name>		                <!-- The full name of the project. This value is used when generating JavaDoc titles. -->
+
+	<package>ch.ethz.jadabs.sbbservice</package>
+
+	<description>No description</description>
+	<shortDescription>No descr.</shortDescription>
+
+	<currentVersion>0.1</currentVersion>
+
+	<inceptionYear>2004</inceptionYear>
+
+	<dependencies>
+	        <dependency>
+	      	<groupId>jadabs</groupId>
+	      		<artifactId>jxme-osgi</artifactId>
+	      		<version>0.7.1-SNAPSHOT</version>
+	      		<properties>
+		      		<midlet>true</midlet>
+		      	</properties>
+	       </dependency>
+               <dependency>
+			<groupId>osgi</groupId>
+			<artifactId>osgi-j2me</artifactId>
+			<version>0.7.1-SNAPSHOT</version>
+			<properties>
+		      		<midlet>true</midlet>
+		      	</properties>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>sbb</groupId>
+			<artifactId>sbbproxy</artifactId>
+			<version>0.1</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>jadabs</groupId>
+      			<artifactId>log4j-j2me</artifactId>
+      			<version>0.7.1-SNAPSHOT</version>
+      			<properties>
+		      		<midlet>true</midlet>
+		      	</properties>
+      			<type>jar</type>
+        	</dependency>
+	</dependencies>
+	<build>
+		<sourceDirectory>${basedir}/src/</sourceDirectory>
+	</build>
+</project>

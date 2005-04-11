@@ -1,0 +1,53 @@
+<document>
+
+	<properties>
+	
+   		<title>Architektur</title>
+    	<author>bam group</author>
+    	
+	</properties>
+
+  	<body>
+  	
+		<section name="Amonem Architektur">
+		
+   			<p>
+			Dieses Bild stellt die Architektur des Amonem Features bezueglich seiner Funktionalitaet dar.
+   			</p>
+   			
+   			 <p align="center">
+					<img src="bilder/architektur.jpg" border="0" width="280" height="230" alt="Amonem Plugin in Eclipse"/>
+			</p>
+			
+			<p>
+				Beim Starten des Feature wird als erstes eine Instanz des GUI erzeugt. Dieses startet dann zuerst den Manager, welcher den
+				Deployer und den Discoverer startet.
+			</p>
+			
+			<p>
+				Wir haben dies so gewaehlt, um das GUI moeglichst von der darunterligenden Struktur zu trennen. Nur die DAGs und der Manager sind
+				dem GUI bekannt.
+			</p>
+
+			<p>
+				Kurze Erklaerung der einzelnen Teile:
+				<ul>
+					<li><b><a href="gui.html">GUI</a>:</b> Graphische Oberflaeche zur Bedienung von Amonem</li>
+					<li><b><a href="manager.html">Manager</a>:</b> Managed die Kommunikation zwischen dem GUI und Deployer,
+					Discoverer. Er ist verantwortlich fuer die DAGs und fuer Import/Export.</li>
+					<li><b><a href="deploy.html">Deployer</a>:</b> Verwaltet den Deploy-DAG, d.h. erstellt neue und modifiziert
+					bestehende Peers.</li>
+					<li><b><a href="discovery.html">Discoverer</a>:</b> Verwaltet den Dicovery-DAG, d.h. beobachtet die Umgebung und
+					meldet wenn neue Peers auftauchen oder bestehende verschwinden.</li>
+					<li><b><a href="dag.html">DAG</a>:</b> Diese Komponente ist keine eigentliche Klasse, sondern eine Datenstruktur, in der
+					alle Komponenten eines Peer-to-Peer Netzwerks gespeichert sind.</li>
+				</ul>
+			</p>
+         
+		</section>
+				
+	</body>
+	
+</document>
+
+

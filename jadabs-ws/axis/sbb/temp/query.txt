@@ -1,0 +1,147 @@
+Overview
+Details
+Station/Stop 
+Date
+Time
+Duration
+Chg.
+Travel with
+1
+Niederweningen
+10.11.05
+dep 
+09:20  
+ 
+0:33
+0
+S5 
+Zürich HB
+ 
+arr 
+09:53  
+2
+Niederweningen
+10.11.05
+dep 
+10:20  
+ 
+0:33
+0
+S5 
+Zürich HB
+ 
+arr 
+10:53  
+3
+Niederweningen
+10.11.05
+dep 
+11:20  
+ 
+0:33
+0
+S5 
+Zürich HB
+ 
+arr 
+11:53  
+4
+Niederweningen
+10.11.05
+dep 
+12:20  
+ 
+0:33
+0
+S5 
+Zürich HB
+ 
+arr 
+12:53  
+Details - Connection 1
+ 
+Station/Stop
+Date
+Time
+Platform
+Travel with
+Comments
+Niederweningen
+10.11.05
+dep
+09:20
+S5 18535
+Urban railway, line 5
+Zürich HB
+arr
+09:53
+23/24
+Duration: 0:33;runsdaily
+Details - Connection 2
+ 
+Station/Stop
+Date
+Time
+Platform
+Travel with
+Comments
+Niederweningen
+10.11.05
+dep
+10:20
+S5 18539
+Urban railway, line 5
+Zürich HB
+arr
+10:53
+23/24
+Duration: 0:33;runsdaily
+Details - Connection 3
+ 
+Station/Stop
+Date
+Time
+Platform
+Travel with
+Comments
+Niederweningen
+10.11.05
+dep
+11:20
+S5 18543
+Urban railway, line 5
+Zürich HB
+arr
+11:53
+23/24
+Duration: 0:33;runsdaily
+Details - Connection 4
+ 
+Station/Stop
+Date
+Time
+Platform
+Travel with
+Comments
+Niederweningen
+10.11.05
+dep
+12:20
+S5 18549
+Urban railway, line 5
+Zürich HB
+arr
+12:53
+23/24
+Duration: 0:33;runsdaily
+ Request by SMS  (CHF 0.60/request) 
+ Swisscom
+ Niederweningen Zürich.HB
+ to number 222
+ Orange
+ Niederweningen Zürich.HB
+ to number 222
+ Sunrise
+ SBB Niederweningen Zürich.HB
+ to number 999
+>

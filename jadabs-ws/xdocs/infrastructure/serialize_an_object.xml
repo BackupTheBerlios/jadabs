@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Infrastructure - How to serialize an object</title>
+    <author email="vogt_stefan@student.ethz.ch">Stefan Vogt</author>
+  </properties>
+  
+  <body>
+   
+ 
+    <section name="What has to be serialized and what not?">
+    
+      <p>
+        Sending the basic types
+        <ul>
+          <li>String</li>
+          <li>int</li>
+          <li>long</li>
+          <li>boolean</li>
+        </ul>
+        is no problem, you don't have to do anything special. Also arrays of the above types can be easily used but because the KVM doesn't
+        support arrays they are automatically converted to the Java class <i>Vector</i> and have to be treated as such on the client side (see example below).
+      </p>
+      
+      <p>
+        All custom classes have to be serialised. This means, that for each class from which objects are to be sent over the network via SOAP, we have to
+        write two new classes, one for the server side and one for the client side. How to do this is explained in the following example.
+      </p>
+    
+    </section>
+      
+    <section name="A simple example">
+      
+      <p>
+        Let's say we have the following class from which we want to create serializable objects.
+      </p>
+      
+<source>
+  public class Person
+  {
+      private String   name;
+      private int      age;
+      private String[] numbers;
+  }
+</source>
+      
+      <p>
+        As mentioned before, we have to write two new versions of this class, one for the server side and one for the client side.
+      </p>
+      
+      <subsection name="The server side">
+      
+        <p>
+          For the server side it is enough if the class is Java Bean conform.
+        </p>
+        
+        <p>
+          To be Java Bean conform a class must fulfil two rules:
+          <ol>
+            <li>Its constructor must have an empty argument list. It's also okay not to define a constructor at all.</li>
+            <li>For every field there must be a getter and a setter method.</li>
+          </ol>
+        </p>
+        
+        <p>
+          For our example this looks like the following:
+        </p>
+        
+<source>
+  public class Person_Bean
+  {
+      private String   name;
+      private int      age;
+      private String[] numbers;
+
+      public Person()
+      {
+      
+      }
+      
+      public void setName   (String   string     ) { name    = string;      }
+      public void setAge    (int      integer    ) { age     = integer;     }
+      public void setNumbers(String[] stringArray) { numbers = stringArray; }
+      
+      public String   getName   () { return name;    }
+      public int      getAge    () { return age;     }
+      public String[] getNumbers() { return numbers; }
+  }
+</source>
+        
+      </subsection>
+      
+      
+      
+      <subsection name="The client side">
+      
+        <p>
+          For the client side, on which kSOAP is used, the class must implement the <i>KvmSerializable</i> interface from the kSOAP package.
+        </p>
+        
+        <p>
+          For our example this looks like the following:
+        </p>
+        
+<source>
+  import java.util.Vector;
+  import org.kobjects.serialization.KvmSerializable;
+  import org.kobjects.serialization.PropertyInfo;
+  
+  public class Person_kSOAP implements KvmSerializable
+  {
+      private String   name;
+      private int      age;
+      private String[] numbers;
+      
+      
+      /*
+      *  Fields for serialization
+      */
+      private static int PROP_COUNT = 3;
+      
+      private static PropertyInfo PI_name = 
+          new PropertyInfo("name", PropertyInfo.STRING_CLASS);
+          
+      private static PropertyInfo PI_age = 
+          new PropertyInfo("age", PropertyInfo.INTEGER_CLASS);
+          
+      private static PropertyInfo PI_numbers = 
+          new PropertyInfo("numbers", PropertyInfo.VECTOR_CLASS);
+      
+      private static PropertyInfo[] PI_PROP_ARRAY =
+      {
+          PI_name,
+          PI_age,
+          PI_numbers,
+      };
+      
+      
+      /**
+      *  Returns the property at a specified index (for serialization)
+      */
+      public Object getProperty(int param)
+      {
+          Object object = null;
+          switch(param)
+          {
+              case 0 : object = name;             break;
+              case 1 : object = new Integer(age); break;
+              case 2 : object = numbers;          break;
+          }
+          return object;
+      }  
+      
+      /**
+      *  Sets the property with the given index to the given value. 
+      */
+      public void setProperty(int param, Object obj)
+      {
+          switch(param)
+          {
+              case 0  : name    = (String)obj;               break;
+              case 1  : age     = ((Integer)obj).intValue(); break;
+              case 2  : numbers = (Vector)obj;               break;
+          }
+      }  
+      
+      
+      /**
+      *  Returns the number of serializable properties
+      */
+      public int getPropertyCount()
+      {
+        return PI_PROP_ARRAY.length;
+      }  
+      
+      
+      /**
+      *  Fills the given property info record
+      */
+      public void getPropertyInfo(int param, PropertyInfo propertyInfo)
+      {
+          propertyInfo.name = PI_PROP_ARRAY[param].name;
+          propertyInfo.nonpermanent = PI_PROP_ARRAY[param].nonpermanent;
+          propertyInfo.copy(PI_PROP_ARRAY[param]);
+      }  
+  }
+</source>
+        
+      </subsection>
+      
+    </section>
+
+
+
+    <section name="Why can't we just ...">
+    
+        <p>
+          <i>... write one new Java Bean conform class and use it on the server and the client side?</i>
+          Because there is no reflection available on the client due to the limitations of the J2ME runtime.
+        </p>
+        
+        <p>
+          <i>... write one new KvmSerializable class and use it on the server and the client side?</i>
+          This is possible, but it's more elegant to avoid using the kSOAP libraries on the server side.
+        </p>
+
+    </section>
+     
+  </body>
+
+</document>

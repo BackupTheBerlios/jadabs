@@ -1,0 +1,16 @@
+ <descriptor xmlns="http://wlab.ethz.ch/maven/plugins/maven-antenna-plugin">
+
+ 	<suite>SBBMIDlet</suite>
+  	<vendor>Stefan Vogt, Franz Maier</vendor>
+  	<version>1.0.0</version>
+  	<midlets>
+  		<midlet class="ch.ethz.jadabs.sbbmidlet.SBBMIDlet"
+  		        name="SBB Midlet"/>
+  	</midlets>
+
+   <attributes>
+      <attribute name="ch.ethz.jadabs.jxme.peeralias" value="SonyEricssonP900"/>
+      <attribute name="log4j.priority" value="DEBUG"/>
+      <attribute name="ch.ethz.jadabs.jxme.bt.rendezvouspeer" value="false"/>
+   </attributes>
+</descriptor>

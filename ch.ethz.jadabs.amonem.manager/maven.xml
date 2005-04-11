@@ -1,0 +1,19 @@
+<project default="osgi:install" 
+	xmlns:maven="jelly:maven"
+	xmlns:jar="jelly:jar"
+	xmlns:j="jelly:core" 
+	xmlns:util="jelly:util" 
+	xmlns:ant="jelly:ant"
+	xmlns:artifact="artifact">
+
+
+  <!--==================================================================-->
+  <!-- utility to clean the subprojects and local target                -->
+  <!--==================================================================-->    
+  
+  <goal name="amonem:clean" prereqs="clean">
+  	<attainGoal name="multiproject:clean" />
+  </goal>
+  
+  
+</project>

@@ -1,0 +1,89 @@
+<document>
+
+	<properties>
+   	<title>DAG</title>
+	</properties>
+
+  	<body>
+	<section name="DAG">
+		<p>
+			Diese Datenstruktur verwaltet die Gruppen und deren Peers. Sie ist ein <a href="http://en.wikipedia.org/wiki/Directed_acyclic_graph">"Directed Acyclic Graph"</a>, da es moeglich ist, dass ein Peer oder eine Gruppe in mehrere Gruppen gehoert. Die ueber allen stehende Gruppe, der alle angehoeren, heisst <code>WorldGroup</code> und wird meist als ROOT bezeichnet. 
+		</p>
+		
+		<subsection name="DAGMember">
+		<p>
+			Hier sind alle Informationen gespeichert, die auf Peers und Gruppen zutreffen. 
+			<source>	protected NamedResource Resource;
+	protected Framework FW;
+	protected int X;			// Koordinaten (Graph)
+	protected int Y;
+	protected int Type;			// 1=Goup; 2=Peer
+	protected String Name;
+	protected Vector Parents;
+	protected Hashtable Properties;</source>
+			Beide Klassen, <code>DAGGroup</code> und <code>DAGPeer</code>, erweitern diese Klasse mit speziefischen Attributen und Methoden.
+		</p>
+		</subsection>
+		
+		<subsection name="DAGGroup">
+		<p>
+			Die Gruppe besitzt neben dem Vector mit den Uebergruppen (<code>Parents</code>) auch noch einen Vector, der die Kinder enthaelt (<code>Children</code>). <br />
+			Einer Gruppe kann man Kinder anfuegen und wieder entfernen. Ueber den Namen kann man in einer Gruppe nach einem Kind-Element suchen.<br/>
+			<b>Anmerkung:</b> Gruppen koennen von diesem Fueature nicht erzeugt werden. Im Moment gibt es nur eine <code>WorldGroup</code>, welche alle Peers enthaelt. Die Datenstruktur erlaubt jedoch einen komplexeren Graphen.
+		</p>
+		</subsection>
+		
+		<subsection name="DAGPeer">
+		<p>
+			Ein Peer bietet Attribute mit den zugehoerigen Gettern und Settern an, um alle Informationen abzuspeichern, welche fuer den Benutzer interessant sein koennten, und die zum starten eines Peers benoetigt werden.
+			<source>	private Vector Connections;
+	private Process myProcess;
+	private Vector Jars;
+	private String JavaPath;
+	private Vector Bundles;
+	private String Platform;
+	private String DEPLOY_PATH;
+	private BundleInfoListener listener;
+	private boolean Deployed;</source>
+			Nicht alle diese Informationen koennen aus einem beliebigen (nicht mit diesem Feature gestarteten) Peer herausgelesen werden. Deshalb werden alle Felder nur im DeployDAG verwendet. <br />
+			Neben den ueblichen Gettern und Settern gibt es noch eine Methode mit der man nach einem Bundle suchen kann. Wahlweise kann man mit der <code>BundleID</code> oder dem Namen des Bundles suchen.
+			<b>Anmerkung:</b> Verbindungen (<code>Connections</code>) zwischen zwei Peers sind im Moment noch nicht abrufbar. Deshalb wird die im Code vorbereitete Klasse <code>DAGPipe</code> nicht verwendet.
+		</p>
+		</subsection>
+		
+		<subsection name="DAGBundle">
+		<p>
+			Ein <code>DAGBundle</code> speichert alle vorhandenen Informationen zu einem Bundle. <code> Name, UpdateLocation</code> und <code>UUID</code> sind noetig, um einen neuen Peer zu starten und werden deshalb auch beim Exportieren im XML-File gespeichert und daraus wieder ausgelesen. <br />
+			<code>BundleID</code> und <code>State</code> sind nur relevant, wenn der Peer, und somit auch das Bundle, aktiv ist.
+			<source>	private long BundleID;
+	private String Name;
+	private int State;
+	private String Property;
+	private String UpdateLocation;
+	private String UUID;</source>
+			
+		</p>
+		</subsection>
+		
+		<subsection name="DAGIterator">
+		<p>
+			Diese Klasse stellt verschiedene Methoden zur Verfuegung, welche das Arbeiten mit dem DAG erleichtern. Im Speziellen kann man eine Liste aller Peers abrufen, bei der jeder Peer nur einmal aufgefuehrt wird. Dasselbe gibt es auch fuer die Gruppen. Der bei der Konstruktion uebergebene ROOT-Knoten dient als Grundlage fuer folgende Methoden:
+			<ul>
+			<li>
+			<code>newPeerEnumeration(), getNextPeer(), hasMorePeers()</code> werden gebraucht, um die Liste aller Peers durchlaufen zu koennen. Dabei wird beim Aufruf von <code>newPeerEnumeration</code> eine Liste der momentanen im DAG befindlichen Peers erzeugt. Auf dieser Liste werden dann die weiteren Aufrufe getaetigt.
+			</li>
+			
+			<li>
+			<code>newGroupEnumeration(), getNextGroup(), hasMoreGroups()</code> ermoeglichen eine Auflistung aller Gruppen auf die gleiche Wiese wie bei den Peers.
+			</li>
+			
+			<li>
+			<code>PeerIsMember(DAGPeer peer), GroupIsMember(DAGGroup group)</code> testen, ob sich eine Gruppe, oder ein Peer schon im DAG befindet. Dabei handelt es sich um einen Test der Objektgleichheit. Es wird nicht getestet, ob ein Element mit demselben Namen schon im DAG ist.
+			</li>
+			
+			</ul> 
+		</p>
+		</subsection>
+	</section>
+	</body>
+</document>

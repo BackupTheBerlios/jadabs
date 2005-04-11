@@ -1,0 +1,46 @@
+<document>
+
+	<properties>
+   	<title>Motivation</title>
+	<author>bam</author>
+	</properties>
+
+  	<body>
+	<section name="Motivation">
+		
+		<subsection name="Ausgangslage">
+		<p>
+		Jadabs, entwickelt von der <a href="http://www.iks.inf.ethz.ch">IKS Gruppe</a> an der ETH Zuerich, wurde speziell darauf ausgelegt, auch auf kleinen
+		Geraeten (PDA und Handy) zu laufen. Um die im Aufbau begriffene Infrastruktur zu testen existierte ein Ansatz um Jadabs-Knoten auf einem
+		(leistungsfähigen) Rechner zu simulieren.<br /><br />
+		Diese bestehenden Moeglichkeiten waren eher beschraenkt und erforderten viel Handarbeit. Es existierte nur ein einfaches GUI ueber welches Peers
+		angezeigt und Bundles modifiziert werden koennen. Diese kleine Applikation entstand mit moeglichst wenig Aufwand v.a. aus dem Beduerfnis, die
+		laufende Implementation zu testen.
+		</p>
+		</subsection>
+		
+		<subsection name="Ziele">
+		<p>
+		Das Ziel dieses Projektes war, ein Feature (&quot;Buendel&quot; von Plugins; welches einfach zu installieren ist) fuer Eclipse zu schreiben. Dieses
+		Feature soll den Umgang mit der Jadabs Umgebung vereinfachen. Insbesondere soll es moeglich werden, auf eine einfache Art und Weise Peers
+		(PDAs und/oder Handies) zu simulieren und die Konfiguration dieser Peers abzuspeichern und zu einem spaeteren Zeitpunkt wieder zu laden.
+		</p>
+
+		<p>
+		Weiter soll es moeglich sein, sich in Reichweite befindende (echte und simulierte) Knoten zu veraendern. Zu den Moeglichkeiten zaehlen das
+		deinstallieren, starten und stoppen von Bundles, sowie in Zukunft auch das installieren von Bundles und hinzufuegen und entfernen von Pipes
+		(Verbindungen zwischen Peers).<br />
+		Fuer jeden Peer sollen die aktuellen Einstellungen angezeigt werden.
+		</p>
+
+		<p>
+		Es existiert theoretisch das Konzept von Gruppen, d.h. Peers lassen sich in Gruppen zusammenfassen. Diese Gruppen sollen ebenfalls dargestellt
+		werden und Peers sollen zu Gruppen hinzugefuegt bzw. aus Gruppen entfernt werden koennen.<br />
+		Da die Infrastuktur im Moment noch keine Gruppen unterstuetzt wurde dieser Punkt so weit als Moeglich vorbereitet, es existiert aber aktuell
+		nur eine Gruppe (die <code>WorldGroup</code>) zu welcher alle Peers automatisch gehoeren.
+		</p>
+
+		</subsection>
+	</section>
+	</body>
+</document>
