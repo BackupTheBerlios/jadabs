@@ -1,0 +1,43 @@
+#
+# minimal init.xargs to be used in a JXME environment
+#
+
+-Dorg.knopflerfish.verbosity=0
+
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.debug.startlevel=false
+-Dorg.knopflerfish.framework.debug.ldap=false
+
+-Dorg.osgi.framework.system.packages=ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
+
+-Dorg.knopflerfish.startlevel.use=true
+
+-Dch.ethz.jadabs.im.configfile=imSettings.properties
+-Dch.ethz.jadabs.im.cayenne_config_file=../../../../cayenne/cayenne.xml
+
+-init
+
+-initlevel 1
+-istart    log4j/jars/log4j-1.2.8-osgi.jar
+-istart    sip/jars/sip-api-1.1-osgi.jar
+-install   sip/jars/nist-sip-1.2-osgi.jar
+-install   jadabs/jars/concurrent-0.7.1-SNAPSHOT.jar
+-install    jadabs/jars/sip-cons-0.7.1-SNAPSHOT.jar
+-istart postgresql/jars/postgresql-jdbc3-osgi-7.4-213.jar
+-install cayenne/jars/cayenne-1.1RC3-osgi.jar
+-istart java/jars/javamail-all-1.3.1-osgi.jar
+-install   jadabs-im/jars/sip-handler-0.7.1-SNAPSHOT.jar
+-install   jadabs-im/jars/api-0.7.1-SNAPSHOT.jar
+-istart jadabs-im/jars/im-io-pc-0.7.1-SNAPSHOT.jar
+-install    jadabs-im/jars/gw-api-0.7.1-SNAPSHOT.jar
+-istart    jadabs-im/jars/gw-sipsmtp-0.7.1-SNAPSHOT.jar
+-istart jadabs-im/jars/gw-sipsmtp-test-0.7.1-SNAPSHOT.jar
+
+
+#-startlevel 1
+
+-launch
+
+

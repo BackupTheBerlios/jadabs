@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<document>
+  <properties>
+    <title>Setup Information</title>
+    <author email="jannethm@student.ethz.ch">Janneth Malibago</author>
+  </properties>
+  <body>
+
+  	<section name="Howto run the Messenger on the Laptop">
+
+	  	<p>
+			You can start the Messenger application with <code>runpeer.sh</code> on Linux, 
+			for Windows use <code>runpeer.bat</code>.
+		</p>
+	  
+	</section>
+	
+	<section name="Howto run the Messenger on the IPAQ">
+
+		<p>
+			Make sure you have a java virtual machine installed on your iPaq. You can use the j9 jvm.
+			Copy the ipaq directory to your iPaq. Check that the information about the location of your jvm are correct
+			in the <code>run-ppcj9.lnk</code> file.
+			You can start the Messenger application by selecting the <code>run-ppcj9.lnk</code> shortcut.
+		</p>
+	
+	</section>   	
+ 
+    <section name="Howto run the Messenger MIDlet on the mobile device">
+
+        <ol>       
+	        
+       		<li>
+	       		<p>
+		         	Copy the files im-gui-handygui.jar and im-gui-handygui.jad to your mobile device.
+		        </p>
+		        <p>
+		        	For example on Windows you can use the <code>Send a File</code> Option of your bluetooth device.
+					The file will then be copied to the messaging folder of your mobile phone.
+				</p>				
+		        <p>
+		         <img src="../images/sendbtfile.jpg"/>
+		        </p>
+		     </li>
+		     
+		     <li>
+		     	<p>
+		     		Select the jad-file and follow the installation proccess.
+		     	</p>
+	            <p>
+	        		Never select the JAR file! Always use the JAD file. Otherwise your application will not work.
+	        	</p>
+	        </li>  
+
+	        <li> 
+	        	You can start the Messenger application by clicking on the Messenger shortcut.		
+	        </li> 
+	    </ol>
+	     
+		               
+        <p>
+          More detailed information on how to install MIDlets on a mobile phone can be found in the documentation of the
+          <a href="http://jadabs.berlios.de/jadabs-cldc/start/smartmessenger.html">Smartmessenger</a>
+        </p>
+        
+   
+    </section>
+
+    
+
+    <section name="Howto run the Messenger MIDlet with the WTK2.1 simulator">
+
+    	<ol>
+    		<li>
+		    	<p>
+				    Install the
+				    <a href="http://java.sun.com/products/j2mewtoolkit/download-2_1.html">J2ME Wireless Toolkit 2.1</a>
+			    </p>
+			</li>
+			
+    		<li>
+		    	<p>
+				    Start the KToolbar
+			    </p>
+		    </li>		
+		    
+    		<li>
+		    	<p> 
+		    		Create a new project with the Project Name <code>jadabs-im-handygui</code> and MIDlet Class Name <code>Messenger</code>
+		    	</p>
+            </li>
+            
+    		<li>
+		    	<p> 
+		    		Compile the project
+		    	</p>
+		    	<p> 
+	    			This will result in an error, but simply ignore that
+	    		</p>
+	    	</li>
+	    	
+	    	<li>
+		    	<p> 
+		    		Copy the following <a href="../downloads/setup_files.html">files</a> into the folder <code>\WTK2.1\apps\im-gui-handygui\bin</code>
+					
+		    	</p>
+		    	<p>
+		    		<ul>
+						<li>
+							<code>jadabs-im-handygui.jad</code>
+						</li>
+						<li>
+							<code>jadabs-im-handygui.jar</code>
+						</li>
+						<li>
+							<code>jadabs-im-handygui.html</code>
+						</li>
+						<li>
+							<code>MANIFEST.MF</code>
+						</li>
+					</ul>
+	    		</p>
+	    	</li>
+	    	
+	    	<li>
+	    	<p> 
+	    		Copy the folder <a href="../downloads/setup_files.html"><code>classes</code></a> into the folder <code>\WTK2.1\apps\im-gui-handygui</code>
+			</p>
+    		</li> 
+    		
+    		<li>
+    			<p>
+    				Select <code>Run via OTA</code> in the Project panel
+    			</p>
+	    		<p>
+		        	<img src="../images/run_via_ota.jpg"/>
+		        </p>
+    		</li>
+    		
+    		<li>
+	    		<p>
+					Install the MIDlet
+				</p>
+	    		<p>
+		            <img src="../images/install_app.jpg"/>
+		        </p>
+	    		<p>
+	            	<img src="../images/go.jpg"/>
+	            </p>
+    		</li>
+    		
+    		<li>
+	    		<p>
+	    			Now you can start the Messenger application by selecting the <code>Messenger</code> shortcut.
+		        </p>
+    		</li>
+			
+    	</ol>
+   
+    </section>
+  </body>
+</document>

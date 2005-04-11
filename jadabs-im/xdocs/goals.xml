@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Project Goals</title>
+    <author email=""></author>
+  </properties>
+  
+  <body>
+  
+  	<section name="Goals of Jadabs-IM">
+		<p>
+			We wanted to implement an instant messaging application which runs on several devices, from a laptop to a mobile phone, using a SIP infrastructure and a distributed JXME infrastructure.
+			Our infrastructure is able to deliver an instant message even when a user is offline. It detects the presence of a user and in case the user is offline, it
+			forwards the message either as an email or an sms, depending on the user's preferences. We also had to find a way to merge a distributed 
+			JXME infrastructure with our SIP infrastructure, using a SIP/JXME gateway, which transforms messages from one protocol to another.
+		</p>
+		<img src="images/IM_Prefs.jpg"/>
+	
+		<p>
+			In order to use the instant messenger in the SIP infrastructure, a user must register itself to the infrastructure, via a <a href="webapp.html">web application</a>.
+		</p>
+			
+		<p>
+			Our infrastructure needs following components:
+			<ul>
+				<li>A web application, for the users to register, and set their preferences</li>
+				<li>A SIP Proxy, for the SIP messaging, and message forwarding</li>
+				<li>A SIP/SMTP gateway, to send SIP messages as email and/or SMS</li>
+				<li>A SIP/JXME gateway, to send messages from a JXME messenger to our SIP infrastructure</li>
+				<li>A messenger, which can use either JXME or SIP, and which can run on small devices</li>
+			</ul>
+			Here is how all this works together.
+			<img src="images/Super.jpg"/>
+		</p>
+		
+		<p>
+			At the top, the different components of our architecture and at the bottom the different packages each component use.			
+		</p>
+	</section>        
+
+  </body>
+
+</document>

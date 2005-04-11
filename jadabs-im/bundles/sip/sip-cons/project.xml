@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../../project.xml</extend>
+
+  	<groupId>jadabs</groupId>
+  	<artifactId>sip-cons</artifactId>
+  	<name>SIP-Constants</name>
+
+  	<shortDescription>SIP-Constants</shortDescription>
+
+	<properties>
+		
+	</properties>
+	
+	
+  	<dependencies>
+				
+  	</dependencies>
+  
+</project>

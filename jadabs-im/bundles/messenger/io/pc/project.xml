@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../../project.xml</extend>
+
+	<groupId>jadabs-im</groupId>
+	<name>IO-pc implementation</name>
+	<artifactId>im-io-pc</artifactId>
+
+
+	<shortDescription>Messenger I/O handling</shortDescription>
+
+  	<dependencies>
+ 
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>log4j-cdc</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+				
+  	</dependencies>
+
+  
+</project>

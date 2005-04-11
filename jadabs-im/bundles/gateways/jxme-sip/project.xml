@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+	<extend>${basedir}/../../../project.xml</extend>
+   
+	<name>Sip-GW-Impl</name>
+	<groupId>jadabs-im</groupId>
+	<artifactId>gw-jxmesip</artifactId>
+
+	<shortDescription>Gateway</shortDescription>
+
+	<dependencies>
+	
+		<dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>gw-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+	
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-services-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+
+       <dependency>
+           <groupId>log4j</groupId>
+           <artifactId>log4j</artifactId>
+           <version>1.2.8-osgi</version>
+       </dependency>
+       
+       <dependency>
+           <groupId>sip</groupId>
+           <artifactId>nist-sip</artifactId>
+           <version>1.2-osgi</version>
+       </dependency>
+       
+       <dependency>
+           <groupId>sip</groupId>
+           <artifactId>sip-api</artifactId>
+           <version>1.1-osgi</version>
+       </dependency>
+       
+       <dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>sip-cons</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>sip-handler</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		 		
+  	</dependencies>
+
+  
+</project>

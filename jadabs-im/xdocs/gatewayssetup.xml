@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<document>
+
+<properties>
+	<title>Gateways setup</title>
+	<author email=""></author>
+</properties>
+
+<body>
+	<section name="Gateway setup">
+		<subsection name="SIP/JXME Gateway">
+			<p>
+			A SIP proxy must be running in order to use the SIP/SMTP gateway. <code>runpeer.sh</code> or <code>runpeer.bat</code> 
+			for the windows users, starts the gateway. You must first specify in imSettings.properties the address and port 
+			where the SIP proxy runs, along with the address and port where the gateway will be running.
+			</p>
+		</subsection>
+		
+		<subsection name="SIP/SMTP Gateway">
+			<p>
+				This gateway is specific to the ETHZ network. you have to be
+				in the ETHZ VPN to make it work sucessfully.
+			</p>
+			<p>
+				You must have configured <a href="cayenne.html">cayenne.xml</a> correctly for the gateway to work. 
+			</p>
+			<p>
+				In <code>imSettings.properties</code> set your IP:port and the same for the proxy.
+			</p>
+			<p>
+				Configure the proxy (<code>build.xml</code>) that he knows your IP and port (<code>property name="sip_smtp_gateway" value="x.x.x.x:x"</code>).
+			</p>
+			<p>
+				<code>runpeer.sh</code> or <code>runpeer.bat</code> for the windows users, starts the gateway.
+			</p>
+		</subsection>
+	</section>
+</body>
+</document>

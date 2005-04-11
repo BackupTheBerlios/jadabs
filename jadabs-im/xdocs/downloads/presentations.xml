@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+<properties>
+	<title>Presentations</title>
+	<author email=""></author>
+</properties>
+<body>
+	<section name="Presentations">
+		<p>
+			Here you can download the slides of the three presentations we made during the course of the lab. Of course, without the precious comments we made, these aren't very usefull. Still, you may find some pictures that may help you to understand the architecture of our system.
+		</p>
+	<subsection name="PDF Slides">
+		<p><ul>
+			<li><a href="jadabs-im_presentation_1.pdf">1st Milestone</a></li>
+			<li><a href="jadabs-im_presentation_1.pdf">2nd Milestone</a></li>
+			<li><a href="jadabs-im_presentation_final.pdf">Final Presentation</a></li>
+		</ul></p>
+	</subsection>
+	</section>
+</body>
+</document>

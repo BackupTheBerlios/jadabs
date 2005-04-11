@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map project-version="1.1">
+	<property name="defaultPackage" value="ch.ethz.jadabs.im.db"/>
+	<db-entity name="Account">
+		<db-attribute name="mobile_phone" type="VARCHAR" length="50"/>
+		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="25"/>
+		<db-attribute name="pref" type="TINYINT" isMandatory="true"/>
+		<db-attribute name="system_email" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="100"/>
+		<db-attribute name="user_email" type="VARCHAR" length="100"/>
+		<db-attribute name="username" type="VARCHAR" isMandatory="true" length="50"/>
+	</db-entity>
+	<db-entity name="TempAccount">
+		<db-attribute name="email" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="100"/>
+		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="25"/>
+	</db-entity>
+	<obj-entity name="Account" className="ch.ethz.jadabs.im.db.Account" dbEntityName="Account">
+		<obj-attribute name="email" type="java.lang.String" db-attribute-path="user_email"/>
+		<obj-attribute name="mobilePhone" type="java.lang.String" db-attribute-path="mobile_phone"/>
+		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
+		<obj-attribute name="pref" type="java.lang.Integer" db-attribute-path="pref"/>
+		<obj-attribute name="systemEmail" type="java.lang.String" db-attribute-path="system_email"/>
+		<obj-attribute name="username" type="java.lang.String" db-attribute-path="username"/>
+	</obj-entity>
+	<obj-entity name="NewAccount" className="ch.ethz.jadabs.im.db.NewAccount" dbEntityName="TempAccount">
+		<obj-attribute name="email" type="java.lang.String" db-attribute-path="email"/>
+		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
+	</obj-entity>
+	<query name="account_by_email" factory="org.objectstyle.cayenne.map.SelectQueryBuilder" root="obj-entity" root-name="Account">
+		<property name="cayenne.SelectQuery.distinct" value="true"/>
+		<property name="cayenne.GenericSelectQuery.fetchLimit" value="1"/>
+		<qualifier><![CDATA[systemEmail = $email]]></qualifier>
+	</query>
+	<query name="account_by_username" factory="org.objectstyle.cayenne.map.SelectQueryBuilder" root="obj-entity" root-name="Account">
+		<property name="cayenne.GenericSelectQuery.fetchLimit" value="1"/>
+		<qualifier><![CDATA[username = $username]]></qualifier>
+	</query>
+	<query name="login" factory="org.objectstyle.cayenne.map.SelectQueryBuilder" root="obj-entity" root-name="Account">
+		<property name="cayenne.GenericSelectQuery.fetchLimit" value="1"/>
+		<qualifier><![CDATA[(username = $username) and (password = $password)]]></qualifier>
+	</query>
+	<query name="new_account_by_email" factory="org.objectstyle.cayenne.map.SelectQueryBuilder" root="obj-entity" root-name="NewAccount">
+		<property name="cayenne.GenericSelectQuery.fetchLimit" value="1"/>
+		<qualifier><![CDATA[email = $email]]></qualifier>
+	</query>
+	<query name="unique_user" factory="org.objectstyle.cayenne.map.SelectQueryBuilder" root="obj-entity" root-name="Account">
+		<property name="cayenne.SelectQuery.distinct" value="true"/>
+		<property name="cayenne.GenericSelectQuery.fetchLimit" value="1"/>
+		<qualifier><![CDATA[(username = $username) and not ((systemEmail = $systemEmail))]]></qualifier>
+	</query>
+	<query name="validation" factory="org.objectstyle.cayenne.map.SelectQueryBuilder" root="obj-entity" root-name="NewAccount">
+		<property name="cayenne.GenericSelectQuery.fetchLimit" value="1"/>
+		<qualifier><![CDATA[(email = $email) and (password = $password)]]></qualifier>
+	</query>
+</data-map>

@@ -1,0 +1,7 @@
+MIDlet-1: messenger, , ch.ethz.jadabs.im.gui.handygui.HandyguiMIDlet
+MIDlet-Name: Messenger
+MIDlet-Vendor: Unknown
+MIDlet-Version: 1.0
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-2.0
+

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+	<extend>${basedir}/../../../project.xml</extend>
+   
+	<groupId>jadabs-im</groupId>
+	<id>im-gui-api</id>
+	<name>im-gui-api</name>
+	<artifactId>im-gui-api</artifactId>
+	<package>ch.ethz.jadabs.im.gui.api</package>
+	<shortDescription>Messenger GUI API</shortDescription>
+
+	<shortDescription>mservices GUI API</shortDescription>
+
+	<properties>
+		<osgi.import.service>ch.ethz.jadabs.remotefw.FrameworkManager</osgi.import.service>
+	</properties>
+
+   <dependencies>
+   
+        <dependency>
+            <groupId>osgi</groupId>
+            <artifactId>osgi-framework</artifactId>
+            <version>1.2</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>swt</groupId>
+            <artifactId>swt</artifactId>
+            <version>3.0.1-ppc</version>
+        </dependency>
+        
+    
+        <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>log4j-cdc</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        
+        <dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-services-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>sip-cons</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>		
+      
+        <dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>im-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>im-jxme</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+	    
+	</dependencies>
+  
+  	<build>
+		<resources>
+	     
+	     	<resource>
+	        	<directory>resources/</directory>
+	            <includes>
+	                <include>logo_jadabs.png</include>
+	            </includes>
+	        </resource>
+		 
+	     </resources>
+     </build>
+     
+</project>

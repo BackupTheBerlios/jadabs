@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../project.xml</extend>
+
+	<groupId>jadabs-im</groupId>
+	<artifactId>im-gui-handygui</artifactId>
+	<name>jadabs-im handygui</name>
+
+	<shortDescription>handygui for jadabs-im</shortDescription>
+
+  	<dependencies>  	
+  	
+  
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+
+      	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>     
+      		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-bt-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>        
+	
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>log4j-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	    			<midlet>true</midlet>    
+      	   </properties>
+		</dependency>		
+      
+		<dependency>
+      		<groupId>j2me</groupId>
+      		<artifactId>midpapi</artifactId>
+      		<version>2.0</version>
+		</dependency>	
+		
+		<dependency>
+      		<groupId>j2me</groupId>
+      		<artifactId>btapi</artifactId>
+      		<version>1.0</version>
+      		<properties>
+      			<dependencyType>runtime</dependencyType>
+      		</properties>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-services-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>api</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>		
+      
+        <dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>im-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>im-jxme</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+		
+  	</dependencies>
+  	
+  	<build>
+		<resources>
+	     
+	     	<resource>
+	        	<directory>resources/</directory>
+	        	<targetPath>res</targetPath>
+	            <includes>
+	                <include>logo_jadabs.png</include>
+	                <include>blue.png</include>
+	                <include>green.png</include>
+	                <include>orange.png</include>
+	                <include>red.png</include>
+	            </includes>
+	        </resource>
+		 
+	     </resources>
+     </build>
+  
+</project>

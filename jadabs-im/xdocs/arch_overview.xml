@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<document>
+
+<properties>
+	<title>Used Products</title>
+	<author email=""></author>
+</properties>
+
+<body>
+	<section name="Architectural Overview">
+		<p>
+		The users register themselves via the web application in a database, which is accessible by the SIP proxy and the SIP/SMTP gateway.
+		The proxy needs it to know whether a user has the right to register and use the services provided by the proxy.
+		The SIP/SMTP gateway needs access to the database to check whether the user wants his messages send to his email address, 
+		to sms, or both.
+		</p>
+		<p>
+			<img src="images/LabOverview2.jpg" />
+		</p>
+		<p>
+			In that figure you can see how a message is delivered to a user.
+			<ol>
+				<li>Alice tries to reach Bob, if he's online, the message is directly send to his instant messenger application.</li>
+				<li>Proxy answers.</li>
+				<li>If Bob is not currently online, the message is sent to the SMTP/SIP gateway.</li>
+				<li>The gateway checks whether the user wants an email or an sms or both.</li>
+				<li>It is transformed in an SMTP message and sent either to the SWITCH SMS gateway or directly to the email server.</li>
+			</ol>
+		</p>
+		<p>
+			At the beginning, we wanted to implement it in a way where the proxy is just a discovery proxy. It means that when Alice wants to send
+			a message to Bob, she asks the proxy where to find Bob and receives back the IP address of Bob (or of the SMTP gateway of Bob is offline).
+			Then, Alice sends the message herself to Bob. But finally, we implemented it as a centralized proxy, which transmits everything itself
+			to the receiver.
+		</p>
+		
+	</section>
+</body>
+</document>
+
+<!--	<p>
+		pictures pictures
+	</p>
+	<p>
+		<img src="images/IM_Prefs.jpg" />
+	</p>
+	<p>
+		<img src="images/LabOverview1.jpg" />
+	</p>
+	<p>
+		<img src="images/LabOverview2.jpg" />
+	</p>
+	<p>
+		<img src="images/Super.jpg" />
+	</p>  
+-->

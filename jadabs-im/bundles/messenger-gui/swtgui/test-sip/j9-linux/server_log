@@ -1,0 +1,2335 @@
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 192.168.55.102
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="192.168.55.102" />
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 129.132.130.127
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="129.132.130.127" />
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 129.132.130.127
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="129.132.130.127" />
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 129.132.130.127
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="129.132.130.127" />
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 129.132.130.127
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="129.132.130.127" />
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 129.132.130.127
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="129.132.130.127" />
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229907804" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229908304" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229909307" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229911315" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229915331" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229919347" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229923361" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229927377" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229931392" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229935407" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106229939423" 
+isSender="true" 
+transactionId="z9hg4bkf8f4cc50903d2065b8a9838d044227d2" 
+callId="6650fd1f5df11e7496e05eeaed83a778@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 6650fd1f5df11e7496e05eeaed83a778@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=3384
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf8f4cc50903d2065b8a9838d044227d2
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 129.132.130.127
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="129.132.130.127" />
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233728551" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233729050" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233730054" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233732061" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233736077" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233740092" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233744107" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233748122" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233752137" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233756153" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233760168" 
+isSender="true" 
+transactionId="z9hg4bkf11e8849ce538e78435283d5b0c373a9" 
+callId="68dd7563238369fddbf8eaf77a1c6732@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 68dd7563238369fddbf8eaf77a1c6732@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=7465
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bKf11e8849ce538e78435283d5b0c373a9
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233911508" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233912009" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233913013" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233915021" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233919037" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233923051" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233927067" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233931081" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233935095" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233939111" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106233943128" 
+isSender="true" 
+transactionId="z9hg4bk9b348a18c969d447f6101caa5c96f467" 
+callId="a99c841dadf3847fcb2a599011e3e023@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: a99c841dadf3847fcb2a599011e3e023@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@wlab.ethz.ch>;tag=9012
+To: <sip:test@wlab.ethz.ch>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9b348a18c969d447f6101caa5c96f467
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 129.132.130.127
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="129.132.130.127" />
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234148245" 
+isSender="true" 
+transactionId="z9hg4bk86b342eb9c109824abe8f5ef3a22de51" 
+callId="957320f949fe8d135b6f79482960cc4e@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 957320f949fe8d135b6f79482960cc4e@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=7363
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK86b342eb9c109824abe8f5ef3a22de51
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234148744" 
+isSender="true" 
+transactionId="z9hg4bk86b342eb9c109824abe8f5ef3a22de51" 
+callId="957320f949fe8d135b6f79482960cc4e@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 957320f949fe8d135b6f79482960cc4e@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=7363
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK86b342eb9c109824abe8f5ef3a22de51
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5060" 
+to="129.132.130.127:5045" 
+time="1106234149021" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bk86b342eb9c109824abe8f5ef3a22de51" 
+firstLine="SIP/2.0 200 OK" 
+callId="957320f949fe8d135b6f79482960cc4e@129.132.130.127" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 200 OK
+Call-ID: 957320f949fe8d135b6f79482960cc4e@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=7363
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK86b342eb9c109824abe8f5ef3a22de51
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>;expires=3600
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234149033" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5060" 
+to="129.132.130.127:5045" 
+time="1106234149274" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bk86b342eb9c109824abe8f5ef3a22de51" 
+firstLine="SIP/2.0 200 OK" 
+callId="957320f949fe8d135b6f79482960cc4e@129.132.130.127" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 200 OK
+Call-ID: 957320f949fe8d135b6f79482960cc4e@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=7363
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK86b342eb9c109824abe8f5ef3a22de51
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>;expires=3600
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234149534" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234150538" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234152546" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234156561" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234160576" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234164592" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234168607" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234172622" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234176638" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234180653" 
+isSender="true" 
+transactionId="z9hg4bk442a116fca4b1be77617d5ee87e872b1" 
+callId="51eac15152f6bfc349827e110c862fa6@129.132.130.127" 
+firstLine="PUBLISH sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:129.132.130.127 SIP/2.0
+Call-ID: 51eac15152f6bfc349827e110c862fa6@129.132.130.127
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=5403
+To: <sip:test@nist.gov>;tag=1633
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK442a116fca4b1be77617d5ee87e872b1
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106234221938" 
+isSender="true" 
+transactionId="z9hg4bk2287833c51a0531e6a50268f6124d82b" 
+callId="0aa221ba0e78b0fd1cfc224abbe66ec4@129.132.130.127" 
+firstLine="SUBSCRIBE sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[SUBSCRIBE sip:129.132.130.127 SIP/2.0
+Call-ID: 0aa221ba0e78b0fd1cfc224abbe66ec4@129.132.130.127
+CSeq: 1 SUBSCRIBE
+From: <sip:test@nist.gov>;tag=2272
+To: <sip:mranga@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK2287833c51a0531e6a50268f6124d82b
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Expires: 3600
+Event:  presence
+Accept: application/pidf+xml
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5060" 
+to="129.132.130.127:5045" 
+time="1106234222034" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bk2287833c51a0531e6a50268f6124d82b" 
+firstLine="SIP/2.0 480 Temporarily Unavailable" 
+callId="0aa221ba0e78b0fd1cfc224abbe66ec4@129.132.130.127" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 480 Temporarily Unavailable
+Call-ID: 0aa221ba0e78b0fd1cfc224abbe66ec4@129.132.130.127
+CSeq: 1 SUBSCRIBE
+From: <sip:test@nist.gov>;tag=2272
+To: <sip:mranga@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK2287833c51a0531e6a50268f6124d82b
+Max-Forwards: 70
+Content-Length: 0
+
+]]>
+</message>
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 129.132.130.127
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="129.132.130.127" />
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239704014" 
+isSender="true" 
+transactionId="z9hg4bk212187eaf406e406747c08dc09cd21ca" 
+callId="f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=1610
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK212187eaf406e406747c08dc09cd21ca
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239704512" 
+isSender="true" 
+transactionId="z9hg4bk212187eaf406e406747c08dc09cd21ca" 
+callId="f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=1610
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK212187eaf406e406747c08dc09cd21ca
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239705516" 
+isSender="true" 
+transactionId="z9hg4bk212187eaf406e406747c08dc09cd21ca" 
+callId="f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=1610
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK212187eaf406e406747c08dc09cd21ca
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239707524" 
+isSender="true" 
+transactionId="z9hg4bk212187eaf406e406747c08dc09cd21ca" 
+callId="f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=1610
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK212187eaf406e406747c08dc09cd21ca
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239711539" 
+isSender="true" 
+transactionId="z9hg4bk212187eaf406e406747c08dc09cd21ca" 
+callId="f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=1610
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK212187eaf406e406747c08dc09cd21ca
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239715553" 
+isSender="true" 
+transactionId="z9hg4bk212187eaf406e406747c08dc09cd21ca" 
+callId="f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=1610
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK212187eaf406e406747c08dc09cd21ca
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239718079" 
+isSender="true" 
+transactionId="z9hg4bk9d6bb32eadc8326ba6deb46d7ce7435e" 
+callId="4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@nist.gov>;tag=7201
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9d6bb32eadc8326ba6deb46d7ce7435e
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239718579" 
+isSender="true" 
+transactionId="z9hg4bk9d6bb32eadc8326ba6deb46d7ce7435e" 
+callId="4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@nist.gov>;tag=7201
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9d6bb32eadc8326ba6deb46d7ce7435e
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239719568" 
+isSender="true" 
+transactionId="z9hg4bk212187eaf406e406747c08dc09cd21ca" 
+callId="f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=1610
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK212187eaf406e406747c08dc09cd21ca
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239719581" 
+isSender="true" 
+transactionId="z9hg4bk9d6bb32eadc8326ba6deb46d7ce7435e" 
+callId="4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@nist.gov>;tag=7201
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9d6bb32eadc8326ba6deb46d7ce7435e
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239721585" 
+isSender="true" 
+transactionId="z9hg4bk9d6bb32eadc8326ba6deb46d7ce7435e" 
+callId="4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@nist.gov>;tag=7201
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9d6bb32eadc8326ba6deb46d7ce7435e
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239723582" 
+isSender="true" 
+transactionId="z9hg4bk212187eaf406e406747c08dc09cd21ca" 
+callId="f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=1610
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK212187eaf406e406747c08dc09cd21ca
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239724156" 
+isSender="true" 
+transactionId="z9hg4bk2fbc8c73083f25bf32742611fb0a662d" 
+callId="fe162d45d0030d02d48acda5c98f57dc@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: fe162d45d0030d02d48acda5c98f57dc@129.132.130.127
+CSeq: 3 REGISTER
+From: <sip:test@nist.gov>;tag=3120
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK2fbc8c73083f25bf32742611fb0a662d
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239724657" 
+isSender="true" 
+transactionId="z9hg4bk2fbc8c73083f25bf32742611fb0a662d" 
+callId="fe162d45d0030d02d48acda5c98f57dc@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: fe162d45d0030d02d48acda5c98f57dc@129.132.130.127
+CSeq: 3 REGISTER
+From: <sip:test@nist.gov>;tag=3120
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK2fbc8c73083f25bf32742611fb0a662d
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239725592" 
+isSender="true" 
+transactionId="z9hg4bk9d6bb32eadc8326ba6deb46d7ce7435e" 
+callId="4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: 4e49dc2da9bceee3a6a1ead15a5c2779@129.132.130.127
+CSeq: 2 REGISTER
+From: <sip:test@nist.gov>;tag=7201
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK9d6bb32eadc8326ba6deb46d7ce7435e
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239725661" 
+isSender="true" 
+transactionId="z9hg4bk2fbc8c73083f25bf32742611fb0a662d" 
+callId="fe162d45d0030d02d48acda5c98f57dc@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: fe162d45d0030d02d48acda5c98f57dc@129.132.130.127
+CSeq: 3 REGISTER
+From: <sip:test@nist.gov>;tag=3120
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK2fbc8c73083f25bf32742611fb0a662d
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239727595" 
+isSender="true" 
+transactionId="z9hg4bk212187eaf406e406747c08dc09cd21ca" 
+callId="f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: f2258ff45b709a3fb0d3f23c91e7f9f9@129.132.130.127
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=1610
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK212187eaf406e406747c08dc09cd21ca
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="129.132.130.127:5045" 
+to="129.132.130.127:5060" 
+time="1106239727668" 
+isSender="true" 
+transactionId="z9hg4bk2fbc8c73083f25bf32742611fb0a662d" 
+callId="fe162d45d0030d02d48acda5c98f57dc@129.132.130.127" 
+firstLine="REGISTER sip:129.132.130.127 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:129.132.130.127 SIP/2.0
+Call-ID: fe162d45d0030d02d48acda5c98f57dc@129.132.130.127
+CSeq: 3 REGISTER
+From: <sip:test@nist.gov>;tag=3120
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 129.132.130.127:5045;branch=z9hG4bK2fbc8c73083f25bf32742611fb0a662d
+Max-Forwards: 70
+Contact: <sip:129.132.130.127:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 192.168.55.101
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="192.168.55.101" />
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239768965" 
+isSender="true" 
+transactionId="z9hg4bkebbabd533a03304c569b946dc63d51c5" 
+callId="63460141bc9621424ea32fc9061cf295@192.168.55.101" 
+firstLine="REGISTER sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:192.168.55.101 SIP/2.0
+Call-ID: 63460141bc9621424ea32fc9061cf295@192.168.55.101
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=6936
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bKebbabd533a03304c569b946dc63d51c5
+Max-Forwards: 70
+Contact: <sip:192.168.55.101:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239769463" 
+isSender="true" 
+transactionId="z9hg4bkebbabd533a03304c569b946dc63d51c5" 
+callId="63460141bc9621424ea32fc9061cf295@192.168.55.101" 
+firstLine="REGISTER sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:192.168.55.101 SIP/2.0
+Call-ID: 63460141bc9621424ea32fc9061cf295@192.168.55.101
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=6936
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bKebbabd533a03304c569b946dc63d51c5
+Max-Forwards: 70
+Contact: <sip:192.168.55.101:5045;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5060" 
+to="192.168.55.101:5045" 
+time="1106239769795" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bkebbabd533a03304c569b946dc63d51c5" 
+firstLine="SIP/2.0 200 OK" 
+callId="63460141bc9621424ea32fc9061cf295@192.168.55.101" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 200 OK
+Call-ID: 63460141bc9621424ea32fc9061cf295@192.168.55.101
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=6936
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bKebbabd533a03304c569b946dc63d51c5
+Max-Forwards: 70
+Contact: <sip:192.168.55.101:5045;transport=tcp>;expires=3600
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239769807" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5060" 
+to="192.168.55.101:5045" 
+time="1106239769930" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bkebbabd533a03304c569b946dc63d51c5" 
+firstLine="SIP/2.0 200 OK" 
+callId="63460141bc9621424ea32fc9061cf295@192.168.55.101" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 200 OK
+Call-ID: 63460141bc9621424ea32fc9061cf295@192.168.55.101
+CSeq: 1 REGISTER
+From: <sip:test@nist.gov>;tag=6936
+To: <sip:test@nist.gov>
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bKebbabd533a03304c569b946dc63d51c5
+Max-Forwards: 70
+Contact: <sip:192.168.55.101:5045;transport=tcp>;expires=3600
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239770309" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239771313" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239773321" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239777334" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239781349" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239785365" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239789380" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239793395" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239797410" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239801425" 
+isSender="true" 
+transactionId="z9hg4bk8f2273261e7c44dbe1b4ba54829ccb5e" 
+callId="c507abc8ad416856cca72720fdc17da4@192.168.55.101" 
+firstLine="PUBLISH sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[PUBLISH sip:192.168.55.101 SIP/2.0
+Call-ID: c507abc8ad416856cca72720fdc17da4@192.168.55.101
+CSeq: 1 PUBLISH
+From: <sip:test@nist.gov>;tag=7734
+To: <sip:test@nist.gov>;tag=3147
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK8f2273261e7c44dbe1b4ba54829ccb5e
+Max-Forwards: 70
+Event:  presence
+Content-Type: application/pidf+xml
+Content-Length: 231
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239918309" 
+isSender="true" 
+transactionId="z9hg4bkd2df3a939010676fea3278b809120bd7" 
+callId="5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101" 
+firstLine="SUBSCRIBE sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[SUBSCRIBE sip:192.168.55.101 SIP/2.0
+Call-ID: 5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101
+CSeq: 1 SUBSCRIBE
+From: <sip:test@nist.gov>;tag=6604
+To: <sip:peeripaq@nist.gov>
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bKd2df3a939010676fea3278b809120bd7
+Max-Forwards: 70
+Contact: <sip:192.168.55.101:5045;transport=tcp>
+Expires: 3600
+Event:  presence
+Accept: application/pidf+xml
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239918802" 
+isSender="true" 
+transactionId="z9hg4bkd2df3a939010676fea3278b809120bd7" 
+callId="5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101" 
+firstLine="SUBSCRIBE sip:192.168.55.101 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[SUBSCRIBE sip:192.168.55.101 SIP/2.0
+Call-ID: 5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101
+CSeq: 1 SUBSCRIBE
+From: <sip:test@nist.gov>;tag=6604
+To: <sip:peeripaq@nist.gov>
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bKd2df3a939010676fea3278b809120bd7
+Max-Forwards: 70
+Contact: <sip:192.168.55.101:5045;transport=tcp>
+Expires: 3600
+Event:  presence
+Accept: application/pidf+xml
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5060" 
+to="192.168.55.101:5045" 
+time="1106239919463" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bkd2df3a939010676fea3278b809120bd7" 
+firstLine="SIP/2.0 202 Accepted" 
+callId="5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 202 Accepted
+Call-ID: 5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101
+CSeq: 1 SUBSCRIBE
+From: <sip:test@nist.gov>;tag=6604
+To: <sip:peeripaq@nist.gov>;tag=188
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bKd2df3a939010676fea3278b809120bd7
+Max-Forwards: 69
+Record-Route: <sip:192.168.55.101:5060>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239919967" 
+isSender="true" 
+transactionId="z9hg4bk1c25b8e442908364a14b8db0b9bdf41a" 
+callId="5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101" 
+firstLine="SIP/2.0 488 Not Accpetable here" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 488 Not Accpetable here
+Call-ID: 5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101
+CSeq: 1 NOTIFY
+To: <sip:test@nist.gov>;tag=6604
+From: <sip:peeripaq@nist.gov>;tag=188
+Max-Forwards: 70
+Via: SIP/2.0/UDP 192.168.55.101:5060;branch=z9hG4bK1c25b8e442908364a14b8db0b9bdf41a,SIP/2.0/TCP 192.168.55.102:5045;branch=z9hG4bKa7ec8a0e858e69a5459328f3dc077029
+Record-Route: <sip:192.168.55.101:5060>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5060" 
+to="192.168.55.101:5045" 
+time="1106239919898" 
+isSender="false" 
+transactionId="z9hg4bk1c25b8e442908364a14b8db0b9bdf41a" 
+callId="5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101" 
+firstLine="NOTIFY sip:192.168.55.101:5045;transport=udp SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[NOTIFY sip:192.168.55.101:5045;transport=udp SIP/2.0
+Call-ID: 5cf1389c804e7404fee2df2f2cb4c8c2@192.168.55.101
+CSeq: 1 NOTIFY
+To: <sip:test@nist.gov>;tag=6604
+From: <sip:peeripaq@nist.gov>;tag=188
+Max-Forwards: 70
+Content-Type: application/xpidf+xml
+Via: SIP/2.0/UDP 192.168.55.101:5060;branch=z9hG4bK1c25b8e442908364a14b8db0b9bdf41a,SIP/2.0/TCP 192.168.55.102:5045;branch=z9hG4bKa7ec8a0e858e69a5459328f3dc077029
+Event:  presence
+Subscription-State: active
+Record-Route: <sip:192.168.55.101:5060>
+Content-Length: 309
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5060" 
+to="192.168.55.101:5045" 
+time="1106239967528" 
+isSender="false" 
+transactionId="z9hg4bke6d5f858fe890d73f678b16e9dec9cec" 
+callId="5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102" 
+firstLine="SUBSCRIBE sip:192.168.55.101:5045 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[SUBSCRIBE sip:192.168.55.101:5045 SIP/2.0
+Call-ID: 5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102
+CSeq: 1 SUBSCRIBE
+From: <sip:peeripaq@nist.gov>;tag=1254
+To: <sip:test@nist.gov>
+Via: SIP/2.0/UDP 192.168.55.101:5060;branch=z9hG4bKe6d5f858fe890d73f678b16e9dec9cec,SIP/2.0/TCP 192.168.55.102:5045;branch=z9hG4bK8e5f866ac0fb59d51cff2eb192e68e35
+Max-Forwards: 69
+Contact: <sip:192.168.55.102:5045;transport=tcp>
+Expires: 3600
+Event:  presence
+Accept: application/pidf+xml
+Record-Route: <sip:192.168.55.101:5060>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239967598" 
+isSender="true" 
+transactionId="z9hg4bke6d5f858fe890d73f678b16e9dec9cec" 
+callId="5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102" 
+firstLine="SIP/2.0 202 Accepted" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 202 Accepted
+Call-ID: 5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102
+CSeq: 1 SUBSCRIBE
+From: <sip:peeripaq@nist.gov>;tag=1254
+To: <sip:test@nist.gov>;tag=5341
+Via: SIP/2.0/UDP 192.168.55.101:5060;branch=z9hG4bKe6d5f858fe890d73f678b16e9dec9cec,SIP/2.0/TCP 192.168.55.102:5045;branch=z9hG4bK8e5f866ac0fb59d51cff2eb192e68e35
+Max-Forwards: 69
+Record-Route: <sip:192.168.55.101:5060>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239967658" 
+isSender="true" 
+transactionId="z9hg4bk5bb06872561a5f68d2a90f0a0b783e19" 
+callId="5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102" 
+firstLine="NOTIFY sip:192.168.55.101:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[NOTIFY sip:192.168.55.101:5060 SIP/2.0
+Call-ID: 5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102
+CSeq: 1 NOTIFY
+From: <sip:test@nist.gov>;tag=5341
+To: <sip:peeripaq@nist.gov>;tag=1254
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK5bb06872561a5f68d2a90f0a0b783e19
+Max-Forwards: 70
+Content-Type: application/xpidf+xml
+Event:  presence
+Subscription-State: active
+Route: <sip:192.168.55.102:5045;transport=tcp>
+Content-Length: 313
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239968115" 
+isSender="true" 
+transactionId="z9hg4bk5bb06872561a5f68d2a90f0a0b783e19" 
+callId="5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102" 
+firstLine="NOTIFY sip:192.168.55.101:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[NOTIFY sip:192.168.55.101:5060 SIP/2.0
+Call-ID: 5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102
+CSeq: 1 NOTIFY
+From: <sip:test@nist.gov>;tag=5341
+To: <sip:peeripaq@nist.gov>;tag=1254
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK5bb06872561a5f68d2a90f0a0b783e19
+Max-Forwards: 70
+Content-Type: application/xpidf+xml
+Event:  presence
+Subscription-State: active
+Route: <sip:192.168.55.102:5045;transport=tcp>
+Content-Length: 313
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5045" 
+to="192.168.55.101:5060" 
+time="1106239969117" 
+isSender="true" 
+transactionId="z9hg4bk5bb06872561a5f68d2a90f0a0b783e19" 
+callId="5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102" 
+firstLine="NOTIFY sip:192.168.55.101:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[NOTIFY sip:192.168.55.101:5060 SIP/2.0
+Call-ID: 5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102
+CSeq: 1 NOTIFY
+From: <sip:test@nist.gov>;tag=5341
+To: <sip:peeripaq@nist.gov>;tag=1254
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK5bb06872561a5f68d2a90f0a0b783e19
+Max-Forwards: 70
+Content-Type: application/xpidf+xml
+Event:  presence
+Subscription-State: active
+Route: <sip:192.168.55.102:5045;transport=tcp>
+Content-Length: 313
+
+]]>
+</message>
+
+<message
+from="192.168.55.101:5060" 
+to="192.168.55.101:5045" 
+time="1106239970718" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bk5bb06872561a5f68d2a90f0a0b783e19" 
+firstLine="SIP/2.0 488 Not Accpetable here" 
+callId="5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 488 Not Accpetable here
+Call-ID: 5f2f2a450771fa9d9f062c07727b62e6@192.168.55.102
+CSeq: 1 NOTIFY
+To: <sip:peeripaq@nist.gov>;tag=1254
+From: <sip:test@nist.gov>;tag=5341
+Max-Forwards: 70
+Via: SIP/2.0/TCP 192.168.55.101:5045;branch=z9hG4bK5bb06872561a5f68d2a90f0a0b783e19
+Record-Route: <sip:192.168.55.101:5060>
+Content-Length: 0
+
+]]>
+</message>
+

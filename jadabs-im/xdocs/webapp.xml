@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<document>
+
+<properties>
+	<title>Registration WebApp</title>
+	<author email=""></author>
+</properties>
+
+<body>
+	<section name="The Registration Web Application">
+	<p>
+		This application is conform to the servlet standard.
+		It will (hopefully) run on any standard compliant servlet container (if not use <a href="http://jakarta.apache.org/tomcat/">tomcat</a>).
+	</p>
+	
+	<subsection name="Configure it">
+		<p>
+			You'll have to configure the connection to the database. You can do this with <a href="cayenne.html">cayenne</a>.
+		</p>
+	</subsection>
+	<subsection name="Build it">
+		<p>
+			You can build the webapp using ant. Adapt <code>build.xml</code> to your needs.
+		</p>
+	</subsection>
+	<subsection name="Deploy it">
+		<p>
+			 After running ant, you'll have a <code>jadabs-im.war</code> file. You can for example deploy it using the tomcat manager (included in standard disrtribution)
+		</p>
+	</subsection>
+	</section>
+</body>
+</document>

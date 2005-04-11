@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="jadabs-im">
+
+<title>Jadabs Messenger</title>
+
+<body>
+
+	<links>
+		<item name="ETHZ"   href="http://www.ethz.ch"/>
+		<item name="IKS"    href="http://www.iks.inf.ethz.ch"/>	  		  	
+		<item name="Jadabs" href="http://jadabs.berlios.de"/> 		
+	</links>
+
+	<menu name="Overview">
+		<item name="Abstract" href="/index.html"/>
+		<item name="Project Goals" href="/goals.html"/>
+		<item name="Using Jadabs-IM" href="/using.html" collapse="false">
+			<item name="Messenger Overview" href="/howto/overview.html"/>
+			<item name="Setup Information" href="/howto/setup.html"/>
+		</item>
+		<item name="Third party" href="/products.html"/>
+	</menu>
+
+	<menu name="Infrastructure Setup">
+		<item name="Cayenne" href="/cayenne.html"/>
+		<item name="Registration WebApp" href="/webapp.html"/>
+		<item name="SIP Proxy" href="/proxy.html"/>
+		<item name="Gateways" href="/gatewayssetup.html"/>
+	</menu>
+
+	<menu name="Architecture">
+		<item name="Overview" href="/arch_overview.html"/>
+		<item name="SIP" href="/sip.html"/>
+		<item name="Gateways" href="/gateways.html"/>
+	</menu>
+    
+
+
+</body>
+</project>

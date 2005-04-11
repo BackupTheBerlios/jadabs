@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<document>
+
+<properties>
+	<title>Used Products</title>
+	<author email=""></author>
+</properties>
+
+<body>
+	<section name="Tools, Frameworks and Libraries we used">
+	<subsection name="Jadabs">
+		<p>
+			<img src="images/jadabs_logo.gif" width="98" height="32"/>
+		</p>
+		<p>
+			Jadabs is a dynamic lightweight container for small devices in a distributed environment.
+		</p>
+		<p>
+			Homepage: <a href="http://jadabs.berlios.de">http://jadabs.berlios.de</a>
+		</p>
+	</subsection>
+	<subsection name="Apache Jakarta Tomcat">
+		<p>
+			<img src="images/tomcat_logo.gif" width="65" height="46"/>
+		</p>
+		<p>
+			Tomcat is a web server that functions as a servlet container.
+		</p>
+		<p>
+			Homepage: <a href="http://jakarta.apache.org/tomcat">http://jakarta.apache.org/tomcat</a>
+		</p>
+	</subsection>
+	<subsection name="Apache Jakarta Tapestry">
+		<p>
+			<img src="images/tapestry_logo.png" width="177" height="47"/>
+		</p>
+		<p>
+			Tapestry is a powerful framework for creating web applications in Java.
+		</p>
+		<p>
+			Homepage: <a href="http://jakarta.apache.org/tapestry">http://jakarta.apache.org/tapestry</a>
+		</p>
+	</subsection>
+	<subsection name="Cayenne">
+		<p>
+			<img src="images/cayenne_logo.gif" width="150" height="46"/>
+		</p>
+		<p>
+			Cayenne is a powerful, open source Java Object Relational Mapping framework.
+		</p>
+		<p>
+			Homepage: <a href="http://objectstyle.org/cayenne">http://objectstyle.org/cayenne</a>
+		</p>
+	</subsection>
+	<subsection name="Postgresql">
+		<p>
+			<img src="images/postgresql_logo.png" width="111" height="40"/>
+		</p>
+		<p>
+			 PostgreSQL is an SQL compliant, open source object-relational database management system.
+		</p>
+		<p>
+			Homepage: <a href="http://www.postgresql.org">http://www.postgresql.org</a>
+		</p>
+	</subsection>
+	<subsection name="JAIN-SIP Proxy Server">
+		<p>
+			 A Java SIP Forking Proxy with presence server support.
+		</p>
+		<p>
+			 This is evil, but we had no other choice ...
+		</p>
+		<p>
+			Homepage: <a href="https://jain-sip-presence-proxy.dev.java.net">https://jain-sip-presence-proxy.dev.java.net</a>
+		</p>
+	</subsection>
+	</section>
+	<section name="Tools we didn't use, but should have">
+	<subsection name="Subversion">
+		<p>
+			<img src="images/subversion_logo.png" width="234" height="32"/>
+		</p>
+		<p>
+			 A compelling replacement for CVS.
+		</p>
+		<p>
+			Homepage: <a href="http://subversion.tigris.org">http://subversion.tigris.org</a>
+		</p>
+	</subsection>
+	</section>
+</body>
+</document>

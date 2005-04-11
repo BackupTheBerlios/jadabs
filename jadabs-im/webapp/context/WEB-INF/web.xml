@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+	<display-name>Jadabs-im User Registration Webapp</display-name>
+	<servlet>
+		<servlet-name>Jadabs-im_User_Registration</servlet-name>
+		<servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Jadabs-im_User_Registration</servlet-name>
+		<url-pattern>/user_registration</url-pattern>
+	</servlet-mapping>
+</web-app>

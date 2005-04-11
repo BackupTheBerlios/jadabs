@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<document>
+
+  <properties>
+    <title>SIP/JXME Messenger</title>
+    <author email=""></author>
+  </properties>
+  
+  <body>
+      
+    <section name="Introduction">
+    	<p>
+    	We have implemented a small messenger which uses SIP, the session initiation protocol and another one which uses JXME.
+    	A SIP server must be running in order to use the SIP messenger.
+    	</p>
+    </section>
+  
+  	<section name="Installation">
+  		<p>
+   		Simply unpack the zip file and run the runpeer.sh file if you're working under Linux. For Windows simply run the runpeer.bat command. 
+   		For the JXME messenger, change the <code>ch.ethz.jadabs.jxme.peeralias</code> properties in init-win/linux.xargs for each different messenger.
+   		</p>
+	</section>
+	  	
+  	<section name="SIP Messenger">
+	  	
+	  	<subsection name="Settings">
+	  		<p>
+	  		Before you connect to a SIP server, just enter its address and port in the format address:port, and specify your user name and password, in case the server requires authentication.
+	  		Also specify your external (Internet) IP address and port.
+	  		You're all set, enjoy ! See <a href="howto/overview.html">this for usage</a>
+	  		</p>
+	  	</subsection>
+	  
+	  	<subsection name="Implementation">
+	  		<p>
+	  		The implementation is mostly based on the messenger of NIST.org.
+	  		</p>
+	  	</subsection>
+	  	
+	  	<subsection name="Communication with other messengers">
+	  		<p>
+	  		The SIP messenger can communicate with every SIP based instant messenger. We tried it with Windows Messenger.
+	  		It works fine if Windows Messenger first sends a message, but not the reverse. Windows Messenger rejects every INVITE message 
+	  		we send, and the lack of documentation and specification from Microsoft doesn't make it easier ...
+	  		</p>
+	  	</subsection>
+  	</section>
+  	
+  	<section name="JXME Messenger">
+  		<subsection name="Usage">
+  			<p>
+  			JXME detects automatically who is on your neighbourhood. If a SIP gateway is present, you can also communicate
+  			with buddies in the outside world, but you first need to be authenticated. <a href="howto/overview.html">this for usage</a>
+  			</p>
+  		</subsection>
+  		
+  		<subsection name="Settings">
+  			<p>
+  			Simply enter your username. If a SIP gateway enters the zone, you must have entered a correct SIP proxy along with your username
+  			and password to be able to connect to the SIP server and communicate to the outside world.
+  			</p>
+  		</subsection>
+  	</section>
+  	
+  	<section name="Implementation">
+  		<p>
+  		The GUI is the same for both messengers, they uses a common interface which is implemented differently by the messengers.
+  		Classes they share are in the packages ch.ethz.jadabs.im.api:
+  		Most important classes are:
+  		<ul>
+  			<li>IMService: defines the common interface for both messenger implementations</li>
+  			<li>IMListener: events from messenger to the GUI</li>
+  			<li>IMSettings: needed to set and retrieve the settings from the GUI</li>
+  		</ul>
+  		</p>
+  		<subsection name="SIP Implementation">
+  			<p>
+  			The classes for the SIP implementation of IMService are in ch.ethz.jadabs.im.sip. 
+  			</p>
+  			<p>
+  			Classes for the JXME implementation of IMServive are in ch.ethz.jadabs.im.jxme.
+  			</p>
+  		</subsection>
+  	</section>
+  	
+  </body>
+
+</document>

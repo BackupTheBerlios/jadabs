@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../../project.xml</extend>
+
+  	<groupId>sip</groupId>
+  	<artifactId>nist-sip-registrar-gui</artifactId>
+  	<name>NIST-SIP-Registrar-GUI</name>
+
+  	<shortDescription>NIST-SIP-Registrar-GUI</shortDescription>
+
+	<properties>
+		<osgi.import.service>gov.nist.sip.proxy.Proxy</osgi.import.service>
+	</properties>
+	
+	
+  	<dependencies>
+  	
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+
+		<dependency>
+      		<groupId>sip</groupId>
+      		<artifactId>sip-api</artifactId>
+      		<version>1.1-osgi</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>sip</groupId>
+      		<artifactId>nist-sip</artifactId>
+      		<version>1.2-osgi</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>sip</groupId>
+      		<artifactId>nist-sip-registrar</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+  	</dependencies>
+  
+</project>

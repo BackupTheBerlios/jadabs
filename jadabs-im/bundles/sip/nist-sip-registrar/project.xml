@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../../project.xml</extend>
+
+  	<groupId>sip</groupId>
+  	<artifactId>nist-sip-registrar</artifactId>
+  	<name>NIST-SIP-Registrar</name>
+
+  	<shortDescription>NIST-SIP-Registrar</shortDescription>
+
+	<properties>
+		<osgi.dynimport.package>gov.nist.*</osgi.dynimport.package>
+		<osgi.export.service>gov.nist.sip.proxy.Proxy</osgi.export.service>
+	</properties>
+	
+	
+  	<dependencies>
+
+		<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+
+		<dependency>
+      		<groupId>sip</groupId>
+      		<artifactId>sip-api</artifactId>
+      		<version>1.1-osgi</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>sip</groupId>
+      		<artifactId>nist-sip</artifactId>
+      		<version>1.2-osgi</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cayenne</groupId>
+			<artifactId>cayenne</artifactId>
+			<version>1.1RC3-osgi</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql-jdbc3-osgi</artifactId>
+			<version>7.4-213 </version>
+		</dependency>
+		
+
+  	</dependencies>
+
+</project>

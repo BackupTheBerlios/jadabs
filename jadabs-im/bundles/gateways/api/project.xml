@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+	<extend>${basedir}/../../../project.xml</extend>
+
+	<groupId>jadabs-im</groupId>
+	<name>Gateways API</name>
+	<artifactId>gw-api</artifactId>
+	
+	
+	<shortDescription>messenger jxme implementation</shortDescription>
+
+</project>

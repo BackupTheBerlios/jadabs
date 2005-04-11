@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<document>
+
+<properties>
+	<title>SIP Proxy setup</title>
+	<author email=""></author>
+</properties>
+
+<body>
+	<section name="Proxy Setup">
+		<p>
+			There are 2 configuration files which you might want to edit to reflect your infrastructure. 
+			The <code>sipproxy/build.xml</code> file and the <code>sipproxy/govARGnistARGsipARGconfARGfileAUSECOURS.xml</code> file.
+			To install and run the proxy, you must:
+			<ol>
+				<li>configure <a href="cayenne.html">cayenne.xml</a> correctly.</li>
+				<li>set the IP/Port the proxy listens to in the configuration file govARGnistARGsipARGconfARGfileAUSECOURS.xml. This
+					is the default configuration file, you can change it in build.xml (property name="sip_config_file")</li>
+				<li>set the desired realm in build.xml (property name="sip_realm"). The realm is the domain name the users registering to this proxy will
+					use, i.e. the users the proxy will accept.</li>
+				<li>set the SIP/SMTP gateway (if you plan to use one) address and port in build.xml (property name="sip_smtp_gateway")</li>
+				<li>run the proxy by launching <a href="http://ant.apache.org">ant run</a> in the source/sipproxy directory or by launching runpeer.sh in linux_windows/sipproxy</li>
+			</ol>
+		</p>
+	</section>
+</body>
+</document>

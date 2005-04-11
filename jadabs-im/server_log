@@ -1,0 +1,12 @@
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 127.0.0.1
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="127.0.0.1" />
+

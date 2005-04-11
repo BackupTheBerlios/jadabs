@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../../project.xml</extend>
+
+  	<groupId>sip</groupId>
+  	<artifactId>nist-sip-parser</artifactId>
+  	<currentVersion>1.2-osgi</currentVersion>
+  	<name>NIST-SIP-Parser</name>
+
+  	<shortDescription>NIST-SIP-Parser (cpim,pidf)</shortDescription>
+
+	<properties>
+		
+	</properties>
+	
+	
+  	<dependencies>
+
+		<dependency>
+      		<groupId>sip</groupId>
+      		<artifactId>sip-api</artifactId>
+      		<version>1.1-osgi</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>log4j</groupId>
+      		<artifactId>log4j</artifactId>
+      		<version>1.2.8-osgi</version>
+		</dependency>
+		
+  	</dependencies>
+  
+</project>

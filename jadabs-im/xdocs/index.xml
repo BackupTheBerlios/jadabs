@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Abstract</title>
+    <author email=""></author>
+  </properties>
+  
+  <body>
+  
+    <section>
+    
+	<p>
+		The Jadabs IM project was developed at the Swiss 
+		Federal Institute of Technology (ETH) Zurich as part of the
+		Distributed Systems Laboratory. 
+		
+	</p>
+	
+	<p>
+		The deployed architecture provides a combined SIP and JXME infrastructure for instant messenging. We enhanced the infrastructure with
+		the possibility of sending "offline" instant messages via email and SMS. The project includes a SIP proxy, JXME/SIP/SMTP gateways, a registration and authentication infrastructure.
+		We also provide a messenger application, which works on small devices such as iPaqs and modern cellular phones (MIDP 2.0 cell phones).
+	</p>
+
+
+      	
+    </section>		
+  
+  </body>
+
+</document>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<domains project-version="1.1">
+<domain name="EthzDomain">
+	<map name="Users" location="Users.map.xml"/>
+
+	<node name="localhost_postgresql"
+		 datasource="localhost_postgresql.driver.xml"
+		 adapter="org.objectstyle.cayenne.dba.postgres.PostgresAdapter"
+		 factory="org.objectstyle.cayenne.conf.DriverDataSourceFactory">
+	 </node>
+	<node name="wlab_postgresql"
+		 datasource="wlab_postgresql.driver.xml"
+		 adapter="org.objectstyle.cayenne.dba.postgres.PostgresAdapter"
+		 factory="org.objectstyle.cayenne.conf.DriverDataSourceFactory">
+			<map-ref name="Users"/>
+	 </node>
+</domain>
+</domains>

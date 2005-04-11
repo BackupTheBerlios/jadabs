@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="SipProxy" default="help" basedir=".">
+
+	<description>
+		JAIN SIP Presence Proxy, Modified for ETHZ W-Lab
+	</description>
+
+	<!-- properties you might wanna change -->
+	<property name="sip_config_file" value="govARGnistARGsipARGconfARGfileAUSECOURS.xml" />
+	<property name="cayenne_config_file" value="../cayenne/cayenne.xml" />
+	<property name="sip_smtp_gateway" value="127.0.0.1:5059" />
+	<property name="sip_realm" value="wlab.ethz.ch" />
+
+	<!-- set global properties for this build -->
+	<property name="src" value="./src" />
+	<property name="cayenne_src" value="../webapp/src/ch/ethz/jadabs/im/db" />
+	<property name="build" value="./classes" />
+	<property name="lib" value="./lib" />
+	<property name="cayenne_jar" value="cayenne.jar" />
+	<property name="sipapi_jar" value="JainSipApi1.1.jar" />
+	<property name="nistsip_jar" value="nist-sip-1.2.jar" />
+	<property name="postgresql_jdbc_jar" value="pg74.215.jdbc3.jar" />
+	<property name="xerces_jar" value="xerces.jar" />
+
+	<target name="help">
+		<echo message="targets are clean, init, compile and run" />
+	</target>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+		<mkdir dir="debug" />
+		<mkdir dir="users" />
+	</target>
+	
+	<target name="compile" depends="init" description="Compiles Java sources">
+		<javac destdir="${build}">
+			<src>
+				<pathelement location="${src}"/>
+				<pathelement location="${cayenne_src}"/>
+			</src>
+			<classpath>
+				<pathelement location="${lib}/${cayenne_jar}"/>
+				<pathelement location="${lib}/${sipapi_jar}"/>
+				<pathelement location="${lib}/${nistsip_jar}"/>
+			</classpath>
+		</javac>
+		<copy file="${src}/log4j.properties" tofile="${build}/log4j.properties" />
+	</target>
+	
+	<target name="run" depends="compile">
+		<java classname="gov.nist.sip.proxy.Proxy" fork="true" >
+			<sysproperty key="jadabsIM.sip_config_file" value="${sip_config_file}" />
+			<sysproperty key="jadabsIM.cayenne_config_file" value="${cayenne_config_file}" />
+			<sysproperty key="jadabsIM.sip_realm" value="${sip_realm}" />
+			<sysproperty key="jadabsIM.sip_smtp_gateway" value="${sip_smtp_gateway}" />
+			<classpath>
+				<pathelement location="${build}"/>
+				<pathelement location="${lib}/${sipapi_jar}"/>
+				<pathelement location="${lib}/${nistsip_jar}"/>
+				<pathelement location="${lib}/${xerces_jar}"/>
+				<pathelement location="${lib}/${cayenne_jar}"/>
+				<pathelement location="${lib}/${postgresql_jdbc_jar}"/>
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="clean">
+		<!-- Delete the ${build} directory trees -->
+		<delete dir="${build}" />
+	</target>
+
+</project>

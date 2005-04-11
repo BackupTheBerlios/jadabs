@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Setup Files</title>
+    <author email=""></author>
+  </properties>
+
+  <body>
+
+    <section name="Downloads">
+		<p>
+		All the files mentioned are packed in a single zipped file.
+		<a href="downloads/jadabs-im.tar.gz">Download here.</a>
+		</p>
+    </section>
+
+  </body>
+
+</document>

@@ -1,0 +1,21 @@
+ <descriptor xmlns="http://wlab.ethz.ch/maven/plugins/maven-antenna-plugin">
+ 
+ 	<suite>Messenger</suite>
+  	<vendor></vendor> 
+  	<version>1.0</version> 
+  	<midlets>
+  		<midlet class="ch.ethz.jadabs.im.gui.handygui.HandyguiMIDlet" 
+  		        name="messenger"/>  		
+  	</midlets>
+
+   <attributes>
+      <attribute name="ch.ethz.jadabs.jxme.peeralias" value="Nokia6600"/>
+      <attribute name="log4j.priority" value="DEBUG"/>
+      <attribute name="ch.ethz.jadabs.jxme.bt.rendezvouspeer" value="false"/>   
+      <attribute name="ch.ethz.jadabs.im.registrar" value="127.0.0.1:5060"/>
+      <attribute name="ch.ethz.jadabs.im.password" value="123"/>
+      <attribute name="ch.ethz.jadabs.im.ipport" value="127.0.0.1:5054"/>
+      <attribute name="ch.ethz.jadabs.im.username" value="Nokia6600@wlab.ethz.ch"/>        
+   </attributes>      
+   
+</descriptor>

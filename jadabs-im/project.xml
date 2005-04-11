@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+  <pomVersion>3</pomVersion>
+  
+  <name>Jadabs IM</name>
+  <groupId>jadabs-im</groupId>
+  <artifactId>jadabs-im</artifactId>
+  
+  <currentVersion>0.7.1-SNAPSHOT</currentVersion>
+  
+  <inceptionYear>2004</inceptionYear>
+  
+  <shortDescription>Jadabs SIP, Messenger, SMS</shortDescription>
+  
+  <organization>
+    <name>ETHZ-IKS</name>
+    <url>http://www.iks.inf.ethz.ch</url>
+    <logo>/images/logo_ethz_iks.jpg</logo>
+  </organization>
+  
+  <logo>/images/logo_jadabs.gif</logo>
+  <url>http://wlab.ethz.ch/jadabs-im</url>
+  
+  <siteAddress>shell.berlios.de</siteAddress>
+  <siteDirectory>/home/groups/jadabs/htdocs</siteDirectory>
+  
+  <repository>
+    <!--
+        <connection>
+          scm:cvs:ext:afrei@cvs.jadabs.berlios.de:/cvsroot/jadabs:jadabs
+        </connection>
+        -->
+  </repository>
+  
+  <dependencies>
+ 		 	
+ 		<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>framework</artifactId>
+      		<version>1.3.3</version>
+		</dependency>
+		
+  </dependencies>
+  
+  <developers>
+    <developer>
+      <name>Andreas Frei</name>
+      <id>andfrei</id>
+      <email>frei_inf.ethz.ch</email>
+      <url>http://www.inf.ethz.ch/~frei/</url>
+      <timezone>+1</timezone>
+      <organization>ETHZ</organization>
+    </developer>
+  </developers>
+  
+  <build>
+    <sourceDirectory>${basedir}/src/</sourceDirectory>
+    <unitTestSourceDirectory>${basedir}/test/src</unitTestSourceDirectory>
+  </build>
+
+</project>
+

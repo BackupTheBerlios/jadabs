@@ -1,0 +1,491 @@
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 127.0.0.1
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="127.0.0.1" />
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 127.0.0.1
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="127.0.0.1" />
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106228546975" 
+isSender="true" 
+transactionId="z9hg4bkdaa83ebb460d3b19cc3b7aeaa41ea0d8" 
+callId="047f90a3c008511313f7b501c95e276b@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 047f90a3c008511313f7b501c95e276b@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:franz>;tag=6202
+To: <sip:franz>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bKdaa83ebb460d3b19cc3b7aeaa41ea0d8
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106228547475" 
+isSender="true" 
+transactionId="z9hg4bkdaa83ebb460d3b19cc3b7aeaa41ea0d8" 
+callId="047f90a3c008511313f7b501c95e276b@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 047f90a3c008511313f7b501c95e276b@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:franz>;tag=6202
+To: <sip:franz>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bKdaa83ebb460d3b19cc3b7aeaa41ea0d8
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106228548478" 
+isSender="true" 
+transactionId="z9hg4bkdaa83ebb460d3b19cc3b7aeaa41ea0d8" 
+callId="047f90a3c008511313f7b501c95e276b@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 047f90a3c008511313f7b501c95e276b@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:franz>;tag=6202
+To: <sip:franz>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bKdaa83ebb460d3b19cc3b7aeaa41ea0d8
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106228550486" 
+isSender="true" 
+transactionId="z9hg4bkdaa83ebb460d3b19cc3b7aeaa41ea0d8" 
+callId="047f90a3c008511313f7b501c95e276b@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 047f90a3c008511313f7b501c95e276b@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:franz>;tag=6202
+To: <sip:franz>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bKdaa83ebb460d3b19cc3b7aeaa41ea0d8
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 127.0.0.1
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="127.0.0.1" />
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106228900164" 
+isSender="true" 
+transactionId="z9hg4bkd317650e042e1c941a209f0892af3b03" 
+callId="5416bedafa89d2618f9c8b70316f7915@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 5416bedafa89d2618f9c8b70316f7915@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:franz>;tag=6597
+To: <sip:franz>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bKd317650e042e1c941a209f0892af3b03
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106228900664" 
+isSender="true" 
+transactionId="z9hg4bkd317650e042e1c941a209f0892af3b03" 
+callId="5416bedafa89d2618f9c8b70316f7915@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 5416bedafa89d2618f9c8b70316f7915@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:franz>;tag=6597
+To: <sip:franz>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bKd317650e042e1c941a209f0892af3b03
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106228901700" 
+isSender="true" 
+transactionId="z9hg4bkd317650e042e1c941a209f0892af3b03" 
+callId="5416bedafa89d2618f9c8b70316f7915@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 5416bedafa89d2618f9c8b70316f7915@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:franz>;tag=6597
+To: <sip:franz>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bKd317650e042e1c941a209f0892af3b03
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106228903707" 
+isSender="true" 
+transactionId="z9hg4bkd317650e042e1c941a209f0892af3b03" 
+callId="5416bedafa89d2618f9c8b70316f7915@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 5416bedafa89d2618f9c8b70316f7915@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:franz>;tag=6597
+To: <sip:franz>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bKd317650e042e1c941a209f0892af3b03
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 127.0.0.1
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="127.0.0.1" />
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106235925855" 
+isSender="true" 
+transactionId="z9hg4bk1697e6e79088045073619e783dce812e" 
+callId="49901ac8f8a58e612bab074ed7633de1@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 49901ac8f8a58e612bab074ed7633de1@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=3365
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK1697e6e79088045073619e783dce812e
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5060" 
+to="127.0.0.1:5067" 
+time="1106235926166" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bk1697e6e79088045073619e783dce812e" 
+firstLine="SIP/2.0 200 OK" 
+callId="49901ac8f8a58e612bab074ed7633de1@127.0.0.1" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 200 OK
+Call-ID: 49901ac8f8a58e612bab074ed7633de1@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=3365
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK1697e6e79088045073619e783dce812e
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>;expires=3600
+Content-Length: 0
+
+]]>
+</message>
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 127.0.0.1
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="127.0.0.1" />
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106243039965" 
+isSender="true" 
+transactionId="z9hg4bk2e11540c23f79eb0a7a60159f9e9361b" 
+callId="c40f8f033b6032779f388626258f8581@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: c40f8f033b6032779f388626258f8581@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=1109
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK2e11540c23f79eb0a7a60159f9e9361b
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106243040478" 
+isSender="true" 
+transactionId="z9hg4bk2e11540c23f79eb0a7a60159f9e9361b" 
+callId="c40f8f033b6032779f388626258f8581@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: c40f8f033b6032779f388626258f8581@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=1109
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK2e11540c23f79eb0a7a60159f9e9361b
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5060" 
+to="127.0.0.1:5067" 
+time="1106243040709" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bk2e11540c23f79eb0a7a60159f9e9361b" 
+firstLine="SIP/2.0 200 OK" 
+callId="c40f8f033b6032779f388626258f8581@127.0.0.1" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 200 OK
+Call-ID: c40f8f033b6032779f388626258f8581@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=1109
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK2e11540c23f79eb0a7a60159f9e9361b
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>;expires=3600
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5060" 
+to="127.0.0.1:5067" 
+time="1106243040719" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bk2e11540c23f79eb0a7a60159f9e9361b" 
+firstLine="SIP/2.0 200 OK" 
+callId="c40f8f033b6032779f388626258f8581@127.0.0.1" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 200 OK
+Call-ID: c40f8f033b6032779f388626258f8581@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=1109
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK2e11540c23f79eb0a7a60159f9e9361b
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>;expires=3600
+Content-Length: 0
+
+]]>
+</message>
+
+<!-- Use the  Trace Viewer in src/tools/tracesviewer to view this  trace  
+Here are the stack configuration properties 
+javax.sip.IP_ADDRESS= 127.0.0.1
+javax.sip.STACK_NAME= NISTv1.1
+javax.sip.ROUTER_PATH= null
+javax.sip.OUTBOUND_PROXY= null
+javax.sip.RETRANSMISSION_FILTER= null
+-->
+<description
+ logDescription="NISTv1.1"
+ name="127.0.0.1" />
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106254924854" 
+isSender="true" 
+transactionId="z9hg4bk2c710d98045534c5a5e2e5d9bf04df2d" 
+callId="00682cc29a3ba6c8f4580bedeb54adb9@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 00682cc29a3ba6c8f4580bedeb54adb9@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=7598
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK2c710d98045534c5a5e2e5d9bf04df2d
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5067" 
+to="127.0.0.1:5060" 
+time="1106254925358" 
+isSender="true" 
+transactionId="z9hg4bk2c710d98045534c5a5e2e5d9bf04df2d" 
+callId="00682cc29a3ba6c8f4580bedeb54adb9@127.0.0.1" 
+firstLine="REGISTER sip:127.0.0.1:5060 SIP/2.0" 
+debugLine="0" 
+>
+<![CDATA[REGISTER sip:127.0.0.1:5060 SIP/2.0
+Call-ID: 00682cc29a3ba6c8f4580bedeb54adb9@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=7598
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK2c710d98045534c5a5e2e5d9bf04df2d
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5060" 
+to="127.0.0.1:5067" 
+time="1106254925593" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bk2c710d98045534c5a5e2e5d9bf04df2d" 
+firstLine="SIP/2.0 200 OK" 
+callId="00682cc29a3ba6c8f4580bedeb54adb9@127.0.0.1" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 200 OK
+Call-ID: 00682cc29a3ba6c8f4580bedeb54adb9@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=7598
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK2c710d98045534c5a5e2e5d9bf04df2d
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>;expires=3600
+Content-Length: 0
+
+]]>
+</message>
+
+<message
+from="127.0.0.1:5060" 
+to="127.0.0.1:5067" 
+time="1106254925604" 
+isSender="false" 
+statusMessage="normal processing" 
+transactionId="z9hg4bk2c710d98045534c5a5e2e5d9bf04df2d" 
+firstLine="SIP/2.0 200 OK" 
+callId="00682cc29a3ba6c8f4580bedeb54adb9@127.0.0.1" 
+debugLine="0" 
+>
+<![CDATA[SIP/2.0 200 OK
+Call-ID: 00682cc29a3ba6c8f4580bedeb54adb9@127.0.0.1
+CSeq: 1 REGISTER
+From: <sip:gw@gw.com>;tag=7598
+To: <sip:gw@gw.com>
+Via: SIP/2.0/TCP 127.0.0.1:5067;branch=z9hG4bK2c710d98045534c5a5e2e5d9bf04df2d
+Max-Forwards: 70
+Contact: <sip:127.0.0.1:5067;transport=tcp>;expires=3600
+Content-Length: 0
+
+]]>
+</message>
+

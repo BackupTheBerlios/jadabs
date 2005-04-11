@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Messenger Overview</title>
+    <author email="jannethm@student.ethz.ch">Janneth Malibago</author>
+  </properties>
+  
+  <body>
+  
+  <section name="How to use the Messenger">
+  
+  	<ol>
+	  	<li>
+			<p>
+			    Create a new account with the 
+			    <a href="http://wlab.ethz.ch:8080/jadabs-im/">Webapplication</a> and define how you
+			    want to be notified in case somebody sends you an instant message while
+			    you are being offline.
+		    </p>
+		    
+			<p>
+			    You can choose between the following options:
+			    <ul>
+			    	<li>
+			    		email only
+			    	</li>
+			    	<li>
+			    		mobile phone only
+			    	</li>
+			    	<li>
+			    		email and mobile phone
+			    	</li>				    	
+			    </ul>
+		    </p>
+		</li>       
+		
+		<li>
+			<p>
+				Start the <a href="../proxy.html">SIP Proxy</a>,
+			</p>
+		</li>
+		
+		<li>
+			<p>
+				Start the Messenger application 
+				(see also the the <a href="../howto/setup.html">setup informations</a>)
+			</p>
+		</li>
+  	
+  		<li>
+  			<p>
+  				Enter your SIP settings into the <code>Settings</code> panel and save the changes.
+  			</p>
+  			
+  			<p>
+  				<img src="../images/settings.jpg"/>
+  			</p>
+  			
+  			<p>
+				On the laptop the default SIP settings are defined in <code>imSettings.properties</code>, 
+				on the IPAQ they are defined in <code>init-ppcj9.xargs</code> respectively. 
+				For the mobile phone the default SIP settings need to be defined as attributes in <code>midlet.xml</code>
+			</p>
+  		</li>
+  		<li>
+  			<p>
+  				In the <code>Buddies</code> panel you will see all the SIP buddies which are loaded from the 
+  				<code>buddy.list</code> file.
+  				
+  				Buddies who are online are preceded by a green status icon, those who are offline by a red status icon.
+  				If there is no status icon this means, that the status of the corresponding buddy is not known.
+			</p>
+
+			<p>
+				<img src="../images/buddies.jpg"/>
+			</p>
+			
+			<p>
+				You can add new buddies and their properties will be saved in <code>buddy.list</code> from where you can load them again
+				the next time you start the Messenger.
+				(This option is not yet implemented for the mobile phone)
+			</p>			
+		</li>
+		
+		<li>
+			<p>
+				After connecting you can see all JXME peers who are online in the <code>Neighbours</code> panel.
+				The JXME peers are preceded by a blue status icon to indicate that they belong to the peer to peer
+				neighbourhood.
+			</p>
+			<p>
+				<img src="../images/neighbours.jpg"/>
+			</p>
+		</li>
+  		<li>
+  			<p>
+  				When you want to send a message to one of your buddies or neighbours just go to the <code>Message</code> panel,
+  				select a receiver, type your message and send it.
+  			</p>
+			<p>
+				<img src="../images/messages.jpg"/>
+			</p>
+			<p>
+				You can only send messages to to peers who are online or, in the case of SIP buddies, when the buddy registered with the SIP proxy.
+				A peer who is online will receive the message immediately. When a buddy is offline he will
+				be notified by email or sms or both, according to his preferences set in the
+				<a href="http://wlab.ethz.ch:8080/jadabs-im/">Webapplication</a>.
+			</p>			
+		</li>		
+  	</ol>
+
+  	
+	
+
+	
+  </section>
+
+
+
+  </body>
+
+</document>

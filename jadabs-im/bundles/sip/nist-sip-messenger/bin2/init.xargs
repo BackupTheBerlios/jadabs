@@ -1,0 +1,30 @@
+#
+# minimal init.xargs to be used in a JXME environment
+#
+
+-Dorg.knopflerfish.verbosity=0
+
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.debug.startlevel=false
+-Dorg.knopflerfish.framework.debug.ldap=false
+
+-Dorg.osgi.framework.system.packages=ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
+
+-Dorg.knopflerfish.startlevel.use=true
+
+-init
+
+-initlevel 1
+-istart    log4j/jars/log4j-1.2.8-osgi.jar
+-istart    sip/jars/sip-api-1.1-osgi.jar
+-install   sip/jars/nist-sip-1.2-osgi.jar
+-install   sip/jars/nist-sip-parser-1.2-osgi.jar
+-istart    sip/jars/nist-sip-messenger-0.7.1-SNAPSHOT.jar
+
+-startlevel 1
+
+-launch
+
+

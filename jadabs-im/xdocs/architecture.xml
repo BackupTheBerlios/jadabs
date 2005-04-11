@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>Architecture</title>
+    <author email=""></author>
+  </properties>
+  
+  <body>
+  
+    <section>
+    	
+      <p>
+        The following drawing gives an overview of the used architecture.
+      </p>
+      
+      <p>
+        <img src="images/jadabs-ws_architecture.gif"/>
+      </p>
+      	
+    </section>		
+  
+  </body>
+
+</document>

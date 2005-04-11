@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../../project.xml</extend>
+
+  	<groupId>jadabs-im</groupId>
+  	<artifactId>gw-sipsmtp-test</artifactId>
+  	<name>Franz-JXME-GW-Test</name>
+
+  	<shortDescription>JXME-SIP-Gateway Test</shortDescription>
+
+	<properties>
+		
+	</properties>
+	
+	
+  	<dependencies>
+  	
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+
+    	<dependency>
+      		<groupId>jadabs-im</groupId>
+      		<artifactId>gw-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
+  	</dependencies>
+  
+</project>

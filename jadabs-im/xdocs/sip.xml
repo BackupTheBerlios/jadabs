@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+
+
+<document>
+
+  <properties>
+    <title>SIP</title>
+    <author email=""></author>
+  </properties>
+  
+  <body>
+    <section name="SIP">
+    <subsection name="Introduction">
+    	<p>
+    	SIP, session initiation protocol is a protocol used for session initiation and signaling.
+    	SIP is mainly used for voice-over-ip signaling, but there are extensions which make it usable for instant messenging (SIMPLE).
+    	SIP can work with or without proxy. In our messenger, the proxy mainly works as a presence server, which notifies
+    	clients of changes in their user lists. If you send a message to an offline user, it's automatically forwarded 
+    	to a SMS or a SMTP gateway. To be able to use the services the proxy provides, a client must be successfully registered
+    	and authenticated.
+    	</p>
+    </subsection>
+    
+    <subsection name="SIMPLE example">
+    	<img src="images/LabOverview2.jpg"/>
+    </subsection>
+    
+    <subsection name="Presence server">
+    	<p>
+    	The proxy has a list of all users' status. Everytime a client changes its status, ha must publish it to the proxy, which forwards it to
+    	all its "subscribers". It then works following the subscriber/notifier pattern. A client wishing to be notified of another user's status
+    	must first subscribe to this client. The proxy also keeps a list of every notifier/subscriber pair, so when it receives a status change "publish", 
+    	he simply forwards it to every subscriber.
+    	</p>
+    </subsection>
+    
+    <subsection name="Implementation">
+    	<p>
+    	The message types that must be supported by our messenger are :
+    	</p>
+    	<ul>
+    		<li>REGISTER: used to register to a SIP proxy</li>
+    		<li>MESSAGE: sent an instant message to the proxy, which forwards it to the corresponding client</li>
+    		<li>PUBLISH: sent by a client to the proxy to publish its state, can be "online", "offline" for now nothing more is implemented</li>
+    		<li>SUBSCRIBE: sent by a client to the proxy to subscribe to another user's status</li>
+    		<li>NOTIFY: sent by the proxy to all the clients which are subscribed to somebody's state</li>
+    		<li>INVITE: initiates a dialog session between 2 end-users, needed for compatibility reasons with MSN Messenger. The INVITE message is 
+    		used along with SDP, the session description protocol, which contains what a client is capable of (in case of a voice-over-ip connection,
+    		it would be the port and audio codec for the voice connection)</li>
+    	</ul>
+    	<p>
+    		Package <code>ch.ethz.jadabs.sip.handler</code> contains an sip stack and everything needed to handle and send the messages correctly.
+    		The class IMUserAgent is an abstract class which must be extended to have a complete working SIP stack. It is used by the SIP messenger
+    		and both gateways.
+    	</p>
+    </subsection>
+  
+  	<subsection name="SIP Authentication">
+  		<p>
+  		SIP Authentication works as follow, based on a challenge-response mechanism:
+  		</p>
+  		
+  		<ol>
+  			<li>The client sends a message to the proxy.</li>
+  			<li>Proxy generates a challenge, which is then send back to the client.</li>
+  			<li>Client encrypts the challenge with its password and send it back to the client.</li>
+  			<li>Proxy does the same and sees if it matches.</li>
+  		</ol>
+  	</subsection>
+    </section>
+  </body>
+
+</document>

@@ -1,0 +1,17 @@
+<style type="text/css">
+	body { margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px; padding:0px; }
+	p,h1,h2,h3,h4,ul,ol,li,div,td,address,blockquote,nobr,b,i { font-family:Tahoma,Helvetica,Arial,sans-serif; color:#000000; font-size:9pt; }
+	th { font-family:Tahoma,Helvetica,Arial,sans-serif; color:#FFFFFF; font-size:9pt; text-align:center; }
+	iframe { width:500px; height:450px; }
+
+	a.black:link { font-size:9pt; font-weight:bold; color:#333333; text-decoration:none }
+	a.black:visited { font-size:9pt; font-weight:bold; color:#333333; text-decoration:none }
+	a.black:hover { font-size:9pt; font-weight:bold; color:#000000; text-decoration:none }
+	a.black:active { font-size:9pt; font-weight:bold; color:#333333; text-decoration:none }
+	a.black:focus { font-size:9pt; font-weight:bold; color:#333333; text-decoration:none }
+	
+	.main { width:400px; margin-top:0px; margin-left:auto; margin-right:auto; padding:10px; background-color:#84AAD6; border:1px solid black; }
+	.part { width:100%; background-color:#4C82C2; border:1px solid black; text-align:center; }
+	.pad { padding:10px; }
+	.err { color:white; text-size:14px; }
+</style>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<document>
+
+  <properties>
+    <title>Gateways</title>
+    <author email=""></author>
+  </properties>
+  
+  <body>
+      
+    <section name="Introduction">
+    	<p>
+		We needed 2 different gateways. One to transform a instant message into an email or a sms, and one to 
+		transform a JXME message into a SIP message.
+		</p>
+  	</section>
+  	
+  	<section name="JXME/SIP Gateway">
+  		<p>
+  			From the JXME world, an instant messenger can communicate with a SIP messenger through a gateway. 
+  			Of course the JXME messenger must first register to the proxy (by sending a REGISTER message).
+  		</p>
+  		
+  		<subsection name="Unsolved issues">
+  			<p>
+  				The authentication from the JXME side to a SIP proxy is a difficult task, because the gateway 
+  				is in-between. We cannot make sure that the message forwarded by the gateway is the message we sent.
+  				The gateway must be authenticated and trusted.
+  			</p>
+  		</subsection>
+  		
+  	</section>
+  	
+  	<section name="SIP-SMTP gateway">
+		<p>
+			This code is specific to ETHZ network infrastructure. You'd have to rewrite it partially to make it work outside of the ETHZ VPN. 
+		</p>
+  	</section>
+  	
+  	<section name="Implementation">
+  		<p>
+  			The gateways use the SIP stack from the SIP handler package <code>ch.ethz.jadabs.sip.handler</code>
+  			and they share a common interface Gateway in <code>ch.ethz.jadabs.gw.api</code>.
+  		</p>
+  	</section>
+  	
+  	
+  </body>
+
+</document>

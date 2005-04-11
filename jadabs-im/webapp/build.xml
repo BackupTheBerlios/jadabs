@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="jadabsIM_WebApp" default="war" basedir=".">
+
+    <description>
+        Djingle bells, ... all the nit
+    </description>
+
+	<!-- set global properties for this build -->
+	<property name="cayenne_dir" value="../cayenne" />
+	<property name="src_dir" value="src"/>
+	<property name="context" value="context" />
+	<property name="war_file" value="jadabs-im.war" />
+	
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${context}/WEB-INF/classes" />
+	</target>
+	
+	<target name="compile_app" description="Compile app into context folder" depends="init">
+		<javac
+			srcdir="${src_dir}"
+			destdir="${context}/WEB-INF/classes" >
+			<classpath>
+				<fileset dir="${context}/WEB-INF/lib">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+		<!-- copy cayenne related classes to sip-smtp gateway -->
+		<copy todir="../bundles/gateways/sip-smtp/src/ch/ethz/jadabs/im/db">
+			<fileset
+				dir="${src_dir}/ch/ethz/jadabs/im/db"
+				includes="*.java"
+			/>
+		</copy>
+		<copy todir="../bundles/gateways/sip-smtp/src/ch/ethz/jadabs/im/db/auto">
+			<fileset
+				dir="${src_dir}/ch/ethz/jadabs/im/db/auto"
+				includes="*.java"
+			/>
+		</copy>
+	</target>
+
+	<target name="cayenne_files" description="Copy cayenne configuration files to context folder">
+		<copy todir="${context}/WEB-INF/classes">
+			<fileset dir="${cayenne_dir}" includes="cayenne.xml,*.map.xml,*.driver.xml"/>
+		</copy>
+	</target>
+
+	<target name="war" description="Create web archive" depends="compile_app,cayenne_files">
+		<delete file="${war_file}"/>
+		<war
+			destfile="${war_file}"
+			basedir="${context}"
+			excludes="WEB-INF/web.xml"
+			webxml="${context}/WEB-INF/web.xml"
+		/>
+	</target>
+
+</project>

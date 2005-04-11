@@ -1,0 +1,23 @@
+<body jwcid="@MyBody">
+	<div class="main">
+		<div class="part" style=""><div class="pad">			<h1>ETHZ Sip Account Manager</h1>		</div></div>
+		<div class="part" style="margin-top:10px;" jwcid="@Conditional" condition="ognl:error" element="div"><div class="pad">
+			<span class="err">
+				<span jwcid="@Insert" value="ognl:errorMessage"/>
+			</span>
+		</div></div>		
+		<div class="part" style="margin-top:10px;"><div class="pad">			<form action="Configurator.html" jwcid="@Form" listener="ognl:listeners.onLogin" stateful="false">
+				<table width="100%">					<tr>
+						<td width="50%"></td>						<td>username</td>						<td><input name="username" type="text" style="width:180px; border:1px solid grey;" jwcid="@TextField" value="ognl:username"/></td>
+						<td width="50%"></td>					</tr>					<tr>
+						<td></td>						<td>password</td>						<td><input name="password" type="password" style="width:180px; border:1px solid grey;" jwcid="@TextField" value="ognl:password" hidden="true"/></td>						<td></td>
+					</tr>					<tr>						<td></td>
+						<td></td>						<td>
+							<input name="login" value="login" type="submit" style="border:1px solid black;"/>&nbsp;
+						</td>
+						<td></td>
+					</tr>				</table>
+			</form>		</div></div>
+		<div class="part" style="margin-top:10px;"><div class="pad">			<form jwcid="@Form" stateful="false">				<input name="new_account" value="new account" type="submit" jwcid="@Submit" label="new account" listener="ognl:listeners.onNewAccount" style="margin-top:15px; border:1px solid black;"/>				<input name="forgot" value="password recovery" type="submit" jwcid="@Submit" label="password recovery" listener="ognl:listeners.onForgotPassword" style="border:1px solid black;"/>			</form>		</div></div>
+	</div>
+</body>

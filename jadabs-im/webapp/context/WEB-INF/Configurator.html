@@ -1,0 +1,77 @@
+<body jwcid="@MyBody">
+	<div class="main">
+		<div class="part" style=""><div class="pad">
+			<h1>ETHZ Sip Account Manager</h1><h2>account for <span jwcid="@Insert" value="ognl:visit.account.systemEmail"/></h2>
+		</div></div>
+		<div class="part" style="margin-top:10px;" jwcid="@Conditional" condition="ognl:error" element="div"><div class="pad">
+			<span class="err">
+				<span jwcid="@Insert" value="ognl:errorMessage"/>
+			</span>
+		</div></div>		
+		<div class="part" style="margin-top:10px;"><div class="pad">
+			<form name="admin" action="Home.html" jwcid="@Form">
+				<table width="100%">
+					<tr>
+						<td width="50%"></td>
+						<td>username</td>
+						<td><input name="user" type="text" size="30" maxlength="30" style="width:180px; border:1px solid grey;" jwcid="@TextField" value="ognl:visit.account.username"/></td>
+						<td width="50%"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>password</td>
+						<td><input name="pass" type="text" size="30" maxlength="30" style="width:180px; border:1px solid grey;" jwcid="@TextField" value="ognl:visit.account.password" hidden="true"/></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>retype&nbsp;password</td>
+						<td><input name="pass" type="text" size="30" maxlength="30" style="width:180px; border:1px solid grey;" jwcid="@TextField" value="ognl:password2" hidden="true"/></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>email&nbsp;address</td>
+						<td><input name="email" type="text" size="30" maxlength="30" style="width:180px; border:1px solid grey;" jwcid="@TextField" value="ognl:visit.account.email"/></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>mobile&nbsp;phone</td>
+						<td><input name="phone" type="text" size="30" maxlength="30" style="width:180px; border:1px solid grey;" jwcid="@TextField" value="ognl:visit.account.mobilePhone"/></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="2">When I'm offline, transmit instant messages to</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="2">
+							<span jwcid="@RadioGroup" selected='ognl:visit.account.pref'>
+								<input type="radio" jwcid="@Radio" value='ognl:@ch.ethz.jadabs.im.web.user_registration.Configurator@EMAIL'/> email <br/>
+								<input type="radio" jwcid="@Radio" value='ognl:@ch.ethz.jadabs.im.web.user_registration.Configurator@SMS'/> mobile phone* only <br/>
+								<input type="radio" jwcid="@Radio" value='ognl:@ch.ethz.jadabs.im.web.user_registration.Configurator@BOTH'/> mobile phone* &amp; email <br/>
+							</span>
+						</td>
+						<td></td>
+					<tr>
+						<td></td>
+						<td colspan="2">* (Mobile phone: only first 160 characters)</td>
+						<td></td>
+					</tr>
+					<tr>
+					<td></td>
+						<td></td>
+						<td>
+							<input name="save" type="submit" value="save" jwcid="@Submit" label="save" listener="ognl:listeners.onSave" style="width:49%; border:1px solid black;"/>
+							<input name="cancel" type="submit" value="cancel" jwcid="@Submit" label="cancel" listener="ognl:listeners.onCancel" style="width:48%; border:1px solid black;"/>
+						</td>
+					<td></td>
+					</tr>
+				</table>
+			</form>
+		</div></div>
+	</div>	
+</body>

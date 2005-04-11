@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<document>
+
+<properties>
+	<title>Using Jadabs-IM</title>
+	<author email="jannethm@student.ethz.ch">Janneth Malibago</author>
+</properties>
+
+<body>
+	<section name="Using Jadabs-IM">
+	
+		<p>
+			Jadabs-IM can be built, deployed and run almost automatically. 
+			This section describes how to setup Jadabs-IM in general and also
+		    explains the graphical user interface.
+		</p>
+		<ul>
+			<li><a href="howto/overview.html">Messenger Overview</a> provides a
+		        short manual on how to use the Jadabs Messenger
+		    </li>
+		    <li><a href="howto/setup.html">Setup Information</a>
+		        provides more detailed information on how to setup
+		        the whole infrstructure on the different platforms
+		    </li>
+		</ul>
+		
+	</section>
+	
+</body>
+</document>

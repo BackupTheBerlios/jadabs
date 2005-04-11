@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<document>
+
+<properties>
+	<title>Cayenne configuration</title>
+	<author email=""></author>
+</properties>
+
+<body>
+	<section name="Cayenne configuration">
+		<p>
+			The goal of this section is to give you a few hints how to define the mapping between the java objects and the database, and the connection to this database.
+			The recommanded way to do this, is by using the Cayenne Modeler. There is also a discouraged, undocumented and hardcore way: edit the xml configuration files by hand !
+		</p>
+		<subsection name="About the Cayenne Modeler">
+			<p>
+				The Cayenne Modeler is a swing based application that lets you browse through, modify and create new database connections and object-relational mappings.
+				With it, you can also connect to the DB and automatically generate the schema you need for your application.
+			</p>
+		</subsection>
+		<subsection name="Launching the Cayenne Modeler">
+			<p>
+				In the <code>source/cayenne</code> or <code>linux_windows/cayenne</code> directory you'll find <code>config.sh</code>, a shell script that launches the modeler.
+				In <code>source/cayenne/bin</code> you'll find equivalent script files for windows.
+			</p>
+		</subsection>
+		<subsection name="Using the Cayenne Modeler">
+			<p>
+				I won't give you a complete user guide (which can be found <a href="http://www.objectstyle.org/cayenne/userguide/">here</a>). But just a few hints what you might want to edit :
+				<ul>
+					<li>Most likely, you'll want to edit the DB connection (which is called DataNode by cayenne). You can edit one of the existing datanodes or create a new one by clicking on the ... new DataNode button !</li>
+					<li>To choose which DataNode you really want to use, select the <code>Users</code> DataMap and choose the appropriate DataNode in the drop-down list.</li>
+					<li>You could also edit the DbEntities in the DataMap, for example to change names of relations and attributes. This is not recommanded because, you would also have to redefine the mappings.</li>
+					<li>Finaly you can use the "databaseschemagenerationtool" to setup you DB. You'll find it under <code>Tools/Generate Database Schema</code></li>					
+				</ul>
+			</p>
+		</subsection>
+	</section>
+
+</body>
+</document>
