@@ -20,10 +20,10 @@
   </organization>
   
   <logo>/images/logo_jadabs.gif</logo>
-  <url>http://wlab.ethz.ch/jadabs-im</url>
+  <url>http://jadabs.berlios.de/jadabs-im</url>
   
   <siteAddress>shell.berlios.de</siteAddress>
-  <siteDirectory>/home/groups/jadabs/htdocs</siteDirectory>
+  <siteDirectory>/home/groups/jadabs/htdocs/jadabs-im</siteDirectory>
   
   <repository>
     <!--
