@@ -1,0 +1,20 @@
+
+# iPAQ UDP/BT HotSpot
+-usepad osgi-nanning.pad
+
+#-repository=http://osgirepo.berlios.de/maven/repository.xml,http://www.knopflerfish.org/repo/repository.xml
+
+#
+# runlevel 1 should already be started through the init.xargs
+# with the local bundleloader and shell 
+#
+#-runlevel 1
+# local bundleloader
+#-istart  LocalBundleLoaderPlugin-0.1.0.xml
+#-istart  LocalShellPlugin-0.1.0.xml
+
+#-runlevel 0
+# use the jxme layer for RemoteBundleLoader
+#-startopd   jadabs:jxme-osgi:0.7.1-SNAPSHOT:opd
+#-startopd   jadabs:jxme-udp:0.7.1-SNAPSHOT:opd
+-startopd    jadabs:jxme-udp-test:0.7.1-SNAPSHOT:opd

@@ -38,7 +38,7 @@ package ch.ethz.jadabs.jxme.udp.test;
 
 import java.io.IOException;
 
-import junit.framework.TestCase;
+//import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
@@ -57,7 +57,7 @@ import ch.ethz.jadabs.jxme.NamedResource;
  * @author andfrei
  *
  */
-public class UDPTransportTest extends TestCase 
+public class UDPTransportTest //extends TestCase 
 	implements BundleActivator, Listener
 {
 
@@ -65,19 +65,19 @@ public class UDPTransportTest extends TestCase
     
     EndpointService endptsvc;
     
-    /*
-     */
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
-    /*
-     */
-    protected void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
+//    /*
+//     */
+//    protected void setUp() throws Exception
+//    {
+//        super.setUp();
+//    }
+//
+//    /*
+//     */
+//    protected void tearDown() throws Exception
+//    {
+//        super.tearDown();
+//    }
 
     /*
      */
