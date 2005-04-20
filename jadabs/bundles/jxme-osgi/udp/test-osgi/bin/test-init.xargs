@@ -5,7 +5,7 @@
 
 -Dorg.knopflerfish.verbosity=0
 
--Dorg.knopflerfish.gosg.jars=file:/home/andfrei/.maven/repository/
+-Dorg.knopflerfish.gosg.jars=file:"C:\Documents and Settings\andfrei\.maven\repository\"
 
 -Dorg.knopflerfish.framework.debug.packages=false
 -Dorg.knopflerfish.framework.debug.errors=true

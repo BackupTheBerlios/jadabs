@@ -1,0 +1,1 @@
+java -Dch.ethz.jadabs.jxme.peeralias=%COMPUTERNAME% -jar "C:\Documents and Settings\andfrei\.maven\repository/osgi/jars/framework-1.3.3.jar" -xargs test-init.xargs
