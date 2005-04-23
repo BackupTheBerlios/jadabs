@@ -40,10 +40,13 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.Socket;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
@@ -101,6 +104,13 @@ public class HttpSocket extends Socket {
             fromClient.close();
          throw ioe;
       }
+   }
+   
+   public InputStream getFileInputStream(String urlfile) throws IOException
+   {
+       URL url = new URL(urlfile);
+       
+       return url.openStream();
    }
    
    /**

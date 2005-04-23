@@ -35,10 +35,18 @@
  */
 package ch.ethz.jadabs.bundleLoader;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -49,6 +57,7 @@ import org.apache.log4j.Logger;
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher;
 import ch.ethz.jadabs.bundleLoader.api.Utilities;
+import ch.ethz.jadabs.http.HttpSocket;
 
 /**
  * Manages the Repository and provides an <code>InformationSource</code>
@@ -109,17 +118,19 @@ public class Repository extends PluginFilterMatcher implements InformationSource
       ArrayList result = new ArrayList();
       
       try {
+          
          List files = getOPDListing(new File(repopath));
          
          Iterator filesIter = files.iterator();
          while( filesIter.hasNext() ){
             File file = (File)filesIter.next();
-            if (LOG.isDebugEnabled())
-               LOG.debug(file);
+            
+            LOG.debug(file);
+            
             if (matches(new FileInputStream(file), filter)) {
                result.add(location2uuid(file.toString()));
-               if (LOG.isDebugEnabled())
-                  LOG.debug("MATCHES: " + location2uuid(file.toString()));
+               
+               LOG.debug("MATCHES: " + location2uuid(file.toString()));
             }            
          }
          
@@ -155,7 +166,7 @@ public class Repository extends PluginFilterMatcher implements InformationSource
       return result;
     }
 
-   
+     
    /**
     * redirector method used by PluginFilterMatcher methods
     * @see ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher#debug(java.lang.String)

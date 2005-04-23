@@ -158,12 +158,15 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
             // install bundle
             Bundle bundle = BundleLoaderActivator.bc.installBundle(bundleD
                   .toString(), jar);
+            
             try {
                // start bundle, if possible
                bundle.start();
             } catch (BundleException be) {
                be.getNestedException().printStackTrace();
             }
+            
+            jar.close();
 
          }
 

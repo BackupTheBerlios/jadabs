@@ -36,12 +36,16 @@
 package ch.ethz.jadabs.bundleLoader;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.kxml2.io.KXmlParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher;
@@ -54,197 +58,465 @@ import ch.ethz.jadabs.http.HttpSocket;
  * 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
-public class HttpClient extends PluginFilterMatcher implements
-      InformationSource {
-   private Vector knownHosts;
-   private static Logger LOG = Logger.getLogger(HttpClient.class);
-   private boolean canWS = false;
-   private boolean canHTTP = false;
+public class HttpClient extends PluginFilterMatcher implements InformationSource
+{
 
-   public HttpClient() throws Exception {
-      //TODO: read property or file and build up list of known hosts
-      // String host = "jadabsrepo.ethz.ch";
-      String host = "localhost";
-      HttpSocket clientSocket = null;
+    private Vector knownHosts;
 
-      try {
-         clientSocket = new HttpSocket(host, 9278);
-         canWS = true;
-      } catch (Exception e) {
-      }      
-      try {
-         clientSocket = new HttpSocket(host, 80);
-         canHTTP = true;
-      } catch (Exception e) {
-      }      
+    private static Logger LOG = Logger.getLogger(HttpClient.class);
 
-      if (clientSocket == null) {
-         throw new Exception("Could not open socket ...");
-      }
+    private boolean canWS = false;
 
-      knownHosts = new Vector();
-      knownHosts.add(host);
-   }
+    private boolean canHTTP = false;
 
-   /**
-    * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#retrieveInformation(java.lang.String)
-    */
-   public InputStream retrieveInformation(String uuid) {
-      String[] args = Utilities.split(uuid, ":");
-      String group = args[0];
-      String name = args[1];
-      String version = args[2];
-      String type = args[3];
+    String host = "localhost";
 
-      for (Enumeration hosts = knownHosts.elements(); hosts.hasMoreElements();) {
-         String host = (String) hosts.nextElement();
-         if (canWS) {
-            try {
-               HttpSocket clientSocket = new HttpSocket(host, 9278);
+    KXmlParser parser;
 
-               clientSocket.get("/get" + type + "/" + uuid);
-               clientSocket.request();
+    public HttpClient() throws Exception
+    {
+        //TODO: read property or file and build up list of known hosts
+        // String host = "jadabsrepo.ethz.ch";
+        //      String host = "localhost";
+        HttpSocket clientSocket = null;
 
-               return new ByteArrayInputStream(clientSocket.data.getBytes());
+        try
+        {
+            clientSocket = new HttpSocket(host, 9278);
+            canWS = true;
+        } catch (Exception e)
+        {
+        }
+        try
+        {
+            clientSocket = new HttpSocket(host, 80);
+            canHTTP = true;
+        } catch (Exception e)
+        {
+        }
 
-            } catch (Exception e) {
-               e.printStackTrace();
-            }
-         } else if (canHTTP) {
-            try {
-               HttpSocket clientSocket = new HttpSocket(host, 80);
+        if (clientSocket == null) { throw new Exception("Could not open socket ..."); }
 
-               clientSocket.get("/repository.xml");
-               clientSocket.request();
+        knownHosts = new Vector();
+        knownHosts.add(host);
+    }
 
-               StringTokenizer tokenizer = new StringTokenizer(clientSocket.data);
-               StringBuffer result = new StringBuffer();
-               boolean found = false;
-               
-               while (tokenizer.hasMoreTokens()) {
-                  String token = tokenizer.nextToken();
-                  
-                  if (token.equals("<bundle>")) {
-                     result = new StringBuffer();
-                  } else if (token.equals("</bundle>")) {
-                     result.append(token);
-                     if (found) { 
-                        return new ByteArrayInputStream(result.toString().getBytes()); 
-                     }                     
-                  } else if (token.equals("<bundle-uuid>")) {
-                     result.append(token);
-                     token = tokenizer.nextToken();
-                     if (uuid.equals(token)) {
-                        found = true;
-                     }
-                  }
-                  result.append(token);
-               }
-               
-               return null;
-            } catch (Exception e) {
-               e.printStackTrace();
-            }
-         }
-      }
+    /**
+     * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#retrieveInformation(java.lang.String)
+     */
+    public InputStream retrieveInformation(String uuid)
+    {
 
-      return null;
-   }
-   
-   /**
-    * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#retrieveInformation(java.lang.String,
-    *      java.lang.String)
-    */
-   public InputStream retrieveInformation(String uuid, String source) {
-      String[] args = Utilities.split(uuid, ":");
-      String group = args[0];
-      String name = args[1];
-      String version = args[2];
-      String type = args[3];
+        LOG.debug("retrieve request over http: " + uuid);
 
-      try {
-         HttpSocket clientSocket = new HttpSocket(source, 9278);
+        String[] args = Utilities.split(uuid, ":");
+        String group = args[0];
+        String name = args[1];
+        String version = args[2];
+        String type = args[3];
 
-         clientSocket.get("/get" + type + "/" + uuid);
-         clientSocket.request();
-
-         return new ByteArrayInputStream(clientSocket.data.getBytes());
-
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-
-      return null;
-   }
-
-   /**
-    * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#getMatchingPlugins(java.lang.String)
-    */
-   public Iterator getMatchingPlugins(String filter) {
-
-      for (Enumeration hosts = knownHosts.elements(); hosts.hasMoreElements();) {
-         try {
+        
+        
+        for (Enumeration hosts = knownHosts.elements(); hosts.hasMoreElements();)
+        {
             String host = (String) hosts.nextElement();
-            HttpSocket clientSocket = new HttpSocket(host, 9278);
+            if (canWS)
+            {
+                try
+                {
+                    HttpSocket clientSocket = new HttpSocket(host, 9278);
 
-            clientSocket.get("/match" + "/" + filter);
+                    clientSocket.get("/get" + type + "/" + uuid);
+                    clientSocket.request();
+
+                    return new ByteArrayInputStream(clientSocket.data.getBytes());
+
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            } else if (canHTTP)
+            {
+                try
+                {
+                    HttpSocket clientSocket = new HttpSocket(host, 80);
+
+                    System.out.println("gather info: "+type);
+                    
+                    if (type.equals("jar"))
+                    {
+                        String downloadurl = "http://" + host + "/repository/" + group + "/jars/" + name + "-"
+                                + version + ".jar";
+                        return clientSocket.getFileInputStream(downloadurl);
+
+                    } else if (type.equals("obr"))
+                    {
+//                        clientSocket.get("/repository.xml");
+//                        clientSocket.request();
+
+                        String obrurl = "http://" + host + "/repository/" + 
+                        	group + "/obrs/" + name + "-" + version + ".obr";
+                                                
+                        URL url = new URL(obrurl);
+                        
+                        System.out.println("retrieve: "+url);
+                        
+                        return url.openStream();
+                                                
+//                        StringTokenizer tokenizer = new StringTokenizer(clientSocket.data);
+//                        StringBuffer result = new StringBuffer();
+//                        boolean found = false;
+
+//                        while (tokenizer.hasMoreTokens())
+//                        {
+//                            String token = tokenizer.nextToken();
+//
+//                            if (token.indexOf("<bundle>") != -1)
+//                            {
+//                                result = new StringBuffer();
+//                            } else if (token.indexOf("</bundle>") != -1)
+//                            {
+//                                result.append(token);
+//                                if (found)
+//                                {
+//                                    System.out.println("found bundle:" + result.toString());
+//
+//                                    return new ByteArrayInputStream(result.toString().getBytes());
+//                                }
+//                            } else if (token.startsWith("<bundle-uuid>"))
+//                            {
+//                                //	                     result.append(token);
+//
+//                                System.out.println("parsed bundle: " + token);
+//
+//                                //	                     token = tokenizer.nextToken();
+//                                if (token.indexOf(uuid) != -1)
+//                                {
+//                                    found = true;
+//
+//                                    System.out.println("found uuid bundle: " + token);
+//
+//                                }
+//                            }
+//                            result.append(token);
+//                        }
+                    }
+                    return null;
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static void cacheRepositoryOPDs()
+    {
+        String downloadurl = "http://localhost/repository.xml";
+        
+        try {
+	        URL url = new URL(downloadurl);
+	 	        
+	        InputStream ins = url.openStream();        
+	        InputStreamReader insr = new InputStreamReader(ins);
+	        BufferedReader br = new BufferedReader(insr);
+	        
+	        String line = br.readLine();
+	        	        
+	        while(!line.equals("<plugins>") )
+	            line = br.readLine();
+	        
+	        // start parsing plugins and store them locally
+	        
+	        StringBuffer sb;
+	        while (!line.equals("</plugins>"))
+	        {
+	            while(line.indexOf("<OSGiServicePlugin") == -1)
+	                line = br.readLine();
+	            
+	            sb = new StringBuffer();
+	            String uuid = null;
+	            
+	            while (line.indexOf(">") == -1)
+	            {
+	                
+	            	sb.append(line+"\n");
+	            	
+	            	
+	            	if(line.indexOf("uuid") > -1)
+	        	    {
+	        	        String uuidline = line.trim();
+	        	    
+	        	        uuid = uuidline.substring(6,uuidline.lastIndexOf("\""));
+	        	        
+	        	        System.out.println("uuid: "+uuid);
+	        	        
+	        	    }
+	            	
+	            	line = br.readLine();
+	            }
+	                       
+	            
+	        	while (line.indexOf("</OSGiServicePlugin>") == -1)
+	        	{
+	        	    sb.append(line+"\n");
+	        	    
+	        	    line = br.readLine();
+	        	    
+	        	}
+	        	
+	        	sb.append(line+"\n");
+	        	
+	            
+	            saveOPDInCache(sb.toString(), uuid);
+	            
+	            line = br.readLine();
+	        }      
+	        
+	        ins.close();
+	        insr.close();
+	        br.close();
+	        
+        }catch(IOException ioe)
+        {
+            LOG.debug("could not open connection to server: "+downloadurl);
+        }
+    }
+    
+    private static void saveOPDInCache(String data, String uuid)
+    {
+        String[] args = Utilities.split(uuid, ":");
+        String group = args[0];
+        String name = args[1];
+        String version = args[2];
+        String type = args[3];
+        
+        String filename = name + "-" + version + ".opd";
+        
+        
+        // init folder
+        StringBuffer sb = new StringBuffer();
+        sb.append("repository" + 
+                File.separatorChar +group);
+        
+        File groupdir = new File(sb.toString());
+        groupdir.mkdir();
+        
+        sb.append(File.separatorChar + "opds");
+        File opddir = new File(sb.toString());
+        opddir.mkdir();
+        
+        // save file
+        sb.append(File.separatorChar + filename);
+        String absfilepath = sb.toString();
+        
+        // set filepath in BundleInformation
+//        binfo.setBundleCacheLocation(absfilepath);
+                
+ 	    File file = new File(absfilepath);
+ 	    FileOutputStream fo;
+        try
+        {
+            fo = new FileOutputStream(file);
+            
+            fo.write(data.getBytes());
+    	    fo.close();
+        } catch (FileNotFoundException e)
+        {
+            System.out.println("could not create file outputstream: "+e);
+        } catch (IOException e)
+        {
+            System.out.println("could not write file:"+e);
+        }
+ 	
+// 	    RandomAccessFile raf = new RandomAccessFile(filename, "rw");
+// 	    raf.write(data);
+
+    }
+
+    
+    private String getOBR(String repository, String uuid)
+    {
+
+        parser = new KXmlParser();
+
+        try
+        {
+            parser.setInput(new StringReader(repository));
+
+            Stack stack = new Stack();
+            Vector dependencies = new Vector();
+
+            for (int type = parser.next(); (type != KXmlParser.END_DOCUMENT); type = parser.next())
+            {
+                if (type == KXmlParser.START_TAG)
+                {
+                    stack.push(parser.getName());
+                }
+                if (type == KXmlParser.END_TAG)
+                {
+                    try
+                    {
+                        stack.pop();
+                    } catch (Exception e)
+                    {
+                        System.err.println("ERROR while parsing, OBR-File not well-formed");
+                    }
+                }
+                if (type == KXmlParser.TEXT)
+                {
+                    if (!parser.getText().trim().equals(""))
+                    {
+                        processElement(stack, uuid);
+                    }
+                }
+            }
+        } catch (XmlPullParserException e1)
+        {
+            return null;
+        } catch (IOException e)
+        {
+            return null;
+        }
+
+        return null;
+    }
+
+    /**
+     * Processes a text element from a obr file
+     * 
+     * @param stack
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
+    private void processElement(Stack stack, String uuid) throws XmlPullParserException, IOException
+    {
+        if (stack.peek().equals("bundle"))
+        {
+            String name = parser.getText().trim();
+        } else if (stack.peek().equals("bundle-uuid"))
+        {
+            String id = parser.getText().trim();
+            
+            if (id.equals(uuid))
+                System.out.println("found bundle");
+        }
+    }
+
+    /**
+     * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#retrieveInformation(java.lang.String,
+     *      java.lang.String)
+     */
+    public InputStream retrieveInformation(String uuid, String source)
+    {
+        String[] args = Utilities.split(uuid, ":");
+        String group = args[0];
+        String name = args[1];
+        String version = args[2];
+        String type = args[3];
+
+        LOG.debug("retrieve request over http2: " + uuid + ", " + source);
+
+        try
+        {
+            HttpSocket clientSocket = new HttpSocket(source, 9278);
+
+            clientSocket.get("/get" + type + "/" + uuid);
             clientSocket.request();
 
-            return new PluginIterator(clientSocket.data);
+            return new ByteArrayInputStream(clientSocket.data.getBytes());
 
-         } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-         }
+        }
 
-      }
+        return null;
+    }
 
-      return null;
-   }
+    /**
+     * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#getMatchingPlugins(java.lang.String)
+     */
+    public Iterator getMatchingPlugins(String filter)
+    {
 
-   /**
-    * @see ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher#debug(java.lang.String)
-    */
-   protected void debug(String str) {
-      if (LOG.isDebugEnabled())
-         LOG.debug(str);
-   }
+        for (Enumeration hosts = knownHosts.elements(); hosts.hasMoreElements();)
+        {
+            try
+            {
+                String host = (String) hosts.nextElement();
+                HttpSocket clientSocket = new HttpSocket(host, 9278);
 
-   /**
-    * @see ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher#error(java.lang.String)
-    */
-   protected void error(String str) {
-      LOG.error(str);
-   }
+                clientSocket.get("/match" + "/" + filter);
+                clientSocket.request();
 
-   public class PluginIterator implements Iterator {
-      private String[] plugins;
-      private int index;
+                return new PluginIterator(clientSocket.data);
 
-      public PluginIterator(String data) {
-         plugins = Utilities.split(data, "#####");
-         index = 0;
-      }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
-      /**
-       * @see java.util.Iterator#remove()
-       */
-      public void remove() {
-         // It is optional, we don't need it so we leave it unimplemented
-      }
+        }
 
-      /**
-       * @see java.util.Iterator#hasNext()
-       */
-      public boolean hasNext() {
-         return (index < plugins.length);
-      }
+        return null;
+    }
 
-      /**
-       * @see java.util.Iterator#next()
-       */
-      public Object next() {
-         return new ByteArrayInputStream(plugins[index].getBytes());
-      }
-   }
+    /**
+     * @see ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher#debug(java.lang.String)
+     */
+    protected void debug(String str)
+    {
+        if (LOG.isDebugEnabled())
+            LOG.debug(str);
+    }
+
+    /**
+     * @see ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher#error(java.lang.String)
+     */
+    protected void error(String str)
+    {
+        LOG.error(str);
+    }
+
+    public class PluginIterator implements Iterator
+    {
+
+        private String[] plugins;
+
+        private int index;
+
+        public PluginIterator(String data)
+        {
+            plugins = Utilities.split(data, "#####");
+            index = 0;
+        }
+
+        /**
+         * @see java.util.Iterator#remove()
+         */
+        public void remove()
+        {
+            // It is optional, we don't need it so we leave it unimplemented
+        }
+
+        /**
+         * @see java.util.Iterator#hasNext()
+         */
+        public boolean hasNext()
+        {
+            return (index < plugins.length);
+        }
+
+        /**
+         * @see java.util.Iterator#next()
+         */
+        public Object next()
+        {
+            return new ByteArrayInputStream(plugins[index].getBytes());
+        }
+    }
 
 }
