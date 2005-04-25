@@ -7,13 +7,16 @@ package ch.ethz.jadabs.servicemanager.impl;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -24,6 +27,7 @@ import org.apache.log4j.Logger;
 
 import ch.ethz.jadabs.bundleLoader.api.InformationSource;
 import ch.ethz.jadabs.bundleLoader.api.PluginFilterMatcher;
+import ch.ethz.jadabs.bundleLoader.api.Utilities;
 import ch.ethz.jadabs.jxme.DiscoveryListener;
 import ch.ethz.jadabs.jxme.Element;
 import ch.ethz.jadabs.jxme.Listener;
@@ -72,7 +76,9 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     /** providing OBRS */
     private Vector providingBundles = new Vector();
     
-    private InputStream inforeq = null;;
+    private Hashtable awaitUUID2InfoReqs = new Hashtable();
+        
+//    private InputStream inforeq = null;
     
     private static final int BUFFER_SIZE = 4096;
     
@@ -94,52 +100,61 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     }
     
     public void removeListener(ServiceAdvertisementListener serviceListener)
-    {       
-        for(Iterator it = serviceAdvListeners.values().iterator();it.hasNext();)
-        {
-            Set s = (Set)it.next();
-            
-            for (Iterator sit = s.iterator(); sit.hasNext();)
-            {
-                ServiceAdvertisementListener slistener = (ServiceAdvertisementListener)sit.next();
-                if (slistener.equals(serviceListener))
-                    s.remove(slistener);
-            }
-            
-            if (s.isEmpty())
-                serviceAdvListeners.remove(s);
-        }
-        
+    {      
+//        synchronized(serviceAdvListeners)
+//        {
+	        for(Iterator it = serviceAdvListeners.values().iterator();it.hasNext();)
+	        {
+	            Set s = (Set)it.next();
+	            
+	            for (Iterator sit = s.iterator(); sit.hasNext();)
+	            {
+	                ServiceAdvertisementListener slistener = (ServiceAdvertisementListener)sit.next();
+	                if (slistener.equals(serviceListener))
+	                    s.remove(slistener);
+	            }
+	            
+	            if (s.isEmpty())
+	                serviceAdvListeners.remove(s);
+	        }
+//        }
     }
     
     
     // add filter, listener: could be duplicate
     private void addListener(String filter, ServiceAdvertisementListener serviceListener)
     {
-        if (serviceAdvListeners.contains(filter))
-        {
-            Set set = (Set)serviceAdvListeners.get(filter);
-            
-            set.add(serviceListener);
-        }
-        else
-        {
-            Set s = Collections.synchronizedSet(new HashSet());
-            s.add(serviceListener);
-            serviceAdvListeners.put(filter, s);
-        }
+//        synchronized(serviceAdvListeners)
+//        {
+	        if (serviceAdvListeners.contains(filter))
+	        {
+	            Set set = (Set)serviceAdvListeners.get(filter);
+	            
+	            set.add(serviceListener);
+	        }
+	        else
+	        {
+	            Set s = Collections.synchronizedSet(new HashSet());
+	            s.add(serviceListener);
+	            serviceAdvListeners.put(filter, s);
+	        }
+//        }
     }
     
     private void notifyListeners(String filter, ServiceReference sref)
     {
-        Set s = (Set)serviceAdvListeners.get(filter);
         
-        for (Iterator it = s.iterator(); it.hasNext(); )
-        {
-            ServiceAdvertisementListener slistener = (ServiceAdvertisementListener)it.next();
-            
-            slistener.foundService(sref);
-        }
+//        synchronized(serviceAdvListeners)
+//        {
+	        Set s = (Set)serviceAdvListeners.get(filter);
+	        
+	        for (Iterator it = s.iterator(); it.hasNext(); )
+	        {
+	            ServiceAdvertisementListener slistener = (ServiceAdvertisementListener)it.next();
+	            
+	            slistener.foundService(sref);
+	        }
+//        }
     }
     
     /*
@@ -246,23 +261,33 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	            String id = new String(msg.getElement(SERVICE_ID).getData());
 	                     
 	            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(id, adv, frompeer, PROVIDING_SERVICES);
-	            	            
-	            if (!uuid2svcref.contains(id))
-	            {
-	                uuid2svcref.put(id, svcRefImpl);
-	                // per default save the opd in the repocache
-		            saveServiceAdvInCache(id, adv);
-	            }
+	           	            
+//	            synchronized(uuid2svcref)
+//	            {
+		            if (!uuid2svcref.contains(id))
+		            {
+		                uuid2svcref.put(id, svcRefImpl);
+		                // per default save the opd in the repocache
+			            saveServiceAdvInCache(id, adv);
+		            }
+//	            }
 	            
 	            
                 final String fid = id;
+                final String fadv = adv;
+                
                 // try to load and activate if it machtes
+                // has to be done in a thread, or it blocks further
+                // requests
                 new Thread(){ 
                     public void run(){
                         try
                         {
                             ServiceManagerActivator.pluginLoader.
-                            	loadPlugin(fid);
+                            	loadPluginIfMatches(fid, 
+                            	        new ByteArrayInputStream(fadv.getBytes()));
+                            
+                            
                         } catch (Exception e)
                         {
                             LOG.error("could not install");
@@ -273,30 +298,21 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	            	            	            
 	            
             }
-	        	// Plugin-Request
+	        	// Plugin Filter-Request
 	        //TODO include a callback function to the pluginloader
 	        // to match the ExtensionPoint filter.
 	        else if (type.equals(FILTER_REQ))
 	        {         
 	            	// match agains the provided filter
 	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
-// problem with unicode and cvs	            
-//	            // transform | into ?? due to problems with nokia
-//	            if (filter.indexOf('|') > -1)
-//	                filter = filter.replace('|','??');
-//	            
-//	            String smfilter = filter.substring(filter.lastIndexOf("??")+1);
-// replaced to make it at least compile	            
-	            // transform | into ? due to problems with nokia
+	            
+	            // transform | into ¦ due to problems with nokia
 	            if (filter.indexOf('|') > -1)
-	                filter = filter.replace('|','?');
+	                filter = filter.replace('|','¦');
 	            
-	            String smfilter = filter.substring(filter.lastIndexOf("?")+1);
+	            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
 	            
-
-	            
-	            System.out.println("message: "+ msg.toXMLString());
-	            
+	            	            
 	            Iterator it = null;
 	            String rptype = "";
 	            if ((smfilter.indexOf("OPD".toString()) > -1) &&
@@ -341,7 +357,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	            
 	        
 	        }
-        		// Plugin-Ack
+        		// Plugin Filter-Ack
 	        else if (type.equals(FILTER_ACK))
 	        {            
 	            String adv = new String(msg.getElement(ADV_DESCRIPTOR).getData());
@@ -351,19 +367,21 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	                     
 	            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(id, adv, frompeer, rptype);
 	            
-	            uuid2svcref.put(id, svcRefImpl);
-	            	            	            
 	            // per default save the opd in the repocache
 	            saveServiceAdvInCache(id, adv);
 	        
 	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
 	            
-	            // call listeners
-	            notifyListeners(filter, svcRefImpl);
+	            //TODO notify listeners call listeners
+//	            notifyListeners(filter, svcRefImpl);
 	            
-	            System.out.println("got info_ack: "+adv);
+//	            synchronized(uuid2svcref)
+//	            {
+	                uuid2svcref.put(id, svcRefImpl);
+//	            }
+	            
 	        }
-	        	// OBR_INFORMATION
+	        	// OBR_REQ
 	        else if (type.equals(OBR_REQ))
 	        {
 	            String uuid = new String(msg.getElement(SERVICE_ID).getData());
@@ -382,17 +400,17 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	            }
 	            
 	        }
-        		// OBR_INFORMATION
+        		// OBR_ACK
 	        else if (type.equals(OBR_ACK))
 	        {
-	            System.out.println("got obr_ack: ");
 	            
 	            String uuid = new String(msg.getElement(SERVICE_ID).getData());
 	            String adv = new String(msg.getElement(ADV_DESCRIPTOR).getData());
 	            
 	            saveServiceAdvInCache(uuid, adv);
 	            
-	            inforeq = new ByteArrayInputStream(adv.getBytes());
+	            InputStream inStream = new ByteArrayInputStream(adv.getBytes());
+	            awaitUUID2InfoReqs.put(uuid, inStream);
 	            	            
 	        }
 	    		// JAR-Request
@@ -440,14 +458,9 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 		
 		        saveJarInCache(data, id);
 		        
-		        // TODO call bundleloader for the received bundle
-		        		       
-//		        synchronized(inforeq)
-//		        {
-		        	inforeq = new ByteArrayInputStream(data);
-//		        	inforeq.notify();
-//		        }
-		
+	            InputStream inStream = new ByteArrayInputStream(data);
+	            awaitUUID2InfoReqs.put(id, inStream);
+		        
 	        }
         }
     }
@@ -527,14 +540,15 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         {
             String id = (String)it.next();
           
-            System.out.println("id to send: "+id);
+            LOG.debug("id to send: "+id);
             
-		    	InputStream instr = ServiceManagerActivator.bundleLoader.fetchInformation(id, this);
-		    
+		    InputStream instr = ServiceManagerActivator.bundleLoader.fetchInformation(id, this);
+		    if (instr == null)
+		        instr = retrieveCachedInformation(id);
 		    	
-		    	sendServiceAdvertisement(FILTER_ACK, frompeer, 
-		    	        id, rptype, 
-		    	        SERVICE_FILTER, filter);
+	    	sendServiceAdvertisement(FILTER_ACK, frompeer, 
+	    	        id, rptype, 
+	    	        SERVICE_FILTER, filter);
         }
     }
     
@@ -591,7 +605,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     
     private void saveJarInCache(byte[] data, String uuid)
     {
-        String[] args = uuid.split(":");
+        String[] args = Utilities.split(uuid, ":");
         String group = args[0];
         String name = args[1];
         String version = args[2];
@@ -618,9 +632,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         
         // set filepath in BundleInformation
 //        binfo.setBundleCacheLocation(absfilepath);
-        
-        System.out.println("write file to: "+absfilepath);
-        
+                
 	    File file = new File(absfilepath);
 	    FileOutputStream fo;
         try
@@ -644,7 +656,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     
     private void saveServiceAdvInCache(String uuid, String adv)
     {
-        String[] args = uuid.split(":");
+        String[] args = Utilities.split(uuid,":");
         String group = args[0];
         String name = args[1];
         String version = args[2];
@@ -771,15 +783,18 @@ public class ServiceManagerImpl extends PluginFilterMatcher
             
             String pname = peer.getName();
             
-            for (Iterator it = uuid2svcref.values().iterator(); 
-            	it.hasNext();)
-            {
-                ServiceReference sref = (ServiceReference)it.next();
-                
-                if (pname.equals(sref.getPeer()))
-                    uuid2svcref.remove(sref.getID());
-                              
-            }
+//            synchronized(uuid2svcref)
+//            {
+	            for (Iterator it = uuid2svcref.values().iterator(); 
+	            	it.hasNext();)
+	            {
+	                ServiceReference sref = (ServiceReference)it.next();
+	                
+	                if (pname.equals(sref.getPeer()))
+	                    uuid2svcref.remove(sref.getID());
+	                              
+	            }
+//            }
         }
         
         
@@ -819,11 +834,30 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     {
      
         // dispatch between opd,obr,jar
+                        
+        InputStream in = retrieveCachedInformation(uuid);
         
+        if (in != null)
+            return in;
         
-        System.out.println("servicemanager retrieve infos: "+uuid);
+        // do remote request
+        
         // lookup  the peer for the serviceid
-        ServiceReference sref = (ServiceReference)uuid2svcref.get(uuid);
+        String opdid = null;
+        if (uuid.indexOf(":opd") < -1 )
+        {
+            // try to get the sref from the uuid:opd
+            opdid = uuid.substring(0, uuid.lastIndexOf(":")) +":opd";
+        }
+        else
+            opdid = uuid;
+        
+        ServiceReference sref = (ServiceReference)uuid2svcref.get(opdid);
+        String pname;
+        if (sref != null)
+            pname = sref.getPeer();
+        else
+            pname = ANYPEER;
         
         if (sref != null && uuid.indexOf(":opd") > -1)
         {
@@ -832,26 +866,13 @@ public class ServiceManagerImpl extends PluginFilterMatcher
                                    
         }
         else if (uuid.indexOf(":jar") > -1 )
-        {            
-            String pname;
-            if (sref != null)
-                pname = sref.getPeer();
-            else
-                pname = ANYPEER;
-            
+        {        
             sendRequest(pname, JAR_REQ, SERVICE_ID, uuid, null, null);
             
             return awaitInformation(uuid);
         }
         else if (uuid.indexOf(":obr") > -1)
         {
-            
-            String pname;
-            if (sref != null)
-                pname = sref.getPeer();
-            else
-                pname = ANYPEER;
-            
             sendRequest(pname, OBR_REQ, SERVICE_ID, uuid, null, null);
             
             return awaitInformation(uuid);
@@ -865,24 +886,20 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     {
         try
         {
-//	        synchronized(inforeq)
-//	        {
-            	int timeout = 0;
-            	int tsleeptime = 2000;
-            	int maxsleeptime = 3*tsleeptime;
-	            while(inforeq == null && timeout <= maxsleeptime)
-	            {
-	                Thread.sleep(tsleeptime);
-	                timeout += tsleeptime;
-	                
-	            }
-	            
-	            InputStream retin = inforeq;
-	            inforeq = null;
+        	int timeout = 0;
+        	int tsleeptime = 2000;
+        	int maxsleeptime = 3*tsleeptime;
+        	InputStream inforeq = null;
+            while(inforeq == null && timeout <= maxsleeptime)
+            {
+                Thread.sleep(tsleeptime);
+                timeout += tsleeptime;
                 
-	            return retin;
-//            } 
-	        
+                inforeq = (InputStream)awaitUUID2InfoReqs.remove(uuid);
+            }
+            
+            return inforeq;
+
         } catch (InterruptedException e)
         {
             LOG.warn("information request interrupted"); 
@@ -891,6 +908,28 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         return null;
       
     }
+    
+    public InputStream retrieveCachedInformation(String uuid) {
+        try {
+           String[] args = Utilities.split(uuid,":");
+           String group = args[0];
+           String name = args[1];
+           String version = args[2];
+           String type = args[3];
+
+           File repofile = new File(repoCacheDir.getAbsolutePath() + File.separator + group + File.separator + type + "s"
+           + File.separator + name + "-" + version + "." + type);
+           
+           if (repofile.exists())
+               return new FileInputStream(repofile);
+           else
+               return null;
+           
+        } catch (Exception e) {
+           e.printStackTrace();
+           return null;
+        }
+     }
     
     /* (non-Javadoc)
      * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#retrieveInformation(java.lang.String, java.lang.String)
@@ -905,15 +944,28 @@ public class ServiceManagerImpl extends PluginFilterMatcher
      * @see ch.ethz.jadabs.bundleLoader.api.InformationSource#getMatchingPlugins(java.lang.String)
      */
     public Iterator getMatchingPlugins(String filter)
-    {
-        
-//        if (filter == null)
-//            filter = FILTER_DEFAULT;
-        
+    {        
         sendRequest(ANYPEER, FILTER_REQ, SERVICE_FILTER, filter, null, null);
+
+        try {
+            Thread.sleep(2000);
+        } catch(InterruptedException ie)
+        {
+            LOG.warn("thread interrupted");
+        }
         
+        ArrayList uuids = new ArrayList();
         
-        return null;
+        for(Enumeration en = uuid2svcref.elements(); en.hasMoreElements();)
+        {
+            ServiceReferenceImpl sref = (ServiceReferenceImpl)en.nextElement();
+            
+            InputStream in = new ByteArrayInputStream(sref.getAdvertisement().getBytes());
+            if (matches(in, filter))
+                uuids.add(sref.getID());
+        }
+        
+        return uuids.iterator();
     }
     
     

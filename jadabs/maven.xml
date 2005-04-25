@@ -282,9 +282,9 @@
   	<attainGoal name="site:deploy" />
   </goal>
   
-  <goal name="jadabs:docu">
+  <goal name="jadabs:site:deploy">
     <attainGoal name="multiproject:site"/>
-    <!--<attainGoal name="pdf"/>-->
+    <attainGoal name="site:deploy"/>
   </goal>
   
   

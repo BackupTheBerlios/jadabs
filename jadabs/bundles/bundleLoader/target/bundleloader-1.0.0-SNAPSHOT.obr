@@ -1,0 +1,30 @@
+<bundle>
+	<bundle-name>bundleloader</bundle-name>
+	<bundle-group>jadabs</bundle-group>
+	<bundle-version>1.0.0-SNAPSHOT</bundle-version>
+	<bundle-uuid>jadabs:bundleloader:1.0.0-SNAPSHOT:obr</bundle-uuid>
+	<bundle-description>
+		Jadabs BundleLoader
+	</bundle-description>
+	<bundle-apivendor></bundle-apivendor>
+	<bundle-vendor>ETHZ-IKS</bundle-vendor>
+	<update-location>localhost:///home/andfrei/.maven/repository</update-location>
+	<bundle-updatelocation>file:///home/andfrei/.maven/repository/jadabs/jars/bundleloader-1.0.0-SNAPSHOT.jar</bundle-updatelocation>
+	<bundle-sourceurl>
+		
+	</bundle-sourceurl>
+	<bundle-docurl>
+		
+	</bundle-docurl>
+	<bundle-category>general</bundle-category>
+	<bundle-checksum>4f630bb88677673e032069dd44a4151b</bundle-checksum>
+	<import-package package="org.apache.log4j"/>
+	<import-package package="org.kxml2.io"/>
+	<import-package package="org.osgi.framework"/>
+	<import-package package="org.xmlpull.v1"/>
+	<export-package package="ch.ethz.jadabs.bundleLoader"/>
+	<export-package package="ch.ethz.jadabs.bundleLoader.api"/>
+	<export-package package="ch.ethz.jadabs.http"/>
+	<dependency-uuid>osgi:osgi-framework:1.2:obr</dependency-uuid>
+	<dependency-uuid>kobjects:kxml2:2.1.9-osgi:obr</dependency-uuid>
+</bundle>
