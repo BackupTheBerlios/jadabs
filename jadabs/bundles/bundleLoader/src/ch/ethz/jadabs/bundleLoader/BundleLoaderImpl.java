@@ -35,6 +35,9 @@
  */
 package ch.ethz.jadabs.bundleLoader;
 
+import java.io.File;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -42,9 +45,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
 import java.util.Vector;
-import java.io.File;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.Bundle;
@@ -427,7 +427,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#registerRequestHandler(ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler)
     */
    public void registerRequestHandler(HttpRequestHandler handler) {
-      BundleLoaderActivator.httpDaemon.addRequestHandler(handler);
+//      BundleLoaderActivator.httpDaemon.addRequestHandler(handler);
    }
 
    /**
@@ -436,7 +436,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#unregisterRequestHandler(ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler)
     */
    public void unregisterRequestHandler(HttpRequestHandler handler) {
-      BundleLoaderActivator.httpDaemon.removeRequestHandler(handler);
+//      BundleLoaderActivator.httpDaemon.removeRequestHandler(handler);
    }
 
    /**

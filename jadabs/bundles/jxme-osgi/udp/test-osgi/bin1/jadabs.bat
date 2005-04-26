@@ -1,2 +1,7 @@
+@echo off
 
-java -Dorg.knopflerfish.gosg.jars="file:%HOMEDRIVE%%HOMEPATH%\.maven\\repository\\" -jar "%HOMEDRIVE%%HOMEPATH%\.maven\repository\osgi\jars\framework-1.3.3-aop.jar" -xargs init.xargs
+set XARGS=init.xargs
+
+if not "%1" == "" set XARGS=%1
+
+java -Dch.ethz.jadabs.jxme.peeralias=%COMPUTERNAME% -jar framework-aop-1.3.3.jar -xargs %XARGS%

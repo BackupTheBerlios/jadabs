@@ -40,9 +40,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Stack;
 import java.util.Vector;
+
 import org.apache.log4j.Logger;
 import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParserException;
+
 import ch.ethz.jadabs.bundleLoader.api.Descriptor;
 
 /**
@@ -157,7 +159,7 @@ public class BundleDescriptor extends Descriptor {
            bundleChecksum = parser.getText().trim();
        } else if (stack.peek().equals("dependency-uuid"))
        {
-           String uuid = parser.getText().trim() + "obr";
+           String uuid = parser.getText().trim();
            try
            { 
               LOG.debug("Dependency:" + uuid);

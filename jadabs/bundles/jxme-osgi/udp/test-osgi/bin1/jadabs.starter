@@ -4,4 +4,4 @@
 
 #-repository=http://osgirepo.berlios.de/maven/repository.xml,http://www.knopflerfish.org/repo/repository.xml
 
--startopd    jadabs:jxme-udp:0.7.1-SNAPSHOT:opd
+-startopd    jadabs:jxme-services:1.0.0-SNAPSHOT:opd

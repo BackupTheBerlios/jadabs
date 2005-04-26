@@ -35,12 +35,19 @@
  */
 package ch.ethz.jadabs.bundleLoader;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Stack;
-import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -70,6 +77,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
     private boolean canHTTP = false;
 
     String host = "localhost";
+    int port = 80;
 
     KXmlParser parser;
 
@@ -80,19 +88,31 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
         //      String host = "localhost";
         HttpSocket clientSocket = null;
 
+        String httprepo = BundleLoaderActivator.bc.getProperty("ch.ethz.jadabs.bundleloader.httprepo");
+        if (httprepo != null)
+            host = httprepo;
+        
+        String httpport = BundleLoaderActivator.bc.getProperty("ch.ethz.jadabs.bundleloader.httprepo.port");
+        if (httpport != null)
+            port = Integer.parseInt(httpport);
+        
+        // used for client http servers
+//        try
+//        {
+//            clientSocket = new HttpSocket(host, 9278);
+//            canWS = true;
+//        } catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+        
         try
         {
-            clientSocket = new HttpSocket(host, 9278);
-            canWS = true;
-        } catch (Exception e)
-        {
-        }
-        try
-        {
-            clientSocket = new HttpSocket(host, 80);
+            clientSocket = new HttpSocket(host, port);
             canHTTP = true;
         } catch (Exception e)
         {
+            LOG.debug("Could not open http repository connection");
         }
 
         if (clientSocket == null) { throw new Exception("Could not open socket ..."); }
@@ -120,6 +140,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
         for (Enumeration hosts = knownHosts.elements(); hosts.hasMoreElements();)
         {
             String host = (String) hosts.nextElement();
+            
             if (canWS)
             {
                 try
@@ -140,13 +161,12 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
                 try
                 {
                     HttpSocket clientSocket = new HttpSocket(host, 80);
-
-                    System.out.println("gather info: "+type);
                     
                     if (type.equals("jar"))
                     {
                         String downloadurl = "http://" + host + "/repository/" + group + "/jars/" + name + "-"
                                 + version + ".jar";
+                                                
                         return clientSocket.getFileInputStream(downloadurl);
 
                     } else if (type.equals("obr"))
@@ -158,9 +178,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
                         	group + "/obrs/" + name + "-" + version + ".obr";
                                                 
                         URL url = new URL(obrurl);
-                        
-                        System.out.println("retrieve: "+url);
-                        
+                                                
                         return url.openStream();
                                                 
 //                        StringTokenizer tokenizer = new StringTokenizer(clientSocket.data);
@@ -250,9 +268,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
 	        	        String uuidline = line.trim();
 	        	    
 	        	        uuid = uuidline.substring(6,uuidline.lastIndexOf("\""));
-	        	        
-	        	        System.out.println("uuid: "+uuid);
-	        	        
+	        	        	        	        
 	        	    }
 	            	
 	            	line = br.readLine();
