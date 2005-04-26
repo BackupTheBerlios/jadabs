@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="bundles/bundleLoader/src"/>
 	<classpathentry kind="src" path="bundles/pluginLoader/src"/>
+	<classpathentry kind="src" path="bundles/bundleloader/src"/>
 	<classpathentry kind="src" path="bundles/pluginLoader/test-osgi/src"/>
 	<classpathentry kind="src" path="bundles/service-manager/api/src"/>
 	<classpathentry kind="src" path="bundles/service-manager/impl/src"/>
