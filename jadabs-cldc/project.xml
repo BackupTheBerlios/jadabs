@@ -6,7 +6,7 @@
   
       <name>Jadabs-CLDC</name>
       <artifactId>jadabs-cldc</artifactId>
-      <currentVersion>0.7.1-SNAPSHOT</currentVersion>
+      <currentVersion>1.0.0-SNAPSHOT</currentVersion>
   
       <organization>
         <name>ETHZ-IKS</name>
@@ -17,7 +17,7 @@
       <!--
       <logo>/images/logo_jadabs.gif</logo>
       -->
-      <inceptionYear>2004</inceptionYear>
+      <inceptionYear>2005</inceptionYear>
       <package>ch.ethz.jadabs</package>
     
       <shortDescription>Jadabs-CLDC - Java ADhoc Application BootStrap for CLDC</shortDescription>

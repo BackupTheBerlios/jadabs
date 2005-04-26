@@ -5,7 +5,7 @@
 	<extend>${basedir}/../../../project.xml</extend>
 
 	<groupId>mservices</groupId>
-	<id>smsgateway</id>
+	<articatId>smsgateway</artifactId>
 	<name>MobileServices-SMSGateway</name>
 
 	<shortDescription>MobileServices-SMSGateway</shortDescription>
