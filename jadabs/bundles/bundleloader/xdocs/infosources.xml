@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Information Sources</title>
+  </properties>
+
+  <body>
+    <section name="Information Sources">    
+    <p>
+      In a Jadabs system, several sources for bundles and obrs exist. First 
+      of all, every Jadabs container has a repository, normally a directory 
+      on a local fixed disk. But if an internet connection exists, <code>BundleLoader</code> 
+      can also ask Repository Servers via http for information. On a     
+      even leven, the <code>ServiceManager</code> can use the JXME groupservice to 
+      retrieve information. All this possibilities are abstracted to 
+      <code>InformationSources</code>, where bundles or obrs can be requested and the 
+      <code>PluginLoader</code> can start filtered queries for matching plugins. The  
+      result of a request is always a <code>InputStream</code> because the 
+      found information is not necessarily a file, it can also be a Network 
+      Stream or a different source. As standard, every <code>BundleLoader</code> has it's 
+      local repository registered as Information Source, if a 
+      <code>Socket</code> can be opened, a http client is also registered.  
+      Higher level bundles can register additional Information Sources, like
+      the service manager does. To do this, the providing class must 
+      implement the 
+      <code>ch.ethz.jadabs.bundleLoader.api.InformationSource</code> Interface: 
+<source>
+<![CDATA[
+public interface InformationSource {
+
+    public InputStream retrieveInformation(String uuid);
+   
+    public InputStream retrieveInformation(String uuid, String source);
+   
+    public Iterator getMatchingPlugins(String filter) throws Exception;
+}
+]]>
+</source>
+     The first two methods are used to retrieve bundle jars or obrs 
+     specified by the uuid, the second method additionally specifies a 
+     source location where the information can be found, the implementation  
+     of this feature is optional, Repository omits this argument while 
+     HttpClient interprets this argument as an url. The 
+     <code>getMatchingPlugins(String filter)</code> method is used in 
+     connection with Plugins by the Plugin Loader. 
+   </p>
+ </section>    
+</body>
+</document>

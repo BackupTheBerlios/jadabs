@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Jadabs BundleLoader</title>
+  </properties>
+
+  <body>
+    <section name="BundleLoader">    
+    
+     <subsection name="Properties">
+      	
+			<table>
+	          <tr><th>Property</th><th>Default</th><th>Description</th></tr>
+	          
+	          <tr>
+	          	<td>ch.ethz.jadabs.bundleloader.httprepo</td>
+	          	<td>localhost</td>
+	          	<td>http repository url, to download opds, obrs</td>
+	          </tr>
+	          
+	          <tr>
+	          	<td>ch.ethz.jadabs.bundleloader.httprepo.port</td>
+	          	<td>80</td>
+	          	<td>http repository port of http repository url</td>
+	          </tr>
+	                    
+	      	</table>
+      	
+      	</subsection>
+      	
+    </section>    
+    
+    
+  </body>
+</document>

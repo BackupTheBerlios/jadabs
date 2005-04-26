@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../project.xml</extend>
+
+  	<groupId>jadabs</groupId>
+  	<id>bundleloader</id>
+  	<name>Jadabs BundleLoader</name>
+
+  	<shortDescription>Jadabs BundleLoader</shortDescription>
+
+	<properties>
+		<osgi.import.service></osgi.import.service>		
+		<osgi.export.service>ch.ethz.jadabs.bundleLoader.IBundleLoader</osgi.export.service>
+
+		<!-- for eclipse osgi plugins -->
+		<eclipse.bundle.symbolicname>ch.ethz.jadabs.bundleloader</eclipse.bundle.symbolicname>
+		<eclipse.require.bundle>org.eclipse.osgi</eclipse.require.bundle>
+		<eclipse.autostart>true</eclipse.autostart>
+		<eclipse.bundle.activator>ch.ethz.jadabs.bundleloader.BundleLoaderActivator</eclipse.bundle.activator>
+		<eclipse.export.service>ch.ethz.jadabs.bundleloader.BundleLoader</eclipse.export.service>
+		<eclipse.export.package>org.kxml2.io,org.xmlpull.v1,ch.ethz.jadabs.bundleloader</eclipse.export.package>
+		<eclipse.import.package>org.apache.log4j,org.osgi.framework</eclipse.import.package>
+	</properties>
+	
+	
+  	<dependencies>
+
+        <dependency>
+            <groupId>osgi</groupId>
+            <artifactId>osgi-framework</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+		<dependency>
+      		<groupId>kobjects</groupId>
+      		<artifactId>kxml2</artifactId>
+      		<version>2.1.9-osgi</version>
+			<properties>
+	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
+	      	</properties>        		
+		</dependency>
+		    		
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>log4j-cdc</artifactId>
+			<version>${pom.currentVersion}</version>
+			<properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
+		</dependency>
+				
+  	</dependencies>
+	
+	<reports>
+        	<report>maven-javadoc-plugin</report>
+	</reports>
+  
+</project>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+/*
+ * 
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>kxml2 Pull Parser</title>
+  </properties>
+
+  <body>
+    <section name="kxml2 Pull Parser">    
+    <p>
+	<code>BundleLoader</code> expects bundles to be described in obr files, that are 
+	xml encoded. For parsing these (and other xml based descriptors), <code>kxml2</code>
+	by kobjects.org is used. <code>kxml2</code> is a lightweight implementation of the 
+	xmlpull specification. 
+	So instead of building up large data structures for a DOM tree, xmlpull 
+	sweeps through the document and processes only the current element. But in difference 
+	to SAX, where handlers are registered that are called on specific events 
+	(SAX is a push system), xmlpull leaves it up to the application to extract 
+	the required information of the current element or continue processing with the 
+	next element. This is less flexible than DOM or SAX but very efficient in terms 
+	of resources and specially designed for small devices like PDAs or mobile phones. 	
+	<code>BundleLoader</code> uses <code>kxml2</code> to parse the descriptor 
+	files. While obr files encode the information in elements to comply with the Oscar Bundle
+	Repository format, opd files use attributes to specify Plugins. This is more efficient
+	because all attributes of an element can be read and processed at once while encoding by
+	elements mean that the parser has to process more than one line and might have to wait until 
+	all required elements have been parsed. 
+	</p>
+	</section>
+</body>
+</document>
+
+
+
+
+
+
