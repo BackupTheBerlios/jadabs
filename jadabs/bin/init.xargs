@@ -1,44 +1,35 @@
 #
-# startup bin1-aop
+# minimal init.xargs to be used in a JXME environment
 #
 
-# load common properties
--xargs props.xargs
+-Dorg.knopflerfish.verbosity=0
 
-# load bin1 specifics
+#-Dorg.knopflerfish.gosg.jars=file:./repository/
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.debug.startlevel=false
+-Dorg.knopflerfish.framework.debug.ldap=false
 
-# initialize bundles
+-Dorg.osgi.framework.system.packages=ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
+
+-Dch.ethz.jadabs.pluginloader.starter=jadabs.starter
+
+-Dch.ethz.jadabs.servicemanager.gmpipe.name=gmpipe
+-Dch.ethz.jadabs.servicemanager.gmpipe.id=23
+
+-Dorg.knopflerfish.startlevel.use=true
+
 -init
 
-## Basic bundles
 -initlevel 1
--install   kobjects/jars/kxml2-2.1.9-osgi.jar
--install   jadabs/jars/bundleLoader-0.7.1-SNAPSHOT.jar
--install   jadabs/jars/jadabs-shell-0.7.1-SNAPSHOT.jar
+-istart  	log4j/jars/log4j-1.2.8-osgi.jar
+-install 	kobjects/jars/kxml2-2.1.9-osgi.jar
+-istart  	jadabs/jars/bundleloader-1.0.0-SNAPSHOT.jar
+-istart     jadabs/jars/pluginloader-1.0.0-SNAPSHOT.jar
 
-
--initlevel 2
-
--install  	log4j/jars/log4j-1.2.8-osgi.jar
-#-install  	jadabs/jars/log4j-cdc-0.7.1-SNAPSHOT.jar
--install 	jadabs/jars/concurrent-0.7.1-SNAPSHOT.jar
--install  	jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar
--install  	jadabs/jars/jxme-udp-0.7.1-SNAPSHOT.jar
--install  	jadabs/jars/jxme-services-api-0.7.1-SNAPSHOT.jar
--install  	jadabs/jars/jxme-services-impl-0.7.1-SNAPSHOT.jar
--install    jsx/jars/jsx-osgi-2.2.3.8.jar
--install 	jadabs/jars/remotefw-api-0.7.1-SNAPSHOT.jar
--install  	jadabs/jars/remotefw-impl-0.7.1-SNAPSHOT.jar
-
--startlevel 2
+-startlevel 1
 
 -launch
 
--start      jadabs/jars/bundleLoader-0.7.1-SNAPSHOT.jar
--start      jadabs/jars/jadabs-shell-0.7.1-SNAPSHOT.jar
 
--start      log4j/jars/log4j-1.2.8-osgi.jar
--start      jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar
--start      jadabs/jars/jxme-udp-0.7.1-SNAPSHOT.jar
--start      jadabs/jars/jxme-services-impl-0.7.1-SNAPSHOT.jar
--start      jadabs/jars/remotefw-impl-0.7.1-SNAPSHOT.jar
