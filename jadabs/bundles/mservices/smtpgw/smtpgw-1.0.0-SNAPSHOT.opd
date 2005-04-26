@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OSGiServicePlugin 
+	uuid="jadabs:smtpgw:1.0.0-SNAPSHOT:opd"
+	service="ch.ethz.jadabs.mservices.smartmessenger" 
+	description="" 
+	provider-name="ETHZ-IKS">
+	
+	<Property
+            name="midp-port" value="5432" />     
+    	<Property
+    	    name="downloadurl" value="http://wlab.ethz.ch/maven/repository"/>   
+	
+	<Extension-Point
+		id="OSGiContainer/id:j2me-osgi" />
+			
+	<Extension-Point 
+		id="NetIface/type:bt-jsr82" 
+		service="requires a bt-interface"/>
+
+	<Extension 
+		id="GroupService" 
+		service="ch.ethz.jadab.jxme.services.GroupService"/>
+		
+	<ServiceActivatorBundle 
+		activator-uuid="jadabs:smtpgw:1.0.0-SNAPSHOT:obr"
+	/>	
+	
+</OSGiServicePlugin>
