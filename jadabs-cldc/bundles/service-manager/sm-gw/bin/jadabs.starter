@@ -1,0 +1,6 @@
+
+# iPAQ UDP/BT HotSpot
+-usepad bt-gateway.pad
+
+-startopd    jadabs:servicemanager:1.0.0-SNAPSHOT:opd
+-startopd    jadabs:smtpgw:1.0.0-SNAPSHOT:opd
