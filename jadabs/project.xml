@@ -18,10 +18,10 @@
       
       <logo>/images/logo_jadabs.gif</logo>
       
-      <inceptionYear>2004</inceptionYear>
+      <inceptionYear>2005</inceptionYear>
       <package>ch.ethz.jadabs</package>
     
-      <shortDescription>Jadabs - Java ADhoc Application BootStrap</shortDescription>
+      <shortDescription>Jadabs</shortDescription>
     
       <url>http://jadabs.berlios.de</url>
 
