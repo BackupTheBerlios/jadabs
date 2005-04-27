@@ -20,7 +20,7 @@
   <!--==================================================================-->
   <goal name="buildmidlets">
       <attainGoal name="clean"/>
-      <attainGoal name="antenna"/>
+      <attainGoal name="antenna:OSGiBundle"/>
   </goal>
   
   <preGoal name="antenna:WtkPackage">

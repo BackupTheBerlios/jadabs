@@ -57,7 +57,7 @@
 	      		<midlet>true</midlet>
 	      	</properties>
 		</dependency>
-	
+<!--	
 		<dependency>
       		<groupId>jadabs-ws</groupId>
       		<artifactId>sbbservice</artifactId>
@@ -66,7 +66,7 @@
 	    		<midlet>true</midlet>
         	</properties>
         </dependency>
-        
+-->        
         <dependency>
       		<groupId>j2me</groupId>
       		<artifactId>btapi</artifactId>

@@ -9,7 +9,6 @@ import ch.ethz.jadabs.jxme.*;
 import ch.ethz.jadabs.jxme.bt.BTActivator;
 import ch.ethz.jadabs.sbbmidlet.ui.*;
 import ch.ethz.jadabs.sbbmidlet.communication.SoapTransformation;
-import ch.ethz.jadabs.ws.proxy.SBBService;
 
 
 import org.apache.log4j.LogActivator;
@@ -49,11 +48,6 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, Listener, Comm
 
     public String fResponseFromSBBServer = "";
 
-    /**
-     * Reference to SBB Service instance
-     */
-    private SBBService sbbservice;
-
     /* commands */
     private Command sendCmd;
     private Command logCmd;
@@ -89,10 +83,6 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, Listener, Comm
         fServiceReference = bundleContext.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
         fEndptsvc = (EndpointService) bundleContext.getService(fServiceReference);
 
-        // get SBB service
-        fServiceReference = bundleContext.getServiceReference("ch.ethz.jadabs.sbbservice.SBBService");
-        sbbservice = (SBBService) bundleContext.getService(fServiceReference);
-
         fEndptsvc.addListener("sbbmidlet", this);
         LOG.debug(fEndptsvc.getListener("sbbmidlet"));
     }
@@ -115,7 +105,7 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, Listener, Comm
         logCmd = new Command("Log", Command.SCREEN, 3);
         exitCmd = new Command("Beenden", Command.EXIT, 1);
         selectCmd = new Command("Auswahl", Command.ITEM, 2);
-        backCmd = new Command("Zur�ck", Command.SCREEN, 2);
+        backCmd = new Command("Zurueck", Command.SCREEN, 2);
         saveCmd = new Command("Speichern", Command.SCREEN, 1);
         resultCmd = new Command("Ergebnis", Command.SCREEN, 1);
         configCmd = new Command("Konfiguration", Command.SCREEN, 2);
@@ -180,7 +170,12 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, Listener, Comm
             }
         } else if (c == sendCmd) {
             soapTransformation.setDetailsQuery(false);
-            String soapMessage = soapTransformation.createSoapMessageFromQuery(queryForm.getFromField(), queryForm.getToField(), "30.01.2005", "11:00");
+            String soapMessage = soapTransformation.
+            	createSoapMessageFromQuery(
+            	        queryForm.getFromField(), 
+            	        queryForm.getToField(), 
+            	        queryForm.getDateField(), 
+            	        queryForm.getTimeField());
             sendMessage(soapMessage);
             Alert alert = new Alert("Information", "Ihre Anfrage wird an den SBB-Server gesendet!", null, AlertType.INFO);
             alert.setTimeout(Alert.FOREVER);

@@ -4,7 +4,6 @@ package ch.ethz.jadabs.sbbmidlet.ui;
 import ch.ethz.jadabs.sbbmidlet.SBBMIDlet;
 
 import javax.microedition.lcdui.*;
-import java.util.Date;
 
 /**
  * This form is initially shown to the user. The departure station,
@@ -20,8 +19,8 @@ public class QueryForm extends Form {
     private SBBMIDlet midlet;
     private TextField fromField;
     private TextField toField;
-    private DateField dateField;
-    private DateField timeField;
+    private TextField dateField;
+    private TextField timeField;
 
     /**
      * Create new form for query settings
@@ -41,11 +40,11 @@ public class QueryForm extends Form {
         // build-up form
         fromField = new TextField("Von:", "", 12, TextField.ANY);
         toField = new TextField("Nach:     ", "", 12, TextField.ANY);
-        dateField = new DateField("Datum:", DateField.DATE);
-        timeField = new DateField("Zeit:", DateField.TIME);
+        dateField = new TextField("Datum:", "", 12, TextField.ANY);
+        timeField = new TextField("Zeit:", "", 12, TextField.ANY);
 
-        dateField.setDate(new Date(System.currentTimeMillis()));
-        timeField.setDate(new Date(System.currentTimeMillis()));
+        dateField.setString("12.06.2005");
+        timeField.setString("14.00");
 
         this.append(fromField);
         this.append(toField);
@@ -87,7 +86,7 @@ public class QueryForm extends Form {
      * @return String representing the entered date
      */
     public String getDateField() {
-        return (new String(dateField.getDate().toString()));
+        return dateField.getString();
     }
 
     /**
@@ -96,7 +95,7 @@ public class QueryForm extends Form {
      * @return String representing the entered time
      */
     public String getTimeField() {
-        return timeField.toString();
+        return timeField.getString();
     }
 
 }
