@@ -19,13 +19,16 @@
 	      	<artifactId>jxme-osgi</artifactId>
 	      	<version>${pom.currentVersion}</version>
 		</dependency>
-		
+<!--		
 		<dependency>
-	      		<groupId>jadabs</groupId>
-	      		<artifactId>jxme-bt-j2me</artifactId>
-	      		<version>${pom.currentVersion}</version>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-bt-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+				<obr.dynamic>true</obr.dynamic>
+		 	</properties>  
 		</dependency>
-		
+-->		
 		<dependency>
 			<groupId>osgi</groupId>
 			<artifactId>osgi-framework</artifactId>
@@ -36,6 +39,9 @@
 			<groupId>jadabs</groupId>
       		<artifactId>log4j-cdc</artifactId>
       		<version>${pom.currentVersion}</version>
+      		<properties>
+				<obr.dynamic>true</obr.dynamic>
+		 	</properties>  
         </dependency>
         	
 	</dependencies>

@@ -1,67 +1,91 @@
-package ch.ethz.jadabs.sbbproxy;
+package ch.ethz.jadabs.ws.proxy;
 
-
-import java.net.URL;
-import java.net.MalformedURLException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+
 import ch.ethz.jadabs.jxme.EndpointService;
 
-
 /**
- * Activates the SBB Proxy. This bundle is used by the SBB service to
- * get the response from the SBB server.
- *
+ * Activates the SBB Proxy. This bundle is used by the SBB service to get the
+ * response from the SBB server.
+ * 
  * @author Franz Maier
  */
 
-public class SBBProxyActivator implements IForwardSoapMessage, BundleActivator {
+public class SBBProxyActivator implements BundleActivator
+{
+    private static Logger LOG = Logger.getLogger(SBBProxyActivator.class.getName());
 
     protected static final String SBB_WEBSERVICE_URL = "http://wlab.ethz.ch:8080/axis/services/SBBWebService";
-    private static Logger LOG;
-    private String response;
-    public BundleContext bundleContext = null;
 
-    public String getSoapResponse(String message, String args) {
+    private SBBService sbbservice;
+    
+    private String response;
+
+    public BundleContext bundleContext = null;
+    
+    protected static EndpointService fEndptsvc;
+    
+    protected static SBBProxyActivator sbbproxy;
+
+
+    public void start(BundleContext bc) throws Exception
+    {
+
+        this.bundleContext = bc;
+        sbbproxy = this;
+
+        // get Endpoint service
+        ServiceReference fServiceReference = bc.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
+        fEndptsvc = (EndpointService) bc.getService(fServiceReference);
+
+        sbbservice = new SBBService();
+        fEndptsvc.addListener("sbbservice", sbbservice);
+        
+    }
+
+    public void stop(BundleContext bc)
+    {
+        bc = null;
+    }
+
+    public String getSoapResponse(String message, String args)
+    {
         //LOG.debug(message);
-        try {                
+        try
+        {
             response = forwardSoapObjectToServer(message, new URL(SBB_WEBSERVICE_URL));
-        } catch (MalformedURLException mue) {
+        } catch (MalformedURLException mue)
+        {
             LOG.debug(mue.getMessage());
         }
         return response;
     }
 
-
-    public void start(BundleContext bc) throws Exception {
-
-        // get Endpoint service
-        ServiceReference fServiceReference = bc.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
-        EndpointService fEndptsvc = (EndpointService) bc.getService(fServiceReference);
-        this.bundleContext = bc;
-
-    }
-
-    public void stop(BundleContext bc) {
-        bc = null;
-    }
-
     /**
-     * proxy-method is called when a new SoapMessage
-     * arrives through the JXME EndpointService. The Message
-     * will be forwarded to the SBB Server.
-     *
-     * @param string The JXME message received from the client
-     * @param url    The Url where the SBBWebService runs
+     * proxy-method is called when a new SoapMessage arrives through the JXME
+     * EndpointService. The Message will be forwarded to the SBB Server.
+     * 
+     * @param string
+     *            The JXME message received from the client
+     * @param url
+     *            The Url where the SBBWebService runs
      */
-    public String forwardSoapObjectToServer(String string, URL url) {
+    public String forwardSoapObjectToServer(String string, URL url)
+    {
         String response = "";
-        try {
+        try
+        {
             byte[] soapMessage = string.getBytes();
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -89,7 +113,8 @@ public class SBBProxyActivator implements IForwardSoapMessage, BundleActivator {
             inputStream.close();
             connection.disconnect();
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.out.println(e);
         }
         return response;

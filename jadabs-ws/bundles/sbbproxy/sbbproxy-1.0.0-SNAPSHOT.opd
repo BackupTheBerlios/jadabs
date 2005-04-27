@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OSGiServicePlugin 
+	uuid="jadabs-ws:sbbproxy:1.0.0-SNAPSHOT:opd"
+	service="ch.ethz.jadabs.mservices.smartmessenger" 
+	description="" 
+	provider-name="ETHZ-IKS">
+	
+
+	<Extension-Point
+		id="OSGiContainer/id:j2me-osgi" />
+			
+	<Extension-Point 
+		id="NetIface/type:bt-jsr82" 
+		service="requires a bt-interface"/>
+
+	<Extension 
+		id="GroupService" 
+		service="ch.ethz.jadab.jxme.services.GroupService"/>
+		
+	<ServiceActivatorBundle 
+		activator-uuid="jadabs-ws:sbbproxy:1.0.0-SNAPSHOT:obr"
+	/>	
+	
+</OSGiServicePlugin>

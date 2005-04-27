@@ -1,25 +1,31 @@
-package ch.ethz.jadabs.sbbproxy;
+package ch.ethz.jadabs.ws.proxy.test;
 
 
-import java.net.URL;
-import java.net.MalformedURLException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 
 
+
 /**
- * Date: 21.01.2005 21:35:17
- * To change this template use Options | File Templates.
- *
+ * Date: 21.01.2005 21:35:17 To change this template use Options | File
+ * Templates.
+ * 
  * @author Franz Maier
  */
 
-public class Proxy implements IForwardSoapMessage {
+public class Proxy 
+{
+    private static Logger LOG = Logger.getLogger(Proxy.class.getName());
 
     protected static final String SBB_WEBSERVICE_URL = "http://wlab.ethz.ch:8080/axis/services/SBBWebService";
-    private static Logger LOG;
+        
     private String response;
 
     public String getSoapResponse(String message, String args) {
@@ -33,12 +39,13 @@ public class Proxy implements IForwardSoapMessage {
     }
 
     /**
-     * proxy-method is called when a new SoapMessage
-     * arrives through the JXME EndpointService. The Message
-     * will be forwarded to the SBB Server.
-     *
-     * @param string The JXME message received from the client
-     * @param url    The Url where the SBBWebService runs
+     * proxy-method is called when a new SoapMessage arrives through the JXME
+     * EndpointService. The Message will be forwarded to the SBB Server.
+     * 
+     * @param string
+     *            The JXME message received from the client
+     * @param url
+     *            The Url where the SBBWebService runs
      */
     public String forwardSoapObjectToServer(String string, URL url) {
         String response = "";

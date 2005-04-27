@@ -7,15 +7,14 @@
 
 	<groupId>jadabs-ws</groupId>
 	<name>Jadabs Webservices</name>					
-	<id>jadabs-ws</id>							
+	<artifactId>jadabs-ws</artifactId>							
 	
-	<currentVersion>0.7.1-SNAPSHOT</currentVersion>
+	<currentVersion>1.0.0-SNAPSHOT</currentVersion>
 	
-	<inceptionYear>2004</inceptionYear>
+	<inceptionYear>2005</inceptionYear>
     
 	
-	<description>No description</description>
-	<shortDescription>No descr.</shortDescription>
+	<shortDescription>Jadabs WebServices</shortDescription>
 	
     
 	<organization>
@@ -24,7 +23,11 @@
 		<logo>/images/logo_ethz_iks.jpg</logo>
 	</organization>
         
-            
+    <url>http://jadabs.berlios.de/jadabs-ws</url>
+  
+    <siteAddress>shell.berlios.de</siteAddress>
+    <siteDirectory>/home/groups/jadabs/htdocs/jadabs-ws</siteDirectory>
+  
 	<developers>
 	
 		<developer>
@@ -40,52 +43,7 @@
 			<timezone>+1</timezone>
 			<organization>ETHZ</organization>
 		</developer>
-		
-		<developer>
-			<name>Daniel Kaeppeli</name>
-			<id>daniel</id>
-			<email>daniel_kaeppe.li</email>
-			<roles>
-			<role>Bluetooth developer</role>
-			<role>Distributed Junit</role>
-			</roles>
-			<timezone>+1</timezone>
-			<organization></organization>
-		</developer>
-		
-		<developer>
-			<name>Micha Trautweiler</name>
-			<id>tmicha</id>
-			<email>michatrauti_web.de</email>
-			<roles>
-			<role>Migration Framework</role>
-			</roles>
-			<timezone>+1</timezone>
-			<organization></organization>
-		</developer>
-		
-		<developer>
-			<name>Jan S. Rellermeyer</name>
-			<id>rjan</id>
-			<email>jrellermeyer_student.ethz.ch</email>
-			<roles>
-			<role>Jacl Discovery Service</role>
-			</roles>
-			<timezone>+1</timezone>
-			<organization>ETHZ</organization>
-		</developer>
-		
-		<developer>
-			<name>Michael Duller</name>
-			<id>dullerm</id>
-			<email>michael_duller.net</email>
-			<roles>
-			<role>Log4j Service</role>
-			</roles>
-			<timezone>+1</timezone>
-			<organization>ETHZ</organization>
-		</developer>
-		
+				
 		<developer>
 			<name>René Müller</name>
 			<id>muellren</id>

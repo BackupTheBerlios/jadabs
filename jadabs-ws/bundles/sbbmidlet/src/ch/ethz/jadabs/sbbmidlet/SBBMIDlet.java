@@ -7,9 +7,9 @@ import javax.microedition.midlet.MIDlet;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
 import ch.ethz.jadabs.jxme.*;
 import ch.ethz.jadabs.jxme.bt.BTActivator;
-import ch.ethz.jadabs.sbbservice.SBBService;
 import ch.ethz.jadabs.sbbmidlet.ui.*;
 import ch.ethz.jadabs.sbbmidlet.communication.SoapTransformation;
+import ch.ethz.jadabs.ws.proxy.SBBService;
 
 
 import org.apache.log4j.LogActivator;
@@ -115,7 +115,7 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, Listener, Comm
         logCmd = new Command("Log", Command.SCREEN, 3);
         exitCmd = new Command("Beenden", Command.EXIT, 1);
         selectCmd = new Command("Auswahl", Command.ITEM, 2);
-        backCmd = new Command("Zurück", Command.SCREEN, 2);
+        backCmd = new Command("Zurï¿½ck", Command.SCREEN, 2);
         saveCmd = new Command("Speichern", Command.SCREEN, 1);
         resultCmd = new Command("Ergebnis", Command.SCREEN, 1);
         configCmd = new Command("Konfiguration", Command.SCREEN, 2);
