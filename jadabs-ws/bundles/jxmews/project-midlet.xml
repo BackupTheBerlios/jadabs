@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../project.xml</extend>
+
+	<groupId>jadabs-ws</groupId>
+	<artifactId>jxmews</artifactId>
+	<name>WebService-JXME Midlet</name>
+
+	<shortDescription>WebService-JXME Midlet</shortDescription>
+
+  	<dependencies>
+
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>
+	      	</properties>
+        </dependency>
+        
+        <dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>
+	      	</properties>
+		</dependency>
+		
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>microservices-common</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>microservices-bundle</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>local-wiring</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+		
+        <dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>log4j-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	    		<midlet>true</midlet>
+        	</properties>
+        </dependency>
+        
+		<dependency>
+      		<groupId>j2me</groupId>
+      		<artifactId>midpapi</artifactId>
+      		<version>2.0</version>
+		</dependency>
+	
+  	</dependencies>
+  	
+</project>

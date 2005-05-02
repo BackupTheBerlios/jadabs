@@ -1,0 +1,46 @@
+<project default="buildmidlets" 
+	xmlns:maven="jelly:maven"
+	xmlns:jar="jelly:jar"
+	xmlns:j="jelly:core" 
+	xmlns:util="jelly:util" 
+	xmlns:ant="jelly:ant"
+	xmlns:artifact="artifact">
+
+
+  	<!--==================================================================-->
+  	<!-- Properties                                                       -->
+  	<!--==================================================================-->
+	<!-- <property name="wtk.home" value="/usr/local/WTK2.1"/>
+	<property name="wtk.cldc.version" value="1.0"/>
+	<property name="wtk.midp.version" value="1.0"/>	
+	-->
+	
+  <!--==================================================================-->
+  <!-- Build goals                                                      -->
+  <!--==================================================================-->
+  <goal name="buildmidlets">
+      <attainGoal name="clean"/>
+      <attainGoal name="antenna:OSGiBundle"/>
+  </goal>
+  
+  <preGoal name="antenna:WtkPackage">
+  	  <echo>BEGIN PREGOAL antenna:WtkPackage</echo>
+     <echo>Putting together OSGi bundles...</echo>
+     
+     <j:forEach var="dep" items="${pom.dependencies}">
+         <j:set var="bundlepath" value="${pom.getDependencyPath(dep.getId())}"/>         
+         <j:set var="forMidlet"  value="${dep.getProperty('midlet')}"/>
+         <j:if test="${forMidlet == 'true'}">
+				<echo>${bundlepath} has will be added to ${maven.build.dest}</echo>
+				<ant:unjar src="${bundlepath}" dest="${maven.build.dest}" />
+			</j:if>
+     </j:forEach>
+     
+     <!-- delete remaining META-INF directory from the unpacking of the jars above -->
+     <ant:delete dir="${maven.build.dest}/META-INF" quiet="true" />
+    
+  	  <echo>END PREGOAL antenna:WtkPackage</echo>     
+  </preGoal>
+
+  
+</project>

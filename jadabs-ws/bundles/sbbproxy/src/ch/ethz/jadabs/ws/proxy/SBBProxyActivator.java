@@ -26,7 +26,8 @@ public class SBBProxyActivator implements BundleActivator
 {
     private static Logger LOG = Logger.getLogger(SBBProxyActivator.class.getName());
 
-    protected static final String SBB_WEBSERVICE_URL = "http://wlab.ethz.ch:8080/axis/services/SBBWebService";
+//    protected static final String SBB_WEBSERVICE_URL = "http://wlab.ethz.ch:8080/axis/services/SBBWebService";
+    protected static final String SBB_WEBSERVICE_URL = "http://localhost:8081/axis/services/SBBWebService";
 
     private SBBService sbbservice;
     
