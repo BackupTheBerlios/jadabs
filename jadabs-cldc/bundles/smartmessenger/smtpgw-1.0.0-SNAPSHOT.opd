@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <OSGiServicePlugin 
-	uuid="mservices:smartmessenger:0.7.1-SNAPSHOT:opd"
+	uuid="jadabs:smtpgw:1.0.0-SNAPSHOT:opd"
 	service="ch.ethz.jadabs.mservices.smartmessenger" 
 	description="" 
 	provider-name="ETHZ-IKS">
@@ -23,7 +23,7 @@
 		service="ch.ethz.jadab.jxme.services.GroupService"/>
 		
 	<ServiceActivatorBundle 
-		activator-uuid="jadabs:smartmessenger:0.7.1-SNAPSHOT:obr"
+		activator-uuid="jadabs:smartmessenger:1.0.0-SNAPSHOT:obr"
 	/>	
 	
 </OSGiServicePlugin>

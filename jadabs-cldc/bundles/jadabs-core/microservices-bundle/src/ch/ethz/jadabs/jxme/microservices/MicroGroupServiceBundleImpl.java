@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceBundleImpl.java,v 1.5 2005/02/17 23:06:43 printcap Exp $
+ * $Id: MicroGroupServiceBundleImpl.java,v 1.6 2005/05/02 06:28:08 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -702,16 +702,16 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
             }
             
             // wait for reply
-            while (requestResponse != myRequest) {
-                try {
-                    connection.wait();
-                } catch (InterruptedException e) { }
-            }      
-            if (responseData[7] == 1) {
-                LOG.error("send failed.");
-            }            
-            // also notify dispatcher thread
-            connection.notifyAll();
+//            while (requestResponse != myRequest) {
+//                try {
+//                    connection.wait();
+//                } catch (InterruptedException e) { }
+//            }      
+//            if (responseData[7] == 1) {
+//                LOG.error("send failed.");
+//            }            
+//            // also notify dispatcher thread
+//            connection.notifyAll();
             requestResponse = -1;
         }    
     }

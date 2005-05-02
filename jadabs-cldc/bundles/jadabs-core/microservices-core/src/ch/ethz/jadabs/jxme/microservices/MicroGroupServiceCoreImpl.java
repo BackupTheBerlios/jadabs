@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceCoreImpl.java,v 1.5 2005/02/18 21:12:30 printcap Exp $
+ * $Id: MicroGroupServiceCoreImpl.java,v 1.6 2005/05/02 06:28:08 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -93,7 +93,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
      * @return Pipe object or null if pipe does not exist 
      */
     public synchronized Pipe lookupPipeByID(String pipeIdString) 
-    {
+    {            
         CacheItem item = (CacheItem)namedResourceTable.get(pipeIdString);
         if ((item != null) && (item.res instanceof Pipe)) {
             return (Pipe)item.res;
@@ -201,6 +201,20 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
             return item.res;
         } else {
             return null;
+        }
+    }
+    
+    public synchronized void registerLocally(NamedResource res, Listener listener)
+    {
+        if (res != null) {
+				String jxtaId = res.toString();
+				CacheItem item = new CacheItem();
+				item.refCount++;
+				item.res = res;
+				item.list = listener;
+				
+				// put resource into cache table
+				namedResourceTable.put(jxtaId, item);	
         }
     }
     
@@ -565,7 +579,9 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
         public void dispatchListen(short requestNumber, short groupNumber, String pipeIdString)
         {
             boolean error = true;
-            Pipe pipe = lookupPipeByID(pipeIdString);            
+            Pipe pipe = lookupPipeByID(pipeIdString); 
+            
+            
             if (pipe == null) {
                 LOG.error("Pipe with ID '"+pipeIdString+"' not found.");                
             } else {                
@@ -614,47 +630,58 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
          */
         public void dispatchSend(short requestNumber, short groupNumber, String pipeIdString, Message message)
         {
+            
             boolean error = true;
-            Pipe pipe = lookupPipeByID(pipeIdString);            
-            if (pipe == null) {
+            CacheItem item = (CacheItem)namedResourceTable.get(pipeIdString);          
+            if (item == null) {
                 LOG.error("Pipe with ID '"+pipeIdString+"' not found.");                
             } else {
-	            try {
-	                groupService.send(pipe, message);
-	                LOG.debug("sending message over pipe");
-	                error = false;
-	            } catch(IOException e) {
-	                LOG.error("groupservice: cannot send massage over pipe '"+pipe.toString()+"'");
-	                e.printStackTrace();
-	            }
-            }            
+                forwardMessageToLocalListeners(pipeIdString, message);
+                
+	            item.list.handleMessage(message, null);
+            }
+            
+//            boolean error = true;
+//            Pipe pipe = lookupPipeByID(pipeIdString);            
+//            if (pipe == null) {
+//                LOG.error("Pipe with ID '"+pipeIdString+"' not found.");                
+//            } else {
+//	            try {
+//	                groupService.send(pipe, message);
+//	                LOG.debug("sending message over pipe");
+//	                error = false;
+//	            } catch(IOException e) {
+//	                LOG.error("groupservice: cannot send massage over pipe '"+pipe.toString()+"'");
+//	                e.printStackTrace();
+//	            }
+//            }            
             LOG.debug("Sending message to '"+pipeIdString+"'.");
             
             // Prepare reply
-            byte[] reply = null;
-            try {
-                ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                DataOutputStream dout = new DataOutputStream(bout);
-                dout.writeBoolean(true);	// is reply message
-                dout.writeShort(requestNumber);
-                dout.writeShort(groupNumber);
-                dout.writeShort(Constants.SEND);
-                dout.writeBoolean(error);
-                dout.writeShort(10);		// message length                 
-                dout.close();
-                bout.close();
-                reply = bout.toByteArray();
-            } catch (IOException e) {
-                /* cannot happen since is byte array output stream */ 
-            }            
-            try {
-                connection.sendBytes(reply);
-            } catch(IOException e) {
-                LOG.error("cannot send SEND_REPLY.");
-            }  
-            
-            // forward messages to local listeners
-            forwardMessageToLocalListeners(pipeIdString, message);
+//            byte[] reply = null;
+//            try {
+//                ByteArrayOutputStream bout = new ByteArrayOutputStream();
+//                DataOutputStream dout = new DataOutputStream(bout);
+//                dout.writeBoolean(true);	// is reply message
+//                dout.writeShort(requestNumber);
+//                dout.writeShort(groupNumber);
+//                dout.writeShort(Constants.SEND);
+//                dout.writeBoolean(error);
+//                dout.writeShort(10);		// message length                 
+//                dout.close();
+//                bout.close();
+//                reply = bout.toByteArray();
+//            } catch (IOException e) {
+//                /* cannot happen since is byte array output stream */ 
+//            }            
+//            try {
+//                connection.sendBytes(reply);
+//            } catch(IOException e) {
+//                LOG.error("cannot send SEND_REPLY.");
+//            }  
+//            
+//            // forward messages to local listeners
+//            forwardMessageToLocalListeners(pipeIdString, message);
         }
 
         /**
@@ -1055,6 +1082,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
         NamedResource res;
         String id;
         int refCount = 0;
+        Listener list;
         
         /** only for pipes: vector contains BundleWorkers that have registered with this pipe */
         Vector registeredWorkers = new Vector();

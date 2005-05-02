@@ -1,6 +1,6 @@
 /*
  * Created on Jul 22, 2004
- * $Id: BTTransport.java,v 1.3 2005/01/19 10:01:58 afrei Exp $
+ * $Id: BTTransport.java,v 1.4 2005/05/02 06:28:08 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.bt;
 
@@ -240,15 +240,11 @@ public class BTTransport implements Transport
     public void propagate(Message message) throws IOException
     {
 
-        LOG.debug("propagate message");
         // check if there is at least one connection
         if (connections.size() == 0)
         {
             // there are not connections thus the message cannot be propagated
-            if (LOG.isDebugEnabled())
-            {
-                LOG.debug("no connections found to propagate message");
-            }
+
             throw new IOException("no connections found to propagate message");
         }
 

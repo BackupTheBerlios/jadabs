@@ -57,4 +57,9 @@ public class MicroGroupServiceCoreActivator implements BundleActivator
     public MicroGroupServiceCoreImpl getService() {
         return service;
     }    
+    
+    public GroupService getGroupService()
+    {
+        return groupService;
+    }
 }

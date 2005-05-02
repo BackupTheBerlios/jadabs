@@ -7,7 +7,7 @@
 	<classpathentry kind="src" path="bundles/jadabs-core/microservices-core/src"/>
 	<classpathentry kind="src" path="bundles/jadabs-core/jadabs-core-test/src"/>
 	<classpathentry kind="src" path="bundles/jadabs-core/local-wiring/src"/>
-	<classpathentry kind="src" path="bundles/jadabs-core/src"/>
+	<classpathentry kind="src" path="bundles/jadabs-core/jadabsmgr/src"/>
 	<classpathentry kind="src" path="framework/osgi-j2me/src"/>
 	<classpathentry kind="src" path="bundles/mservices/smsservice/src"/>
 	<classpathentry kind="src" path="bundles/mservices/smsgateway/src"/>

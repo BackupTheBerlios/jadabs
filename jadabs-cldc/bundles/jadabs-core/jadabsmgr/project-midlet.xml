@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+
+	<extend>${basedir}/../../../project.xml</extend>
+
+	<groupId>jadabs</groupId>
+	<artifactId>jadabs-manager</artifactId>
+	<name>Jadabs-Manager</name>
+
+	<shortDescription>Jadabs-Manager Component for J2ME-JXME</shortDescription>
+
+  	<dependencies>  	
+<!--   
+      <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>microservices-common</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+               <midlet>true</midlet>
+            </properties>
+      </dependency>
+ -->     
+      <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>microservices-core</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+               <midlet>true</midlet>
+            </properties>
+      </dependency>
+
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>local-wiring</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+  
+    	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+
+      <dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-osgi-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+
+      <dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-services-api</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+
+      <dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-services-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
+
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-tcp-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>        
+<!--
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-bt-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>        
+-->
+    	<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>log4j-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	    			<midlet>true</midlet>    
+      	   </properties>
+		</dependency>
+      
+		<dependency>
+      		<groupId>j2me</groupId>
+      		<artifactId>midpapi</artifactId>
+      		<version>2.0</version>
+		</dependency>	
+		
+		<dependency>
+      		<groupId>j2me</groupId>
+      		<artifactId>btapi</artifactId>
+      		<version>1.0</version>
+      		<properties>
+      			<dependencyType>runtime</dependencyType>
+      		</properties>
+		</dependency>
+
+		
+  	</dependencies>  
+</project>

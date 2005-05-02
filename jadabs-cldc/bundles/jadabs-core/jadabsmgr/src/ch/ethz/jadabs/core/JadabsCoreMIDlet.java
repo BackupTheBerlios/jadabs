@@ -1,9 +1,11 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreMIDlet.java,v 1.6 2005/04/04 11:02:04 printcap Exp $
+ * $Id: JadabsCoreMIDlet.java,v 1.1 2005/05/02 06:28:08 afrei Exp $
  */
 package ch.ethz.jadabs.core;
+
+import java.io.IOException;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -16,11 +18,18 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import ch.ethz.jadabs.jxme.ID;
 import ch.ethz.jadabs.jxme.JxmeActivator;
-import ch.ethz.jadabs.jxme.bt.BTActivator;
+import ch.ethz.jadabs.jxme.Listener;
+import ch.ethz.jadabs.jxme.Message;
+import ch.ethz.jadabs.jxme.NamedResource;
+import ch.ethz.jadabs.jxme.Pipe;
+//import ch.ethz.jadabs.jxme.bt.BTActivator;
 import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreActivator;
 import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreImpl;
+import ch.ethz.jadabs.jxme.services.GroupService;
 import ch.ethz.jadabs.jxme.services.impl.ServiceActivator;
+import ch.ethz.jadabs.jxme.tcp.cldc.TCPActivator;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
 
 /**
@@ -31,7 +40,7 @@ import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
  * @version 1.0
  */
 public class JadabsCoreMIDlet extends MIDlet 
-                                  implements CommandListener, BundleActivator
+	implements CommandListener, BundleActivator, Listener
 {    
     /** Reference to Log4j window */
     private static Logger LOG;
@@ -54,7 +63,14 @@ public class JadabsCoreMIDlet extends MIDlet
     
     /** a reference to the core component of the MicroGroup Service */
     private MicroGroupServiceCoreImpl microGroupServiceCore;  
+    
+    private GroupService groupService;
 
+    protected static final String PIPE_NAME = "localpipe";
+    protected static final String PIPE_ID = "urn:jxta:uuid-0000:0001:04";
+    
+    private Pipe pipe;
+    
     /** Constructor */
     public JadabsCoreMIDlet()
     {        
@@ -79,16 +95,18 @@ public class JadabsCoreMIDlet extends MIDlet
         osgicontainer.startBundle(new JxmeActivator());
         
         // for Bluetooth transport
-        osgicontainer.startBundle(new BTActivator());
+        //osgicontainer.startBundle(new BTActivator());
         
         // for TCP transport
-        //osgicontainer.startBundle(new TCPActivator());
+        osgicontainer.startBundle(new TCPActivator());
         osgicontainer.startBundle(new ServiceActivator());
         
         // finally start the micro group service 
         MicroGroupServiceCoreActivator mgsActivator = new MicroGroupServiceCoreActivator();
         osgicontainer.startBundle(mgsActivator);
         microGroupServiceCore = mgsActivator.getService();
+        groupService = mgsActivator.getGroupService();
+        
         
         // dependend bundles started now we "fire up" ourselves
         osgicontainer.startBundle(this);
@@ -98,12 +116,12 @@ public class JadabsCoreMIDlet extends MIDlet
     /** Handle starting the MIDlet */
     public void startApp()
     {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("invoke startApp()");
-        }
+        LOG.debug("invoke startApp()");
+        
         if (!alreadyInitialized) {
             initGUI();
         }
+        
         alreadyInitialized = true;
         display.setCurrent(Logger.getLogCanvas());
     }
@@ -114,7 +132,7 @@ public class JadabsCoreMIDlet extends MIDlet
         // obtain reference to Display singleton
         display = Display.getDisplay(this);        
         
-        exitCmd = new Command("Shutdown Jadabs Core", Command.EXIT, 1);
+        exitCmd = new Command("Shutdown JadabsMgr", Command.EXIT, 1);
         connectCmd = new Command("Connect", Command.SCREEN, 2);
         
         Logger.getLogCanvas().setDisplay(display);
@@ -127,6 +145,11 @@ public class JadabsCoreMIDlet extends MIDlet
 //        } catch(IOException e) {
 //            LOG.debug("waitforWakeupMessage() has failed!");
 //        }        
+    }
+    
+    public void initLocalWireing()
+    {
+        
     }
     
     /** Handle pausing the MIDlet */
@@ -193,6 +216,17 @@ public class JadabsCoreMIDlet extends MIDlet
         // get Endpoint service
         //ServiceReference sref = bc.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
         //endptsvc = (EndpointService)bc.getService(sref);
+        
+//      create pipe to communicate with core
+        pipe = (Pipe)groupService.create(NamedResource.PIPE, PIPE_NAME, new ID(PIPE_ID), Pipe.PROPAGATE);
+        
+        microGroupServiceCore.registerLocally(pipe, this);
+        
+        try {
+            groupService.listen(pipe, this);
+        } catch(IOException e) {
+           LOG.error("Error while registering listener to pipe '"+PIPE_NAME+"': "+e.getMessage());
+        }
     }
 
     /**
@@ -204,6 +238,28 @@ public class JadabsCoreMIDlet extends MIDlet
     {
         // remove chat communication servce from service registry 
 //        endptsvc.removeListener("jxmechat");
+    }
+
+    /* (non-Javadoc)
+     * @see ch.ethz.jadabs.jxme.Listener#handleMessage(ch.ethz.jadabs.jxme.Message, java.lang.String)
+     */
+    public void handleMessage(Message message, String listenerId)
+    {
+        LOG.debug("got message: "+message.toXMLString());
+        
+        String opipe = new String(message.getElement("OPIPE_TAG").getData());
+        
+        if (opipe != null)
+            
+    }
+
+    /* (non-Javadoc)
+     * @see ch.ethz.jadabs.jxme.Listener#handleSearchResponse(ch.ethz.jadabs.jxme.NamedResource)
+     */
+    public void handleSearchResponse(NamedResource namedResource)
+    {
+        // TODO Auto-generated method stub
+        
     }
     
     

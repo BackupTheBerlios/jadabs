@@ -59,7 +59,7 @@
     	<attainGoal name="jadabs:buildroot"/>
     	<attainGoal name="jadabs:buildjadabsj2mebundles"/>
 		<attainGoal name="jadabs:buildbundles"/>
-      <attainGoal name="jadabs:buildmidlets"/>
+      <!-- <attainGoal name="jadabs:buildmidlets"/>-->
     </goal>
 	
 	<!-- build first root components -->
@@ -95,7 +95,7 @@
    <goal name="jadabs:buildmidlets">
       <ant:echo message="Building MIDlets..."/>
    		<maven:reactor basedir="${basedir}"
-         includes="bundles/smartmessenger/project-midlet.xml"
+         includes="bundles/**/project-midlet.xml"
          excludes=""
          goals="antenna:OSGiBundle"
          banner="Building MIDlets"

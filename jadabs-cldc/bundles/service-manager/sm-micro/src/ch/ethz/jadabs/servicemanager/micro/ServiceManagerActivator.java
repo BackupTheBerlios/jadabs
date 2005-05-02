@@ -193,6 +193,7 @@ public class ServiceManagerActivator extends Thread
      */
     public boolean getService(String fromPeer, ServiceReference sref)
     {
+        
         return false;
     }
 

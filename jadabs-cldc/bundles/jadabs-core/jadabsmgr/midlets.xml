@@ -1,0 +1,23 @@
+ <descriptor xmlns="http://wlab.ethz.ch/maven/plugins/maven-antenna-plugin">
+ 
+ 	<suite>JadabsMgr</suite>
+  	<vendor>Andreas Frei, Rene Mueller, ETH Zurich</vendor> 
+  	<version>1.0.0</version> 
+  	<midlets>
+  		<midlet class="ch.ethz.jadabs.core.JadabsCoreMIDlet" 
+  		        name="JadabsMgr"/>  		
+  	</midlets>
+
+   <attributes>
+      <attribute name="ch.ethz.jadabs.jxme.peeralias" value="peer1"/>
+      <attribute name="ch.ethz.jadabs.jxme.tcp.port" value="9001"/>
+      <attribute name="ch.ethz.jadabs.jxme.seedURIs" value="tcp://129.132.177.93:9002"/>
+      
+      <attribute name="log4j.priority" value="DEBUG"/>
+      <attribute name="ch.ethz.jadabs.jxme.hostname" value="peer1"/>
+      <attribute name="ch.ethz.jadabs.jxme.bt.rendezvouspeer" value="false"/>
+      <attribute name="MIDlet-Push-1" value="datagram://:4444, ch.ethz.jadabs.core.JadabsCoreMIDlet, 127.0.0.1"/>
+
+   </attributes>      
+   
+</descriptor>
