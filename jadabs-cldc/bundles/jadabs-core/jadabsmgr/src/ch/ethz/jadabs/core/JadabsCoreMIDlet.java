@@ -1,7 +1,7 @@
 /* 
  * Created on Dec 9th, 2004
  * 
- * $Id: JadabsCoreMIDlet.java,v 1.1 2005/05/02 06:28:08 afrei Exp $
+ * $Id: JadabsCoreMIDlet.java,v 1.2 2005/05/03 11:45:09 afrei Exp $
  */
 package ch.ethz.jadabs.core;
 
@@ -248,9 +248,7 @@ public class JadabsCoreMIDlet extends MIDlet
         LOG.debug("got message: "+message.toXMLString());
         
         String opipe = new String(message.getElement("OPIPE_TAG").getData());
-        
-        if (opipe != null)
-            
+                    
     }
 
     /* (non-Javadoc)

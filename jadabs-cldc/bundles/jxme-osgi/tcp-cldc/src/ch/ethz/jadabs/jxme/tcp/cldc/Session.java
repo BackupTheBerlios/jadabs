@@ -1,5 +1,5 @@
 /*
- * $Id: Session.java,v 1.2 2005/02/18 14:50:10 printcap Exp $
+ * $Id: Session.java,v 1.3 2005/05/03 11:45:09 afrei Exp $
  * 
  * Copyright (c) 2001 Sun Microsystems, Inc. All rights reserved.
  * 
@@ -282,7 +282,7 @@ public final class Session
      * @throws IOException if an individual connection cause an exception
      */
     public static void propagate(Message outgoing) throws IOException
-    {
+    {        
         Enumeration si = sessionPool.elements();
         boolean exceptionOccurred = false;
         String lastExceptionSession = null;

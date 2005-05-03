@@ -19,8 +19,8 @@
 -Dch.ethz.jadabs.servicemanager.gmpipe.name=gmpipe
 -Dch.ethz.jadabs.servicemanager.gmpipe.id=23
 
--Dch.ethz.jadabs.jxme.tcp.port=9002
--Dch.ethz.jadabs.jxme.seedURIs=tcp://127.0.0.1:9001
+-Dch.ethz.jadabs.jxme.tcp.port=9001
+-Dch.ethz.jadabs.jxme.seedURIs=tcp://129.132.130.127:9002
 
 -Dch.ethz.jadabs.jxme.bt.rendezvouspeer=true
 -Dch.ethz.jadabs.jxme.bt.discoverysleep=3000

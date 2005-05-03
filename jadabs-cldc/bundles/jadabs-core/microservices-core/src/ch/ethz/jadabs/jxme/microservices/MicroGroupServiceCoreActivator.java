@@ -36,6 +36,9 @@ public class MicroGroupServiceCoreActivator implements BundleActivator
         ServiceReference sref = context.getServiceReference("ch.ethz.jadabs.jxme.services.GroupService");
         groupService = (GroupService)context.getService(sref);        
         service = new MicroGroupServiceCoreImpl(groupService); 
+        
+        context.registerService("ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreImpl",
+                service, null);
     }
 
     /**

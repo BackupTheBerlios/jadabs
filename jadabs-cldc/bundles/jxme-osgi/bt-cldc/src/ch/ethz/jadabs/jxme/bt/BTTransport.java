@@ -1,6 +1,6 @@
 /*
  * Created on Jul 22, 2004
- * $Id: BTTransport.java,v 1.4 2005/05/02 06:28:08 afrei Exp $
+ * $Id: BTTransport.java,v 1.5 2005/05/03 11:45:09 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.bt;
 
@@ -346,7 +346,7 @@ public class BTTransport implements Transport
      */
     void deliverMessage(String receiver, String sender, byte[] message, boolean multicast)
     {
-        LOG.debug("deliverMessage()");
+//        LOG.debug("deliverMessage()");
 
         ByteArrayInputStream bin = new ByteArrayInputStream(message);
         DataInputStream din = new DataInputStream(bin);
@@ -359,7 +359,7 @@ public class BTTransport implements Transport
             // a byte array input stream never throws a IOException
         }
 
-        LOG.debug("  JXME-Message deserialized from BT stream");
+//        LOG.debug("  JXME-Message deserialized from BT stream");
 
         // propagage multicast message
         if (multicast)
@@ -384,7 +384,7 @@ public class BTTransport implements Transport
             }
         }
 
-        LOG.debug("handleMessage(msg,null)");
+//        LOG.debug("handleMessage(msg,null)");
         // deliver message to higher layer
         listener.handleMessage(msg, null);
 

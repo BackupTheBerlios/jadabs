@@ -14,11 +14,14 @@ import org.osgi.framework.BundleContext;
 
 import ch.ethz.jadabs.jxme.DiscoveryListener;
 import ch.ethz.jadabs.jxme.Element;
+import ch.ethz.jadabs.jxme.ID;
 import ch.ethz.jadabs.jxme.Listener;
 import ch.ethz.jadabs.jxme.Message;
 import ch.ethz.jadabs.jxme.NamedResource;
 import ch.ethz.jadabs.jxme.Peer;
 import ch.ethz.jadabs.jxme.Pipe;
+import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreActivator;
+import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreImpl;
 import ch.ethz.jadabs.jxme.services.GroupService;
 import ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener;
 import ch.ethz.jadabs.servicemanager.ServiceManager;
@@ -72,7 +75,21 @@ public class ServiceManagerActivator extends Thread
         "name:GSM";
     
     private String DEFAULT_PLATFORM_FILTER = 
-        "|"+PLATFORM_DESCRIPTOR+"| OPD,PRO";
+        " |"+PLATFORM_DESCRIPTOR+" | OPD,PRO";
+    
+    // micro-group service
+    /** a reference to the core component of the MicroGroup Service */
+    private MicroGroupServiceCoreImpl microGroupServiceCore;  
+    
+//    private GroupService groupService;
+
+    protected static final String PIPE_NAME = "localpipe";
+    protected static final String PIPE_ID = "urn:jxta:uuid-0000:0001:04";
+    
+    private Pipe pipe;
+    private LocalListener localListener;
+    
+    private RemoteListener remoteListener;
     
     //---------------------------------------------------
     // Implement BundleActivator interface
@@ -83,6 +100,7 @@ public class ServiceManagerActivator extends Thread
     public void start(BundleContext context) throws Exception
     {
         ServiceManagerActivator.bc = context;
+        serviceManager = this;
         
         peername = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
                 
@@ -106,7 +124,6 @@ public class ServiceManagerActivator extends Thread
         groupPipe = groupService.createGroupPipe(gmpipeName, gmpipeID);
         
         // create and publish ServiceManager
-        serviceManager = this;
 //        serviceManager.initRepoCache();
         
         // register servicemanager
@@ -115,9 +132,29 @@ public class ServiceManagerActivator extends Thread
         // set listener
         groupService.listen(groupPipe, serviceManager);
         
+        // for simulation: to setup tcp connection
+//        remoteListener = new RemoteListener();
+//        groupService.remoteSearch(NamedResource.PEER, "Name", "", 1, remoteListener);
+        
         groupService.addDiscoveryListener(this);
         
         serviceManager.start();
+        
+        
+        // create local loopback        
+        sref = bc.getServiceReference("ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreImpl");
+        microGroupServiceCore = (MicroGroupServiceCoreImpl)bc.getService(sref);    
+        
+        pipe = (Pipe)groupService.create(NamedResource.PIPE, PIPE_NAME, new ID(PIPE_ID), Pipe.PROPAGATE);
+        
+        localListener = new LocalListener();
+        microGroupServiceCore.registerLocally(pipe, localListener);
+        
+//        try {
+//            groupService.listen(pipe, localListener);
+//        } catch(IOException e) {
+//           LOG.error("Error while registering listener to pipe '"+PIPE_NAME+"': "+e.getMessage());
+//        }
     }
 
     /*
@@ -169,7 +206,7 @@ public class ServiceManagerActivator extends Thread
         if (filter == null)
             filter = DEFAULT_PLATFORM_FILTER;
         
-        sendRequest(ANYPEER, FILTER_REQ, filter, filter);
+        sendRequest(ANYPEER, FILTER_REQ, SERVICE_FILTER, filter);
         
         return true;
     }
@@ -213,14 +250,14 @@ public class ServiceManagerActivator extends Thread
      */
     public void handleMessage(Message message, String listenerId)
     {
-        LOG.debug("got message:"+message.toXMLString());
+//        LOG.debug("got message:"+message.toXMLString());
         
         String type = new String(message.getElement(SERVICE_TYPE).getData());
         
         String topeer = new String(message.getElement(SERVICE_TO_PEER).getData());
         String frompeer = new String(message.getElement(SERVICE_FROM_PEER).getData());
         
-        LOG.debug("type: "+ type +" topeer: "+topeer+" frompeer: "+frompeer);
+//        LOG.debug("type: "+ type +" topeer: "+topeer+" frompeer: "+frompeer);
         
         if (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER))
         {
@@ -228,7 +265,7 @@ public class ServiceManagerActivator extends Thread
             if (type.equals(FILTER_ACK))
             {     
 		         String uuid = new String(message.getElement(SERVICE_ID).getData());	
-		         String adv = new String(message.getElement(SERVICE_ADV).getData());
+		         String adv = new String(message.getElement(ADV_DESCRIPTOR).getData());
 
 		         LOG.info("uuid: "+ uuid);
 		         
@@ -321,4 +358,66 @@ public class ServiceManagerActivator extends Thread
         // TODO Auto-generated method stub
         
     }
+    
+    class LocalListener implements Listener
+    {
+
+        /* (non-Javadoc)
+         * @see ch.ethz.jadabs.jxme.Listener#handleMessage(ch.ethz.jadabs.jxme.Message, java.lang.String)
+         */
+        public void handleMessage(Message message, String listenerId)
+        {
+            LOG.debug("got message: "+message.toXMLString());
+            
+            Element elm = message.getElement("OPIPE_TAG");
+            
+            if (elm != null)
+            {
+                String opipe = new String(elm.getData());
+                try
+                {
+                    groupService.send(groupPipe, message);
+                } catch (IOException e)
+                {
+                    LOG.debug("could not forward local message to remote pipe");
+                }
+            }
+        }
+
+        /* (non-Javadoc)
+         * @see ch.ethz.jadabs.jxme.Listener#handleSearchResponse(ch.ethz.jadabs.jxme.NamedResource)
+         */
+        public void handleSearchResponse(NamedResource namedResource)
+        {
+            // TODO Auto-generated method stub
+            
+        }
+        
+    }
+    
+    class RemoteListener implements DiscoveryListener, Listener
+    {
+        
+        public void handleSearchResponse(NamedResource namedResource)
+        {
+            LOG.debug("found namedresource: " + namedResource.getName());
+
+            
+        }
+
+	    public void handleMessage(Message message, String listenerId)
+	    {
+	        LOG.debug("RemoteListener: "+ message.toXMLString());
+	    }
+
+        /* (non-Javadoc)
+         * @see ch.ethz.jadabs.jxme.DiscoveryListener#handleNamedResourceLoss(ch.ethz.jadabs.jxme.NamedResource)
+         */
+        public void handleNamedResourceLoss(NamedResource namedResource)
+        {
+            LOG.info("namedresouce lost: " + namedResource.getName());
+        }
+        
+    }
+    
 }

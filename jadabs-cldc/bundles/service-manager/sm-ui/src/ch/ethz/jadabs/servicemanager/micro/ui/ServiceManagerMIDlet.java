@@ -22,13 +22,15 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import ch.ethz.jadabs.servicemanager.ServiceReference;
 import ch.ethz.jadabs.jxme.JxmeActivator;
 import ch.ethz.jadabs.jxme.bt.BTActivator;
+import ch.ethz.jadabs.jxme.microservices.MicroGroupServiceCoreActivator;
 import ch.ethz.jadabs.jxme.services.impl.ServiceActivator;
+import ch.ethz.jadabs.jxme.tcp.cldc.TCPActivator;
 import ch.ethz.jadabs.osgi.j2me.OSGiContainer;
 import ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener;
 import ch.ethz.jadabs.servicemanager.ServiceManager;
+import ch.ethz.jadabs.servicemanager.ServiceReference;
 import ch.ethz.jadabs.servicemanager.micro.ServiceManagerActivator;
 
 /**
@@ -36,7 +38,8 @@ import ch.ethz.jadabs.servicemanager.micro.ServiceManagerActivator;
  * 
  */
 public class ServiceManagerMIDlet extends MIDlet 
-	implements CommandListener, BundleActivator, ServiceAdvertisementListener
+	implements CommandListener, BundleActivator, 
+		ServiceAdvertisementListener
 {    
     /** Reference to Log4j window */
     private static Logger LOG;
@@ -79,13 +82,28 @@ public class ServiceManagerMIDlet extends MIDlet
                 this.getAppProperty("log4j.priority"));
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer",
                 this.getAppProperty("ch.ethz.jadabs.jxme.bt.rendezvouspeer"));      
-                
+        osgicontainer.setProperty("ch.ethz.jadabs.jxme.tcp.port", 
+                this.getAppProperty("ch.ethz.jadabs.jxme.tcp.port"));
+        osgicontainer.setProperty("ch.ethz.jadabs.jxme.seedURIs", 
+                this.getAppProperty("ch.ethz.jadabs.jxme.seedURIs"));
+        
         	// install and start bundles
         osgicontainer.startBundle(new LogActivator());
         osgicontainer.startBundle(new JxmeActivator());
+        
+        // use Bluetooth
         osgicontainer.startBundle(new BTActivator());   
-        osgicontainer.startBundle(new ServiceActivator());      
+        // use TCP, for simulation
+//        osgicontainer.startBundle(new TCPActivator());
+        
+        osgicontainer.startBundle(new ServiceActivator());
+                
+        // startup MicroGroupService for local loop-back
+        osgicontainer.startBundle(new MicroGroupServiceCoreActivator());
+        
+        // startup remote JXME
         osgicontainer.startBundle(new ServiceManagerActivator());     
+        
         osgicontainer.startBundle(this);
         
         instance = this;
@@ -149,6 +167,7 @@ public class ServiceManagerMIDlet extends MIDlet
         
         serviceManager.getServiceAdvertisements(ServiceManager.ANYPEER,
                 null, this);
+        
     }
 
     /**

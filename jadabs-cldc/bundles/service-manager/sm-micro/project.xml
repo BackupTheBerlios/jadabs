@@ -12,6 +12,18 @@
 
   	<dependencies>
 
+  	    <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>microservices-core</artifactId>
+            <version>${pom.currentVersion}</version>
+      	</dependency>
+
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>local-wiring</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>
+		
 		<dependency>
       		<groupId>j2me</groupId>
       		<artifactId>midpapi</artifactId>
@@ -53,6 +65,12 @@
       		<artifactId>servicemanager</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
+		
+		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-tcp-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+		</dependency>    
 		
 		<dependency>
       		<groupId>kobjects</groupId>

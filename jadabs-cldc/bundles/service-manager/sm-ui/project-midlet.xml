@@ -12,7 +12,33 @@
 
   	<dependencies>  	
   	
+  	    <dependency>
+            <groupId>jadabs</groupId>
+            <artifactId>microservices-core</artifactId>
+            <version>${pom.currentVersion}</version>
+            <properties>
+               <midlet>true</midlet>
+            </properties>
+      	</dependency>
+
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>local-wiring</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>
   
+  		<dependency>
+      		<groupId>jadabs</groupId>
+      		<artifactId>jxme-tcp-j2me</artifactId>
+      		<version>${pom.currentVersion}</version>
+      		<properties>
+	      		<midlet>true</midlet>  
+	      	</properties>
+		</dependency>    
+		
     	<dependency>
       		<groupId>osgi</groupId>
       		<artifactId>osgi-j2me</artifactId>
