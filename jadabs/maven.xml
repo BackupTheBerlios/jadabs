@@ -137,7 +137,7 @@
 		<!-- copy init.xargs, runpeer.sh, runpeer.bat -->
 		<ant:copy todir="${jadabs.dist.dir}">
 			<ant:fileset dir="bin" 
-				includes="props.xargs,init.xargs,init-ppcj9*,jadabs*"/>
+				includes="props.xargs,init.xargs,init-ppcj9*,jadabs*,*.pad"/>
 		</ant:copy>
 		
 		<ant:chmod perm="+x" >

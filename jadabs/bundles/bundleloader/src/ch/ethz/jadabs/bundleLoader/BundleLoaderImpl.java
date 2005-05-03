@@ -99,7 +99,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          }
       }
       // this is a hack
-      loadedBundles.add(new String("jadabs:log4j-cdc:0.7.1-SNAPSHOT:obr"));
+      loadedBundles.add(new String("jadabs:log4j-cdc:1.0.0-SNAPSHOT:obr"));
 
    }
 
@@ -590,8 +590,8 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     * @return obr uuid
     */
    private static String location2uuid(String loc) {
-      int pos = loc.lastIndexOf(File.separatorChar);
-      
+      int pos = loc.lastIndexOf('/');
+                        
       if (pos > -1) {
          String filename = loc.substring(pos + 1);
          int pos2 = filename.indexOf(".opd");
@@ -611,11 +611,11 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          int idx;
          if ((idx = version.indexOf(".jar")) > -1)
              version = version.substring(0, idx);
-
+         
          String group = loc.substring(0, pos);
-         pos2 = group.lastIndexOf(File.separatorChar);
+         pos2 = group.lastIndexOf('/');
          group = group.substring(0, pos2);
-         pos2 = group.lastIndexOf(File.separatorChar);
+         pos2 = group.lastIndexOf('/');
          group = group.substring(pos2 + 1);
 
          return group + ":" + name + ":" + version + ":obr";

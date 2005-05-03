@@ -76,8 +76,8 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
 
     private boolean canHTTP = false;
 
-    String host = "localhost";
-    int port = 80;
+    private static String host = "localhost";
+    private static int port = 80;
 
     KXmlParser parser;
 
@@ -115,7 +115,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
             LOG.debug("Could not open http repository connection");
         }
 
-        if (clientSocket == null) { throw new Exception("Could not open socket ..."); }
+        if (clientSocket == null) { throw new Exception("Could not open socket ...: "+host+":"+port); }
 
         knownHosts = new Vector();
         knownHosts.add(host);
@@ -232,7 +232,15 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
 
     public static void cacheRepositoryOPDs()
     {
-        String downloadurl = "http://localhost/repository.xml";
+        String httprepo = BundleLoaderActivator.bc.getProperty("ch.ethz.jadabs.bundleloader.httprepo");
+        if (httprepo != null)
+            host = httprepo;
+        
+        String httpport = BundleLoaderActivator.bc.getProperty("ch.ethz.jadabs.bundleloader.httprepo.port");
+        if (httpport != null)
+            port = Integer.parseInt(httpport);
+        
+        String downloadurl = "http://"+host+":"+port+"/repository.xml";
         
         try {
 	        URL url = new URL(downloadurl);

@@ -308,9 +308,9 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	            
 	            // transform | into Â¦ due to problems with nokia
 	            if (filter.indexOf('|') > -1)
-	                filter = filter.replace('|','Â¦');
+	                filter = filter.replace('|','¦');
 	            
-	            String smfilter = filter.substring(filter.lastIndexOf("Â¦")+1);
+	            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
 	            
 	            	            
 	            Iterator it = null;

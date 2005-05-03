@@ -13,6 +13,8 @@
 
 -Dorg.osgi.framework.system.packages=ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
 
+-Dch.ethz.jadabs.bundleloader.httprepo=osgirepo.berlios.de
+-Dch.ethz.jadabs.bundleloader.httprepo.port=80
 -Dch.ethz.jadabs.pluginloader.starter=jadabs.starter
 
 -Dch.ethz.jadabs.servicemanager.gmpipe.name=gmpipe

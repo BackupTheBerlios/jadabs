@@ -23,7 +23,7 @@
 		</dependency>
 		
 		<dependency>
-      		<groupId>mservices</groupId>
+      		<groupId>jadabs</groupId>
       		<artifactId>smtpgw</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
