@@ -126,6 +126,7 @@ public abstract class PluginFilterMatcher {
     * @return platform clause
     */
    private LinkedList environmentFromFilter(String filter) {
+              
       LinkedList result = new LinkedList();
       
       String[] parts = Utilities.split(filter,"¦");

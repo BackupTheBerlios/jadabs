@@ -5,7 +5,7 @@
 
 -Dorg.knopflerfish.verbosity=0
 
--Dorg.knopflerfish.gosg.jars=file:/home/muellerr/.maven/repository/
+-Dorg.knopflerfish.gosg.jars=file:/home/andfrei/.maven/repository/
 
 -Dorg.knopflerfish.framework.debug.packages=false
 -Dorg.knopflerfish.framework.debug.errors=true
@@ -25,9 +25,10 @@
 -Dorg.knopflerfish.log.grabio=true
 -Dorg.knopflerfish.log.file=true
 
+#specify in your hosts peer1, peer2,... to resolve to your IP address
 -Dch.ethz.jadabs.jxme.peeralias=peer1
 -Dch.ethz.jadabs.jxme.tcp.port=9001
--Dch.ethz.jadabs.jxme.seedURIs=tcp://192.168.1.36:9002
+-Dch.ethz.jadabs.jxme.seedURIs=tcp://127.0.0.1:9002
 
 -init
 
@@ -36,13 +37,13 @@
 ## jxme-eventsystem
 -initlevel 1
 -istart  log4j/jars/log4j-1.2.8-osgi.jar
--install  jadabs/jars/concurrent-0.7.1-SNAPSHOT.jar
--istart   jadabs/jars/jxme-osgi-0.7.1-SNAPSHOT.jar
--istart   jadabs/jars/jxme-tcp-0.7.1-SNAPSHOT.jar
-#-istart   jadabs/jars/jxme-udp-0.7.1-SNAPSHOT.jar
--install  jadabs/jars/jxme-services-api-0.7.1-SNAPSHOT.jar
--istart   jadabs/jars/jxme-services-impl-0.7.1-SNAPSHOT.jar
--istart   jadabs/jars/jxme-services-test-0.7.1-SNAPSHOT.jar
+-install  jadabs/jars/concurrent-1.0.0-SNAPSHOT.jar
+-istart   jadabs/jars/jxme-osgi-1.0.0-SNAPSHOT.jar
+-istart   jadabs/jars/jxme-tcp-1.0.0-SNAPSHOT.jar
+#-istart   jadabs/jars/jxme-udp-1.0.0-SNAPSHOT.jar
+-install  jadabs/jars/jxme-services-api-1.0.0-SNAPSHOT.jar
+-istart   jadabs/jars/jxme-services-impl-1.0.0-SNAPSHOT.jar
+-istart   jadabs/jars/jxme-services-test-1.0.0-SNAPSHOT.jar
 
 -startlevel 1
 

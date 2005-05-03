@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -jar /home/muellerr/.maven/repository/osgi/jars/framework-1.3.0.jar -xargs test-init.xargs
+java -jar $HOME/.maven/repository/osgi/jars/framework-aop-1.3.3.jar -xargs test-init.xargs

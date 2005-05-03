@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OSGiServicePlugin 
+	uuid="jadabs:jxme-tcp:1.0.0-SNAPSHOT:opd"
+	service="ch.ethz.jadabs.jxme.tcp"
+	description=""
+	provider-name="ETHZ-IKS">
+	
+	<Extension-Point
+		id="OSGiContainer/id:osgi" />
+	
+
+<!--	
+	<Extension-Point
+	    id="Property/AlienProperty:alienValue"
+	/>
+-->
+	<Extension-Point
+	    id="Extension/id:PeerNetwork"
+	    service="ch.ethz.jadabs.jxme.PeerNetwork"
+	/>
+	
+	<Extension
+	    id="BTTransport"
+	    service="ch.ethz.jadab.jxme.tcp.TCPTransport"
+    />
+    
+    <Extension
+	    id="Transport"
+            service="ch.ethz.jadab.jxme.tcp.TCPTransport"
+    />
+    
+    <ServiceActivatorBundle
+	activator-uuid="jadabs:jxme-tcp:1.0.0-SNAPSHOT:obr"
+    />
+
+</OSGiServicePlugin>

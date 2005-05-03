@@ -52,7 +52,8 @@ public class MatchItem {
     * of these clauses separated by ";".  
     */
    public MatchItem(String filterPart) {
-      String[] parts = Utilities.split(filterPart,"/");
+       
+       String[] parts = Utilities.split(filterPart,"/");
       this.name = parts[0].trim();
       String[] props = Utilities.split(parts[1],",");
       for (int index = 0; index < props.length; index++) {

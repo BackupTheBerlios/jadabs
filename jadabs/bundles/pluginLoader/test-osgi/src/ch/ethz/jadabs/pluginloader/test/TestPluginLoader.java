@@ -51,61 +51,75 @@ public class TestPluginLoader implements BundleActivator
         
         Vector filters = new Vector();
         
-        filters.add( "Extension/id:PeerNetwork ¦ " +
-        		"Platform/id:mservices.wlab.ethz.ch, " +
-        			"name:mservices, version:0.1.0, provider-name:ETHZ-IKS; " +
-        			"Property/name:processor, value:armv4l; " +
-        		"Property/name:os, value:i386; " +
-        		"Property/name:display, value:no; " +
-        		"Property/name:vm, value:cdc/fp; " +
-        		"Property/name:vm-version, value:1.0.1; " +
-        		"OSGiContainer/id:osgi; "+
-        		"OSGiContainer/id:core-osgi-daop; " +
-        		"NetIface/type:wlan/managed, connection:static, " +
-        			"configuration:internet, name:mservices, " +
-        			"essid:wlan, mode:managed, iface:eth0, " +
-        			"ip:192.168.55.10; " +
-        		"NetIface/type:internet, " +
-        			"ext-type:wlan/managed ¦ R");
+//        filters.add( "Extension/id:PeerNetwork ¦ " +
+//        		"Platform/id:mservices.wlab.ethz.ch, " +
+//        			"name:mservices, version:0.1.0, provider-name:ETHZ-IKS; " +
+//        			"Property/name:processor, value:armv4l; " +
+//        		"Property/name:os, value:i386; " +
+//        		"Property/name:display, value:no; " +
+//        		"Property/name:vm, value:cdc/fp; " +
+//        		"Property/name:vm-version, value:1.0.1; " +
+//        		"OSGiContainer/id:osgi; "+
+//        		"OSGiContainer/id:core-osgi-daop; " +
+//        		"NetIface/type:wlan/managed, connection:static, " +
+//        			"configuration:internet, name:mservices, " +
+//        			"essid:wlan, mode:managed, iface:eth0, " +
+//        			"ip:192.168.55.10; " +
+//        		"NetIface/type:internet, " +
+//        			"ext-type:wlan/managed ¦ R");
+//        
+//        filters.add( "¦¦ R");
+//        
+//        filters.add(" ¦ Platform/id:mservices.wlab.ethz.ch, " +
+//        			"name:mservices, version:0.1.0, provider-name:ETHZ-IKS; " +
+//        			"Property/name:processor, value:armv4l; " +
+//        		"Property/name:os, value:i386; " +
+//        		"Property/name:display, value:no; " +
+//        		"Property/name:vm, value:cdc/fp; " +
+//        		"Property/name:vm-version, value:1.0.1; " +
+//        		"OSGiContainer/id:osgi; "+
+//        		"OSGiContainer/id:core-osgi-daop; " +
+//        		"NetIface/type:wlan/managed, connection:static, " +
+//        			"configuration:internet, name:mservices, " +
+//        			"essid:wlan, mode:managed, iface:eth0, " +
+//        			"ip:192.168.55.10; " +
+//        		"NetIface/type:internet, " +
+//        			"ext-type:wlan/managed ¦ R");
+//        
+//           
+//        filters.add(" ¦ Property/name:vm, value:cdc/fp; " +
+//                "Property/name:os, value:i386; " +
+//                "Property/name:vm-version, value:1.3; " +
+//                "OSGiContainer/id:osgi; "+
+//                "OSGiContainer/id:core-osgi-daop " +
+//    			" ¦ PROV");
         
-        filters.add( "¦¦ R");
+//        filters.add(" ¦ Platform/id:nokia6600.wlab.ethz.ch, " +
+//    			"name:nokia6600, version:0.1.0, provider-name:ETHZ-IKS; " +
+//    		"Property/name:processor, value:arm9; " +
+//    		"Property/name:os, value:linux; " +
+//		    "Property/name:display, value:176x208; " +
+//		    "Property/name:vm, value:cldc/midp; " +
+//		    "Property/name:vm-version, value:1.0.1; " +
+//		    "OSGiContainer/id:j2me-osgi; " +
+//		    "NetIface/type:bt-jsr82, connection:dynamic, " +
+//		        "name:bt-hotspot; " +
+//		    "NetIface/type:gsm, connection:dynamic, " +
+//		        "name:GSM ¦ OPD, INS");
         
-        filters.add(" ¦ Platform/id:mservices.wlab.ethz.ch, " +
-        			"name:mservices, version:0.1.0, provider-name:ETHZ-IKS; " +
-        			"Property/name:processor, value:armv4l; " +
-        		"Property/name:os, value:i386; " +
-        		"Property/name:display, value:no; " +
-        		"Property/name:vm, value:cdc/fp; " +
-        		"Property/name:vm-version, value:1.0.1; " +
-        		"OSGiContainer/id:osgi; "+
-        		"OSGiContainer/id:core-osgi-daop; " +
-        		"NetIface/type:wlan/managed, connection:static, " +
-        			"configuration:internet, name:mservices, " +
-        			"essid:wlan, mode:managed, iface:eth0, " +
-        			"ip:192.168.55.10; " +
-        		"NetIface/type:internet, " +
-        			"ext-type:wlan/managed ¦ R");
-        
-           
-        filters.add(" ¦ Property/name:vm, value:cdc/fp; " +
-                "Property/name:os, value:i386; " +
-                "Property/name:vm-version, value:1.3; " +
-                "OSGiContainer/id:osgi; "+
-                "OSGiContainer/id:core-osgi-daop " +
-    			" ¦ PROV");
-        
-        filters.add(" ¦ Platform/id:nokia6600.wlab.ethz.ch, " +
-    			"name:nokia6600, version:0.1.0, provider-name:ETHZ-IKS; " +
-    		"Property/name:processor, value:arm9; " +
-    		"Property/name:os, value:linux; " +
-		    "Property/name:display, value:176x208; " +
-		    "Property/name:vm, value:cldc/midp; " +
-		    "Property/name:vm-version, value:1.0.1; " +
-		    "OSGiContainer/id:j2me-osgi; " +
-		    "NetIface/type:bt-jsr82, connection:dynamic, " +
-		        "name:bt-hotspot; " +
-		    "NetIface/type:gsm, connection:dynamic, " +
-		        "name:GSM ¦ OPD, INS");
+        filters.add("¦"+  
+                "Platform/id:nokia6600.wlab.ethz.ch, " +
+            	"name:nokia6600, version:0.1.0, provider-name:ETHZ-IKS; " +
+            "Property/name:processor, value:arm9; " +
+            "Property/name:os, value:linux; " +
+            "Property/name:display, value:176x208; " +
+            "Property/name:vm, value:cldc/midp; " +
+            "Property/name:vm-version, value:1.0.1; " +
+            "OSGiContainer/id:j2me-osgi; " +
+            "NetIface/type:bt-jsr82, connection:dynamic, " +
+                "name:bt-hotspot; " +
+            "NetIface/type:gsm, connection:dynamic, " +
+                "name:GSM¦ OPD,PRO");
         
         for (Enumeration en = filters.elements(); en.hasMoreElements();)
             queryAndPrintResult((String)en.nextElement());

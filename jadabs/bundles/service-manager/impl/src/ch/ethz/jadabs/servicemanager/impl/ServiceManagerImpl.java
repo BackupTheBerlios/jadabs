@@ -243,7 +243,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
      */
     public void handleMessage(Message msg, String listenerId)
     {
-        LOG.debug("handle message: service manager"+ msg);
+        LOG.debug("handle message: service manager"+ msg.toXMLString());
         
         String type = new String(msg.getElement(SERVICE_TYPE).getData());
         
@@ -252,7 +252,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         
         LOG.debug("topeer: "+topeer +" frompeer: "+frompeer);
         
-        if (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER))
+        if (!frompeer.equals(ServiceManagerActivator.peername) && (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER)))
         {
         
             if (type.equals(SERVICE_ADV))
