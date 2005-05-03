@@ -5,7 +5,7 @@
   	<version>1.0.0</version>
   	<midlets>
   		<midlet class="ch.ethz.jadabs.sbbws.midlet.SBBMIDlet"
-  		        name="SBB-WS"/>
+  		        name="SBBWS"/>
   	</midlets>
 
    <attributes>

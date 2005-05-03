@@ -41,6 +41,8 @@ public class ResultFormList extends List implements CommandListener
     private Command sendCmd;
     private Command resultCmd;
 
+    private String deptimes[] = new String[4];
+    
     /**
      * Create new form for query settings
      *
@@ -58,6 +60,12 @@ public class ResultFormList extends List implements CommandListener
         query = midlet.queryForm;
         this.midlet = midlet;
 
+        // we have a problem with the soap instances, just store the dep times again
+        deptimes[0] = soapTrans.getTimeDep().elementAt(0).toString();
+        deptimes[1] = soapTrans.getTimeDep().elementAt(1).toString();
+        deptimes[2] = soapTrans.getTimeDep().elementAt(2).toString();
+        deptimes[3] = soapTrans.getTimeDep().elementAt(3).toString();
+        
         this.append("Von: " + soapTrans.getFrom().elementAt(0).toString(), null);
         this.append("Nach: " + soapTrans.getTo().elementAt(0).toString(), null);
         this.append("", null);
@@ -117,7 +125,7 @@ public class ResultFormList extends List implements CommandListener
             String soapMessage = soap.createSoapMessageFromQuery(soap.getFrom().elementAt(0).toString(),
                     soap.getTo().elementAt(0).toString(),
                     soap.fDate,
-                    soap.getTimeDep().elementAt(idx).toString());
+                    deptimes[idx].toString());
             
             midlet.sendSoapString(soapMessage);
 //            Alert alert = new Alert("Information", "Ihre Anfrage wird an den SBB-Server gesendet!", null, AlertType.INFO);

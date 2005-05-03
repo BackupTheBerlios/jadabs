@@ -84,7 +84,7 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
 
     private String pipeId;
 
-    private String opipe = null;
+    private String opipe = "test";
     
     /**
      * Constructor
@@ -103,10 +103,10 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
         
         // uncomment for local loopback 
         // start bundle part of MicroGroupService 
-//        MicroGroupServiceBundleActivator mgsActivator = new MicroGroupServiceBundleActivator();        
-//        osgicontainer.startBundle(mgsActivator);
-//        groupService = mgsActivator.getService();   
-//        groupService.wakeupCore(); 
+        MicroGroupServiceBundleActivator mgsActivator = new MicroGroupServiceBundleActivator();        
+        osgicontainer.startBundle(mgsActivator);
+        groupService = mgsActivator.getService();   
+        groupService.wakeupCore(); 
                 
         osgicontainer.startBundle(this);
 
@@ -150,27 +150,27 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
         Logger.getLogCanvas().setPreviousScreen(queryForm);
 
         // uncomment for local loopback
-//        try {
-//            LOG.debug("do localpipe search");
-//            
-//	        // create pipe to communicate with core
-//	        String ns[] = groupService.localSearch(NamedResource.PIPE, "Name", PIPE_NAME, 1 );
-//	        
-//	        if (ns.length > 0)
-//	        {
-//	            pipeId = ns[0];
-//	            LOG.debug("found: "+pipeId);
-////		        pipeId = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:04", Pipe.PROPAGATE);
-////		        groupService.publish(NamedResource.PIPE, PIPE_NAME, pipeId);
-//	                
-//		        groupService.listen(pipeId, this);
-//	        }
-//	        else
-//	            LOG.debug("no local-loopback");
-//	        
-//        } catch(IOException e) {
-//           LOG.error("Error while registering listener to pipe '"+pipeId+"': "+e.getMessage());
-//        }
+        try {
+            LOG.debug("do localpipe search");
+            
+	        // create pipe to communicate with core
+	        String ns[] = groupService.localSearch(NamedResource.PIPE, "Name", PIPE_NAME, 1 );
+	        
+	        if (ns.length > 0)
+	        {
+	            pipeId = ns[0];
+	            LOG.debug("found: "+pipeId);
+//		        pipeId = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:04", Pipe.PROPAGATE);
+//		        groupService.publish(NamedResource.PIPE, PIPE_NAME, pipeId);
+	                
+		        groupService.listen(pipeId, this);
+	        }
+	        else
+	            LOG.debug("no local-loopback");
+	        
+        } catch(IOException e) {
+           LOG.error("Error while registering listener to pipe '"+pipeId+"': "+e.getMessage());
+        }
     }
 
     /**

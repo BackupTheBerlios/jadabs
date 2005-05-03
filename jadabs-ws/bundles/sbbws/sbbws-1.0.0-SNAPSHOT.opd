@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <OSGiServicePlugin 
-	uuid="jadabs-ws:sbbproxy:1.0.0-SNAPSHOT:opd"
-	service="ch.ethz.jadabs.mservices.smartmessenger" 
+	uuid="jadabs-ws:sbbws:1.0.0-SNAPSHOT:opd"
+	service="ch.ethz.jadabs.sbbws.midlet" 
 	description="" 
 	provider-name="ETHZ-IKS">
 	
+	<Property
+            name="midp-port" value="5434" />     
+    <Property
+    	    name="downloadurl" value="http://iknlab8.inf.ethz.ch/repository"/>   
 
 	<Extension-Point
 		id="OSGiContainer/id:j2me-osgi" />
@@ -19,7 +23,7 @@
 		service="ch.ethz.jadab.jxme.services.GroupService"/>
 		
 	<ServiceActivatorBundle 
-		activator-uuid="jadabs-ws:sbbproxy:1.0.0-SNAPSHOT:obr"
+		activator-uuid="jadabs-ws:sbbws:1.0.0-SNAPSHOT:obr"
 	/>	
 	
 </OSGiServicePlugin>
