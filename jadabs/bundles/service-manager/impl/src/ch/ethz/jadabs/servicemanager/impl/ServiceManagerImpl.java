@@ -65,7 +65,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     private Hashtable mapId2SvcReference = new Hashtable();
       
     /** Local repository cache */
-    private String repoCacheDirDefault = "./repocache/";
+    private String repoCacheDirDefault = "./repository/";
     private File repoCacheDir;
     
     private Hashtable uuid2svcref = new Hashtable();

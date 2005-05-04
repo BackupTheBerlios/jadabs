@@ -28,6 +28,7 @@
 -install 	kobjects/jars/kxml2-2.1.9-osgi.jar
 -istart  	jadabs/jars/bundleloader-1.0.0-SNAPSHOT.jar
 -istart     jadabs/jars/pluginloader-1.0.0-SNAPSHOT.jar
+-istart     jadabs/jars/pluginloader-test-1.0.0-SNAPSHOT.jar
 
 -startlevel 1
 

@@ -35,11 +35,13 @@
  */
 package ch.ethz.jadabs.bundleLoader;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -80,9 +82,17 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
     private static int port = 80;
 
     KXmlParser parser;
-
+    
+    /** Local repository cache */
+    private String repoCacheDirDefault = "./repository/";
+    private File repoCacheDir;
+    
     public HttpClient() throws Exception
     {
+        repoCacheDir = new File(repoCacheDirDefault);
+        if (!repoCacheDir.exists())
+            repoCacheDir.mkdir();
+        
         //TODO: read property or file and build up list of known hosts
         // String host = "jadabsrepo.ethz.ch";
         //      String host = "localhost";
@@ -115,7 +125,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
             LOG.debug("Could not open http repository connection");
         }
 
-        if (clientSocket == null) { throw new Exception("Could not open socket ...: "+host+":"+port); }
+//        if (clientSocket == null) { throw new Exception("Could not open socket ...: "+host+":"+port); }
 
         knownHosts = new Vector();
         knownHosts.add(host);
@@ -160,25 +170,33 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
             {
                 try
                 {
-                    HttpSocket clientSocket = new HttpSocket(host, 80);
+                    HttpSocket clientSocket = new HttpSocket(host, port);
                     
                     if (type.equals("jar"))
                     {
                         String downloadurl = "http://" + host + "/repository/" + group + "/jars/" + name + "-"
                                 + version + ".jar";
                                                 
+                        InputStream is = clientSocket.getFileInputStream(downloadurl);
+                        
+                        // write file into local repository
+                        saveInCache(is, group, name, version, type);
+                        
+                        
                         return clientSocket.getFileInputStream(downloadurl);
 
                     } else if (type.equals("obr"))
                     {
 //                        clientSocket.get("/repository.xml");
 //                        clientSocket.request();
-
+                        
                         String obrurl = "http://" + host + "/repository/" + 
                         	group + "/obrs/" + name + "-" + version + ".obr";
                                                 
                         URL url = new URL(obrurl);
-                                                
+                                              
+                        saveInCache(url.openStream(), group, name, version, type);
+                        
                         return url.openStream();
                                                 
 //                        StringTokenizer tokenizer = new StringTokenizer(clientSocket.data);
@@ -230,6 +248,58 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
         return null;
     }
 
+    private void saveInCache(InputStream is, String group, String name, 
+            String version, String type)
+    {        
+        String filename = name + "-" + version + "."+type;
+        
+        
+        // init folder
+        StringBuffer sb = new StringBuffer();
+        sb.append(repoCacheDir.getAbsolutePath() + 
+                File.separatorChar +group);
+        
+        File groupdir = new File(sb.toString());
+        groupdir.mkdir();
+        
+        sb.append(File.separatorChar + type+"s");
+        File opddir = new File(sb.toString());
+        opddir.mkdir();
+        
+        // save file
+        sb.append(File.separatorChar + filename);
+        String absfilepath = sb.toString();
+        
+        // set filepath in BundleInformation
+//        binfo.setBundleCacheLocation(absfilepath);
+                
+	    File file = new File(absfilepath);
+	    FileOutputStream fo;
+        try
+        {
+            fo = new FileOutputStream(file);
+            
+            byte[] buff = new byte[1024];
+            int k;                
+            while ( (k=is.read(buff) ) != -1) 
+                fo.write(buff,0,k);
+                        
+    	    fo.close();
+    	    is.close();  	    
+    	    
+        } catch (FileNotFoundException e)
+        {
+            LOG.error("could not create file outputstream: ",e);
+        } catch (IOException e)
+        {
+            LOG.error("could not write file:",e);
+        }
+	
+//	    RandomAccessFile raf = new RandomAccessFile(filename, "rw");
+//	    raf.write(data);
+
+    }
+    
     public static void cacheRepositoryOPDs()
     {
         String httprepo = BundleLoaderActivator.bc.getProperty("ch.ethz.jadabs.bundleloader.httprepo");

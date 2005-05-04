@@ -51,7 +51,7 @@ public class TestPluginLoader implements BundleActivator
         
         Vector filters = new Vector();
         
-//        filters.add( "Extension/id:PeerNetwork Â¦ " +
+//        filters.add( "Extension/id:PeerNetwork ¦ " +
 //        		"Platform/id:mservices.wlab.ethz.ch, " +
 //        			"name:mservices, version:0.1.0, provider-name:ETHZ-IKS; " +
 //        			"Property/name:processor, value:armv4l; " +
@@ -66,11 +66,11 @@ public class TestPluginLoader implements BundleActivator
 //        			"essid:wlan, mode:managed, iface:eth0, " +
 //        			"ip:192.168.55.10; " +
 //        		"NetIface/type:internet, " +
-//        			"ext-type:wlan/managed Â¦ R");
+//        			"ext-type:wlan/managed ¦ R");
 //        
-//        filters.add( "Â¦Â¦ R");
+//        filters.add( " ¦ ¦ R");
 //        
-//        filters.add(" Â¦ Platform/id:mservices.wlab.ethz.ch, " +
+//        filters.add(" ¦ Platform/id:mservices.wlab.ethz.ch, " +
 //        			"name:mservices, version:0.1.0, provider-name:ETHZ-IKS; " +
 //        			"Property/name:processor, value:armv4l; " +
 //        		"Property/name:os, value:i386; " +
@@ -84,17 +84,17 @@ public class TestPluginLoader implements BundleActivator
 //        			"essid:wlan, mode:managed, iface:eth0, " +
 //        			"ip:192.168.55.10; " +
 //        		"NetIface/type:internet, " +
-//        			"ext-type:wlan/managed Â¦ R");
+//        			"ext-type:wlan/managed ¦ R");
 //        
 //           
-//        filters.add(" Â¦ Property/name:vm, value:cdc/fp; " +
+//        filters.add(" ¦ Property/name:vm, value:cdc/fp; " +
 //                "Property/name:os, value:i386; " +
 //                "Property/name:vm-version, value:1.3; " +
 //                "OSGiContainer/id:osgi; "+
 //                "OSGiContainer/id:core-osgi-daop " +
-//    			" Â¦ PROV");
+//    			" ¦ PROV");
         
-//        filters.add(" Â¦ Platform/id:nokia6600.wlab.ethz.ch, " +
+//        filters.add(" ¦ Platform/id:nokia6600.wlab.ethz.ch, " +
 //    			"name:nokia6600, version:0.1.0, provider-name:ETHZ-IKS; " +
 //    		"Property/name:processor, value:arm9; " +
 //    		"Property/name:os, value:linux; " +
@@ -105,21 +105,32 @@ public class TestPluginLoader implements BundleActivator
 //		    "NetIface/type:bt-jsr82, connection:dynamic, " +
 //		        "name:bt-hotspot; " +
 //		    "NetIface/type:gsm, connection:dynamic, " +
-//		        "name:GSM Â¦ OPD, INS");
+//		        "name:GSM ¦ OPD, INS");
         
-        filters.add("Â¦"+  
-                "Platform/id:nokia6600.wlab.ethz.ch, " +
-            	"name:nokia6600, version:0.1.0, provider-name:ETHZ-IKS; " +
-            "Property/name:processor, value:arm9; " +
-            "Property/name:os, value:linux; " +
-            "Property/name:display, value:176x208; " +
-            "Property/name:vm, value:cldc/midp; " +
-            "Property/name:vm-version, value:1.0.1; " +
-            "OSGiContainer/id:j2me-osgi; " +
-            "NetIface/type:bt-jsr82, connection:dynamic, " +
-                "name:bt-hotspot; " +
-            "NetIface/type:gsm, connection:dynamic, " +
-                "name:GSMÂ¦ OPD,PRO");
+//        filters.add(" ¦"+  
+//                "Platform/id:nokia6600.wlab.ethz.ch, " +
+//            	"name:nokia6600, version:0.1.0, provider-name:ETHZ-IKS; " +
+//            "Property/name:processor, value:arm9; " +
+//            "Property/name:os, value:linux; " +
+//            "Property/name:display, value:176x208; " +
+//            "Property/name:vm, value:cldc/midp; " +
+//            "Property/name:vm-version, value:1.0.1; " +
+//            "OSGiContainer/id:j2me-osgi; " +
+//            "NetIface/type:bt-jsr82, connection:dynamic, " +
+//                "name:bt-hotspot; " +
+//            "NetIface/type:gsm, connection:dynamic, " +
+//                "name:GSM ¦ OPD,PRO");
+        
+        filters.add(" ¦"+  
+			"Platform/id:ppc.wlab.ethz.ch, " +
+			"name:ppc1, version:0.1.0, provider-name:ETHZ-IKS; " +
+			"Property/name:processor, value:arm9; " +
+			"Property/name:os, value:ppc; " +
+			"Property/name:display, value:176x208; " +
+			"Property/name:vm, value:dotnetcf; " +
+			"Property/name:vm-version, value:1.1; " +
+			"OSGiContainer/id:dotnet-osgi; " +
+			"NetIface/type:internet ¦ OPD,PRO");
         
         for (Enumeration en = filters.elements(); en.hasMoreElements();)
             queryAndPrintResult((String)en.nextElement());
