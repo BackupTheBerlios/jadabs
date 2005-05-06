@@ -252,35 +252,50 @@ public class ServiceManagerActivator extends Thread
     {
 //        LOG.debug("got message:"+message.toXMLString());
         
-        String type = new String(message.getElement(SERVICE_TYPE).getData());
+        Element el = message.getElement(SERVICE_TYPE);
+        Element elopipe = message.getElement("OPIPE_TAG");
         
-        String topeer = new String(message.getElement(SERVICE_TO_PEER).getData());
-        String frompeer = new String(message.getElement(SERVICE_FROM_PEER).getData());
         
-//        LOG.debug("type: "+ type +" topeer: "+topeer+" frompeer: "+frompeer);
         
-        if (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER))
+        if (el != null)
         {
-        
-            if (type.equals(FILTER_ACK))
-            {     
-		         String uuid = new String(message.getElement(SERVICE_ID).getData());	
-		         String adv = new String(message.getElement(ADV_DESCRIPTOR).getData());
-
-		         LOG.info("uuid: "+ uuid);
-		         
-		         if (!services.containsKey(uuid))
-		         {
-		   
-		             ServiceReferenceImpl sref = new ServiceReferenceImpl(uuid, frompeer, adv);
-		  
-		             services.put(uuid, sref);
-				     
-				     listener.foundService(sref);
-		         }
-		         
-            }
+	        String type = new String(message.getElement(SERVICE_TYPE).getData());
+	        
+	        String topeer = new String(message.getElement(SERVICE_TO_PEER).getData());
+	        String frompeer = new String(message.getElement(SERVICE_FROM_PEER).getData());
+	        
+	//        LOG.debug("type: "+ type +" topeer: "+topeer+" frompeer: "+frompeer);
+	        
+	        if (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER))
+	        {
+	        
+	            if (type.equals(FILTER_ACK))
+	            {     
+			         String uuid = new String(message.getElement(SERVICE_ID).getData());	
+			         String adv = new String(message.getElement(ADV_DESCRIPTOR).getData());
+	
+//			         LOG.info("uuid: "+ uuid);
+			         
+			         if (!services.containsKey(uuid))
+			         {
+			   
+			             ServiceReferenceImpl sref = new ServiceReferenceImpl(uuid, frompeer, adv);
+			  
+			             services.put(uuid, sref);
+					     
+					     listener.foundService(sref);
+			         }
+			         
+	            }
+	        }
+        } else if (elopipe != null)
+        {
+            LOG.debug("received OPIPE message");
+            
+            if ( new String(elopipe.getData()).equals("in"))
+                microGroupServiceCore.forwardMessageToLocalListeners(pipe.toString(), message);
         }
+        
     }
 
     private void delPeerResources(String peer)
@@ -374,6 +389,7 @@ public class ServiceManagerActivator extends Thread
             if (elm != null)
             {
                 String opipe = new String(elm.getData());
+                if (!opipe.equals("in"))
                 try
                 {
                     groupService.send(groupPipe, message);

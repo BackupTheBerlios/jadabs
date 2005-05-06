@@ -245,222 +245,227 @@ public class ServiceManagerImpl extends PluginFilterMatcher
     {
         LOG.debug("handle message: service manager"+ msg.toXMLString());
         
-        String type = new String(msg.getElement(SERVICE_TYPE).getData());
+        Element typel = msg.getElement(SERVICE_TYPE);
         
-        String topeer = new String(msg.getElement(SERVICE_TO_PEER).getData());
-        String frompeer = new String(msg.getElement(SERVICE_FROM_PEER).getData());
-        
-        LOG.debug("topeer: "+topeer +" frompeer: "+frompeer);
-        
-        if (!frompeer.equals(ServiceManagerActivator.peername) && (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER)))
+        if (typel != null)
         {
-        
-            if (type.equals(SERVICE_ADV))
-            {
-	            String adv = new String(msg.getElement(ADV_DESCRIPTOR).getData());
-	            String id = new String(msg.getElement(SERVICE_ID).getData());
-	                     
-	            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(id, adv, frompeer, PROVIDING_SERVICES);
-	           	            
-//	            synchronized(uuid2svcref)
-//	            {
-		            if (!uuid2svcref.contains(id))
-		            {
-		                uuid2svcref.put(id, svcRefImpl);
-		                // per default save the opd in the repocache
-			            saveServiceAdvInCache(id, adv);
-		            }
-//	            }
-	            
-	            
-                final String fid = id;
-                final String fadv = adv;
-                
-                // try to load and activate if it machtes
-                // has to be done in a thread, or it blocks further
-                // requests
-                new Thread(){ 
-                    public void run(){
-                        try
-                        {
-                            ServiceManagerActivator.pluginLoader.
-                            	loadPluginIfMatches(fid, 
-                            	        new ByteArrayInputStream(fadv.getBytes()));
-                            
-                            
-                        } catch (Exception e)
-                        {
-                            LOG.error("could not install");
-                        }
-                    }
-                }.start();
-                
-	            	            	            
-	            
-            }
-	        	// Plugin Filter-Request
-	        //TODO include a callback function to the pluginloader
-	        // to match the ExtensionPoint filter.
-	        else if (type.equals(FILTER_REQ))
-	        {         
-	            	// match agains the provided filter
-	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
-	            
-	            // transform | into ¦ due to problems with nokia
-	            if (filter.indexOf('|') > -1)
-	                filter = filter.replace('|','�');
-	            
-	            String smfilter = filter.substring(filter.lastIndexOf("�")+1);
-	            
-	            	            
-	            Iterator it = null;
-	            String rptype = "";
-	            if ((smfilter.indexOf("OPD".toString()) > -1) &&
-	            	smfilter.indexOf("INS") > -1)
-	            {
-	                it = ServiceManagerActivator.pluginLoader.getInstalledPlugins();
-	                rptype = INSTALLED_SERVICES;
-	            }
-	            sendAdvertisements(it, rptype, frompeer, filter);
-	            
-	            if ((smfilter.indexOf("OPD".toString()) > -1) &&
-		            	smfilter.indexOf("PRO") > -1)
-	            {
-		            // check for matching providing plugins
-		            try
-		            {
-			            it = ServiceManagerActivator.pluginLoader.getMatchingPlugins(
-			                    filter, this);
-			            rptype = PROVIDING_SERVICES;
-		            } catch(Exception e)
-		            {
-		                LOG.error("could not get plugins",e);
-		            }
-	            }
-	            sendAdvertisements(it, rptype, frompeer, filter);
-	            
-	            if ((smfilter.indexOf("OBR".toString()) > -1) &&
-		            	smfilter.indexOf("INS") > -1)
-	            {
-		            // check for installed OBRs
-		            try
-		            {
-			            it = ServiceManagerActivator.bundleLoader.getInstalledBundles();
-			            rptype = INSTALLED_SERVICES;
-		            } catch(Exception e)
-		            {
-		                LOG.error("could not get plugins",e);
-		            }
-	            }
-	            sendAdvertisements(it, rptype, frompeer, filter);
-	            
-	            
+	        String type = new String(typel.getData());
 	        
-	        }
-        		// Plugin Filter-Ack
-	        else if (type.equals(FILTER_ACK))
-	        {            
-	            String adv = new String(msg.getElement(ADV_DESCRIPTOR).getData());
-	            String rptype = new String(msg.getElement(SERVICE_RP_TYPE).getData());
-	            
-	            String id = new String(msg.getElement(SERVICE_ID).getData());
-	                     
-	            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(id, adv, frompeer, rptype);
-	            
-	            // per default save the opd in the repocache
-	            saveServiceAdvInCache(id, adv);
+	        String topeer = new String(msg.getElement(SERVICE_TO_PEER).getData());
+	        String frompeer = new String(msg.getElement(SERVICE_FROM_PEER).getData());
 	        
-	            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
-	            
-	            //TODO notify listeners call listeners
-//	            notifyListeners(filter, svcRefImpl);
-	            
-//	            synchronized(uuid2svcref)
-//	            {
-	                uuid2svcref.put(id, svcRefImpl);
-//	            }
-	            
-	        }
-	        	// OBR_REQ
-	        else if (type.equals(OBR_REQ))
+	        LOG.debug("topeer: "+topeer +" frompeer: "+frompeer);
+	        
+	        if (!frompeer.equals(ServiceManagerActivator.peername) && (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER)))
 	        {
-	            String uuid = new String(msg.getElement(SERVICE_ID).getData());
-	            
-	            // lookup obr advertisement
-	            
-	            InputStream in = ServiceManagerActivator.bundleLoader.fetchInformation(uuid,this);
-	            
-	            if (in != null)
+	        
+	            if (type.equals(SERVICE_ADV))
 	            {
-		            String adv = inputStream2String(in);
+		            String adv = new String(msg.getElement(ADV_DESCRIPTOR).getData());
+		            String id = new String(msg.getElement(SERVICE_ID).getData());
+		                     
+		            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(id, adv, frompeer, PROVIDING_SERVICES);
+		           	            
+	//	            synchronized(uuid2svcref)
+	//	            {
+			            if (!uuid2svcref.contains(id))
+			            {
+			                uuid2svcref.put(id, svcRefImpl);
+			                // per default save the opd in the repocache
+				            saveServiceAdvInCache(id, adv);
+			            }
+	//	            }
 		            
-		            sendRequest(frompeer, OBR_ACK, 
-		            	SERVICE_ID, uuid,  
-	  		    	    ADV_DESCRIPTOR, adv);
+		            
+	                final String fid = id;
+	                final String fadv = adv;
+	                
+	                // try to load and activate if it machtes
+	                // has to be done in a thread, or it blocks further
+	                // requests
+	                new Thread(){ 
+	                    public void run(){
+	                        try
+	                        {
+	                            ServiceManagerActivator.pluginLoader.
+	                            	loadPluginIfMatches(fid, 
+	                            	        new ByteArrayInputStream(fadv.getBytes()));
+	                            
+	                            
+	                        } catch (Exception e)
+	                        {
+	                            LOG.error("could not install");
+	                        }
+	                    }
+	                }.start();
+	                
+		            	            	            
+		            
 	            }
-	            
-	        }
-        		// OBR_ACK
-	        else if (type.equals(OBR_ACK))
-	        {
-	            
-	            String uuid = new String(msg.getElement(SERVICE_ID).getData());
-	            String adv = new String(msg.getElement(ADV_DESCRIPTOR).getData());
-	            
-	            saveServiceAdvInCache(uuid, adv);
-	            
-	            InputStream inStream = new ByteArrayInputStream(adv.getBytes());
-	            awaitUUID2InfoReqs.put(uuid, inStream);
-	            	            
-	        }
-	    		// JAR-Request
-	        else if (type.equals(JAR_REQ))
-	        {	            
-                String id = new String(msg.getElement(SERVICE_ID).getData());
-                
-                InputStream in = ServiceManagerActivator.bundleLoader.fetchInformation(id, this);
-                
-                // append file data
-                //byte[] data = getBytesFromFile(file);
-                try {
-	                byte[] data = copyToByteArray(in);
-	                
-	                LOG.debug("file data size:"+data.length);
-	                
-	                Element[] elms = new Element[5];
-	                
-	                elms[0] = new Element(SERVICE_TYPE, 
-	                        JAR_ACK, 
-	                        Message.JXTA_NAME_SPACE);
-	                elms[1] = new Element(SERVICE_ID, 
-	                        id, Message.JXTA_NAME_SPACE);
-	                elms[2] = new Element(SERVICE_CODE, 
-	                        data, Message.JXTA_NAME_SPACE, Element.TEXTUTF8_MIME_TYPE);
-	                elms[3] = new Element(SERVICE_FROM_PEER, 
-	                        ServiceManagerActivator.peername, 
-	                        Message.JXTA_NAME_SPACE);
-	                elms[4] = new Element(SERVICE_TO_PEER, 
-	                        frompeer, 
-	                        Message.JXTA_NAME_SPACE);
-		                           
-		            ServiceManagerActivator.groupService.send(ServiceManagerActivator.groupPipe, new Message(elms));
-		        } catch (IOException e)
-		        {
-		            LOG.debug("error in sending message");
+		        	// Plugin Filter-Request
+		        //TODO include a callback function to the pluginloader
+		        // to match the ExtensionPoint filter.
+		        else if (type.equals(FILTER_REQ))
+		        {         
+		            	// match agains the provided filter
+		            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
+		            
+		            // transform | into ¦ due to problems with nokia
+		            if (filter.indexOf('|') > -1)
+		                filter = filter.replace('|','¦');
+		            
+		            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
+		            
+		            	            
+		            Iterator it = null;
+		            String rptype = "";
+		            if ((smfilter.indexOf("OPD".toString()) > -1) &&
+		            	smfilter.indexOf("INS") > -1)
+		            {
+		                it = ServiceManagerActivator.pluginLoader.getInstalledPlugins();
+		                rptype = INSTALLED_SERVICES;
+		            }
+		            sendAdvertisements(it, rptype, frompeer, filter);
+		            
+		            if ((smfilter.indexOf("OPD".toString()) > -1) &&
+			            	smfilter.indexOf("PRO") > -1)
+		            {
+			            // check for matching providing plugins
+			            try
+			            {
+				            it = ServiceManagerActivator.pluginLoader.getMatchingPlugins(
+				                    filter, this);
+				            rptype = PROVIDING_SERVICES;
+			            } catch(Exception e)
+			            {
+			                LOG.error("could not get plugins",e);
+			            }
+		            }
+		            sendAdvertisements(it, rptype, frompeer, filter);
+		            
+		            if ((smfilter.indexOf("OBR".toString()) > -1) &&
+			            	smfilter.indexOf("INS") > -1)
+		            {
+			            // check for installed OBRs
+			            try
+			            {
+				            it = ServiceManagerActivator.bundleLoader.getInstalledBundles();
+				            rptype = INSTALLED_SERVICES;
+			            } catch(Exception e)
+			            {
+			                LOG.error("could not get plugins",e);
+			            }
+		            }
+		            sendAdvertisements(it, rptype, frompeer, filter);
+		            
+		            
+		        
 		        }
+	        		// Plugin Filter-Ack
+		        else if (type.equals(FILTER_ACK))
+		        {            
+		            String adv = new String(msg.getElement(ADV_DESCRIPTOR).getData());
+		            String rptype = new String(msg.getElement(SERVICE_RP_TYPE).getData());
+		            
+		            String id = new String(msg.getElement(SERVICE_ID).getData());
+		                     
+		            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(id, adv, frompeer, rptype);
+		            
+		            // per default save the opd in the repocache
+		            saveServiceAdvInCache(id, adv);
+		        
+		            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
+		            
+		            //TODO notify listeners call listeners
+	//	            notifyListeners(filter, svcRefImpl);
+		            
+	//	            synchronized(uuid2svcref)
+	//	            {
+		                uuid2svcref.put(id, svcRefImpl);
+	//	            }
+		            
+		        }
+		        	// OBR_REQ
+		        else if (type.equals(OBR_REQ))
+		        {
+		            String uuid = new String(msg.getElement(SERVICE_ID).getData());
+		            
+		            // lookup obr advertisement
+		            
+		            InputStream in = ServiceManagerActivator.bundleLoader.fetchInformation(uuid,this);
+		            
+		            if (in != null)
+		            {
+			            String adv = inputStream2String(in);
+			            
+			            sendRequest(frompeer, OBR_ACK, 
+			            	SERVICE_ID, uuid,  
+		  		    	    ADV_DESCRIPTOR, adv);
+		            }
+		            
+		        }
+	        		// OBR_ACK
+		        else if (type.equals(OBR_ACK))
+		        {
+		            
+		            String uuid = new String(msg.getElement(SERVICE_ID).getData());
+		            String adv = new String(msg.getElement(ADV_DESCRIPTOR).getData());
+		            
+		            saveServiceAdvInCache(uuid, adv);
+		            
+		            InputStream inStream = new ByteArrayInputStream(adv.getBytes());
+		            awaitUUID2InfoReqs.put(uuid, inStream);
+		            	            
+		        }
+		    		// JAR-Request
+		        else if (type.equals(JAR_REQ))
+		        {	            
+	                String id = new String(msg.getElement(SERVICE_ID).getData());
+	                
+	                InputStream in = ServiceManagerActivator.bundleLoader.fetchInformation(id, this);
+	                
+	                // append file data
+	                //byte[] data = getBytesFromFile(file);
+	                try {
+		                byte[] data = copyToByteArray(in);
+		                
+		                LOG.debug("file data size:"+data.length);
+		                
+		                Element[] elms = new Element[5];
+		                
+		                elms[0] = new Element(SERVICE_TYPE, 
+		                        JAR_ACK, 
+		                        Message.JXTA_NAME_SPACE);
+		                elms[1] = new Element(SERVICE_ID, 
+		                        id, Message.JXTA_NAME_SPACE);
+		                elms[2] = new Element(SERVICE_CODE, 
+		                        data, Message.JXTA_NAME_SPACE, Element.TEXTUTF8_MIME_TYPE);
+		                elms[3] = new Element(SERVICE_FROM_PEER, 
+		                        ServiceManagerActivator.peername, 
+		                        Message.JXTA_NAME_SPACE);
+		                elms[4] = new Element(SERVICE_TO_PEER, 
+		                        frompeer, 
+		                        Message.JXTA_NAME_SPACE);
+			                           
+			            ServiceManagerActivator.groupService.send(ServiceManagerActivator.groupPipe, new Message(elms));
+			        } catch (IOException e)
+			        {
+			            LOG.debug("error in sending message");
+			        }
+				        
+		        }
+		        	// JAR-Ack
+		        else if (type.equals(JAR_ACK))
+		        {
+			        byte[] data = msg.getElement(SERVICE_CODE).getData();
+			        String id = new String(msg.getElement(SERVICE_ID).getData());
+			
+			        saveJarInCache(data, id);
 			        
-	        }
-	        	// JAR-Ack
-	        else if (type.equals(JAR_ACK))
-	        {
-		        byte[] data = msg.getElement(SERVICE_CODE).getData();
-		        String id = new String(msg.getElement(SERVICE_ID).getData());
-		
-		        saveJarInCache(data, id);
-		        
-	            InputStream inStream = new ByteArrayInputStream(data);
-	            awaitUUID2InfoReqs.put(id, inStream);
-		        
+		            InputStream inStream = new ByteArrayInputStream(data);
+		            awaitUUID2InfoReqs.put(id, inStream);
+			        
+		        }
 	        }
         }
     }

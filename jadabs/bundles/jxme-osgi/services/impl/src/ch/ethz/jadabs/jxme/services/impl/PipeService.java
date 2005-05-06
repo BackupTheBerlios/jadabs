@@ -1,5 +1,5 @@
 /**
- * $Id: PipeService.java,v 1.5 2004/12/10 13:46:24 afrei Exp $
+ * $Id: PipeService.java,v 1.6 2005/05/06 15:53:27 afrei Exp $
  *
  * Copyright (c) 2003 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -298,7 +298,7 @@ public class PipeService extends Service implements Listener
      */
     public void handleMessage(Message message, String serviceParam)
     {
-        LOG.debug("handleMessage called...");
+//        LOG.debug("handleMessage called...");
 
         if (serviceParam == null)
         {
@@ -307,13 +307,16 @@ public class PipeService extends Service implements Listener
         }
 
         //Forward the message to the upper layer
-        Listener listener = getListener(serviceParam);
-        if (listener == null)
+        Listener[] listeners = getListeners(serviceParam);
+        if (listeners == null)
         {
             LOG.debug("No Pipe Listener Found for the Message at PipeService");
             return;
         }
 
-        listener.handleMessage(message, serviceParam);
+        for (int lsi = 0; lsi < listeners.length; lsi++)
+        {
+            listeners[lsi].handleMessage(message, serviceParam);
+        }
     }
 }

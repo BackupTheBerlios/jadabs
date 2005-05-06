@@ -1,5 +1,5 @@
 /**
- * $Id: Service.java,v 1.1 2004/11/08 07:30:34 afrei Exp $
+ * $Id: Service.java,v 1.2 2005/05/06 15:53:27 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -103,7 +103,26 @@ public abstract class Service
 
         if (serviceId != null && listener != null)
         {
-            listeners.put(serviceId, listener);
+            Listener[] lists;
+            if (listeners.containsKey(serviceId))
+            {
+                Listener[] ls = (Listener[])listeners.get(serviceId);
+                lists = new Listener[ls.length + 1];
+                
+                for (int i = 0; i < ls.length; i++)
+                    lists[i] = ls[i];
+                
+                lists[ls.length] = listener;
+                
+                
+            }
+            else
+            {
+                lists = new Listener[1];
+                lists[0] = listener;
+            }
+            
+            listeners.put(serviceId, lists);
         }
     }
 
@@ -129,10 +148,9 @@ public abstract class Service
      *            of a service
      * @return Listener object if registered else return null
      */
-    synchronized public Listener getListener(String serviceId)
-    {
-
-        return (Listener) listeners.get(serviceId);
+    synchronized public Listener[] getListeners(String serviceId)
+    {        
+        return (Listener[]) listeners.get(serviceId);
     }
 
     /**

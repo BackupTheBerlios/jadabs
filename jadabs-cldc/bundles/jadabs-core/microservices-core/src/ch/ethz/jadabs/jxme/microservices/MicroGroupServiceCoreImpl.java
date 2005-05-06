@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceCoreImpl.java,v 1.6 2005/05/02 06:28:08 afrei Exp $
+ * $Id: MicroGroupServiceCoreImpl.java,v 1.7 2005/05/06 15:50:31 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -149,6 +149,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
      */
     public synchronized void forwardMessageToLocalListeners(String pipeIdString, Message message) {
         CacheItem item = (CacheItem)namedResourceTable.get(pipeIdString);
+            
         if ((item != null) && (item.res instanceof Pipe)) {
             Enumeration workers = item.registeredWorkers.elements();
             while (workers.hasMoreElements()) {
@@ -399,6 +400,7 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
                     bin.close();                    
                 } catch(IOException e) {
                     LOG.error("IOException in dispatcher connection("+connection+")");
+                    aborted = true;
                 }                
             }           
         }    
@@ -630,6 +632,8 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
          */
         public void dispatchSend(short requestNumber, short groupNumber, String pipeIdString, Message message)
         {
+            
+            
             
             boolean error = true;
             CacheItem item = (CacheItem)namedResourceTable.get(pipeIdString);          
@@ -953,15 +957,18 @@ public class MicroGroupServiceCoreImpl implements ConnectionNotifee
                 dout.writeShort(0);		// dummy length
                 dout.writeUTF(pipeIdString);
                 message.write(dout);
-                dout.writeUTF(listenerId);                
+                dout.writeUTF(listenerId);    
                 dout.close();
                 bout.close();
                 reply = bout.toByteArray();
                 reply[7] = (byte)(0xff & (reply.length>>8));
+
                 reply[8] = (byte)(0xff & reply.length);
             } catch (IOException e) {
                 /* cannot happen since is byte array output stream */ 
-            }            
+                LOG.debug("could not send message");
+            }  
+            
             try {
                 connection.sendBytes(reply);
             } catch(IOException e) {

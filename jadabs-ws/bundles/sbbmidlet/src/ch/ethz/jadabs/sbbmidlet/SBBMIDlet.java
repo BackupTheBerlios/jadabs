@@ -84,7 +84,7 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, Listener, Comm
         fEndptsvc = (EndpointService) bundleContext.getService(fServiceReference);
 
         fEndptsvc.addListener("sbbmidlet", this);
-        LOG.debug(fEndptsvc.getListener("sbbmidlet"));
+//        LOG.debug(fEndptsvc.getListener("sbbmidlet"));
     }
 
     public void stop(BundleContext bundleContext) {

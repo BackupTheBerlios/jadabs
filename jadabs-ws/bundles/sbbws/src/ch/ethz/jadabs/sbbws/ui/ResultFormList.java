@@ -1,8 +1,6 @@
 package ch.ethz.jadabs.sbbws.ui;
 
 
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -12,7 +10,6 @@ import javax.microedition.lcdui.List;
 import org.apache.log4j.Logger;
 
 import ch.ethz.jadabs.sbbws.com.SoapTransformation;
-import ch.ethz.jadabs.sbbws.ksoap.TimetableOverview_kSOAP;
 import ch.ethz.jadabs.sbbws.midlet.SBBMIDlet;
 
 

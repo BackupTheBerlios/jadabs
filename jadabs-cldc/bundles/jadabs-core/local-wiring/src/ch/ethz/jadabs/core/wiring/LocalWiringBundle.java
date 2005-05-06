@@ -1,7 +1,7 @@
 /*
  * Created on Dec 9, 2004
  *
- *	$Id: LocalWiringBundle.java,v 1.3 2005/02/17 17:29:17 printcap Exp $
+ *	$Id: LocalWiringBundle.java,v 1.4 2005/05/06 15:50:31 afrei Exp $
  */
 package ch.ethz.jadabs.core.wiring;
 
@@ -175,9 +175,7 @@ public class LocalWiringBundle
                 logger.error("error accepting new connections: "+e);
                 return;
             } finally {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("listener thread shut down.");
-                }
+                logger.debug("listener thread shut down.");
             }                    
         }
     }

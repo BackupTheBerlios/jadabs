@@ -49,7 +49,7 @@ public class ServiceReferenceImpl implements ServiceReference
         id = id.substring(id.indexOf(":")+1);
         version = id.substring(0,id.indexOf(":"));
         
-        LOG.debug("parsed uuid: "+group+":"+name+":"+version);
+//        LOG.debug("parsed uuid: "+group+":"+name+":"+version);
         
         if (adv != null)
             parseOPD(adv);
@@ -79,8 +79,11 @@ public class ServiceReferenceImpl implements ServiceReference
 	             {	                 
 	                 int i = parser.getAttributeCount();
 	                 for (int k =0; k< i;k++)
-	                     properties.put(parser.getAttributeName(k),
-	                             parser.getAttributeValue(k));
+	                 {
+	                     String name = parser.getAttributeName(k);
+	                     String value = parser.getAttributeValue(k);
+	                     properties.put(name, value);
+	                 }
 	                     
 	             }
 	             else if (stack.peek().equals("Extension")) {

@@ -351,11 +351,14 @@ public class EndpointService extends Service implements Listener
         {
 
             //Forward the message to the upper layer
-            Listener listener = getListener(destURI.getRecipient());
-            if (listener != null)
+            Listener[] listeners = getListeners(destURI.getRecipient());
+            if (listeners != null)
             {
-                Message newMessage = new Message(elmNew);
-                listener.handleMessage(newMessage, destURI.getRecipientParam());
+                for (int lsi = 0; lsi < listeners.length; lsi++)
+                {
+                    Message newMessage = new Message(elmNew);
+                    listeners[lsi].handleMessage(newMessage, destURI.getRecipientParam());
+                }
             }
         }
 

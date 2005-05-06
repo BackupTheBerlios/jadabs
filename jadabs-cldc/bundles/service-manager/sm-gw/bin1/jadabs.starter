@@ -3,5 +3,4 @@
 -usepad bt-gateway.pad
 
 -startopd    jadabs:servicemanager:1.0.0-SNAPSHOT:opd
-#-startopd    jadabs:jxme-tcp:1.0.0-SNAPSHOT:opd
-#-startopd    jadabs:smtpgw:1.0.0-SNAPSHOT:opd
+-startopd    jadabs-ws:sbbproxy:1.0.0-SNAPSHOT:opd

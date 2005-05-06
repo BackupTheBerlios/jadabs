@@ -19,6 +19,12 @@
 	      	<artifactId>jxme-osgi</artifactId>
 	      	<version>${pom.currentVersion}</version>
 		</dependency>
+		
+		<dependency>
+	      	<groupId>jadabs</groupId>
+	      	<artifactId>jxme-services-api</artifactId>
+	      	<version>${pom.currentVersion}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>osgi</groupId>

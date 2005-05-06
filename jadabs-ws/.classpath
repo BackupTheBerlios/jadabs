@@ -13,11 +13,12 @@
 	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/jxme-osgi-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/log4j-j2me-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/j2me/jars/midpapi-2.0.jar"/>
-	<classpathentry kind="var" path="MAVEN_REPO/osgi/jars/osgi-j2me-0.7.1-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/osgi/jars/osgi-j2me-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/jxme-bt-j2me-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/j2me/jars/cldcapi-1.1.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/local-wiring-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/microservices-bundle-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/microservices-common-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/jadabs/jars/jxme-services-api-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

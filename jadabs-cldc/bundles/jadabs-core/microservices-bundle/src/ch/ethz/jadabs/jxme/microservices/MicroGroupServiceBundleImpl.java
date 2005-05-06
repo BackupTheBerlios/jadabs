@@ -1,7 +1,7 @@
 /*
  * Created on Jan 16, 2005
  *
- * $Id: MicroGroupServiceBundleImpl.java,v 1.6 2005/05/02 06:28:08 afrei Exp $
+ * $Id: MicroGroupServiceBundleImpl.java,v 1.7 2005/05/06 15:50:31 afrei Exp $
  */
 package ch.ethz.jadabs.jxme.microservices;
 
@@ -974,6 +974,7 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
                 short request = (short)((d[1]<<8) | d[2]);
                 short groupNumber = (short)((d[3]<<8) | d[4]);
                 short type = (short)((d[5]<<8) | d[6]);
+                
                 if (isreply) {
                     // (synchronous) reply message                    
                     synchronized(connection) {
@@ -992,8 +993,10 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
                     // (asynchronous) message)
                     try{
                        DataInputStream din = new DataInputStream(new ByteArrayInputStream(d, 9, d.length-9));
-	                    switch(type) {
+
+                       switch(type) {
 	                    case Constants.SEARCH_RESPONSE:
+	                    	break;
 	                    case Constants.NAME_RESOURCE_LOSS:
 	                        int searchhandle = din.readInt();
 	                        String resourceType = din.readUTF();
@@ -1012,7 +1015,7 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
 	                    		}
 	                        break;	                   
 	                    case Constants.MESSAGE:
-	                        String pipeID = din.readUTF();	                    		
+	                        String pipeID = din.readUTF();	 
 	                    		MicroMessage micromessage = MicroMessage.read(din);
 	                    		String listenerID = din.readUTF();
 	                    		MicroListener l = (MicroListener)registeredMircoListeners.get(pipeID);
@@ -1023,7 +1026,10 @@ public class MicroGroupServiceBundleImpl implements MicroGroupService,
 	                    default:
 	                        LOG.error("skipping invalid ASYNC_MSG received, invalid type "+type);                    	
 	                    }
-                    } catch (IOException e) { /* cannot happen since stream is ByteArrayInputStream */ }                 
+                    } catch (IOException e) {
+                        LOG.error("ioexception");
+                        /* cannot happen since stream is ByteArrayInputStream */
+                    }                 
                 }                               
             }
         }    

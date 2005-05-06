@@ -52,18 +52,21 @@ public class JxmeWSMIDlet extends MIDlet implements BundleActivator, MicroListen
     private Command unregCmd;
     private Command logCmd;
     private Command exitCmd;
+    private Command conCmd;
     
     /** MicroGroupService service bundle actiavtor */
     private MicroGroupServiceBundleImpl groupService;
 
     private String pipeId;
 
+    OSGiContainer osgicontainer;
+    
     /**
      * Constructor
      */
     public JxmeWSMIDlet() {
 
-        OSGiContainer osgicontainer = OSGiContainer.Instance();
+        osgicontainer = OSGiContainer.Instance();
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.peeralias", this.getAppProperty("ch.ethz.jadabs.jxme.peeralias"));
         osgicontainer.setProperty("log4j.priority", this.getAppProperty("log4j.priority"));
         osgicontainer.setProperty("ch.ethz.jadabs.microservices.bundleport", 
@@ -72,11 +75,6 @@ public class JxmeWSMIDlet extends MIDlet implements BundleActivator, MicroListen
         osgicontainer.startBundle(new LogActivator());
 //        osgicontainer.startBundle(new JxmeActivator());
         
-        // start bundle part of MicroGroupService 
-        MicroGroupServiceBundleActivator mgsActivator = new MicroGroupServiceBundleActivator();        
-        osgicontainer.startBundle(mgsActivator);
-        groupService = mgsActivator.getService();   
-        groupService.wakeupCore(); 
                 
         osgicontainer.startBundle(this);
 
@@ -84,6 +82,37 @@ public class JxmeWSMIDlet extends MIDlet implements BundleActivator, MicroListen
         LOG = Logger.getLogger("JxmeWSMIDlet");
     }
 
+    private void connectAndFind()
+    {
+        // start bundle part of MicroGroupService 
+        MicroGroupServiceBundleActivator mgsActivator = new MicroGroupServiceBundleActivator();        
+        osgicontainer.startBundle(mgsActivator);
+        groupService = mgsActivator.getService();   
+        groupService.wakeupCore(); 
+        
+        try {      
+            Thread.sleep(5000);
+            
+	        // create pipe to communicate with core
+	        String ns[] = groupService.localSearch(NamedResource.PIPE, "Name", PIPE_NAME, 1 );
+	        
+	        if (ns.length > 0)
+	        {
+	            pipeId = ns[0];
+	            LOG.debug("found: "+pipeId);
+//		        pipeId = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:04", Pipe.PROPAGATE);
+//		        groupService.publish(NamedResource.PIPE, PIPE_NAME, pipeId);
+	                
+		        groupService.listen(pipeId, this);
+	        }
+	        else
+	            LOG.debug("no local-loopback");
+	        
+        } catch(Exception e) {
+           LOG.error("Error while registering listener to pipe '"+pipeId+"': "+e.getMessage());
+        }
+    }
+    
     public void start(BundleContext bundleContext)
     {
 
@@ -104,6 +133,7 @@ public class JxmeWSMIDlet extends MIDlet implements BundleActivator, MicroListen
         }
 
         display = Display.getDisplay(this);
+        conCmd = new Command("Connect", Command.SCREEN, 1);
         regCmd = new Command("Register", Command.SCREEN, 1);
         unregCmd = new Command("Unregister", Command.SCREEN, 1);
         logCmd = new Command("Log", Command.SCREEN, 3);
@@ -112,28 +142,20 @@ public class JxmeWSMIDlet extends MIDlet implements BundleActivator, MicroListen
         Logger.getLogCanvas().setDisplay(display);
         Logger.getLogCanvas().setPreviousScreen(Logger.getLogCanvas());
         Logger.getLogCanvas().setCommandAndListener(new Command[] {
-                regCmd, unregCmd, exitCmd}, this);
+                conCmd, regCmd, unregCmd, exitCmd}, this);
         display.setCurrent(Logger.getLogCanvas());
         
-        try {            
-	        // create pipe to communicate with core
-	        String ns[] = groupService.localSearch(NamedResource.PIPE, "Name", PIPE_NAME, 1 );
-	        
-	        if (ns.length > 0)
-	        {
-	            pipeId = ns[0];
-	            LOG.debug("found: "+pipeId);
-//		        pipeId = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:04", Pipe.PROPAGATE);
-//		        groupService.publish(NamedResource.PIPE, PIPE_NAME, pipeId);
-	                
-		        groupService.listen(pipeId, this);
-	        }
-	        else
-	            LOG.debug("no local-loopback");
-	        
-        } catch(IOException e) {
-           LOG.error("Error while registering listener to pipe '"+pipeId+"': "+e.getMessage());
+        
+        // connect and register jxme
+        try {      
+            Thread.sleep(3000);
+            connectAndFind();
+            Thread.sleep(3000);
+        } catch(Exception e)
+        {
+            
         }
+        sendLocalJxmeMessage("reg","opipe","soappipe");
     }
 
     /**
@@ -176,6 +198,8 @@ public class JxmeWSMIDlet extends MIDlet implements BundleActivator, MicroListen
             sendLocalJxmeMessage("reg","opipe","soappipe");
         } else if (c == unregCmd) {
             sendLocalJxmeMessage("unreg", null, null);
+        } else if (c == conCmd) {
+            connectAndFind();
         } else if (c == exitCmd) {
             quitApp();
         }
@@ -208,7 +232,7 @@ public class JxmeWSMIDlet extends MIDlet implements BundleActivator, MicroListen
 //        elms[0] = new Element("SOAP_REQUEST_TAG", message, Element.TEXTUTF8_MIME_TYPE);
   
         MicroElement[] elms;
-        if (name != null)
+        if (name == null)
             elms = new MicroElement[1];
         else
         {

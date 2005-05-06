@@ -3,8 +3,6 @@ package ch.ethz.jadabs.ws.proxy;
 import org.apache.log4j.Logger;
 
 import ch.ethz.jadabs.jxme.Element;
-import ch.ethz.jadabs.jxme.EndpointAddress;
-import ch.ethz.jadabs.jxme.EndpointService;
 import ch.ethz.jadabs.jxme.Listener;
 import ch.ethz.jadabs.jxme.Message;
 import ch.ethz.jadabs.jxme.NamedResource;
@@ -28,9 +26,9 @@ public class SBBService implements Listener
     
 //    private SBBProxyActivator fSBBProxyActivator = new SBBProxyActivator();
 
-    private EndpointAddress fEndpoint;
-
-    private EndpointService fEndptsvc;
+//    private EndpointAddress fEndpoint;
+//
+//    private EndpointService fEndptsvc;
 
     public SBBService()
     {
@@ -47,12 +45,17 @@ public class SBBService implements Listener
      *            are ignored in this case)
      */
     public void handleMessage(Message message, String args)
-    {
-        LOG.debug(new String(message.getElement("SOAP_REQUEST_TAG").getData()));
-        String soapString = new String(message.getElement("SOAP_REQUEST_TAG").getData());
-        String response = SBBProxyActivator.sbbproxy.getSoapResponse(soapString, args);
-        LOG.debug(response);
-        forwardSBBResponseToClient(response);
+    {        
+        Element elm = message.getElement("OPIPE_TAG");
+        
+        if (elm != null)
+        {
+	        String soapString = new String(message.getElement("SOAP_REQUEST_TAG").getData());
+	        String response = SBBProxyActivator.sbbproxy.getSoapResponse(soapString, args);
+	        
+	        forwardSBBResponseToClient(response);
+        
+        }
     }
 
     /**
@@ -64,12 +67,16 @@ public class SBBService implements Listener
      */
     public void forwardSBBResponseToClient(String response)
     {
-        Element[] elms = new Element[1];
-        elms[0] = new Element("SOAP_RESPONSE_TAG", response, Element.TEXTUTF8_MIME_TYPE);
+        Element[] elms = new Element[2];
+        elms[0] = new Element("OPIPE_TAG", "in", Element.TEXTUTF8_MIME_TYPE);
+        elms[1] = new Element("SOAP_RESPONSE_TAG", response, Element.TEXTUTF8_MIME_TYPE);
+
         try
         {
-            fEndpoint = new EndpointAddress("btspp", "anybody", -1, "sbbmidlet", null);
-            SBBProxyActivator.fEndptsvc.propagate(elms, fEndpoint);
+//            fEndpoint = new EndpointAddress("btspp", "anybody", -1, "sbbmidlet", null);
+//            SBBProxyActivator.fEndptsvc.propagate(elms, fEndpoint);
+        
+            SBBProxyActivator.groupService.send(SBBProxyActivator.groupPipe, new Message(elms));
         } catch (IOException ioe)
         {
             LOG.debug(ioe.getMessage());

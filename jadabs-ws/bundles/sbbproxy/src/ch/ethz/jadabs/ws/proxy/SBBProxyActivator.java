@@ -13,7 +13,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import ch.ethz.jadabs.jxme.EndpointService;
+import ch.ethz.jadabs.jxme.Pipe;
+import ch.ethz.jadabs.jxme.services.GroupService;
 
 /**
  * Activates the SBB Proxy. This bundle is used by the SBB service to get the
@@ -26,19 +27,24 @@ public class SBBProxyActivator implements BundleActivator
 {
     private static Logger LOG = Logger.getLogger(SBBProxyActivator.class.getName());
 
-//    protected static final String SBB_WEBSERVICE_URL = "http://wlab.ethz.ch:8080/axis/services/SBBWebService";
-    protected static final String SBB_WEBSERVICE_URL = "http://localhost:8081/axis/services/SBBWebService";
+    protected static final String SBB_WEBSERVICE_URL = "http://wlab.ethz.ch:8080/axis/services/SBBWebService";
+//    protected static final String SBB_WEBSERVICE_URL = "http://localhost:8081/axis/services/SBBWebService";
 
+    private static String GM_PIPE_NAME_DEFAULT = "gmpipe";
+    private static long GM_PIPE_ID_DEFAULT = 23;
+    
     private SBBService sbbservice;
     
     private String response;
 
     public BundleContext bundleContext = null;
     
-    protected static EndpointService fEndptsvc;
+//    protected static EndpointService fEndptsvc;
     
     protected static SBBProxyActivator sbbproxy;
 
+    static GroupService groupService;
+    static Pipe groupPipe;
 
     public void start(BundleContext bc) throws Exception
     {
@@ -46,12 +52,29 @@ public class SBBProxyActivator implements BundleActivator
         this.bundleContext = bc;
         sbbproxy = this;
 
-        // get Endpoint service
-        ServiceReference fServiceReference = bc.getServiceReference("ch.ethz.jadabs.jxme.EndpointService");
-        fEndptsvc = (EndpointService) bc.getService(fServiceReference);
-
         sbbservice = new SBBService();
-        fEndptsvc.addListener("sbbservice", sbbservice);
+        
+        //  set pipe name
+        String gmpipeName;
+        if ((gmpipeName = bc.getProperty("ch.ethz.jadabs.servicemanager.gmpipe.name")) == null)
+            gmpipeName = GM_PIPE_NAME_DEFAULT;
+        
+        // set pipe id
+        long gmpipeID = GM_PIPE_ID_DEFAULT;
+        String prop;
+        if ((prop = bc.getProperty("ch.ethz.jadabs.servicemanager.gmpipe.id")) != null)
+                gmpipeID = Long.parseLong(prop);
+        
+        // GroupService
+        ServiceReference sref = bc.getServiceReference(
+                "ch.ethz.jadabs.jxme.services.GroupService");
+        groupService = (GroupService)bc.getService(sref);
+        
+        // Create Pipe
+        groupPipe = groupService.createGroupPipe(gmpipeName, gmpipeID);
+                
+//      set listener
+        groupService.listen(groupPipe, sbbservice);
         
     }
 

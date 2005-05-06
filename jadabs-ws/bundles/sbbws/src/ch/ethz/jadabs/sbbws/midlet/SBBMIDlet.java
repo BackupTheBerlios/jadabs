@@ -7,8 +7,6 @@ import java.io.OutputStream;
 
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -78,6 +76,7 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
     private Command saveCmd;
     private Command resultCmd;
     private Command configCmd;
+    private Command conCmd;
     
     /** MicroGroupService service bundle actiavtor */
     private MicroGroupServiceBundleImpl groupService;
@@ -86,12 +85,14 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
 
     private String opipe = "test";
     
+    OSGiContainer osgicontainer;
+    
     /**
      * Constructor
      */
     public SBBMIDlet() {
 
-        OSGiContainer osgicontainer = OSGiContainer.Instance();
+        osgicontainer = OSGiContainer.Instance();
         osgicontainer.setProperty("ch.ethz.jadabs.jxme.peeralias", this.getAppProperty("ch.ethz.jadabs.jxme.peeralias"));
         osgicontainer.setProperty("log4j.priority", this.getAppProperty("log4j.priority"));
         osgicontainer.setProperty("ch.ethz.jadabs.microservices.bundleport", 
@@ -103,10 +104,10 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
         
         // uncomment for local loopback 
         // start bundle part of MicroGroupService 
-        MicroGroupServiceBundleActivator mgsActivator = new MicroGroupServiceBundleActivator();        
-        osgicontainer.startBundle(mgsActivator);
-        groupService = mgsActivator.getService();   
-        groupService.wakeupCore(); 
+//        MicroGroupServiceBundleActivator mgsActivator = new MicroGroupServiceBundleActivator();        
+//        osgicontainer.startBundle(mgsActivator);
+//        groupService = mgsActivator.getService();   
+//        groupService.wakeupCore(); 
                 
         osgicontainer.startBundle(this);
 
@@ -141,36 +142,37 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
         saveCmd = new Command("Speichern", Command.SCREEN, 1);
         resultCmd = new Command("Ergebnis", Command.SCREEN, 1);
         configCmd = new Command("Konfiguration", Command.SCREEN, 2);
-
-        queryForm = new QueryForm(this, new Command[]{sendCmd, logCmd, exitCmd, resultCmd, configCmd});
+        conCmd = new Command("JadabsMgr-Con", Command.SCREEN, 1);
+        
+        queryForm = new QueryForm(this, new Command[]{conCmd, sendCmd, logCmd, exitCmd, resultCmd, configCmd});
         configForm = new ConfigurationForm(this, new Command[]{selectCmd, backCmd});
 
         display.setCurrent(queryForm);
         Logger.getLogCanvas().setDisplay(display);
         Logger.getLogCanvas().setPreviousScreen(queryForm);
 
-        // uncomment for local loopback
-        try {
-            LOG.debug("do localpipe search");
-            
-	        // create pipe to communicate with core
-	        String ns[] = groupService.localSearch(NamedResource.PIPE, "Name", PIPE_NAME, 1 );
-	        
-	        if (ns.length > 0)
-	        {
-	            pipeId = ns[0];
-	            LOG.debug("found: "+pipeId);
-//		        pipeId = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:04", Pipe.PROPAGATE);
-//		        groupService.publish(NamedResource.PIPE, PIPE_NAME, pipeId);
-	                
-		        groupService.listen(pipeId, this);
-	        }
-	        else
-	            LOG.debug("no local-loopback");
-	        
-        } catch(IOException e) {
-           LOG.error("Error while registering listener to pipe '"+pipeId+"': "+e.getMessage());
-        }
+//        // uncomment for local loopback
+//        try {
+//            LOG.debug("do localpipe search");
+//            
+//	        // create pipe to communicate with core
+//	        String ns[] = groupService.localSearch(NamedResource.PIPE, "Name", PIPE_NAME, 1 );
+//	        
+//	        if (ns.length > 0)
+//	        {
+//	            pipeId = ns[0];
+//	            LOG.debug("found: "+pipeId);
+////		        pipeId = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:04", Pipe.PROPAGATE);
+////		        groupService.publish(NamedResource.PIPE, PIPE_NAME, pipeId);
+//	                
+//		        groupService.listen(pipeId, this);
+//	        }
+//	        else
+//	            LOG.debug("no local-loopback");
+//	        
+//        } catch(IOException e) {
+//           LOG.error("Error while registering listener to pipe '"+pipeId+"': "+e.getMessage());
+//        }
     }
 
     /**
@@ -201,7 +203,40 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
         display = null;
     }
 
-
+    private void connectAndFind()
+    {
+        // uncomment for local loopback 
+        // start bundle part of MicroGroupService 
+        MicroGroupServiceBundleActivator mgsActivator = new MicroGroupServiceBundleActivator();        
+        osgicontainer.startBundle(mgsActivator);
+        groupService = mgsActivator.getService();   
+        groupService.wakeupCore(); 
+        
+        // uncomment for local loopback
+        try {
+            
+            Thread.sleep(25000);
+            
+	        // create pipe to communicate with core
+	        String ns[] = groupService.localSearch(NamedResource.PIPE, "Name", PIPE_NAME, 1 );
+	        
+	        if (ns.length > 0)
+	        {
+	            pipeId = ns[0];
+	            LOG.debug("found: "+pipeId);
+//		        pipeId = groupService.create(NamedResource.PIPE, PIPE_NAME, "urn:jxta:uuid-0002:0001:04", Pipe.PROPAGATE);
+//		        groupService.publish(NamedResource.PIPE, PIPE_NAME, pipeId);
+	                
+		        groupService.listen(pipeId, this);
+	        }
+	        else
+	            LOG.debug("no local-loopback");
+	        
+        } catch(Exception e) {
+           LOG.error("Error while registering listener to pipe '"+pipeId+"': "+e.getMessage());
+        }
+    }
+    
     /**
      * Handle user action
      *
@@ -216,6 +251,8 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
             display.setCurrent(Logger.getLogCanvas());
         } else if (c == resultCmd) {
             showResult();
+        } else if (c == conCmd) {
+            connectAndFind();
         } else if (c == sendCmd) {
             soapTransformation.setDetailsQuery(false);
             String soapMessage = soapTransformation.
@@ -324,24 +361,30 @@ public class SBBMIDlet extends MIDlet implements BundleActivator, MicroListener,
     {
         LOG.debug("incoming message \""+message.toXMLString()+"\", listenerId="+listenerId);                    
     
-        String type = new String(message.getElement("type").getData());
-        
-        if (type.equals("reg"))
+        MicroElement eltype = message.getElement("type");
+        MicroElement soaptype = message.getElement("SOAP_RESPONSE_TAG");
+        if (eltype != null)
         {
-            configForm.setConnectionType(ConfigurationForm.CONTYPE_JXME);
-            opipe = new String(message.getElement("opipe").getData());
-            
-            
-        } else if (type.equals("unreg"))
-        {
-            configForm.setConnectionType(ConfigurationForm.CONTYPE_HTTP);
-            opipe = null;
+	        String type = new String(eltype.getData());
+	        
+	        if (type.equals("reg"))
+	        {
+	            configForm.setConnectionType(ConfigurationForm.CONTYPE_JXME);
+	            opipe = new String(message.getElement("opipe").getData());
+	            
+	            
+	        } else if (type.equals("unreg"))
+	        {
+	            configForm.setConnectionType(ConfigurationForm.CONTYPE_HTTP);
+	            opipe = null;
+	        }
         }
-        
-        
-//        LOG.debug("Received soap response from SBB Server");
-//        fResponseFromSBBServer = new String(msg.getElement("SOAP_RESPONSE_TAG").getData());
-//        soapTransformation.handleSoapObject(fResponseFromSBBServer);
+        else if (soaptype != null)
+	    {        
+            LOG.debug("Received soap response from SBB Server");
+	        fResponseFromSBBServer = new String(soaptype.getData());
+	        soapTransformation.handleSoapObject(fResponseFromSBBServer);
+	    }
     }	
 
 }
