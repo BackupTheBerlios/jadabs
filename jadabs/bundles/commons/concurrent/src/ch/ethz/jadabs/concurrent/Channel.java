@@ -14,6 +14,8 @@
 
 package ch.ethz.jadabs.concurrent;
 
+import com.sun.corba.se.impl.orbutil.concurrent.Sync;
+
 
 /** 
  * Main interface for buffers, queues, pipes, conduits, etc.

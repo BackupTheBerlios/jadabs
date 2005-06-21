@@ -36,7 +36,6 @@ import ch.ethz.jadabs.jxme.Message;
 import ch.ethz.jadabs.jxme.NamedResource;
 import ch.ethz.jadabs.jxme.Peer;
 import ch.ethz.jadabs.pluginLoader.PluginDescriptor;
-import ch.ethz.jadabs.pluginLoader.PluginLoaderImpl;
 import ch.ethz.jadabs.servicemanager.ServiceAdvertisementListener;
 import ch.ethz.jadabs.servicemanager.ServiceManager;
 import ch.ethz.jadabs.servicemanager.ServiceReference;

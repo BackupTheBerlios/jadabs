@@ -35,7 +35,6 @@
  */
 package ch.ethz.jadabs.bundleLoader;
 
-import java.io.File;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.Enumeration;
