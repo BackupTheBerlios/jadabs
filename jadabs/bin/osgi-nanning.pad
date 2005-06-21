@@ -6,17 +6,17 @@
 	version="0.1.0"
 	provider-name="ETHZ-IKS">
 	
-    <Property name="processor" value="i386" />
-    <Property name="os" value="linux" />
+    <Property processor="i386" />
+    <Property os="linux" />
     
-    <Property name="display" value="no" />
+    <Property display="no" />
     
-    <Property name="vm" value="cdc/fp" />
-    <Property name="vm-version" value="1.0.1" />
+    <Property vm="cdc/fp" />
+    <Property vm-version="1.0.1" />
     
     <!-- can also be omitted, as it is specified per default -->
     <OSGiContainer id="osgi"/>
-    <OSGiContainer id="core-osgi-daop"/>
+    <OSGiContainer id="osgi-daop"/>
         	    
      <NetIface 
         type="wlan/managed"

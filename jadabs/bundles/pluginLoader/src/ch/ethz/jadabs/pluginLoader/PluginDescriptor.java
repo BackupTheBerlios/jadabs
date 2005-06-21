@@ -56,7 +56,7 @@ public class PluginDescriptor extends Descriptor {
    private static Logger LOG = Logger.getLogger(PluginDescriptor.class);
    private KXmlParser parser;
    protected Vector extensions = new Vector();
-   private Hashtable extensionPoints = new Hashtable();
+   private ArrayList extensionPoints = new ArrayList();
    protected String activator;
    
    /**
@@ -117,6 +117,8 @@ public class PluginDescriptor extends Descriptor {
                */
             } else if (stack.peek().equals("Extension-Point")) {
                String id = parser.getAttributeValue(null, "id");
+               extensionPoints.add(id);
+               
                LOG.debug("FOUND EXTENSION-POINT " + id);
                
                if (id.startsWith("Extension")) {
@@ -151,5 +153,10 @@ public class PluginDescriptor extends Descriptor {
             }
          }
       }
+   }
+   
+   public Iterator getExtensionPoints()
+   {
+       return extensionPoints.iterator();
    }
 }

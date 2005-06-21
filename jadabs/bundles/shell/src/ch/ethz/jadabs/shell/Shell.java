@@ -201,7 +201,7 @@ public class Shell extends Thread implements IShellPluginService {
             }
 
          } else if (cmdString.equalsIgnoreCase("loadBundle")) {
-            if (cmd.length > 3) {
+            if (cmd.length == 2) {
                if (ShellActivator.bloader != null) {
                   ShellActivator.bloader.loadBundle(cmd[1] + ":obr");
                } else {
@@ -210,7 +210,7 @@ public class Shell extends Thread implements IShellPluginService {
                }
             } else {
                System.out
-                     .println("[USAGE: loadBundle <bundlename> <bundleid> <bundleversion>");
+                     .println("[USAGE: loadBundle <group:name:version>");
             }
 
          } else if (cmdString.equalsIgnoreCase("ss")) {
@@ -287,7 +287,7 @@ public class Shell extends Thread implements IShellPluginService {
       System.out
             .println("stopBundle       <bid>                       Stops a bundle");
       System.out
-            .println("loadBundle       <name> <group> <version>    Loads a bundle using the Jadabs BundleLoader");
+            .println("loadBundle       <group:name:version>        Loads a bundle using the Jadabs BundleLoader");
       System.out
             .println("installBundle    <location>                  Installs a bundle");
       System.out

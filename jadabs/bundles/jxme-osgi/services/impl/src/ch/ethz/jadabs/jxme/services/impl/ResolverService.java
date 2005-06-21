@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: ResolverService.java,v 1.7 2005/04/03 16:32:13 printcap Exp $
+ * $Id: ResolverService.java,v 1.8 2005/06/21 11:59:56 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -730,6 +730,8 @@ public class ResolverService extends Service implements Runnable, Listener
             res.touch();
         }
 
+        LOG.debug("found resource: "+res.getName());
+        
         if (!available)
         {
 	        for(Enumeration en = queries.elements(); en.hasMoreElements();)

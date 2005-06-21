@@ -83,6 +83,8 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
 
     protected static Scheduler scheduler = new Scheduler();
 
+    protected static ArrayList providsOPDs = new ArrayList();
+    
     /**
      * Singleton, hidden constructor
      */
@@ -138,6 +140,12 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
                     LOG.info("Loading Plugin " + uuid + "...");
 
                     loadPlugin(uuid);
+                } else if (line.startsWith("-provideopd"))
+                {
+                    uuid = line.substring(11).trim();
+                    LOG.info("providing plugin " + uuid);
+
+                    providsOPDs.add(uuid);
                 }
             }
         } catch (Exception e)
@@ -149,6 +157,11 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
 
     }
 
+    public Iterator getProvidingPlugins()
+    {
+        return providsOPDs.iterator();
+    }
+    
     public boolean loadPluginIfMatches(String uuid, InputStream in) throws Exception
     {
         if (matches(in, " ¦ " + platform + " ¦ " + "PRO"))
@@ -175,7 +188,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
             PluginDescriptor providing = getPluginDescriptor((String) scheduler.stillToProcess.remove(0));
         }
 
-        System.out.println(scheduler);
+        LOG.info(scheduler);
 
         // and finally load the activator bundles and all their dependencies
         // via bundleLoader
@@ -187,7 +200,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
                 for (int index = 0; index < schedule.size(); index++)
                 {
                     PluginDescriptor current = getPluginDescriptor((String) schedule.get(index));
-                    System.out.println("LOADING " + current.activator);
+                    LOG.info("LOADING " + current.activator);
                     PluginLoaderActivator.bloader.loadBundle(current.activator);
                     loadedPlugins.add(current.toString());
                 }
@@ -310,7 +323,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
      * @return PluginDescriptor
      * @throws Exception
      */
-    private PluginDescriptor getPluginDescriptor(String uuid) throws Exception
+    public PluginDescriptor getPluginDescriptor(String uuid) throws Exception
     {
         PluginDescriptor result = null;
         WeakReference ref = (WeakReference) descriptorCache.get(uuid);
@@ -334,6 +347,11 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
         return result;
     }
 
+    public String getPlatform()
+    {
+        return platform;
+    }
+    
     /**
      * Same as in BundleLoader, but only used to fetch opds
      * 

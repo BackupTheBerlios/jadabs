@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 import ch.ethz.jadabs.bundleLoader.api.Loader;
+import ch.ethz.jadabs.pluginLoader.PluginDescriptor;
 
 /**
  * Plugin Loader Interface 
@@ -101,4 +102,10 @@ public interface PluginLoader extends Loader {
 	* Fetch a plugin information.
 	*/
    public InputStream fetchInformation(String uuid, Object requestor);
+
+   public PluginDescriptor getPluginDescriptor(String uuid) throws Exception;
+   
+   public Iterator getProvidingPlugins();
+   
+   public String getPlatform();
 }

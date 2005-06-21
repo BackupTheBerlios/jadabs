@@ -22,9 +22,7 @@ public class PluginLoaderHandler implements HttpRequestHandler {
    public boolean delegate(HttpSocket request) {
       if (request.file.startsWith("/match/")) {         
          String filter = request.file.substring(7);
-         System.out.println();
-         System.out.println(filter);
-         System.out.println();
+
          StringBuffer buffer = new StringBuffer();
          try {                
             for (Iterator plugins = PluginLoaderActivator.ploader.getMatchingPlugins(filter, this); plugins.hasNext(); ) {

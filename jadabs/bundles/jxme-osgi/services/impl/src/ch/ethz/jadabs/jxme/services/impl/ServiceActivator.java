@@ -83,15 +83,15 @@ public class ServiceActivator implements BundleActivator
         bc.registerService(
                 "ch.ethz.jadabs.jxme.services.GroupService",
                 groupService, null);
-                
-        // Also publish this Peer and the PeerGroup on the network
-        groupService.remotePublish(peer);
-        groupService.remotePublish(group);
-        
+          
         // start resolverservice Thread
         Thread resolverThread = new Thread(resServ);
         resolverThread.start();
         
+        // Also publish this Peer and the PeerGroup on the network
+        groupService.remotePublish(peer);
+        groupService.remotePublish(group);
+                
     }
 
     /*

@@ -320,14 +320,14 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
 	        BufferedReader br = new BufferedReader(insr);
 	        
 	        String line = br.readLine();
-	        	        
-	        while(!line.equals("<plugins>") )
+
+	        while(line != null && !line.equals("<plugins>") )
 	            line = br.readLine();
 	        
 	        // start parsing plugins and store them locally
 	        
 	        StringBuffer sb;
-	        while (!line.equals("</plugins>"))
+	        while (line != null && !line.equals("</plugins>"))
 	        {
 	            while(line.indexOf("<OSGiServicePlugin") == -1)
 	                line = br.readLine();
@@ -368,6 +368,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
 	            
 	            line = br.readLine();
 	        }      
+	        
 	        
 	        ins.close();
 	        insr.close();

@@ -9,6 +9,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import ch.ethz.jadabs.bundleLoader.api.BundleLoader;
+import ch.ethz.jadabs.jxme.NamedResource;
 import ch.ethz.jadabs.jxme.Pipe;
 import ch.ethz.jadabs.jxme.services.GroupService;
 import ch.ethz.jadabs.pluginLoader.api.PluginLoader;
@@ -89,7 +90,9 @@ public class ServiceManagerActivator implements BundleActivator
         // register servicemanager
         bc.registerService("ch.ethz.jadabs.servicemanager.ServiceManager", serviceManager, null);
         
-        
+        groupService.remoteSearch(NamedResource.PEER, 
+                "Name", "", 1, serviceManager);
+                
         // start the servicemanager thread
 //        svcManagerThread =  new Thread(serviceManager);
 //        svcManagerThread.start();

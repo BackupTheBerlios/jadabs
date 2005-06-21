@@ -89,6 +89,7 @@
   <!--==================================================================-->
   <!-- Build jadabs distribution                                        -->
   <!--==================================================================-->
+		
 	<goal name="jadabs:distmin">
 		
 		<!-- setup dist directory -->
@@ -116,7 +117,7 @@
 			<ant:fileset dir="${licences.dir}" />
 		</ant:copy>
 		
-		<!-- copy bundles jadabs core, log4j, -->
+		<!-- copy bundles jadabs core-->
 		<ant:copy todir="${jadabs.dist.repository}/jadabs/jars">
 			<ant:fileset dir="${jadabs.maven.inst.dir}/" 
 				includes="bundleloader-*,pluginloader-*"

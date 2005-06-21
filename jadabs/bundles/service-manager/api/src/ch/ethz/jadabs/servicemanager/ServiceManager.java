@@ -25,6 +25,9 @@ public interface ServiceManager
     public static String FILTER_REQ = "filreq";
     public static String FILTER_ACK = "filack";
     
+    public static String NEWFILTER_REQ = "nfilreq";
+    public static String NEWFILTER_ACK = "nfilack";
+    
     public static String OBR_REQ = "obrreq";
     public static String OBR_ACK = "obrack";
     
