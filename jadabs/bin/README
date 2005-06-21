@@ -1,39 +1,44 @@
-Jadabs
-------
+#----------------------------------------------------------------#
+# Copyright (c) 2003-2005, Jadabs project                        #
+# All rights reserved.                                           #
+#                                                                #
+# http://jadabs.berlios.de                                       #
+#                                                                #
+# Read first Jadabs-model: http://jadabs.berlios.de/model.html   #
+#----------------------------------------------------------------#
 
-see for more information http://wlab.ethz.ch/jadabs
-copyright by ETH, Andreas Frei
+Before you use the Jadabs project make yourself familiar with the
+Jadabs-model, see linke above! The model describes the used
+metadata for OSGi bundles like OPD, OBR, and PAD. The metadata
+describes the wiring of the used bundles. It allows you to startup
+a whole container, application with only one UUID string.
 
 Minimal
 --------
-With the minimal version you can start a peer like the following:
+With the minimal configuration comes with only the plugin-, bundle-loader,
+and log4j package. At startup the default configuration downloads all 
+required plugins for the service-manager from the osgirepo.berlios.de 
+repository. You can also change the osgirepo to one of your repositories. 
+Change therefore the path in the init.xargs 
+(-Dch.ethz.jadabs.bundleloader.httprepo=localhost).
 
-linux> ./runpeer.sh
-win> runpeer.bat
+
+version you can start a peer like the following:
+
+linux> bash jadabs.sh
+win> jadabs.bat
 
 To start a second peer make a copy of this folder and change inside
-the runpeer -Dch.ethz.jadabs.jxme.peeralias=$HOSTNAME the HOSTNAME to an
-other name, e.g. peer2.
+the jadabs script:
+-Dch.ethz.jadabs.jxme.peeralias=$HOSTNAME 
+the HOSTNAME to an other name, e.g. peer2.
 
 For the PocketPC Version, copy this folder to your PPC root folder and 
 install the IBM j9-VM in the root folder. Use the link run-ppcj9.lnk to
 start Jadabs.
 
-Full
-----
-Contains all our libraries together with the ones from Knopflerfish (KF).
-You can start with KF-GUI or with a very simple RemoteBundle Admin tool.
-
-KF-GUI:
-
-linux> ./runpeer.sh init-kf
-win> runpeer.bat init-kf
-
-RemoteBundle-Admin GUI
-
-linux> ./runpeer.sh init-gui-linux
-win> runpeer.bat init-gui-win
-
+The minimal configuration comes with only the plugin-, bundle-loader, and
+the log4j package. 
 
 
 Full-Prose
@@ -41,6 +46,6 @@ Full-Prose
 All the above scripts can also be run by adding prose as a parameter.
 Currently this works only for Linux.
 
-linux> ./runpeer.sh init prose
+linux> bash jadabs.sh init prose
 linux> ./runpeer.sh init-kf prose
 linux> ./runpeer.sh init-gui-linux prose 

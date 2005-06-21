@@ -29,16 +29,16 @@
         ip="192.168.55.10"
         description="connection to Internet Gateway"
      />
-<!--     
+
     <NetIface 
-        type="wlan/adhoc"
+        type="adhoc"
         connection="dynamic"
         name="bt-hotspot"
         iface="eth1"
         ip="192.168.55.55"
         description="for ad-hoc wireless"
      />
-
+<!--
      <NetIface 
         type="bt/jsr-82"
         connection="dynamic"
