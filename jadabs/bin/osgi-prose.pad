@@ -16,7 +16,7 @@
     
     <!-- can also be omitted, as it is specified per default -->
     <OSGiContainer id="osgi"/>
-    <OSGiContainer id="osgi-nanning"/>
+    <OSGiContainer id="osgi-prose"/>
         	    
      <NetIface 
         type="wlan/managed"
