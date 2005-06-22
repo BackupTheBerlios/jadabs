@@ -16,11 +16,10 @@
       <section name="Download">
       <p>
         Jadabs is currently distributed in two versions. The minimal
-        version includes the OSGi/dAOP/Jxme/RemoteFW and
+        version includes the by default the service-manager configuration and
         can be used on small devices in a distributed 
-        environment. In the full version we added all the Knopflerfish
-        services running on the AOP framework and a runtime AOP implementation.
-        The full versions need to be run on a more powerfull node like laptop.
+        environment. In the full version we added the dAOP approach of PROSE
+        and needs to be run more powerful linux machines.
       </p>
       
       <table>
@@ -28,23 +27,16 @@
           
           <tr>
           	<td>minimal</td>
-          	<td>OSGi/dAOP, JXME, RemoteFW</td>
+          	<td>OSGi/Nanning, Service-Manager</td>
           	<td>AspectJ/Nanning</td>
           	<td><a href="../releases/">jadabs-x.x.x-minimal.tar.gz</a></td>
           </tr>
           
           <tr>
-          	<td>full</td>
-          	<td>OSGi/dAOP, JXME, RemoteFW, all Knopflerfish Bundles</td>
-          	<td>AspectJ/Nanning</td>
-          	<td><a href="../releases/">jadabs-x.x.x-full.tar.gz</a></td>
-          </tr>
-          
-          <tr>
-          	<td>full-prose</td>
-          	<td>OSGi/dAOP/Prose, JXME, RemoteFW, all Knopflerfish Bundles</td>
+          	<td>prose</td>
+          	<td>OSGi/Prose, JXME, Service-Manager</td>
           	<td>AspectJ/Nanning/Prose</td>
-          	<td><a href="../releases/">jadabs-x.x.x-fullprose.tar.gz</a></td>
+          	<td><a href="../releases/">jadabs-x.x.x-prose.tar.gz</a></td>
           </tr>
           
       </table>
@@ -58,105 +50,26 @@
 		
 		<table><tr><th>Default Execution</th></tr></table>
 <source><![CDATA[
-linux> runpeer.sh
+linux> jadabs.sh
 or
-win32> runpeer.bat
-]]></source>
-
-    <table><tr><th>Configured Execution</th></tr></table>
-    <p>
-        For a special configuration see table below and start accordingly.
-    </p>
-    
-<source><![CDATA[
-linux> runpeer.sh <configuration>
-or
-win32> runpeer.bat <configuration>
-]]></source>
+win32> jadabs.bat
+or with the prose version
+linux> jadabs.sh prose
+]]>
+</source>
 
 
 
   	</section>
   	
-  	<section name="Configuration">
+  	<subsection name="Configuration">
   	    <p>
-  	        Depending on which version you downloaded you have different possibilities to 
-  	        start the container.
+  	        Configuration is performed in the jadabs.starter file by specifying
+  	      the OPDs to be used. Check the <a href="model">Jadabs-model</a> for more information 
+  	        about configuraiton and startup of your own plugins.
   	    </p>
-  	    <p>
-  	        Depending on which version you downloaded you have different possibilities to 
-  	        start the container.
-  	    </p>
-  	
-  	<table>
-          <tr><th>Download</th><th>Configuration</th><th>Bundles</th><th>Description</th></tr>
-          
-          <tr>
-          <td>minimal</td>
-          <td>init.xargs (default for all)</td>
-          <td>OSGi/dAOP, JXME, RemoteFW</td>
-            <td>
-              <p>
-                  This configuration starts the dynamic lightweight container 
-                  which can be administrated remotely.
-              </p>
-              <p>
-                  This version has a very small footprint and can be easely run on a 
-                  PDA with a Java VM compatible to Java 1.3, e.g. J2ME/CDC on an iPAQ.
-              </p>
-            </td>
-          </tr>
-                    
-          <tr>
-          <td>full</td>
-          <td>init-gui-linux.xargs, init-gui-win32.xargs</td>
-          <td>OSGi/dAOP, JXME, RemoteFW, MainGUI</td>
-            <td>
-              <p>
-                  This configuration starts the dynamic lightweight container with
-                  a simple GUI console to do remote administration.
-              </p>
-              <p>
-                  Use the -linux.xargs for a linux machine and -win32.xargs for
-                  a WindowsXP machine.
-              </p>
-            </td>
-          </tr>
-          
-          <tr>
-          <td>full</td>
-          <td>init-kf.xargs</td>
-          <td>OSGi/dAOP, JXME, RemoteFW, all Knopflerfish Bundles</td>
-            <td>
-              <p>
-                  This configuration starts the dynamic lightweight container with
-                  the Knopflerfish GUI including the remote framework for administration.
-              </p>
-            </td>
-          </tr>
-          
-          <tr>
-          <td>full-prose</td>
-          <td>
-              <ul>
-                  <li>init.xargs prose</li>
-                  <li>init-kf.xargs prose</li>
-                  <li>init-gui-linux.xargs prose</li>
-              </ul>
-          </td>
-          <td>OSGi/dAOP/Prose, JXME, RemoteFW, all Knopflerfish Bundles</td>
-            <td>
-              <p>
-                  This configuration starts the dynamic lightweight container running
-                  with PROSE including the remote framework for administration. With the
-                  second configuration (init-kf prose) the Knopflerfish GUI is started
-              </p>
-            </td>
-          </tr>
-          
-    </table>
-  	
-  	</section>
+
+  	</subsection>
   	
   	   <section name="Supported Devices and Platforms">
 
@@ -182,7 +95,7 @@ win32> runpeer.bat <configuration>
             	<ul>
             	    <li>AspectJ, Nanning</li>
             		<li>Jxme-UDP, Jxme-TCP, Jxme-Bluetooth (only on Linux)</li>
-            		<li>Jxme-Services, RemoteFW</li>
+            		<li>Service-Manager</li>
             	</ul>
             </td>
             <td>newest!</td>
@@ -196,10 +109,10 @@ win32> runpeer.bat <configuration>
             	<ul>
             	    <li>AspectJ, Nanning</li>
             		<li>Jxme-UDP, Jxme-TCP</li>
-            		<li>Jxme-Services, RemoteFW</li>
+            		<li>Service-Manager</li>
             	</ul>
             </td>
-            <td>newest!</td>
+            <td></td>
           </tr>
           
           <tr>
@@ -210,10 +123,10 @@ win32> runpeer.bat <configuration>
             	<ul>
             	    <li>AspectJ, Nanning, PROSE</li>
             		<li>Jxme-UDP, Jxme-TCP, Jxme-Bluetooth</li>
-            		<li>Jxme-Services, RemoteFW</li>
+            		<li>Service-Manager</li>
             	</ul>
             </td>
-            <td>newest!</td>
+            <td></td>
           </tr>
           
           <tr>
@@ -227,7 +140,7 @@ win32> runpeer.bat <configuration>
             		<li>Jxme-Services, RemoteFW</li>
             	</ul>
             </td>
-            <td>newest!</td>
+            <td>Service-Manager</td>
           </tr>
           
           <tr>
@@ -236,7 +149,7 @@ win32> runpeer.bat <configuration>
           	<td>.NET-Framework</td>
             <td>
             	<ul>
-            		<li>Jxme-UDP, Jxme-TCP</li>
+            		<li>Jxme-UDP</li>
             	</ul>
             </td>
             <td>we are working on a release</td>
@@ -248,7 +161,7 @@ win32> runpeer.bat <configuration>
           	<td>.NET-CompactFramework</td>
             <td>
             	<ul>
-            		<li>Jxme-UDP, Jxme-TCP</li>
+            		<li>Jxme-UDP</li>
             	</ul>
             </td>
             <td>we are working on a release</td>

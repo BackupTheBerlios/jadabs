@@ -53,7 +53,7 @@
 	</p>
 <source><![CDATA[
 > cd jadabs
-> maven jadabs:dist
+> maven jadabs:distmin
 ]]></source> 
 	
 	</section>

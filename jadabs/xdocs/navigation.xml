@@ -15,54 +15,68 @@
   	<links>
   		<item name="BerliOS" 						href="https://developer.berlios.de/projects/jadabs"/>
   		<item name="Jadabs-CLDC" 					href="http://jadabs.berlios.de/jadabs-cldc/"/>
-  		<item name="OSGi-Repository" 				href="http://osgirepo.berlios.de/maven/repository"/>
+  		<item name="OSGi-Repository" 				href="http://osgirepo.berlios.de/repository"/>
   		<item name="Maven-OSGi-Plugin" 				href="http://mavenosgiplugin.berlios.de"/>
 <!--  		<item name="PDF Documentation" 				href="/jadabs.pdf" img="/images/pdf.gif"/>-->
   	</links>
   
   	<menu name="Overview">
+
   		<item name="Goals" 							href="/index.html"/>
-  		<item name="News and Status"				href="/changes-report.html"/>
+<!--  		<item name="News and Status"				href="/changes-report.html"/>
+-->
   		<item name="Start" 						    href="/start/start.html"/>
   		
-  		<item name="Getting Started" 				href="/start/index.html" collapse="true">
+ <!-- 		<item name="Getting Started" 				href="/start/index.html" collapse="true">
+ -->
   			<item name="User Guide" 				href="/start/userguide.html"/>
+  			<item name="Model" 						href="/start/model.html"/>
 	  		<item name="JXME"						href="/start/jxme.html"/>
+<!--
   			<item name="AOP"						href="/start/aop.html"/>
   			<item name="SOA"						href="/start/soa.html"/>
+-->
   			<!--<item name="Design Principles"			href="/start/design.html"/> -->
   			<item name="Build" 						href="/start/buildjadabs.html"/>
   			<item name="Maven-OSGi-Plugin" 			href="http://mavenosgiplugin.berlios.de"/>
-  		</item>
+ <!-- 		</item>-->
 
+<!--
   		<item name="Misc" 							href="/misc/index.html" collapse="true">
   			<item name="Related Work" 				href="/misc/relatedwork.html"/>
   		</item>
   		
   		<item name="Projects Using Jadabs"			href="/lab/index.html"/>
+-->	
   	</menu>
   	
     <menu name="Sub-Projects">
 		<item name="Overview of project" 		href="/projects-overview.html"/>
+    	<item name="Jadabs-CLDC" 			    href="http://jadabs.berlios.de/jadabs-cldc"/>
+    	<item name="Jadabs-IM" 			    	href="http://jadabs.berlios.de/jadabs-im"/>
+    	<item name="Jadabs-Amonem" 			    href="http://jadabs.berlios.de/amonem"/>
+<!--
 		<item name="JXME-OSGi"						href="" collapse="false">
 			<item name="JXME-OSGi core"				href="/multiproject/jxme-osgi/index.html" />
 			<item name="JXME-Services-API"			href="/multiproject/jxme-services-api/index.html" />
 			<item name="JXME-Services-Impl"			href="/multiproject/jxme-services-impl/index.html" />
 			<item name="JXME UDP"					href="/multiproject/jxme-udp/index.html" />	
 			<item name="JXME TCP" 					href="/multiproject/jxme-tcp/index.html"/>
-<!--			<item name="JXME BT" 					href="/multiproject/jxme-bt/index.html"/> -->
+			<item name="JXME BT" 					href="/multiproject/jxme-bt/index.html"/>
 		</item>
 		<item name="RemoteFW API" 			    href="/multiproject/remotefw-api/index.html"/>
 		<item name="RemoteFW Impl"				href="/multiproject/remotefw-impl/index.html" />
-<!--		<item name="Jadabs-Shell"               href="/multiproject/jadabs-shell/index.html" /> -->
+		<item name="Jadabs-Shell"               href="/multiproject/jadabs-shell/index.html" />
 		<item name="Jadabs-MainGUI"				href="/multiproject/jadabs-maingui/index.html" />
 		<item name="Services"					href="" collapse="false">
 			<item name="SMTP Gateway"           	href="/multiproject/smtpgw/index.html"/>
 		</item>
+
 		<item name="Dynamic Loader"				href="/start/loader.html">				
 			<item name="BundleLoader"                       href="/multiproject/bundleloader/index.html" />				
 			<item name="PluginLoader"                       href="/multiproject/pluginloader/index.html" />			
-		</item>		
+		</item>
+-->	
 	</menu>
 	
 	<menu name="Project Admin">

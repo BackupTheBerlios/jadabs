@@ -1,0 +1,520 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ *
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Service and Component Model</title>
+  </properties>
+
+  <body>
+  
+    <section name="Service and Component Model">
+
+	<p>
+		Jadabs uses a service-oriented architecture defined by the OSGi
+		Alliance. A service-oriented architecture
+		(SOA) can help to reduce software complexity as part
+		of separation of concerns. The concept of a
+		service-oriented architecture is shown in Figure below. A Service Provider registers a
+		service implementation with its interface in the OSGi container's
+		local registry (1). A Service Client component is then able
+		to lookup the registered service (2) and bind to the
+		Service (3).
+	</p>
+	
+    	<center>
+    		<img src="images/soa_mechanism.jpg" alt="Service-oriented
+    			registration mechanism"/>
+    	</center>
+    	
+	<p>
+		The SOA mechanism was chosen for many reasons:
+	</p>
+	
+	<ul>
+  		<li> 
+  			Service-oriented programming forces designers and developers to
+  			follow the separation of concerns paradigm.
+		    Dependencies among different services have to be
+		    specified at design time in order to increase the usability of such
+		    services.
+    	</li>
+		<li> 
+		    An SOA mechanism can be implemented in a very small
+		    footprint. Depending on the functionality of the container the
+		    footprint ranges from 10 KBytes to 200 KBytes. This makes
+		    such a component model interesting not only for desktop
+		    machines but also for handhelds and even mobile phones.
+		    A container implementation can also be kept totally
+		    independent of remote functionality.
+    	</li>
+		<li>
+    		The SOA mechanism defined by OSGi is already a
+		    proven solution in many different fields ranging from home residential
+		    gateways over deployed vehicle solutions
+		    to development environments like Eclipse. OSGi implementations are available
+		    by IBM, OSCAR, Sun Microsystems, Gatespace, AveLink, and ProSyst.
+    	</li>
+		<li>
+		    The SOA mechanism is language and platform independent
+		    whereas OSGi has defined its service platform in Java. A .NET implementation
+		    of the OSGi API is possible but the unloading of components
+		    cannot be supported.
+		</li>
+	</ul>
+	
+	</section>
+	
+	<section name="Jadabs-PSM">
+	<p>
+		The model of the service-oriented architecture is reflected in the
+		proposed platform specific model (PSM) for Jadabs. The
+		representation of the component model has been chosen from the
+		CORBA Component Model (CCM).
+	</p>
+	
+	<subsection name="Components">
+	<p>
+		Figure below shows in CCM notation a
+		service running in an OSGi container. In CCM a main
+		component executor interface is used to control the component's
+		lifecycle. In OSGi such an executor interface is called
+		BundleActivator. OSGi defines a bundle as a deployable
+		package which may contain a BundleActivator. In the proposed
+		Jadabs model, a bundle which contains an activator is called
+		service plugin and a bundle without an activator is simply
+		referred to as a bundle.  A service plugin references its
+		required bundles so that they can be loaded automatically. An
+		application is then assembled out of a list of service plugins.
+	</p>
+	<p>
+		Figure below shows an application example
+		with two service plugins, one of which is the Model and the
+		other a GUI service plugin. These service plugins require
+		further bundles A, B, C, and D whereof bundle C is
+		referenced in both service plugin's dependency paths.
+	</p>
+	<p>
+		A bundle which is used in several service plugins is a common
+		occurrence in component frameworks. A key factor in component
+		frameworks for resource constraint devices is its
+		footprint which requires the same bundle to be
+		active only once. Two types of footprint are important for such
+		devices: static and dynamic footprints. The static
+		footprint is the amount of storage needed on the disk to hold the
+		program code. The dynamic footprint represents the amount of
+		memory used by a running instance of the application. Therefore,
+		it consists of code, heap, and stack size.
+	</p>
+	<p>
+		Different component systems address this issue in a variety of
+		ways:
+	</p>
+	<ul>
+		<li>
+			Native component systems like COM, and CORBA
+		    use dynamically linked libraries deployed as DLL files on Windows systems
+		    or shared object SO files on Linux. These libraries
+		    should appear only once per system in order to decrease the static footprint.
+		    At run time, several applications are able to use the same shared
+		    library which decreases the dynamic footprint. Difficulties in
+		    managing DLLs have lead to the term "DLL-Hell". An
+		    often chosen solution is to provide each application with all
+		    the required DLLs which in turn foils the intended advantage of shared
+		    libraries to keep down the static footprint.
+		</li>
+		<li>
+			In .NET, metadata was introduced which describes
+		    an assembly, the DLL, with its version, authors, and
+		    external assembly references. This solves the "DLL-Hell" and
+		    leads to a minimal static and dynamic footprint.
+		    In J2EE the application server is able to load
+		    classes from the same physical libraries on disk. To separate
+		    hosted applications from each other many J2EE implementors use
+		    different class-loaders for the same library which, however, increases the dynamic
+		    footprint.
+		</li>
+		<li>
+			The OSGi specification proposes to include libraries in
+		    the bundle which contains the BundleActivator. The libraries
+		    are then exported from this bundle to other bundles
+		    which require such a library. This way only one library is loaded
+		    which leads to a minimal static and dynamic footprint.
+		</li>
+	</ul>
+	
+		<center>
+			<img src="images/service_composition2.jpg" alt="Jadabs
+				service composition"/>
+		</center>
+
+	<p>
+		However, the proposed assembling of service plugins in the OSGi
+		specification may lead to an increased dynamic footprint once
+		bundles are not used anymore. As each service plugin is loaded in
+		its own class-loader, single bundles cannot be removed from a
+		service plugin. Once a service plugin is no longer needed other
+		service plugins may still reference a required bundle which is in
+		the service plugin about to be unloaded. This prevents the
+		container of unloading the inactive service plugin, thus keeping
+		vital memory occupied. The proposed solution of separating service
+		plugins and regular bundles allows us to unload bundles
+		independently. As shown in Figure above
+		when for example the GUI service plugin is unloaded, bundle C is
+		independent of the service plugin and the other bundle A can be
+		unloaded.
+	</p>
+	
+	</subsection>
+	
+	<subsection name="Container">
+	<p>
+		The loading of new bundles as well as the complete unloading of
+		bundles is essential for memory-constraint devices. Depending on
+		the capabilities of the platform where the Jadabs-PSM is mapped
+		to, two different container models are supported.
+	</p>
+	<p>
+		<b>Segmented containers</b> take full advantage of OSGi bundle
+	    loading. Each bundle and service plugin is loaded by its own
+	    class-loader. This allows the removal of those bundles at a
+	    later stage when they are no longer required, leaving the others up and
+	    running. The segmented container therefore needs the
+	    possibilities to load bundles independently of each other. As
+	    all bundles reside in the same process, method invocation over
+	    bundle boundaries have no performance penalty. Figure
+	    above shows the segmented container
+	    where only regular method invocations are used. For example
+	    bundle C, which is used by the GUI service plugin as well as
+	    the Model service plugin, is loaded only once.
+	</p>
+	<p>
+		<b>Monolithic containers</b> do not have the possibility of unloading
+	    each bundle independently which however does not conform to the
+	    OSGi specification. Monolithic containers
+	    assemble all bundles and service plugins which require regular
+	    method invocations into one container. A
+	    monolithic container is therefore the loadable and unloadable unit.
+	    At least one service plugin is responsible for the assembling of the
+	    required bundles into one monolithic container. Inter-container
+	    communication requires a local event mechanism. Figure above
+	    shows the monolithic containers as dashed bounding box with a message
+	    communication interface between the two containers. This time
+	    bundle C was loaded twice both in the GUI and Model service
+	    plugins. Bundle C does not come with an inter-container
+	    communication as it would be to expensive to call methods on
+	    bundle C over a local event mechanism. The monolithic
+	    container approach enables a small footprint container which
+	    can be used on mobile phones. It can also be used on platforms
+	    which do not allow a dedicated unloading of single bundles.
+	</p>
+	
+	</subsection>
+
+	<subsection name="Platform independence">
+	<p>
+		The proposed component and container types allow us to design
+		local and remote applications for heterogeneous environments.
+		Applications are assembled in two different ways: first, at design
+		time when the application goal has to be solved, and second, at
+		run-time when the application can be adapted by other devices in
+		its environment.
+	</p>
+	<p>
+		Components designed for a variety of devices need metadata to
+		describe where they can be run on. A description is therefore
+		required which allows a node to gather information about
+		components to figure out if they can be run on the node's
+		platform.
+	</p>
+	<p>
+		According to the OSGi specification the bundle metadata inside the
+		Java package must be saved as a MANIFEST.MF file. This
+		would require a heterogeneous node to load Java packages even
+		though they are running on different platforms. Therefore, a
+		similar concept to the eclipse plugin descriptor or
+		the J2EE deployment descriptor was chosen. By
+		describing the packages in an external file only that description
+		have to be downloaded to match it against the own platform.
+		Additional information to the already proposed manifest was
+		included, for security, extension possibilities, platform
+		requirements, and package integrity.
+	</p>
+	
+	</subsection>
+	
+	</section>
+	
+	<section name="Jadabs-PSM XML Mapping">
+	<p>
+		Once the application design conforms to Jadabs-PSM, the necessary
+		metadata needs to be generated. Comparable to the CCM-PSM to XML
+		mapping, we require a mapping from the Jadabs-PSM to XML. CCM
+		additionally generates an IDL from which the code
+		implementation is generated. The generation of an OSGi like IDL
+		was skipped as it would only be used to get the code frame. Even
+		though we support two platforms, Java and .NET, the code frames
+		can easily be done by hand.
+	</p>
+	<p>
+		The mapping of the graphical representation into an XML
+		representation is shown in Figure below. All elements
+		of the container and the bundle including the platform where it
+		runs on are described.
+	</p>
+
+		<center>
+			<img src="images/psm_xml.jpg" alt="Jadabs
+				PSM - XML Description"/>
+		</center>
+		
+	<ul>
+		<li>
+			An OSGi service plugin descriptor contains an OSGi service and activator
+		    description; it has the ".opd" file extension.
+		</li>
+		<li>
+			 An OSGi bundle descriptor contains a bundle
+			    description; it has the ".obr" file extension.
+		</li>
+		<li>		
+			An OSGi container descriptor describes each container's
+		    properties and configuration; it has the ".ocd" file
+		    extension. The OCD can also be included in the platform
+		    descriptor.
+		</li>
+		<li>
+    		A platform descriptor contains platform information
+		    including hardware and operating system configurations; it has
+		    the ".pad" file extension.
+		</li>
+		<li>
+  			The user preference descriptor contains the users preferences;
+    		it has the ".upd" file extension.
+		</li>
+	</ul>
+	
+	<subsection name="OSGi Service Plugin Description (OPD)">
+
+	<p>
+		The plugin description is used to define both the required
+		properties and the provided services. The service description is
+		exposed to other peers in the mobile environment for querying and
+		finding matching services.
+	</p>
+	
+	<ul>
+		<li>
+	    	<b><i>UUID</i></b> specifies the service plugin descriptor in form of a
+		    UUID. The structure of the UUID is
+		    <i>location:service:version:opd</i>. A location
+		    represents a reversed DNS entry as proposed in Java for
+		    package names. The service and version entry allows the container to
+		    distinguish between different services under the same location name.
+		    Each version is represented as <i>major.minor.bug</i> which
+		    facilitates the matching of plugin descriptors with various
+		    versions.
+		</li>
+		<li>
+			<b><i>Service</i></b> specifies the service plugin name which
+				is used as an alias for the package name.
+		</li>
+		<li>
+			<b><i>Extension</i></b> defines a <b>provided extension</b> which is
+			usually a service interface. Extensions describe the
+			interfaces which are provided to other service plugins. An
+			extension is referenced by an <i>Extension-Point</i> to define the required extension.
+			
+			<ul>
+				<li>
+					<b><i>ID</i></b> names an alias for the provided service interface.
+				</li>
+				<li>
+					<b><i>Service</i></b> states the service interface name
+					and the package name.
+				</li>
+				<li>
+					<b><i>Card-Fct</i></b> cardinality-function allows the extension to give a
+					cardinality of its usage. For example the costs of using the 
+					service could be specified.
+				</li>
+			</ul>
+		</li>
+	
+		<li>
+			<b><i>Extension-Point</i></b> defines a <b>required extension</b> of another
+			resource. A resource may be an extension of a service plugin, a
+			container property, or a platform property described in any of these descriptor files.
+			
+			<ul>
+				<li>
+					<b><i>ID</i></b> can be one of two possibilities:
+					first, an exact interface name including the package
+					name, or second an expression to evaluate the service
+					name. In the case of several service matches, all of them are taken.
+				</li>
+			</ul>
+		</li>
+		<li>
+			<b><i>ServiceActivatorBundle</i></b> describes the implementing
+			bundle which includes the BundleActivator.
+			<ul>
+				<li>
+					<b><i>UUID</i></b> defines the bundle descriptor which includes the
+				service plugin code. The UUID is of the form
+				<i>location:service:version:obr</i>.
+				</li>
+			</ul>
+		</li>
+	</ul>
+
+	</subsection>
+
+	<subsection name="OSGi Bundle Description (OBR)">
+	<p>
+		Each service plugin also requires one bundle descriptor, which
+		specifies the bundle dependencies. The generated bundle descriptor
+		is compatible with the OSCAR Bundle Repository and
+		was extended as required for our Jadabs-PSM.
+	</p>
+	
+		<ul>
+			<li>
+				<b><i>Bundle-UUID</i></b> specifies the bundle descriptor which includes the
+				bundle code. The UUID is of the form
+				<i>location:service:version:jar</i>.
+			</li>
+			<li>
+				<b><i>Bundle-UpdateLocation</i></b> refers to a URL from where the
+				bundle can be downloaded.
+			</li>
+			<li>
+				<b><i>Bundle-Checksum</i></b> includes a checksum for the bundle
+				to be checked after the download.
+			</li>
+			<li>
+				<b><i>Import-Package</i></b> refers to the package name exported by
+				another bundle.
+			</li>
+			<li>
+				<b><i>Export-Package</i></b>] lists the own exported packages.
+			</li>
+			<li>	
+				<b><i>Dependency-UUID</i></b> specifies the dependencies on other
+				bundles in the form of a Bundle-UUID.
+			</li>
+		</ul>
+
+	</subsection>
+
+	<subsection name="OSGi Bundle Properties">
+	<p>
+		The property descriptions allow us to parameterize the plugins and
+		bundles depending on the platform configuration. Therefore, the
+		properties are included in the platform description. The property
+		configuration follows the form: -name=value.
+	</p>
+	<p>
+		For more advanced configuration requirements, Knopflerfish
+		proposes his own meta information
+		description. To use Knopflerfish's
+		property configuration, additional basic platform bundles are
+		required. To keep the platform as lightweight as possible the
+		name-value pair solution was chosen. Nevertheless, the advanced
+		configuration possibility could be added at a later time when it
+		is needed by a service plugin.
+	</p>
+	</subsection>
+	
+	<subsection name="OSGi Container Description (OCD)">
+	<p>
+		The container descriptor determines the properties of the
+		container wherein the bundles are run. The minimal feature is the
+		container description while other properties such as name-value
+		pairs may be specified when required. As part of this work
+		different containers with varying functionality are presented.
+		Service plugins which then require a container with a specific
+		property add an extension-point to their OPD description.
+	</p>
+
+		<ul>
+			<li>
+				<b><i>ID</i></b> names the container.
+			</li>
+			<li>
+				<b><i>Container</i></b> specifies which container is to be used.
+				So far, different containers are supported.
+			</li>
+			<li>
+				<b><i>Container-Version</i></b> specifies the version of the
+				container.
+			</li>
+		</ul>
+		
+	</subsection>
+	
+	
+	<subsection name="OSGi Platform Description (PAD)">
+	<p>
+		The platform descriptor defines all the platform specific issues
+		which are required by the container or might be required by
+		service plugin extension-points.
+	</p>
+	<p>
+		Properties like processor and display define hardware
+		specific issues. More properties can be added when required.
+	</p>
+	
+		<ul>
+			<li>
+				<b><i>ID</i></b> names the platform specification. It can
+also specify a type of a platform.
+			</li>
+			<li>
+				<b><i>OSGiContainer</i></b> specifies the containers
+				run on that platform. A platform may run different containers, for example a
+				laptop is capable of running at least three different types of
+				containers.
+			</li>
+			<li>
+				<b><i>NetIface</i></b> specifies the different network interfaces
+				which are available. This element is not required and only
+				available on platforms with a network interface.
+			</li>
+		</ul>
+		
+	</subsection>
+	
+	
+	<subsection name="User Preference Description (UPD)">
+	<p>
+		The user preference description can be used to store user
+		preferences which are independent of the running applications. A
+		user may for example define his or her preferences depending on
+		the applications context. The user might want to define that the
+		cheapest possible network connection be chosen, independent of the
+		bandwidth. These preferences can be stored as properties with
+		name-value pairs which are then processed by the appropriate
+		bundle.
+	</p>
+	
+		<ul>
+			<li>
+				<b><i>card-fct</i></b> the cardinality-function property
+				allows to define a function which is evaluated to match
+				certain extensions.
+			</li>
+		</ul>
+		
+	</subsection>
+									
+
+    </section>
+    
+  </body>
+</document>
