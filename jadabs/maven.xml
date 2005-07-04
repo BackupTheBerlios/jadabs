@@ -133,7 +133,7 @@
 		<!-- copy init.xargs, jadabs.sh, jadabs.bat -->
 		<ant:copy todir="${jadabs.dist.dir}">
 			<ant:fileset dir="bin" 
-				includes="props.xargs,init.xargs,init-ppcj9*,jadabs.sh,jadabs.bat,osgi-nanning.pad"/>
+				includes="props.xargs,init.xargs,init-ppcj9*,jadabs.sh,jadabs.bat,osgi-nanning.pad,jadabs.starter"/>
 		</ant:copy>
 		
 		<ant:chmod perm="+x" >
@@ -180,7 +180,7 @@
 		<!-- copy additional prose init.xargs -->
 		<ant:copy todir="${jadabs.dist.dir}">
 			<ant:fileset dir="bin" 
-				includes="init-prose.xargs,osig-prose.pad"/>
+				includes="init-prose.xargs,osgi-prose.pad"/>
 		</ant:copy>
 		
     	<!-- generate the minimal distribution -->

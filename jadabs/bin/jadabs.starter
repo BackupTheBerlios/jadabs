@@ -1,5 +1,5 @@
 
 # iPAQ UDP/BT HotSpot
--usepad osgi-prose.pad
+-usepad osgi-nanning.pad
 
 -startopd    jadabs:servicemanager:1.0.0-SNAPSHOT:opd

@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * $Id: Peer.java,v 1.5 2005/02/13 12:36:26 afrei Exp $
+ * $Id: Peer.java,v 1.6 2005/07/04 12:23:43 afrei Exp $
  *
  * Copyright (c) 2001 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -189,7 +189,7 @@ public final class Peer extends NamedResource
         elm[4] = new Element(Message.THRESHOLD_TAG, threshold, Message.JXTA_NAME_SPACE);
         elm[5] = new Element(Message.REQUESTID_TAG, id, Message.JXTA_NAME_SPACE);
         elm[6] = new Element(Message.NUM_URI_TAG, numURI, Message.JXTA_NAME_SPACE);
-        elm[7] = new Element(super.LEASE_OFFSET_TAG, Integer.toString(leaseoffset), Message.JXTA_NAME_SPACE);
+        elm[7] = new Element(NamedResource.LEASE_OFFSET_TAG, Integer.toString(leaseoffset), Message.JXTA_NAME_SPACE);
         
         Enumeration keys = this.attributes.keys();
         Enumeration data = this.attributes.elements();
