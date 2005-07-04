@@ -95,7 +95,7 @@ $ maven jadabs:buildall</source>
       <p>Since Antenna uses the class files and the preverifier from the 
          Wireless Toolkit download the 
          <a href="http://java.sun.com/products/j2mewtoolkit/download-2_1.html">WTK2.1 from Sun</a>
-         an install the toolkit in <code>/usr/local/WTK2.1</code>. 
+         an install the toolkit in <code>/usr/local/WTK2.1</code> or <code>C:/WTK2.1</code>. 
       </p>
    </subsection>
 
