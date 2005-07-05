@@ -112,6 +112,17 @@
             <organization>ETHZ</organization>
         </developer>
     
+        <developer>
+          <name>Otmar Caduff</name>
+          <id>caduffo</id>
+          <email>caduffo_student.ethz.ch</email>
+          <roles>
+            <role>Security expert</role>
+          </roles>
+          <timezone>+1</timezone>
+          <organization>ETHZ</organization>
+        </developer>
+    
     </developers>
 
     <dependencies>
