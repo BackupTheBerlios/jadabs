@@ -52,7 +52,7 @@
   	</menu>
   	
     <menu name="Sub-Projects">
-		<item name="Overview of project" 		href="/projects-overview.html"/>
+<!--		<item name="Overview of project" 		href="/projects-overview.html"/> -->
     	<item name="Jadabs-CLDC" 			    href="http://jadabs.berlios.de/jadabs-cldc"/>
     	<item name="Jadabs-IM" 			    	href="http://jadabs.berlios.de/jadabs-im"/>
     	<item name="Jadabs-Amonem" 			    href="http://jadabs.berlios.de/amonem"/>
