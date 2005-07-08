@@ -120,7 +120,13 @@
 		<!-- copy bundles jadabs core-->
 		<ant:copy todir="${jadabs.dist.repository}/jadabs/jars">
 			<ant:fileset dir="${jadabs.maven.inst.dir}/" 
-				includes="bundleloader-*,pluginloader-*"
+				includes="bundleloader-*,pluginloader-*,bundlesecurity-*"
+				excludes="*test*"
+			/>
+		</ant:copy>
+				<ant:copy todir="${jadabs.dist.repository}/jadabs/obrs">
+			<ant:fileset dir="${jadabs.maven.inst.dir}/../obrs/" 
+				includes="bundleloader-*,pluginloader-*,bundlesecurity-*"
 				excludes="*test*"
 			/>
 		</ant:copy>

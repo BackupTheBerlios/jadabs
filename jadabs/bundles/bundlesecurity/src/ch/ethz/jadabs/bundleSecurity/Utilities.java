@@ -1,7 +1,7 @@
 /*
  * Created on 21-Feb-2005
  */
-package ch.ethz.jadabs.bundleLoader.api;
+package ch.ethz.jadabs.bundleSecurity;
 
 import java.util.StringTokenizer;
 

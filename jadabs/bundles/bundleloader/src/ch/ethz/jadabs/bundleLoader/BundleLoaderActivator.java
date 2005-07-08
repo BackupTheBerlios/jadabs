@@ -71,7 +71,10 @@ public class BundleLoaderActivator implements BundleActivator {
 		// instanciate BundleLoader, register and start
 		BundleLoaderActivator.bundleLoader = BundleLoaderImpl.getInstance();
 		bc.registerService(BundleLoader.class.getName(), bundleLoader, null);
-		bc.addBundleListener(BundleLoaderActivator.bundleLoader);	
+		bc.addBundleListener(BundleLoaderActivator.bundleLoader);
+		
+		// init BundleSecurity
+		BundleSecurityImpl.Instance();
 	}
 
 	/**

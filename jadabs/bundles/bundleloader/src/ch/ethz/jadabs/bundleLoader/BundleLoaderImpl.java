@@ -130,7 +130,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          // resolvation and scheduling
          try {
             if (locked.booleanValue())
-               this.wait();
+               locked.wait();
          } catch (Exception e) {
             LOG.error(e);
          }
@@ -197,7 +197,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
          // resolvation and scheduling
          try {
             if (locked.booleanValue())
-               this.wait();
+               locked.wait();
          } catch (Exception e) {
             LOG.error(e);
          }
@@ -380,7 +380,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
                   LOG.error("Could not find Bundle Descriptor for " + depUuid);
                   return null;
                }
-
+               
                // TODO: Check, if a bundle is already in the queue but in a
                // different version
 
@@ -388,7 +388,16 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
                      && !loadedBundles.contains(depUuid)) {
 
                   // bundle is not yet in queue
-                  // so add it prior to the bundle that had this
+                   
+                   // Check if bundle is correctly signed
+                  if (!depDescr.checkBundle()){
+                      LOG.error("Bundle " + depUuid + " is not correctly signed. "
+                              + "Installation of " + initial + " aborted.");
+                      return null;
+                  }
+                  LOG.debug("Signature of bundle " + depUuid + " seems ok...");
+                  
+                  // add it prior to the bundle that had this
                   // dependency
                   if (index > 0) {
                      installationQueue.add(index - 1, depDescr);

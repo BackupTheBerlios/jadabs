@@ -46,12 +46,14 @@ import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import ch.ethz.jadabs.bundleLoader.api.Descriptor;
+import ch.ethz.jadabs.bundleLoader.api.Utilities;
 
 /**
  * Holding information about bundles taken from .obr files 
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 public class BundleDescriptor extends Descriptor {
+      
    private static Logger LOG = Logger.getLogger(BundleDescriptor.class);
    protected Vector dependencies = new Vector();
    private KXmlParser parser; 
@@ -60,6 +62,11 @@ public class BundleDescriptor extends Descriptor {
    private String group;
    private String bundleLocation;
    private String bundleChecksum;
+   private String digestGenAlgo;
+   private String keyGenAlgo;
+   private String digest;
+   private String signature;
+   private String tempInfo;
    protected boolean processed = false;
    private int level = 0;
    
@@ -78,7 +85,6 @@ public class BundleDescriptor extends Descriptor {
     */
    protected BundleDescriptor(String uuid) throws Exception {      
       super(uuid);
-
       parser = new KXmlParser();
       
       // fetch input stream from obr file
@@ -169,6 +175,18 @@ public class BundleDescriptor extends Descriptor {
                LOG.error("malformed bundle uuid: " + uuid);
                e.printStackTrace();
            }
+       } else if (stack.contains("bundle-security")) {
+           if (stack.peek().equals("digestGenerationAlgorithm")){
+               digestGenAlgo = parser.getText().trim();
+           } else if (stack.peek().equals("keyGenerationAlgorithm")){
+               keyGenAlgo = parser.getText().trim();
+           } else if (stack.peek().equals("digest")){
+               digest = parser.getText().trim();
+           } else if (stack.peek().equals("signature")){
+               signature = parser.getText().trim();
+           } else if (stack.peek().equals("temp-info")){
+               tempInfo = Utilities.removeAll(parser.getText().trim(), "\t");
+           }
        }
    }
    
@@ -197,10 +215,18 @@ public class BundleDescriptor extends Descriptor {
     * @param bundle <code>String</code> content of a bundle> 
     * @return <code>boolean</code> value of success
     */
-   protected boolean checkBundle(String bundle) {
-      // TODO: calculate checksum of the bundle content 
-      // and compare with checksum from obr
-      return true;
+   protected boolean checkBundle() {
+      try {
+          // get the content of the jar
+          InputStream instream = BundleLoaderActivator.bundleLoader.fetchInformation(jar_uuid(), this);
+          LOG.debug("Checking bundle " + jar_uuid());
+          return BundleSecurityImpl.Instance().checkBundle(instream,
+                  digest, digestGenAlgo, signature, keyGenAlgo, tempInfo);
+		  } catch (Exception e) {
+		      // TODO Auto-generated catch block
+		      e.printStackTrace();
+		  }
+      return false;
    }
    
    /**

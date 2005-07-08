@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../project.xml</extend>
+
+  	<groupId>jadabs</groupId>
+  	<id>bundlesecurity</id>
+  	<name>Jadabs Security extensions</name>
+
+  	<shortDescription>Jadabs Security</shortDescription>
+		
+  	<dependencies>
+
+        <dependency>
+            <groupId>osgi</groupId>
+            <artifactId>osgi-framework</artifactId>
+            <version>1.2</version>
+        </dependency>
+        
+   		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>log4j-cdc</artifactId>
+			<version>${pom.currentVersion}</version>
+			<properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
+		</dependency>
+		
+		<dependency>
+      		<groupId>kobjects</groupId>
+      		<artifactId>kxml2</artifactId>
+      		<version>2.1.9-osgi</version>
+			<properties>
+	      		<eclipse.plugin.include>true</eclipse.plugin.include>  
+	      	</properties>
+		</dependency>
+		
+		<dependency>
+			<groupId>jadabs</groupId>
+			<artifactId>bundleloader</artifactId>
+			<version>${pom.currentVersion}</version>
+		</dependency>
+				
+  	</dependencies>
+	
+	<reports>
+        	<report>maven-javadoc-plugin</report>
+	</reports>
+  
+</project>
