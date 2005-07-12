@@ -37,6 +37,7 @@ package ch.ethz.jadabs.pluginLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 import org.kxml2.io.KXmlParser;
@@ -64,14 +65,17 @@ public class PlatformInformation {
     */
    public static String parsePAD(String location) {
       try {
+    	  
          File file = new File(location);
          FileInputStream fis = new FileInputStream(file);
          KXmlParser parser = new KXmlParser();
-         parser.setInput(fis, null);
+         
+         parser.setInput(new InputStreamReader(fis));
          StringBuffer buffer = new StringBuffer();
-
-         for (int type = parser.next(); (type != KXmlParser.END_DOCUMENT); type = parser
-               .next()) {
+         for (int type = parser.next(); 
+         		(type != KXmlParser.END_DOCUMENT); 
+         		 type = parser.next()) 
+         {	 
             if (!(type == KXmlParser.START_TAG)) continue;
             buffer.append("; ");
             if (type == KXmlParser.START_TAG) {

@@ -20,7 +20,7 @@
 -Dch.ethz.jadabs.servicemanager.gmpipe.name=gmpipe
 -Dch.ethz.jadabs.servicemanager.gmpipe.id=23
 
--Dch.ethz.jadabs.bundlesecurity.jaruuid=jadabs:bundlesecurity:1.0.0-SNAPSHOT:jar
+#-Dch.ethz.jadabs.bundlesecurity.jaruuid=jadabs:bundlesecurity:1.0.0-SNAPSHOT:jar
 
 -Dorg.knopflerfish.startlevel.use=true
 
@@ -28,7 +28,8 @@
 
 -initlevel 1
 -istart  	log4j/jars/log4j-1.2.8-osgi.jar
--install 	kobjects/jars/kxml2-2.1.9-osgi.jar
+#-istart     jadabs/jars/log4j-cdc-1.0.0-SNAPSHOT.jar
+-install 	kobjects/jars/kxml2-2.2.1-osgi.jar
 -istart  	jadabs/jars/bundleloader-1.0.0-SNAPSHOT.jar
 -istart     jadabs/jars/pluginloader-1.0.0-SNAPSHOT.jar
 

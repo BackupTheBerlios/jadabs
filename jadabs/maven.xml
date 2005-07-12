@@ -124,7 +124,7 @@
 				excludes="*test*"
 			/>
 		</ant:copy>
-				<ant:copy todir="${jadabs.dist.repository}/jadabs/obrs">
+		<ant:copy todir="${jadabs.dist.repository}/jadabs/obrs">
 			<ant:fileset dir="${jadabs.maven.inst.dir}/../obrs/" 
 				includes="bundleloader-*,pluginloader-*,bundlesecurity-*"
 				excludes="*test*"
@@ -133,13 +133,13 @@
 		
 			
 		<ant:copy 
-			file="${maven.repo.local}/kobjects/jars/kxml2-2.1.9-osgi.jar"
+			file="${maven.repo.local}/kobjects/jars/kxml2-2.2.1-osgi.jar"
 			todir="${jadabs.dist.repository}/kobjects/jars" />
 		
 		<!-- copy init.xargs, jadabs.sh, jadabs.bat -->
 		<ant:copy todir="${jadabs.dist.dir}">
 			<ant:fileset dir="bin" 
-				includes="props.xargs,init.xargs,init-ppcj9*,jadabs.sh,jadabs.bat,osgi-nanning.pad,jadabs.starter"/>
+				includes="props.xargs,init.xargs,init-ppcj9.xargs,jadabs-ppcj9.lnk,jadabs.starter,jadabs-ppc.starter,jadabs.sh,jadabs.bat,osgi-nanning.pad"/>
 		</ant:copy>
 		
 		<ant:chmod perm="+x" >
@@ -154,6 +154,11 @@
 		<ant:copy todir="${jadabs.dist.repository}/log4j/jars">
 			<ant:fileset dir="${maven.repo.local}/log4j/jars" includes="log4j-1.2.8-osgi.jar"/>
 		</ant:copy>
+		<!-- copy log4j-cdc for PPC version -->
+		<ant:copy todir="${jadabs.dist.repository}/jadabs/jars">
+			<ant:fileset dir="${maven.repo.local}/jadabs/jars" includes="log4j-cdc-*.jar"/>
+		</ant:copy>
+		
 		
 		<!-- Create the minimal .tar file -->
 		<ant:tar longfile="gnu" tarfile="${maven.dist.dir}/${jadabs.dist.name}-minimal.tar">

@@ -88,7 +88,7 @@ public interface PluginLoader extends Loader {
     * Get an <code>Iterator</code> over all matching plugins deriven from 
     * all registered <code>InformationSources</code>
     * @param filter a <code>String</code> compliant with the following EBNF:
-    * filter = ExtensionExpression " Â¦ " PlatformExpression | PlatformExpression (; PlatformExpression)* " Â¦ " [R|P|RP]
+    * filter = ExtensionExpression " ¦ " PlatformExpression | PlatformExpression (; PlatformExpression)* " ¦ " [R|P|RP]
     * ExtensionExpression = "Extension/" Attribute ":" Value | Attribute ":" Value (,Attribute ":" Value)* 
     * PlatformExpression = Element "/" Attribute ":" Value | Attribute ":" Value (,Attribute ":" Value)*
     * @param requestor Reference to the caller to avoid cycles in case of a

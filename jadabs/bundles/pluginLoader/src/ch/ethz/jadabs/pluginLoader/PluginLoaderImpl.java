@@ -125,6 +125,8 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
         String uuid = new String();
         try
         {
+        	LOG.debug(starter);
+        	
             BufferedReader reader = new BufferedReader(new FileReader(starter));
             String line;
             while ((line = reader.readLine()) != null)
@@ -133,8 +135,8 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
                 {
                     if (LOG.isDebugEnabled())
                         LOG.debug("Opening " + line.substring(7).trim());
-
-                    platform = PlatformInformation.parsePAD("." + File.separatorChar + line.substring(7).trim());
+//af "." + File.separatorChar +
+                    platform = PlatformInformation.parsePAD(line.substring(7).trim());
                 } else if (line.startsWith("-startopd"))
                 {
                     uuid = line.substring(9).trim();
@@ -165,7 +167,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
     
     public boolean loadPluginIfMatches(String uuid, InputStream in) throws Exception
     {
-        if (matches(in, " Â¦ " + platform + " Â¦ " + "PRO"))
+        if (matches(in, " ¦ " + platform + " ¦ " + "PRO"))
         {
             loadPlugin(uuid);
             return true;

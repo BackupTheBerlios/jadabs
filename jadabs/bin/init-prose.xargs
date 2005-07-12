@@ -26,7 +26,7 @@
 
 -initlevel 1
 -istart  	log4j/jars/log4j-1.2.8-osgi.jar
--install 	kobjects/jars/kxml2-2.1.9-osgi.jar
+-install 	kobjects/jars/kxml2-2.2.1-osgi.jar
 -istart  	jadabs/jars/bundleloader-1.0.0-SNAPSHOT.jar
 -istart     jadabs/jars/pluginloader-1.0.0-SNAPSHOT.jar
 

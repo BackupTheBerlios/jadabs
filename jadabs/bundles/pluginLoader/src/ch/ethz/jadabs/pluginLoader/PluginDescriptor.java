@@ -124,10 +124,10 @@ public class PluginDescriptor extends Descriptor {
                ArrayList matchingPlugins = new ArrayList();
                if (LOG.isDebugEnabled()) {
                   LOG.debug("\n");
-                  LOG.debug("REQUESTING " + id + " Â¦ " + PluginLoaderImpl.platform + " Â¦ " + "R");
+                  LOG.debug("REQUESTING " + id + " ¦ " + PluginLoaderImpl.platform + " ¦ " + "R");
                   LOG.debug("\n");
                }
-               for (Iterator matches = PluginLoaderImpl.getMatchingPlugins(id + " Â¦ " + PluginLoaderImpl.platform + " Â¦ " + "R"); matches.hasNext(); ) {
+               for (Iterator matches = PluginLoaderImpl.getMatchingPlugins(id + " ¦ " + PluginLoaderImpl.platform + " ¦ " + "R"); matches.hasNext(); ) {
                   matchingPlugins.add(matches.next());
                }
                

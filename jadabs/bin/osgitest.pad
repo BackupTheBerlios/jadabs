@@ -1,4 +1,4 @@
-<Platform 
+<Platform
 	id="device.ethz.ch"
 	name="deviceservices"
 	version="0.1.0"

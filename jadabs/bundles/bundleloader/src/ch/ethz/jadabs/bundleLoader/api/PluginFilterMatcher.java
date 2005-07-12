@@ -36,6 +36,7 @@
 
 package ch.ethz.jadabs.bundleLoader.api;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -61,7 +62,7 @@ public abstract class PluginFilterMatcher {
       
       try {
          KXmlParser parser = new KXmlParser();
-         parser.setInput(plugin, null);
+         parser.setInput(new InputStreamReader(plugin));
          boolean matches = false;
          
                 
@@ -114,7 +115,7 @@ public abstract class PluginFilterMatcher {
     * @return extension clause
     */
    private MatchItem extensionPointFromFilter(String filter) {      
-      String[] parts = Utilities.split(filter,"Â¦");
+      String[] parts = Utilities.split(filter,"¦");
       if (parts[0].trim().equals(""))
           return null;
       return new MatchItem(parts[0]);
@@ -129,7 +130,7 @@ public abstract class PluginFilterMatcher {
                      
       LinkedList result = new LinkedList();
       
-      String[] parts = Utilities.split(filter,"Â¦");
+      String[] parts = Utilities.split(filter,"¦");
       if (!parts[1].trim().equals("")) {
          parts = Utilities.split(parts[1],";");
          for (int index=0; index < parts.length; index++) {
