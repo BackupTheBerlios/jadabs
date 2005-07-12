@@ -47,6 +47,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import ch.ethz.jadabs.bundleLoader.api.Descriptor;
 import ch.ethz.jadabs.bundleLoader.api.Utilities;
+import ch.ethz.jadabs.bundleLoader.security.BundleSecurityImpl;
 
 /**
  * Holding information about bundles taken from .obr files 
@@ -220,11 +221,12 @@ public class BundleDescriptor extends Descriptor {
           // get the content of the jar
           InputStream instream = BundleLoaderActivator.bundleLoader.fetchInformation(jar_uuid(), this);
           LOG.debug("Checking bundle " + jar_uuid());
-          return BundleSecurityImpl.Instance().checkBundle(instream,
+          boolean retVal = BundleSecurityImpl.Instance().checkBundle(instream,
                   digest, digestGenAlgo, signature, keyGenAlgo, tempInfo);
+          LOG.debug("result: " + retVal);
+          return retVal;
 		  } catch (Exception e) {
-		      // TODO Auto-generated catch block
-		      e.printStackTrace();
+		      LOG.debug("something went wrong checking the bundle", e);
 		  }
       return false;
    }

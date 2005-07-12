@@ -10,8 +10,6 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Iterator;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
@@ -26,6 +24,8 @@ import ch.ethz.jadabs.bundleLoader.api.BundleSecurity;
 public class BundleSecurityImpl implements BundleSecurity {
     
     private static Logger LOG = Logger.getLogger(BundleSecurityImpl.class.getName());
+    
+    private static int BUFFERSIZE = 1024;
     
     BASE64Decoder decoder = new BASE64Decoder();
     BASE64Encoder encoder = new BASE64Encoder();
@@ -46,31 +46,32 @@ public class BundleSecurityImpl implements BundleSecurity {
     public boolean checkBundle(InputStream stream, String digest,
             String digestGenAlgo, String signature, String keyGenAlgo,
             String publicKey) throws Exception {
-        
+        LOG.debug("Checking bundle with BundleSecurity Bundle");
         //debug info
         String provider = java.security.Security.getProviders("MessageDigest." + digestGenAlgo)[0].getName();
         LOG.debug("Provider used for digest computation: " + provider);
         provider = java.security.Security.getProviders("Signature." + keyGenAlgo)[0].getName();
         LOG.debug("Provider used for signature checking: " + provider);
+               
         
         // TODO: better way to do this?
-        Vector byteArrays = new Vector();
-        byte[] tmpArr = new byte[4096];
-        int i;
-        int nBytes;
-        for (i = 0; (nBytes = stream.read(tmpArr)) == 4096; i += 4096){
-            byteArrays.add(tmpArr.clone());
-        }
-        byte[] jarBytes = new byte[i + nBytes];
-        Iterator iter = byteArrays.iterator();
-        i = 0;
-        while (iter.hasNext()) {
-            System.arraycopy(iter.next(), 0, jarBytes, i, 4096);
-            i += 4096;
-        }
-        System.arraycopy(tmpArr, 0, jarBytes, i, nBytes);
-                
-        byte[] digestBytes = computeDigest(jarBytes, digestGenAlgo);
+//        Vector byteArrays = new Vector();
+//        byte[] tmpArr = new byte[BUFFERSIZE];
+//        int i;
+//        int nBytes;
+//        for (i = 0; (nBytes = stream.read(tmpArr)) == BUFFERSIZE; i += BUFFERSIZE){
+//            byteArrays.add(tmpArr.clone());
+//        }
+//        byte[] jarBytes = new byte[i + nBytes];
+//        Iterator iter = byteArrays.iterator();
+//        i = 0;
+//        while (iter.hasNext()) {
+//            System.arraycopy(iter.next(), 0, jarBytes, i, BUFFERSIZE);
+//            i += BUFFERSIZE;
+//        }
+//        System.arraycopy(tmpArr, 0, jarBytes, i, nBytes);
+        
+        byte[] digestBytes = computeDigest(stream, digestGenAlgo);
         if (digest.equals(encoder.encode(digestBytes))){
             return verifySignature(getPublicKey(publicKey, keyGenAlgo), digestBytes, decoder.decodeBuffer(signature));
         }
@@ -83,9 +84,13 @@ public class BundleSecurityImpl implements BundleSecurity {
         return keyFactory.generatePublic(publicKeySpec);
     }
     
-    private byte[] computeDigest(byte[] buffer, String digestGenAlgo) throws Exception{
+    private byte[] computeDigest(InputStream stream, String digestGenAlgo) throws Exception{
+        int length;
+        byte[] buffer = new byte[BUFFERSIZE];
         MessageDigest msgDigest = MessageDigest.getInstance(digestGenAlgo);
-        msgDigest.update(buffer);
+        while ((length = stream.read(buffer)) != -1) {
+            msgDigest.update(buffer, 0, length);
+        }
         return msgDigest.digest();
     }
     

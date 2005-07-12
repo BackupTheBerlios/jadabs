@@ -41,6 +41,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import ch.ethz.jadabs.bundleLoader.api.BundleLoader;
+import ch.ethz.jadabs.bundleLoader.security.BundleSecurityImpl;
 
 /**
  * Activator for bundleLoader 
@@ -74,7 +75,7 @@ public class BundleLoaderActivator implements BundleActivator {
 		bc.addBundleListener(BundleLoaderActivator.bundleLoader);
 		
 		// init BundleSecurity
-		BundleSecurityImpl.Instance();
+		BundleSecurityImpl.init(BundleLoaderActivator.bundleLoader);
 	}
 
 	/**
