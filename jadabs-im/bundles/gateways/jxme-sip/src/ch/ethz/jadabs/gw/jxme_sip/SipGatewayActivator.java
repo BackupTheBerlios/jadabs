@@ -4,14 +4,11 @@
  */
 package ch.ethz.jadabs.gw.jxme_sip;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import ch.ethz.jadabs.api.IOProperty;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
 import ch.ethz.jadabs.gw.api.Gateway;
 import ch.ethz.jadabs.jxme.Pipe;
 import ch.ethz.jadabs.jxme.services.GroupService;
@@ -34,10 +31,7 @@ public class SipGatewayActivator implements BundleActivator
     public void start(BundleContext bc) throws Exception
     {
         SipGatewayActivator.bc = bc;
-        
-        BasicConfigurator.configure();
-		Logger.getRootLogger().setLevel(Level.DEBUG);
-        
+                
         // get GroupService
         ServiceReference sref = bc.getServiceReference("ch.ethz.jadabs.jxme.services.GroupService");
         if (sref == null)

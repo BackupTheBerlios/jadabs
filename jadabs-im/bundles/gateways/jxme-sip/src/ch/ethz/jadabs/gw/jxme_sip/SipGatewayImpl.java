@@ -20,10 +20,10 @@ import javax.sip.message.Response;
 
 import org.apache.log4j.Logger;
 
-import ch.ethz.jadabs.api.IMUtilities;
-import ch.ethz.jadabs.api.IOProperty;
-import ch.ethz.jadabs.api.MessageCons;
-import ch.ethz.jadabs.api.Settings;
+import ch.ethz.jadabs.im.ioapi.IMUtilities;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
+import ch.ethz.jadabs.im.ioapi.MessageCons;
+import ch.ethz.jadabs.im.ioapi.Settings;
 import ch.ethz.jadabs.gw.api.Gateway;
 import ch.ethz.jadabs.jxme.DiscoveryListener;
 import ch.ethz.jadabs.jxme.Element;
@@ -59,7 +59,7 @@ import ch.ethz.jadabs.sip.handler.authentication.AuthenticationProcess;
 public class SipGatewayImpl extends IMUserAgent implements Gateway,
 Listener, DiscoveryListener, IMReceiveProcessor, Settings {
 	
-	static Logger logger = Logger.getLogger(SipGatewayImpl.class);
+	static Logger logger = Logger.getLogger(SipGatewayImpl.class.getName());
 
 	private SIPRegistrationClient sipRC;
 	private SIPMessageClient sipMC;

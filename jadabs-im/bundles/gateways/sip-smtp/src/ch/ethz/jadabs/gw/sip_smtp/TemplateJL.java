@@ -35,8 +35,8 @@ import org.objectstyle.cayenne.access.DataContext;
 import org.objectstyle.cayenne.conf.Configuration;
 import org.objectstyle.cayenne.conf.FileConfiguration;
 
-import ch.ethz.jadabs.api.IOProperty;
-import ch.ethz.jadabs.api.Settings;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
+import ch.ethz.jadabs.im.ioapi.Settings;
 import ch.ethz.jadabs.gw.api.Gateway;
 import ch.ethz.jadabs.im.db.Account;
 import ch.ethz.jadabs.sip.handler.IMReceiveProcessor;

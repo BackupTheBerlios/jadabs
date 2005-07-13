@@ -34,6 +34,7 @@
  */
 package ch.ethz.jadabs.im.gui.swtgui;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
@@ -57,13 +58,16 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import ch.ethz.jadabs.api.MessageCons;
+import ch.ethz.jadabs.im.ioapi.MessageCons;
 import ch.ethz.jadabs.im.api.IMContact;
 import ch.ethz.jadabs.im.api.IMService;
 import ch.ethz.jadabs.im.api.IMSettings;
 
-public class MainComposite extends Composite {
-	
+public class MainComposite extends Composite 
+{
+
+    private static Logger LOG = Logger.getLogger(MainComposite.class.getName());
+    
 	private final static int NEIGHBOURS	= 0;
 	private final static int BUDDIES	= 1;
 	private final static int MSG		= 2;
@@ -115,6 +119,8 @@ public class MainComposite extends Composite {
 		
 		imService = IMguiActivator.imService;
 		imSettings = IMguiActivator.imSettings;
+		
+		imService.setListener(new Listener(this));
 		
 		buildGUI();
 		
@@ -494,7 +500,7 @@ public class MainComposite extends Composite {
 	 * USER SELECTION
 	 *********************************************/
 	protected void connectButtonSelected(SelectionEvent evt) {
-		imService.connect(new Listener(this));
+		imService.connect();
 	}
 	protected void disconnectButtonSelected(SelectionEvent evt) {
 		imService.disconnect();
@@ -556,6 +562,7 @@ public class MainComposite extends Composite {
 		initBuddyList();
 	}
 	public void neighbourListChanged() {
+	    LOG.debug("update neighbourlist");
 		initNeighbourList();
 		initDest();
 	}

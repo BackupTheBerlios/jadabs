@@ -11,7 +11,7 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import ch.ethz.jadabs.api.IOProperty;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
 
 /**
  * @author Franz Terrier

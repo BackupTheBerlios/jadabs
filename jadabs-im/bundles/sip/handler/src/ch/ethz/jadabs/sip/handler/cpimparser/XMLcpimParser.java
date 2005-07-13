@@ -23,7 +23,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLcpimParser extends DefaultHandler
 {
-    private Logger LOG = Logger.getLogger(XMLcpimParser.class);
+    private Logger LOG = Logger.getLogger(XMLcpimParser.class.getName());
     
     private PresenceTag presenceTag;
 

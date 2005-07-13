@@ -26,6 +26,9 @@
             <groupId>swt</groupId>
             <artifactId>swt</artifactId>
             <version>3.0.1-ppc</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
         </dependency>
         
     
@@ -33,36 +36,36 @@
             <groupId>jadabs</groupId>
             <artifactId>log4j-cdc</artifactId>
             <version>${pom.currentVersion}</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
         </dependency>
         
         <dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>jxme-services-api</artifactId>
       		<version>${pom.currentVersion}</version>
+      		<properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
 		</dependency>
-		
-		<dependency>
-      		<groupId>jadabs</groupId>
-      		<artifactId>sip-cons</artifactId>
-      		<version>${pom.currentVersion}</version>
-		</dependency>		
-      
+     
         <dependency>
       		<groupId>jadabs-im</groupId>
       		<artifactId>im-api</artifactId>
       		<version>${pom.currentVersion}</version>
+      		<properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
 		</dependency>
 		
 		 <dependency>
       		<groupId>jadabs-im</groupId>
-      		<artifactId>api</artifactId>
+      		<artifactId>im-ioapi</artifactId>
       		<version>${pom.currentVersion}</version>
-		</dependency>
-		
-		<dependency>
-      		<groupId>jadabs-im</groupId>
-      		<artifactId>im-jxme</artifactId>
-      		<version>${pom.currentVersion}</version>
+      		<properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
 		</dependency>
 		
 		<dependency>

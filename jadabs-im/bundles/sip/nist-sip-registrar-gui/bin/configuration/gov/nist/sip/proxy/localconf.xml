@@ -2,15 +2,15 @@
 <CONFIGURATION> 
 	<SIP_STACK 
 stack_name="nist-proxy"
-stack_IP_address="129.6.50.176"
+stack_IP_address="129.132.130.127"
 router_path="gov.nist.sip.proxy.router.ProxyRouter"
 max_connections="20"
 max_server_transactions="20"
 thread_pool_size="20"
     >       
 
-<LISTENING_POINT port="4000" transport="udp" />
-<LISTENING_POINT port="4000" transport="tcp" />
+<LISTENING_POINT port="5060" transport="udp" />
+<LISTENING_POINT port="5060" transport="tcp" />
 <DOMAIN domain="there.com" />
 <DOMAIN domain="pingtel.com" />
 <DOMAIN domain="ubi.com" />

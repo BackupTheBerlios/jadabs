@@ -15,6 +15,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import ch.ethz.jadabs.im.api.IMContact;
+import ch.ethz.jadabs.im.api.IMListener;
 import ch.ethz.jadabs.im.api.IMService;
 import ch.ethz.jadabs.osgiaop.AOPContext;
 import ch.ethz.jadabs.osgiaop.AOPService;
@@ -27,12 +29,12 @@ import ch.ethz.jadabs.osgiaop.AOPService;
 public class IMServiceBridgeActivator implements BundleActivator
 {
 
-    private static Logger LOG = Logger.getLogger(IMServiceBridgeActivator.class);
+    private static Logger LOG = Logger.getLogger(IMServiceBridgeActivator.class.getName());
     
     Pointcut pointcut;
     
-    IMService imsvc;
-    
+    IMService newIMsvc;
+    IMService oldIMsvc;
     
     /*
      */
@@ -42,43 +44,59 @@ public class IMServiceBridgeActivator implements BundleActivator
         String imsvcname = bc.getProperty("ch.ethz.jadabs.im.bridge.imservice");
         
         // get IMService with the given imsvcname
-        ServiceReference sref = bc.getServiceReference("(impl equals imsvcname)");
+        ServiceReference[] sref = bc.getServiceReferences(IMService.class.getName(), "(impl=sip)");
         
-        if (sref == null)
+        if (sref.length == 0)
         {
             LOG.error("could not find the service specified: "+imsvcname);
             return;
         }
         
-        imsvc = (IMService)bc.getService(sref);
+        newIMsvc = (IMService)bc.getService(sref[0]);
         
-		ServiceReference impref = bc.getServiceReference(IMService.class.getName());
+		ServiceReference[] impref = bc.getServiceReferences(IMService.class.getName(), "(impl=jxme)");
 		
-		if (impref != null)
+        if (impref.length == 0)
+        {
+            LOG.error("could not find the service specified: "+"(impl=jxme)");
+            return;
+        }
+		
+		if (impref[0] != null)
 		{
-		    ((AOPContext)bc).getAOPService(impref);
+		    ((AOPContext)bc).getAOPService(impref[0]);
 		    
-		    AOPService imaopsvc = ((AOPContext)bc).getAOPService(impref);
+		    AOPService imaopsvc = ((AOPContext)bc).getAOPService(impref[0]);
 	        
 	        AspectInstance ai = imaopsvc.getAspectInstance();
 	      	
 	        Mixin imsvcmixin = ai.getMixinForInterface(IMService.class);
 	        
 	      	// get old target
-	      	IMService establishedIMService = (IMService)imsvcmixin.getTarget();
+	      	oldIMsvc = (IMService)imsvcmixin.getTarget();
 	      
-	      	// crosscut with sendmessage
-	      	MethodInterceptor interceptor = new IMServiceInterceptorSendMessage();
-	      	pointcut = P.methodName("sendMessage.*");
-	      	pointcut.advise(ai, interceptor);
+	      	imsvcmixin.setTarget(newIMsvc);
 	      	
-	      	// crosscut with unregister
-	      	MethodInterceptor interceptorUnreg = new IMServiceInterceptorUnregister();
-	      	pointcut = P.methodName("unregister.*");
-	      	pointcut.advise(ai, interceptorUnreg);
+//	      	// crosscut with sendmessage
+//	      	MethodInterceptor interceptor = new IMServiceInterceptorSendMessage();
+//	      	pointcut = P.methodName("sendMessage.*");
+//	      	pointcut.advise(ai, interceptor);
+//	      	
+//	      	// crosscut with disconnect
+//	      	MethodInterceptor interceptorDiscon = new IMServiceInterceptorDisconnect();
+//	      	pointcut = P.methodName("disconnect.*");
+//	      	pointcut.advise(ai, interceptorDiscon);
+//	      	
+//	      	// crosscut with getBuddies
+//	      	MethodInterceptor interceptorGetBuddies = new IMServiceInterceptorGetBuddies();
+//	      	pointcut = P.methodName("getBuddies.*");
+//	      	pointcut.advise(ai, interceptorGetBuddies);
+//	      	
+//	      	// get listener from old imsvc and register this imservice
+//	      	IMListener iml = oldIMsvc.getListener();
 	      	
-	      	// get listener from old imsvc and register this imservice
-	      	imsvc.connect(establishedIMService.getListener());
+	      	newIMsvc.setListener(oldIMsvc.getListener());
+	      	newIMsvc.connect();
 		}
     }
 
@@ -94,9 +112,14 @@ public class IMServiceBridgeActivator implements BundleActivator
         
         public Object invoke(Invocation invocation) throws Throwable
         {
-                        
-            imsvc.sendMessage((String)invocation.getArgument(0),
-                    			(String)invocation.getArgument(1));
+            
+            String tosip = (String)invocation.getArgument(0);
+            String msg = (String)invocation.getArgument(1);
+ 
+            LOG.debug("invoked SendMessage interceptor: "
+                    + tosip + ":"+msg);
+                       
+            newIMsvc.sendMessage(tosip, msg);
             
             Object result = invocation.invokeNext();
 
@@ -104,17 +127,45 @@ public class IMServiceBridgeActivator implements BundleActivator
         }
     }
     
-    class IMServiceInterceptorUnregister implements MethodInterceptor
+    class IMServiceInterceptorDisconnect implements MethodInterceptor
     {
         
         public Object invoke(Invocation invocation) throws Throwable
         {
-                        
-            imsvc.disconnect();
+                     
+            LOG.debug("invoked disconnect interceptor");
+            
+            newIMsvc.disconnect();
             
             Object result = invocation.invokeNext();
 
             return result;
+        }
+    }
+    
+    class IMServiceInterceptorGetBuddies implements MethodInterceptor
+    {
+        
+        public Object invoke(Invocation invocation) throws Throwable
+        {
+                     
+            LOG.debug("invoked getBuddies interceptor");
+            
+            Object[] newlist = newIMsvc.getBuddies();
+//            Object[] oldlist = oldIMsvc.getBuddies();
+            
+//            Object[] nexts = invocation.invokeNext();
+            
+//            Object[] result = new Object[oldlist.length+newlist.length];
+
+//            int k = 0;
+//            for(int i=0; i<newlist.length; i++)
+//                result[k++] = newlist[i];
+//            
+//            for(int i=0; i<oldlist.length; i++)
+//                result[k++] = oldlist[i];
+            
+            return newlist;
         }
     }
 }

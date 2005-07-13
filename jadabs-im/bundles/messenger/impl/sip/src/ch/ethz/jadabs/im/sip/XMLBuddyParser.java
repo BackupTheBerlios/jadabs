@@ -13,7 +13,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /** parser for a XML file
  */
 public class XMLBuddyParser extends DefaultHandler {
-	private static Logger logger = Logger.getLogger(XMLBuddyParser.class);
+	private static Logger logger = Logger.getLogger(XMLBuddyParser.class.getName());
 	
 	private User user;
 	private Vector buddies;

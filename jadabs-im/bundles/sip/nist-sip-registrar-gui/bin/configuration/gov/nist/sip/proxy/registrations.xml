@@ -20,6 +20,7 @@
     
 -->
 <REGISTRATIONS> 
+
     <REGISTRATION  displayName="Ranga " uri="sip:mranga@nist.gov" >
 	<BUDDY     uri = "sip:deruelle@nist.gov" />
     </REGISTRATION>

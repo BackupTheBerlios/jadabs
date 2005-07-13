@@ -43,7 +43,7 @@ public class SIPRegistrationClient {
 	private IMReceiveProcessor imRProc;
 	private int cseq = 0;
 	
-	static Logger logger = Logger.getLogger(SIPRegistrationClient.class);
+	static Logger logger = Logger.getLogger(SIPRegistrationClient.class.getName());
 	
 	public SIPRegistrationClient(IMUserAgent sipUAClient, IMReceiveProcessor  imRProc) {
 		this.sipUAClient = sipUAClient;

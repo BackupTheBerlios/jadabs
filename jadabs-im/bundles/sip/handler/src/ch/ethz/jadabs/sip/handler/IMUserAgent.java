@@ -21,9 +21,9 @@ import javax.sip.message.MessageFactory;
 
 import org.apache.log4j.Logger;
 
-import ch.ethz.jadabs.api.IOProperty;
-import ch.ethz.jadabs.api.Settings;
-import ch.ethz.jadabs.config.CommonSettings;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
+import ch.ethz.jadabs.im.ioapi.Settings;
+import ch.ethz.jadabs.im.ioapi.CommonSettings;
 
 
 /**
@@ -33,7 +33,7 @@ import ch.ethz.jadabs.config.CommonSettings;
  * Basically it's the mais class to be extending for a class in our framework which uses the SIP stack.
  */
 public abstract class IMUserAgent implements SipListener, Settings{
-    private Logger logger = Logger.getLogger(IMUserAgent.class);
+    private Logger logger = Logger.getLogger(IMUserAgent.class.getName());
     private SipFactory sipFactory;
     private MessageFactory messageFactory;
 	private HeaderFactory headerFactory;

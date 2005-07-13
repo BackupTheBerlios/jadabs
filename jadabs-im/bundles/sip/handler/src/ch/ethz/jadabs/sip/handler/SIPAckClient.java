@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class SIPAckClient {
-	private Logger logger = Logger.getLogger(SIPAckClient.class);
+	private Logger logger = Logger.getLogger(SIPAckClient.class.getName());
 	
 	private IMUserAgent sipUAClient;
 	private int cseq = 0;

@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class SIPInviteClient {
-	private static Logger logger = Logger.getLogger(SIPInviteClient.class);
+	private static Logger logger = Logger.getLogger(SIPInviteClient.class.getName());
 	
 	private IMUserAgent sipUAClient;
 	private int cseq = 0;

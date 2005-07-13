@@ -4,7 +4,7 @@
 
 	<extend>${basedir}/../../../../project.xml</extend>
    
-	<name>Sip-Im-cCLient</name>	
+	<name>SIP-IM-Client</name>	
 	<groupId>jadabs-im</groupId>
 	<artifactId>im-sip</artifactId>
 
@@ -15,6 +15,9 @@
            <groupId>jadabs</groupId>
            <artifactId>log4j-cdc</artifactId>
            <version>${pom.currentVersion}</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>             
        </dependency>
        
        <dependency>
@@ -30,7 +33,7 @@
        </dependency>
        
        <dependency>
-      		<groupId>jadabs</groupId>
+      		<groupId>jadabs-im</groupId>
       		<artifactId>sip-cons</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
@@ -49,7 +52,7 @@
 		
 		<dependency>
       		<groupId>jadabs-im</groupId>
-      		<artifactId>api</artifactId>
+      		<artifactId>im-ioapi</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
 		
@@ -63,6 +66,9 @@
             <groupId>osgi</groupId>
             <artifactId>osgi-framework</artifactId>
             <version>1.2</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>              
         </dependency>
 		
   	</dependencies>

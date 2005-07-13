@@ -20,7 +20,7 @@ import javax.sip.message.Response;
 
 import org.apache.log4j.Logger;
 
-import ch.ethz.jadabs.api.Settings;
+import ch.ethz.jadabs.im.ioapi.Settings;
 import ch.ethz.jadabs.sip.handler.IMUserAgent;
 
 /**
@@ -29,7 +29,7 @@ import ch.ethz.jadabs.sip.handler.IMUserAgent;
  */
 public class AuthenticationProcess
 {
-	private static Logger logger = Logger.getLogger(AuthenticationProcess.class);
+	private static Logger logger = Logger.getLogger(AuthenticationProcess.class.getName());
 
     private IMUserAgent imUA;
     private Settings imAuth;

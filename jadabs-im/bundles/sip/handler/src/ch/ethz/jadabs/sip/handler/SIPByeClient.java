@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * @version 1.0
  */
 public class SIPByeClient {
-    private Logger logger = Logger.getLogger(SIPByeClient.class);
+    private Logger logger = Logger.getLogger(SIPByeClient.class.getName());
 	
     private IMUserAgent sipUAClient;
     private IMReceiveProcessor imRProc;

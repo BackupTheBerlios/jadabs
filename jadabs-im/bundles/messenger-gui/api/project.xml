@@ -5,13 +5,11 @@
 	<extend>${basedir}/../../../project.xml</extend>
    
 	<groupId>jadabs-im</groupId>
-	<id>im-gui-api</id>
-	<name>im-gui-api</name>
 	<artifactId>im-gui-api</artifactId>
+	<name>IM-GUI-API</name>
+	
 	<package>ch.ethz.jadabs.im.gui.api</package>
 	<shortDescription>Messenger GUI API</shortDescription>
-
-	<shortDescription>mservices GUI API</shortDescription>
 
 	<properties>
 		<osgi.import.service>ch.ethz.jadabs.remotefw.FrameworkManager</osgi.import.service>
@@ -29,13 +27,18 @@
             <groupId>swt</groupId>
             <artifactId>swt</artifactId>
             <version>3.0.1-ppc</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
         </dependency>
         
-    
         <dependency>
             <groupId>jadabs</groupId>
             <artifactId>log4j-cdc</artifactId>
             <version>${pom.currentVersion}</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
         </dependency>
         
         <dependency>
@@ -45,7 +48,7 @@
 		</dependency>
 		
 		<dependency>
-      		<groupId>jadabs</groupId>
+      		<groupId>jadabs-im</groupId>
       		<artifactId>sip-cons</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>		
@@ -55,13 +58,6 @@
       		<artifactId>im-api</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
-		
-		<dependency>
-      		<groupId>jadabs-im</groupId>
-      		<artifactId>im-jxme</artifactId>
-      		<version>${pom.currentVersion}</version>
-		</dependency>
-		
 	    
 	</dependencies>
   

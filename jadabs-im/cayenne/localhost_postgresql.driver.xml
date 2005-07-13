@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <driver project-version="1.1" class="org.postgresql.Driver">
-	<url value="jdbc:postgresql://127.0.0.1:5431/users"/>
+	<url value="jdbc:postgresql://wlab.ethz.ch:5431/users"/>
 	<connectionPool min="1" max="1" />
 	<login userName="jim"/>
 </driver>

@@ -5,8 +5,8 @@ import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 
-import ch.ethz.jadabs.api.IOProperty;
-import ch.ethz.jadabs.api.MessageCons;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
+import ch.ethz.jadabs.im.ioapi.MessageCons;
 import ch.ethz.jadabs.im.api.IMContact;
 
 /*

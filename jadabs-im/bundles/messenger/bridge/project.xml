@@ -11,17 +11,23 @@
 	<shortDescription>Messenger Bridge</shortDescription>
 
   	<dependencies>
- 		 	
+
  		<dependency>
       		<groupId>osgi</groupId>
-      		<artifactId>framework-aop</artifactId>
-      		<version>1.3.3</version>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+      		<properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>  
 		</dependency>
  		
  		<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>log4j-cdc</artifactId>
       		<version>${pom.currentVersion}</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>      		
 		</dependency> 		
  		 	
  		<dependency>
@@ -32,7 +38,7 @@
 		
 		<dependency>
       		<groupId>jadabs-im</groupId>
-      		<artifactId>api</artifactId>
+      		<artifactId>im-ioapi</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
 					
@@ -40,18 +46,27 @@
       		<groupId>osgi</groupId>
       		<artifactId>osgi-aop</artifactId>
       		<version>0.2.0</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>      		
 		</dependency>
 		
 		<dependency>
       		<groupId>nanning</groupId>
       		<artifactId>nanning-core</artifactId>
       		<version>1.0-beta-1</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties> 		
 		</dependency>
 		
 		<dependency>
       		<groupId>nanning</groupId>
       		<artifactId>nanning-ext</artifactId>
       		<version>1.0-beta-1</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>      		
 		</dependency>
 				
   	</dependencies>

@@ -5,7 +5,7 @@
 	<extend>${basedir}/../../../../project.xml</extend>
 
 	<groupId>jadabs-im</groupId>
-	<name>IO-pc implementation</name>
+	<name>IO-PC Implementation</name>
 	<artifactId>im-io-pc</artifactId>
 
 
@@ -13,15 +13,24 @@
 
   	<dependencies>
  
+ 		<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-framework</artifactId>
+      		<version>1.2</version>
+		</dependency>
+		
     	<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>log4j-cdc</artifactId>
       		<version>${pom.currentVersion}</version>
+      		<properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>
 		</dependency>
 		
 		<dependency>
       		<groupId>jadabs-im</groupId>
-      		<artifactId>api</artifactId>
+      		<artifactId>im-ioapi</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
 				

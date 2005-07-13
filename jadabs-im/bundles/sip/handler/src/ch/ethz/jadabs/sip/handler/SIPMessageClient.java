@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class SIPMessageClient {
-	private static Logger logger = Logger.getLogger(SIPMessageClient.class);
+	private static Logger logger = Logger.getLogger(SIPMessageClient.class.getName());
 	
 	private IMUserAgent sipUAClient;
 	private int cseq = 0;

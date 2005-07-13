@@ -11,8 +11,8 @@ import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 
-import ch.ethz.jadabs.api.IOProperty;
-import ch.ethz.jadabs.api.MessageCons;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
+import ch.ethz.jadabs.im.ioapi.MessageCons;
 import ch.ethz.jadabs.im.api.IMContact;
 import ch.ethz.jadabs.im.api.IMListener;
 import ch.ethz.jadabs.im.api.IMService;
@@ -199,6 +199,11 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
     // Implement IMSerivce methods
     //---------------------------------------------------
     
+    public void setListener(IMListener listener)
+    {
+        this.imlistener = listener;
+    }
+    
     /**
      * Subscribe with a listener to get notified about messages.
      * Use status to choose your subscription type.
@@ -206,7 +211,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
      * @param imlistener listener to gent notified about other IMs
      * @param status use one of the possible IM_STATUS.
      */
-    public void connect(IMListener imlistener)
+    public void connect()
     {
         
     	System.out.println("im registering");
@@ -224,7 +229,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
     		init();
     	}
         
-    	this.imlistener = imlistener;
+//    	this.imlistener = imlistener;
 
         try {
             sendRegister();

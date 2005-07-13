@@ -14,23 +14,24 @@
   	<dependencies>
 
     	<dependency>
-      		<groupId>jadabs</groupId>
+      		<groupId>jadabs-im</groupId>
       		<artifactId>sip-cons</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
 		
 		 <dependency>
       		<groupId>jadabs-im</groupId>
-      		<artifactId>api</artifactId>
+      		<artifactId>im-ioapi</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
 
 		<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>log4j-j2me</artifactId>
-      		<version>0.7.1</version>
+      		<version>${pom.currentVersion}</version>
       		<properties>
-	    			<midlet>true</midlet>    
+				<obr.dynamic>true</obr.dynamic>
+	    		<midlet>true</midlet>    
       	   </properties>
 		</dependency>
 

@@ -13,11 +13,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import ch.ethz.jadabs.api.IOProperty;
+import org.apache.log4j.Logger;
+
+import ch.ethz.jadabs.im.ioapi.IOProperty;
 
 
 public class FileIOProperty implements IOProperty
 {
+    private static Logger LOG = Logger.getLogger(FileIOProperty.class.getName());
+    
 	private String path;
 	private Properties p;
 	
@@ -48,7 +52,7 @@ public class FileIOProperty implements IOProperty
                 e.printStackTrace();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("error in reading from: "+path);
         }
 	}
 	
@@ -56,9 +60,9 @@ public class FileIOProperty implements IOProperty
         try {
             p.store(new FileOutputStream(path), comment);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOG.error("file not found: "+path);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("could not save to: "+path);
         }
     }
 	

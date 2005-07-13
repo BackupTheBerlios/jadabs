@@ -50,7 +50,7 @@ import ch.ethz.jadabs.sip.handler.pidfparser.XMLpidfParser;
  */
 public class SIPNotifyClient
 {
-    private static Logger logger = Logger.getLogger(SIPNotifyClient.class);
+    private static Logger logger = Logger.getLogger(SIPNotifyClient.class.getName());
     
     private XMLpidfParser xmlPidfParser;
     

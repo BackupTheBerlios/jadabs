@@ -6,7 +6,7 @@
  */
 package ch.ethz.jadabs.im.api;
 
-import ch.ethz.jadabs.api.Settings;
+import ch.ethz.jadabs.im.ioapi.Settings;
 
 /**
  * @author franz

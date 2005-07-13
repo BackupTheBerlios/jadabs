@@ -1,0 +1,7 @@
+
+# iPAQ UDP/BT HotSpot
+-usepad osgi-nanning.pad
+
+-startopd    jadabs:shell:1.0.0-SNAPSHOT:opd
+-startopd    jadabs:servicemanager:1.0.0-SNAPSHOT:opd
+-startopd    jadabs-im:instantmessenger:1.0.0-SNAPSHOT:opd

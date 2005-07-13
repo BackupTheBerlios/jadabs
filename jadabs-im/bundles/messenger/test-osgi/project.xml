@@ -26,7 +26,7 @@
 		</dependency>
 		
     	<dependency>
-      		<groupId>jadabs</groupId>
+      		<groupId>jadabs-im</groupId>
       		<artifactId>sip-cons</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>

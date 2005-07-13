@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  */
 public class SIPSubscribeClient
 {
-	static Logger logger = Logger.getLogger(SIPSubscribeClient.class);
+	static Logger logger = Logger.getLogger(SIPSubscribeClient.class.getName());
 	
     private IMUserAgent sipUAClient;
 	private IMReceiveProcessor imRProc;

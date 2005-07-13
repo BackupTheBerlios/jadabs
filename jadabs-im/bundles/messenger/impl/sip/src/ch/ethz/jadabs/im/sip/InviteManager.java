@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class InviteManager {
-	private Logger logger = Logger.getLogger(InviteManager.class);
+	private Logger logger = Logger.getLogger(InviteManager.class.getName());
 	
 	private Hashtable invites;
 	

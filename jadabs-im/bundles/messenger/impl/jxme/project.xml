@@ -27,8 +27,9 @@
 		<dependency>
       		<groupId>jadabs</groupId>
       		<artifactId>log4j-j2me</artifactId>
-      		<version>0.7.1</version>
+      		<version>${pom.currentVersion}</version> 
       		<properties>
+      				<obr.dynamic>true</obr.dynamic>
 	    			<midlet>true</midlet>    
       	   </properties>
 		</dependency>
@@ -46,7 +47,7 @@
 		</dependency>
 
     	<dependency>
-      		<groupId>jadabs</groupId>
+      		<groupId>jadabs-im</groupId>
       		<artifactId>sip-cons</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
@@ -59,7 +60,7 @@
 		
 		<dependency>
       		<groupId>jadabs-im</groupId>
-      		<artifactId>api</artifactId>
+      		<artifactId>im-ioapi</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
 		
@@ -67,8 +68,19 @@
             <groupId>osgi</groupId>
             <artifactId>osgi-framework</artifactId>
             <version>1.2</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>               
         </dependency>
         	
+       	<dependency>
+      		<groupId>osgi</groupId>
+      		<artifactId>osgi-aop</artifactId>
+      		<version>0.2.0</version>
+            <properties>
+				<obr.dynamic>true</obr.dynamic>
+			</properties>      		
+		</dependency>
   	</dependencies>
 
   

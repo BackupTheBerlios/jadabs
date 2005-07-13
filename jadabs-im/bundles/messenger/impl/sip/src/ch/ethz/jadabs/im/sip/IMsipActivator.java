@@ -12,7 +12,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import ch.ethz.jadabs.api.IOProperty;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
 import ch.ethz.jadabs.im.api.IMService;
 
 /**
@@ -43,10 +43,10 @@ public class IMsipActivator implements BundleActivator {
 //      sipUAClient.start();
             
 //      register the imservice implementation
-		ServiceReference impref = bc.getServiceReference(IMService.class.getName());
+//		ServiceReference impref = bc.getServiceReference(IMService.class.getName());
 		
 		Hashtable dict = new Hashtable();
-		dict.put("impl",SIPUserAgentClient.class.getName());
+		dict.put("impl","sip");
 		bc.registerService(IMService.class.getName(), sipUAClient, dict);
         
 	}

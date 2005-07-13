@@ -4,7 +4,7 @@
 
   	<extend>${basedir}/../../../project.xml</extend>
 
-  	<groupId>jadabs</groupId>
+  	<groupId>jadabs-im</groupId>
   	<artifactId>sip-cons</artifactId>
   	<name>SIP-Constants</name>
 

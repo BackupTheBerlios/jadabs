@@ -22,7 +22,9 @@ public interface IMService {
     
     void setIMType(String imtype);
     
-    void connect(IMListener imlistener);
+    void setListener(IMListener listener);
+    
+    void connect();
     
     void disconnect();
     

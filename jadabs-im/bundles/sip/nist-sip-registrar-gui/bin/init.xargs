@@ -21,15 +21,15 @@
 -install   sip/jars/nist-sip-1.2-osgi.jar
 
 -initlevel 2
--install   sip/jars/nist-sip-registrar-0.7.1-SNAPSHOT.jar
+-install   sip/jars/nist-sip-registrar-1.0.0-SNAPSHOT.jar
 
 -initlevel 3
--install   sip/jars/nist-sip-registrar-gui-0.7.1-SNAPSHOT.jar
+-install   sip/jars/nist-sip-registrar-gui-1.0.0-SNAPSHOT.jar
 
 
 
 -startlevel 4
 
 -launch
--start sip/jars/nist-sip-registrar-0.7.1-SNAPSHOT.jar
--start sip/jars/nist-sip-registrar-gui-0.7.1-SNAPSHOT.jar
+-start sip/jars/nist-sip-registrar-1.0.0-SNAPSHOT.jar
+-start sip/jars/nist-sip-registrar-gui-1.0.0-SNAPSHOT.jar

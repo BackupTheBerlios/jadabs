@@ -23,7 +23,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLpidfParser extends DefaultHandler
 {
-    private Logger LOG = Logger.getLogger(XMLpidfParser.class);
+    private Logger LOG = Logger.getLogger(XMLpidfParser.class.getName());
     
     private PresenceTag presenceTag;
 

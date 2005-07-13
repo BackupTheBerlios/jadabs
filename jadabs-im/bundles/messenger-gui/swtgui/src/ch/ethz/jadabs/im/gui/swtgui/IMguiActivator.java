@@ -77,16 +77,18 @@ public class IMguiActivator implements BundleActivator
         //register service as a singleton... need a PID?
     
         ServiceReference imref = bc.getServiceReference(IMService.class.getName());
-        imService = (IMService)bc.getService(imref);       	        
-        imSettings = (IMSettings)imService;
+        imService = (IMService)bc.getService(imref);   
+        
+        ServiceReference imset = bc.getServiceReference(IMSettings.class.getName());
+        imSettings = (IMSettings)bc.getService(imset);   
 
 		// TODO ??? without sleep : crash !!
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         swtgui = new SwtGUI();
         ui.exec(swtgui, false);        
         
         //register service
-        bc.registerService(SwtGUI.class.getName(), swtgui, new Hashtable());
+        bc.registerService(SwtGUI.class.getName(), swtgui, null);
         
     }
 

@@ -21,11 +21,10 @@
 
 -initlevel 1
 -install   sip/jars/sip-api-1.1-osgi.jar
-#-install   jadabs-im/jars/ethz_proxy-0.7.1-SNAPSHOT.jar
 -install   postgresql/jars/postgresql-jdbc3-osgi-7.4-213.jar
 -install   cayenne/jars/cayenne-1.1RC3-osgi.jar
 -istart   sip/jars/nist-sip-1.2-osgi.jar
--istart   sip/jars/nist-sip-registrar-0.7.1-SNAPSHOT.jar
+-istart   sip/jars/nist-sip-registrar-1.0.0-SNAPSHOT.jar
 
 -startlevel 1
 

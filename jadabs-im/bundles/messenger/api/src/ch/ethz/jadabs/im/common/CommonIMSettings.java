@@ -6,8 +6,8 @@
  */
 package ch.ethz.jadabs.im.common;
 
-import ch.ethz.jadabs.api.IOProperty;
-import ch.ethz.jadabs.config.CommonSettings;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
+import ch.ethz.jadabs.im.ioapi.CommonSettings;
 
 /**
  * @author franz

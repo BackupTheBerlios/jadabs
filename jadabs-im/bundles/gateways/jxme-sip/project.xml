@@ -4,7 +4,7 @@
 
 	<extend>${basedir}/../../../project.xml</extend>
    
-	<name>Sip-GW-Impl</name>
+	<name>SIP-JXME-GW</name>
 	<groupId>jadabs-im</groupId>
 	<artifactId>gw-jxmesip</artifactId>
 
@@ -14,7 +14,7 @@
 	
 		<dependency>
       		<groupId>jadabs-im</groupId>
-      		<artifactId>api</artifactId>
+      		<artifactId>im-ioapi</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>
 		
@@ -61,7 +61,7 @@
        </dependency>
        
        <dependency>
-      		<groupId>jadabs</groupId>
+      		<groupId>jadabs-im</groupId>
       		<artifactId>sip-cons</artifactId>
       		<version>${pom.currentVersion}</version>
 		</dependency>

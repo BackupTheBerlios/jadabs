@@ -6,14 +6,20 @@
  */
 package ch.ethz.jadabs.im.jxme;
 
+
+import java.util.Hashtable;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import ch.ethz.jadabs.api.IOProperty;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
 import ch.ethz.jadabs.im.api.IMService;
+import ch.ethz.jadabs.im.api.IMSettings;
 import ch.ethz.jadabs.jxme.Pipe;
 import ch.ethz.jadabs.jxme.services.GroupService;
+import ch.ethz.jadabs.osgiaop.AOPContext;
+import ch.ethz.jadabs.osgiaop.AOPServiceRegistration;
 
 /**
  * @author franz
@@ -43,12 +49,12 @@ public class IMServiceActivator implements BundleActivator {
         long gmpipeID = Long.parseLong(bc.getProperty("ch.ethz.jadabs.jxme.services.gmpipe.id"));
         Pipe groupPipe = groupsvc.createGroupPipe(gmpipeName, gmpipeID); 
 
-        ServiceReference[] sr = bc.getServiceReferences("ch.ethz.jadabs.api.IOProperty", "(buddy=false)");
+        ServiceReference[] sr = bc.getServiceReferences(IOProperty.class.getName(), "(buddy=false)");
         if (sref == null)
             throw new Exception("could not properly initialize IM, IOProperty 1 is missing");
         IOProperty prop = (IOProperty)bc.getService(sr[0]);
         
-        sr = bc.getServiceReferences("ch.ethz.jadabs.api.IOProperty", "(buddy=true)");
+        sr = bc.getServiceReferences(IOProperty.class.getName(), "(buddy=true)");
         if (sref == null)
             throw new Exception("could not properly initialize IM, IOProperty 2 is missing");
         IOProperty buddyprop = (IOProperty)bc.getService(sr[0]);
@@ -59,8 +65,19 @@ public class IMServiceActivator implements BundleActivator {
 //        groupsvc.listen(groupPipe, jxmeUAClient);
 
 		// register IMService independet of AOP
-		bc.registerService("ch.ethz.jadabs.im.api.IMService", (IMService)jxmeUAClient, null);
+//		bc.registerService("ch.ethz.jadabs.im.api.IMService", (IMService)jxmeUAClient, null);
 
+		bc.registerService(IMSettings.class.getName(), jxmeUAClient, null);
+		
+//		 register the service with the AOPContext.registerAOPService(..)
+		Hashtable dict = new Hashtable();
+		dict.put("impl","jxme");
+		AOPServiceRegistration imsvcreg = 
+        	((AOPContext) bc).registerAOPService(
+				IMService.class,
+				jxmeUAClient, dict);
+        
+        
 	}
 
 	/* (non-Javadoc)

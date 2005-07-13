@@ -21,9 +21,9 @@ import javax.sip.message.Response;
 
 import org.apache.log4j.Logger;
 
-import ch.ethz.jadabs.api.IMUtilities;
-import ch.ethz.jadabs.api.IOProperty;
-import ch.ethz.jadabs.api.MessageCons;
+import ch.ethz.jadabs.im.ioapi.IMUtilities;
+import ch.ethz.jadabs.im.ioapi.IOProperty;
+import ch.ethz.jadabs.im.ioapi.MessageCons;
 import ch.ethz.jadabs.im.api.IMContact;
 import ch.ethz.jadabs.im.api.IMListener;
 import ch.ethz.jadabs.im.api.IMService;
@@ -58,7 +58,7 @@ import ch.ethz.jadabs.sip.handler.authentication.AuthenticationProcess;
  */
 public class SIPUserAgentClient extends IMUserAgent implements IMService, IMSettings, IMReceiveProcessor {
 	
-	static Logger logger = Logger.getLogger(SIPUserAgentClient.class);
+	static Logger logger = Logger.getLogger(SIPUserAgentClient.class.getName());
 	
 	private IMListener sipIMListener;
 	
@@ -286,14 +286,20 @@ public class SIPUserAgentClient extends IMUserAgent implements IMService, IMSett
 	    return status;
 	}
 
+    public void setListener(IMListener listener)
+    {
+        this.sipIMListener = listener;
+    }
+    
 	/* (non-Javadoc)
 	 * @see ch.ethz.jadabs.im.api.IMService#register(ch.ethz.jadabs.im.api.IMListener, int)
 	 */
-	public void connect(IMListener imlistener)
+	public void connect()
 	{
+//	    this.sipIMListener = imlistener;
+	    
 		// Done
 	    if (!registered) {
-	        this.sipIMListener = imlistener;
 	        if (!started) {
 	            try {
 	                start();
@@ -553,6 +559,7 @@ public class SIPUserAgentClient extends IMUserAgent implements IMService, IMSett
             
             user.setStatus(IMUtilities.getIntStatus(status));
             sipIMListener.buddyStatusChanged();
+//            sipIMListener.neighbourListChanged();
             
             getPresenceManager().updatePresentity(username, status);
         }
