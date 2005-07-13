@@ -30,7 +30,7 @@
 	<classpathentry kind="var" path="MAVEN_REPO/java/jars/javamail-all-1.3.1-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/osgi/jars/osgi-framework-1.2.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/swt/jars/swt-3.0.1-ppc.jar"/>
-	<classpathentry kind="var" path="MAVEN_REPO/kobjects/jars/kxml2-2.1.9-osgi.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/kobjects/jars/kxml2-2.2.1-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jsx/jars/jsx-osgi-2.2.3.8.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="build"/>
