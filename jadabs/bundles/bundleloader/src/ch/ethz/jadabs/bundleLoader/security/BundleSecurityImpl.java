@@ -17,9 +17,9 @@ import ch.ethz.jadabs.bundleLoader.api.BundleSecurity;
 /**
  * @author otmar
  * 
- * Main idea: if java.security.Security available, load security bundle,
+ * Main idea: if java.security.Security available, try to load security bundle,
  * else try to compute signatures/digests with methods in this class
- * 
+ *  
  */
 public class BundleSecurityImpl implements BundleSecurity {
 
@@ -33,6 +33,7 @@ public class BundleSecurityImpl implements BundleSecurity {
     private static BundleLoader bl;
     
     private BundleSecurityImpl(){
+        LOG.info("Internal BundleSecurityImpl initialized.");
     }
     
     public static BundleSecurity init(BundleLoader bl){
@@ -82,14 +83,16 @@ public class BundleSecurityImpl implements BundleSecurity {
             String digestGenAlgo, String signature, String keyGenAlgo,
             String publicKey) throws Exception {
         LOG.debug("Checking bundle with local BundleSecurityImpl");
-        if (sha1Digest(stream).equals(digest)){
-            LOG.debug("Digest is ok.");
-            return verifySignature(publicKey, digest, signature);
+        byte[] digestBytes = sha1Digest(stream);
+        String digestB64 = new String(Base64.encodeBase64(digestBytes));
+        if (digest != null && !digestB64.equals(digest)){
+            LOG.debug("Digest is not the same.");
+            return false;
         }
-        return false;
+        return verifySignature(publicKey, digestBytes, signature);
     }
     
-    private String sha1Digest(InputStream is) throws Exception {
+    private byte[] sha1Digest(InputStream is) throws Exception {
         Digest digest = new SHA1Digest();
         byte[] result = new byte[digest.getDigestSize()];
         byte[] buffer = new byte[BUFFERSIZE];
@@ -102,21 +105,21 @@ public class BundleSecurityImpl implements BundleSecurity {
 
         digest.doFinal(result, 0);
 
-        return new String(Base64.encodeBase64(result));
+        return result;
     }
-    
-    private boolean verifySignature(String publicKey, String digest, String signature) throws Exception{
+        
+    private boolean verifySignature(String publicKey, byte[] digestBytes, String signature) throws Exception{
         byte[] subjPubKeyBytes = Base64.decodeBase64(publicKey.getBytes());
-        byte[] digestBytes = Base64.decodeBase64(digest.getBytes());
         byte[] signatureBytes = Base64.decodeBase64(signature.getBytes());
         
         DSASubjectPublicKey pubKey = new DSASubjectPublicKey(subjPubKeyBytes);
-        SHA1Digest digester = new SHA1Digest();
-        byte[] buffer = new byte[digester.getDigestSize()];
-        digester.update(digestBytes, 0, digestBytes.length);
-        digester.doFinal(buffer, 0);
+//        SHA1Digest digester = new SHA1Digest();
+//        byte[] buffer = new byte[digester.getDigestSize()];
+//        digester.update(digestBytes, 0, digestBytes.length);
+//        digester.doFinal(buffer, 0);
         DSAVerifier verifier = new DSAVerifier(pubKey);
-        return verifier.virfySignature(buffer, signatureBytes);
+        //return verifier.virfySignature(buffer, signatureBytes);
+        return verifier.virfySignature(digestBytes, signatureBytes);
     }
 
 }

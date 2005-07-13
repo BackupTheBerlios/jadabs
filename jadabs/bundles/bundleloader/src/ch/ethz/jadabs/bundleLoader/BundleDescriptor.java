@@ -213,15 +213,13 @@ public class BundleDescriptor extends Descriptor {
    
    /**
     * Check a bundle according to the obr bundle checksum 
-    * @param bundle <code>String</code> content of a bundle> 
+    * @param bundle <code>InputStream</code> content of a bundle> 
     * @return <code>boolean</code> value of success
     */
-   protected boolean checkBundle() {
+   protected boolean checkBundle(InputStream jarStream) {
       try {
-          // get the content of the jar
-          InputStream instream = BundleLoaderActivator.bundleLoader.fetchInformation(jar_uuid(), this);
           LOG.debug("Checking bundle " + jar_uuid());
-          boolean retVal = BundleSecurityImpl.Instance().checkBundle(instream,
+          boolean retVal = BundleSecurityImpl.Instance().checkBundle(jarStream,
                   digest, digestGenAlgo, signature, keyGenAlgo, tempInfo);
           LOG.debug("result: " + retVal);
           return retVal;

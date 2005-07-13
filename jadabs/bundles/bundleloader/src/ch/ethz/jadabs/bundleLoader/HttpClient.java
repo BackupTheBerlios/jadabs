@@ -71,6 +71,8 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
     private Vector knownHosts;
 
     private static Logger LOG = Logger.getLogger(HttpClient.class);
+    
+    private static final int BUFFERSIZE = 1024;
 
     private boolean canWS = false;
 
@@ -177,11 +179,19 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
                                                 
                         InputStream is = clientSocket.getFileInputStream(downloadurl);
                         
-                        // write file into local repository
-                        saveInCache(is, group, name, version, type);
+                        // check the bundle...
+                        String obrUuid = group + ":" + name + ":" + version + ":obr";
+                        byte[] jarBytes = readAllData(is);
                         
-                        
-                        return clientSocket.getFileInputStream(downloadurl);
+                        BundleDescriptor bdescr = new BundleDescriptor(obrUuid);
+                        if (bdescr.checkBundle(new ByteArrayInputStream(jarBytes))){
+                            // write file into local repository
+                            debug("Signature of " + uuid + " seems ok...");
+                            saveInCache(new ByteArrayInputStream(jarBytes), group, name, version, type);
+                            return new ByteArrayInputStream(jarBytes);
+                        }
+                        error("Bundle " + uuid + " is not correctly signed.");
+                        return null;
 
                     } else if (type.equals("obr"))
                     {
@@ -378,6 +388,25 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
         }
     }
     
+    private byte[] readAllData(InputStream is) throws IOException{
+        Vector byteArrays = new Vector();
+        byte[] tmpArr = new byte[BUFFERSIZE];
+        int i;
+        int nBytes;
+        for (i = 0; (nBytes = is.read(tmpArr)) == BUFFERSIZE; i += BUFFERSIZE){
+            byteArrays.add(tmpArr.clone());
+        }
+        byte[] byteArr = new byte[i + nBytes];
+        Iterator iter = byteArrays.iterator();
+        i = 0;
+        while (iter.hasNext()) {
+            System.arraycopy(iter.next(), 0, byteArr, i, BUFFERSIZE);
+            i += BUFFERSIZE;
+        }
+        System.arraycopy(tmpArr, 0, byteArr, i, nBytes);
+        return byteArr;
+    }
+        
     private static void saveOPDInCache(String data, String uuid)
     {
         String[] args = Utilities.split(uuid, ":");
@@ -519,6 +548,19 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
             clientSocket.get("/get" + type + "/" + uuid);
             clientSocket.request();
 
+            if (type.equals("jar")){
+                String obrUuid = group + ":" + name + ":" + version + ":obr";
+                byte[] jarBytes = clientSocket.data.getBytes();
+                
+                BundleDescriptor bdescr = new BundleDescriptor(obrUuid);
+                if (bdescr.checkBundle(new ByteArrayInputStream(jarBytes))){
+                    // write file into local repository
+                    debug("Signature of " + uuid + " seems ok...");
+                    return new ByteArrayInputStream(jarBytes);
+                }
+                error("Bundle " + uuid + " is not correctly signed.");
+                return null;
+            }
             return new ByteArrayInputStream(clientSocket.data.getBytes());
 
         } catch (Exception e)

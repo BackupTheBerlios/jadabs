@@ -388,15 +388,6 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
                      && !loadedBundles.contains(depUuid)) {
 
                   // bundle is not yet in queue
-                   
-                   // Check if bundle is correctly signed
-                  if (!depDescr.checkBundle()){
-                      LOG.error("Bundle " + depUuid + " is not correctly signed. "
-                              + "Installation of " + initial + " aborted.");
-                      return null;
-                  }
-                  LOG.debug("Signature of bundle " + depUuid + " seems ok...");
-                  
                   // add it prior to the bundle that had this
                   // dependency
                   if (index > 0) {
