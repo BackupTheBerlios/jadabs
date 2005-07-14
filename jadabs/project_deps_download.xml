@@ -18,8 +18,8 @@
 
 		<dependency>
 			<groupId>swt</groupId>
-			<artifactId>swt</artifactId>
-			<version>3.0RC1-linux-osgi</version>
+			<artifactId>swt-linux</artifactId>
+			<version>3.0.1-osgi</version>
 		</dependency>
 		
 		<dependency>

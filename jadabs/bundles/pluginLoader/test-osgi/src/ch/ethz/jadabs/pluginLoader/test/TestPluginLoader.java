@@ -135,7 +135,7 @@ public class TestPluginLoader implements BundleActivator
         
         
         // test IM filters
-        filters.add( " Extension/id:IM ¦ " +
+        filters.add( " Extension/id:IM | " +
                 "Platform/id:device.ethz.ch, name:deviceservices, " +
                     "version:0.1.0, provider-name:ETHZ-IKS; " +
                 "Property/processor:i386; " +
@@ -147,7 +147,7 @@ public class TestPluginLoader implements BundleActivator
                 "OSGiContainer/id:osgi-daop; " +
                 "NetIface/type:adhoc, connection:dynamic, " +
                     "name:bt-hotspot,iface:eth1, ip:192.168.55.55; " +
-                "NetIface/type:internet, ext-type:wlan/managed ¦ R");
+                "NetIface/type:internet, ext-type:wlan/managed | R");
         
         for (Enumeration en = filters.elements(); en.hasMoreElements();)
             queryAndPrintResult((String)en.nextElement());

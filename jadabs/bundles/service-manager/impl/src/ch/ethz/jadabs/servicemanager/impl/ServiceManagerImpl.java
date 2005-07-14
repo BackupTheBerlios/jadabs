@@ -312,8 +312,8 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	            {
 	                String filter = new String(msg.getElement(SERVICE_FILTER).getData());
 	                
-	                String exps = filter.substring(0,filter.indexOf("¦"));
-	                String platformrest = filter.substring(filter.indexOf("¦"));
+	                String exps = filter.substring(0,filter.indexOf("|"));
+	                String platformrest = filter.substring(filter.indexOf("|"));
 	                
 	                StringTokenizer st = new StringTokenizer(exps, ",");
 	                String exp;
@@ -322,7 +322,7 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	                {
                         exp = st.nextToken();
                         
-	                    String newfilter = exp + " ¦ " + platformrest + " ¦ " + "R";
+	                    String newfilter = exp + " | " + platformrest + " | " + "R";
 	                    try {
 	                        Iterator it = ServiceManagerActivator.pluginLoader.getMatchingPlugins(
 			                    newfilter, this);
@@ -368,11 +368,11 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 		            	// match agains the provided filter
 		            String filter = new String(msg.getElement(SERVICE_FILTER).getData());
 		            
-		            // transform | into ¦ due to problems with nokia
-		            if (filter.indexOf('|') > -1)
-		                filter = filter.replace('|','¦');
+		            // transform | into | due to problems with nokia
+//		            if (filter.indexOf('|') > -1)
+//		                filter = filter.replace('|','|');
 		            
-		            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
+		            String smfilter = filter.substring(filter.lastIndexOf("|")+1);
 		            
 		            	            
 		            Iterator it = null;
@@ -851,8 +851,8 @@ public class ServiceManagerImpl extends PluginFilterMatcher
                             sb.append(",");
 		            }
 		            
-	                String filter= sb.toString() + " ¦ " + 
-	                	ServiceManagerActivator.pluginLoader.getPlatform() + " ¦ " + "R";
+	                String filter= sb.toString() + " | " + 
+	                	ServiceManagerActivator.pluginLoader.getPlatform() + " | " + "R";
 		                
 	                sendRequest(namedResource.getName(), 
 		                        NEWFILTER_REQ, SERVICE_FILTER, filter, null, null);
