@@ -3,14 +3,11 @@
  */
 package ch.ethz.jadabs.bundleLoader.api;
 
-import java.io.InputStream;
 
 /**
  * @author otmar
  */
 public interface BundleSecurity {
 
-    public boolean checkBundle(InputStream stream, String digest,
-            String digestGenAlgo, String signature, String keyGenAlgo,
-            String publicKey) throws Exception;
+    public boolean checkBundle(Descriptor descriptor, byte[] bundleData) throws Exception;
 }

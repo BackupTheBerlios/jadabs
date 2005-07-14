@@ -84,12 +84,4 @@ public class Utilities {
 		return args;
    }
    
-   public static String removeAll(String string, String toRemove){
-       int indexPos; 
-       while ((indexPos = string.indexOf(toRemove)) != -1){
-           string = string.substring(0, indexPos) + string.substring(indexPos + toRemove.length());
-       }
-       return string;
-   }
-   
 }

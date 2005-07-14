@@ -13,6 +13,7 @@ import org.osgi.framework.ServiceReference;
 import ch.ethz.jadabs.bundleLoader.BundleLoaderActivator;
 import ch.ethz.jadabs.bundleLoader.api.BundleLoader;
 import ch.ethz.jadabs.bundleLoader.api.BundleSecurity;
+import ch.ethz.jadabs.bundleLoader.api.Descriptor;
 
 /**
  * @author otmar
@@ -36,23 +37,34 @@ public class BundleSecurityImpl implements BundleSecurity {
         LOG.info("Internal BundleSecurityImpl initialized.");
     }
     
-    public static BundleSecurity init(BundleLoader bl){
+    public static void init(BundleLoader bl){
         if (instance == null) {
             BundleSecurityImpl.bl = bl;
-            try {
-                BundleSecurityImpl.class.getClassLoader().loadClass("java.security.Security");
-                LOG.debug("Class java.security.Security present.");
-                // use the security bundle
-                instance = loadSecurityBundle();
-            } catch (Exception e){
-                LOG.debug("", e);
+            boolean noSecurity = System.getProperty("ch.ethz.jadabs.bundlesecurity.ignoreSecurity", "").equals("true");
+            if (noSecurity){
+                LOG.info("WARNING: ignoring security checks");
+                instance = new BundleSecurity(){
+	                public boolean checkBundle(Descriptor desc, byte[] stream) throws Exception {
+	                    return true;
+	                }
+	            };
+            } else {
+	            try {
+	                BundleSecurityImpl.class.getClassLoader().loadClass("java.security.Security");
+	                LOG.debug("Class java.security.Security present.");
+	                // use the security bundle
+	                instance = loadSecurityBundle();
+	            } catch (Exception e){
+	                LOG.debug("", e);
+	            }
             }
+            
+            // default:
             if (instance == null){
                 LOG.debug("using local BundleSecurityImpl");
                 instance = new BundleSecurityImpl();
             }
         }
-        return instance;
     }
     
     public static BundleSecurity Instance() throws Exception{
@@ -79,30 +91,24 @@ public class BundleSecurityImpl implements BundleSecurity {
     /* (non-Javadoc)
      * @see ch.ethz.jadabs.bundleLoader.api.Security#checkBundle(java.io.InputStream, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public boolean checkBundle(InputStream stream, String digest,
-            String digestGenAlgo, String signature, String keyGenAlgo,
-            String publicKey) throws Exception {
+    public boolean checkBundle(Descriptor desc, byte[] bundleData) throws Exception {
         LOG.debug("Checking bundle with local BundleSecurityImpl");
-        byte[] digestBytes = sha1Digest(stream);
+        byte[] digestBytes = sha1Digest(bundleData);
         String digestB64 = new String(Base64.encodeBase64(digestBytes));
-        if (digest != null && !digestB64.equals(digest)){
+        String bundleDigest = desc.getProperty("digest");
+        if (bundleDigest != null && !digestB64.equals(bundleDigest)){
             LOG.debug("Digest is not the same.");
             return false;
         }
-        return verifySignature(publicKey, digestBytes, signature);
+        String bundleSignature = desc.getProperty("signature");
+        String bundlePublicKey = desc.getProperty("publicKey");
+        return verifySignature(bundlePublicKey, digestBytes, bundleSignature);
     }
     
-    private byte[] sha1Digest(InputStream is) throws Exception {
+    private byte[] sha1Digest(byte[] data) throws Exception {
         Digest digest = new SHA1Digest();
         byte[] result = new byte[digest.getDigestSize()];
-        byte[] buffer = new byte[BUFFERSIZE];
-        int length = 0;
-
-        // read bytes into buffer and feed these bytes into the message digest object
-        while ((length = is.read(buffer)) != -1) {
-            digest.update(buffer, 0, length);
-        }
-
+        digest.update(data, 0, data.length);
         digest.doFinal(result, 0);
 
         return result;

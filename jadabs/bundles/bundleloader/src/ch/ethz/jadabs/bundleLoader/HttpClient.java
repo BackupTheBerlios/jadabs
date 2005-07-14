@@ -184,7 +184,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
                         byte[] jarBytes = readAllData(is);
                         
                         BundleDescriptor bdescr = new BundleDescriptor(obrUuid);
-                        if (bdescr.checkBundle(new ByteArrayInputStream(jarBytes))){
+                        if (bdescr.checkBundle(jarBytes)){
                             // write file into local repository
                             debug("Signature of " + uuid + " seems ok...");
                             saveInCache(new ByteArrayInputStream(jarBytes), group, name, version, type);
@@ -553,7 +553,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
                 byte[] jarBytes = clientSocket.data.getBytes();
                 
                 BundleDescriptor bdescr = new BundleDescriptor(obrUuid);
-                if (bdescr.checkBundle(new ByteArrayInputStream(jarBytes))){
+                if (bdescr.checkBundle(jarBytes)){
                     // write file into local repository
                     debug("Signature of " + uuid + " seems ok...");
                     return new ByteArrayInputStream(jarBytes);

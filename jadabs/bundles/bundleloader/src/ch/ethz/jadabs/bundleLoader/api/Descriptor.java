@@ -57,4 +57,11 @@ public abstract class Descriptor {
    public String toString() {
       return uuid;
    }
+   
+   /**
+    * Get a property of the Description
+    * @return the value of the property
+    */
+   public abstract String getProperty(String name);
+   
 }

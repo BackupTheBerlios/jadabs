@@ -38,6 +38,7 @@ package ch.ethz.jadabs.bundleLoader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Properties;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -46,7 +47,6 @@ import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import ch.ethz.jadabs.bundleLoader.api.Descriptor;
-import ch.ethz.jadabs.bundleLoader.api.Utilities;
 import ch.ethz.jadabs.bundleLoader.security.BundleSecurityImpl;
 
 /**
@@ -54,28 +54,44 @@ import ch.ethz.jadabs.bundleLoader.security.BundleSecurityImpl;
  * @author Jan S. Rellermeyer, jrellermeyer_at_student.ethz.ch
  */
 public class BundleDescriptor extends Descriptor {
-      
+   
    private static Logger LOG = Logger.getLogger(BundleDescriptor.class);
+   
+   private static final String[] PROPERTIES = new String[]{"bundle-name",
+           "bundle-group", "bundle-version", "bundle-updatelocation",
+           "digestGenerationAlgorithm", "keyGenerationAlgorithm",
+           "signature", "digest", "certificate"};
+   
    protected Vector dependencies = new Vector();
-   private KXmlParser parser; 
-   private String name;
-   private String version;
-   private String group;
-   private String bundleLocation;
-   private String bundleChecksum;
-   private String digestGenAlgo;
-   private String keyGenAlgo;
-   private String digest;
-   private String signature;
-   private String tempInfo;
+   private KXmlParser parser;
+   private Properties properties = new Properties();
+//   private String name;
+//   private String version;
+//   private String group;
+//   private String bundleLocation;
+//   private String bundleChecksum;
+//   private String digestGenAlgo;
+//   private String keyGenAlgo;
+//   private byte[] digest;
+//   private byte[] signature;
+//   private String tempInfo;
+//   private byte[] certificate;
    protected boolean processed = false;
    private int level = 0;
+   
    
    /**
     * Hidden constructor    
     */
    private BundleDescriptor() {   
       super(null);
+   }
+   
+   private boolean isProperty(Object name){
+       for (int i = 0; i < PROPERTIES.length; i++) {
+           if (PROPERTIES[i].equals(name)) return true;
+       }
+       return false;
    }
 
    /**
@@ -86,6 +102,7 @@ public class BundleDescriptor extends Descriptor {
     */
    protected BundleDescriptor(String uuid) throws Exception {      
       super(uuid);
+      
       parser = new KXmlParser();
       
       // fetch input stream from obr file
@@ -95,6 +112,9 @@ public class BundleDescriptor extends Descriptor {
 	      parser.setInput(new InputStreamReader(instream));
 	      // parse obr file
 	      parseOBR();
+	      String group = properties.getProperty("bundle-group");
+	      String name = properties.getProperty("bundle-name");
+	      String version = properties.getProperty("bundle-version");
 	      if (! uuid.equals(group + ":" + name + ":" + version + ":obr"))
 	         throw new Exception("OBR file corrupted. Could not create BundleDescriptor");
 	      
@@ -149,22 +169,7 @@ public class BundleDescriptor extends Descriptor {
     */
    private void processElement(Stack stack) throws XmlPullParserException, IOException
    {
-       if (stack.peek().equals("bundle-name"))
-       {
-           name = parser.getText().trim();
-       } else if (stack.peek().equals("bundle-group"))
-       {
-           group = parser.getText().trim();
-       } else if (stack.peek().equals("bundle-version"))
-       {
-           version = parser.getText().trim();
-       } else if (stack.peek().equals("bundle-updatelocation"))
-       {
-           bundleLocation = parser.getText().trim();
-       } else if (stack.peek().equals("bundle-checksum"))
-       {
-           bundleChecksum = parser.getText().trim();
-       } else if (stack.peek().equals("dependency-uuid"))
+       if (stack.peek().equals("dependency-uuid"))
        {
            String uuid = parser.getText().trim();
            try
@@ -176,18 +181,8 @@ public class BundleDescriptor extends Descriptor {
                LOG.error("malformed bundle uuid: " + uuid);
                e.printStackTrace();
            }
-       } else if (stack.contains("bundle-security")) {
-           if (stack.peek().equals("digestGenerationAlgorithm")){
-               digestGenAlgo = parser.getText().trim();
-           } else if (stack.peek().equals("keyGenerationAlgorithm")){
-               keyGenAlgo = parser.getText().trim();
-           } else if (stack.peek().equals("digest")){
-               digest = parser.getText().trim();
-           } else if (stack.peek().equals("signature")){
-               signature = parser.getText().trim();
-           } else if (stack.peek().equals("temp-info")){
-               tempInfo = Utilities.removeAll(parser.getText().trim(), "\t");
-           }
+       } else if (isProperty(stack.peek())){
+           properties.put(stack.peek(), parser.getText().trim());
        }
    }
    
@@ -208,7 +203,7 @@ public class BundleDescriptor extends Descriptor {
     * @return <code>String</code> containing a url to the bundle
     */
    protected String jar_source() {
-      return bundleLocation;
+      return properties.getProperty("bundle-updatelocation");
    }
    
    /**
@@ -216,11 +211,10 @@ public class BundleDescriptor extends Descriptor {
     * @param bundle <code>InputStream</code> content of a bundle> 
     * @return <code>boolean</code> value of success
     */
-   protected boolean checkBundle(InputStream jarStream) {
+   protected boolean checkBundle(byte[] jarBytes) {
       try {
           LOG.debug("Checking bundle " + jar_uuid());
-          boolean retVal = BundleSecurityImpl.Instance().checkBundle(jarStream,
-                  digest, digestGenAlgo, signature, keyGenAlgo, tempInfo);
+          boolean retVal = BundleSecurityImpl.Instance().checkBundle(this, jarBytes);
           LOG.debug("result: " + retVal);
           return retVal;
 		  } catch (Exception e) {
@@ -237,9 +231,12 @@ public class BundleDescriptor extends Descriptor {
          return ((String)obj).equalsIgnoreCase(this.toString());
       } else if (obj instanceof BundleDescriptor) {
          BundleDescriptor descr = (BundleDescriptor)obj;
-         return (this.toString().equals(descr.toString()) && this.dependencies.equals(descr.dependencies) && this.bundleChecksum.equals(descr.bundleChecksum));
+         return (this.toString().equals(descr.toString()) && this.dependencies.equals(descr.dependencies));
       } 
       return false;
    }
-      
+       
+	public String getProperty(String name){
+	    return properties.getProperty(name);
+	}
 }
