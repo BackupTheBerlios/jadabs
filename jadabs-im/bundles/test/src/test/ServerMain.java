@@ -12,6 +12,8 @@ import javax.sip.SipFactory;
 import javax.sip.SipProvider;
 import javax.sip.SipStack;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author sky
  *
@@ -20,6 +22,9 @@ import javax.sip.SipStack;
  */
 public class ServerMain {
 	
+    private static Logger LOG = Logger.getLogger("test.ServerMain");
+	
+    
 	public static void main(String [] args) {
 		try {
 			SipFactory sipFactory = SipFactory.getInstance();
@@ -49,7 +54,7 @@ public class ServerMain {
 			sipProvider.addSipListener(serverSipListener);
 			
 			
-			System.out.println("Server started !\n");
+			LOG.debug("Server started !\n");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

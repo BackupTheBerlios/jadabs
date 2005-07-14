@@ -22,10 +22,6 @@ import ch.ethz.jadabs.osgiaop.AOPContext;
 import ch.ethz.jadabs.osgiaop.AOPServiceRegistration;
 
 /**
- * @author franz
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class IMServiceActivator implements BundleActivator {
 	
@@ -76,7 +72,6 @@ public class IMServiceActivator implements BundleActivator {
         	((AOPContext) bc).registerAOPService(
 				IMService.class,
 				jxmeUAClient, dict);
-        
         
 	}
 

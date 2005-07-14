@@ -9,6 +9,8 @@ package ch.ethz.jadabs.sip.handler.authentication;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.log4j.Logger;
+
 /**
  * 
  * @author olivier deruelle
@@ -16,6 +18,8 @@ import java.security.NoSuchAlgorithmException;
 public class DigestClientAuthenticationMethod implements ClientAuthenticationMethod
 {
 
+    private Logger LOG = Logger.getLogger("ch.ethz.jadabs.sip.handler.authentication.DigestClientAuthenticationMethod");
+    
     private String realm;
 
     private String userName;
@@ -91,7 +95,7 @@ public class DigestClientAuthenticationMethod implements ClientAuthenticationMet
             messageDigest = MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException ex)
         {
-            System.out.println("DEBUG, DigestClientAuthenticationMethod, initialize(): "
+            LOG.debug("DEBUG, DigestClientAuthenticationMethod, initialize(): "
                     + "ERROR: Digest algorithm does not exist.");
             throw new Exception("ERROR: Digest algorithm does not exist.");
         }
@@ -104,66 +108,66 @@ public class DigestClientAuthenticationMethod implements ClientAuthenticationMet
     {
         if (userName == null)
         {
-            System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
+            LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
                     + "ERROR: no userName parameter");
             return null;
         }
         if (realm == null)
         {
-            System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
+            LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
                     + "ERROR: no realm parameter");
             return null;
         }
 
-        System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
+        LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
                 + "Trying to generate a response for the user: " + userName + " , with " + "the realm: " + realm);
 
         if (password == null)
         {
-            System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
+            LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
                     + "ERROR: no password parameter");
             return null;
         }
         if (method == null)
         {
-            System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
+            LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
                     + "ERROR: no method parameter");
             return null;
         }
         if (uri == null)
         {
-            System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
+            LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
                     + "ERROR: no uri parameter");
             return null;
         }
         if (nonce == null)
         {
-            System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
+            LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
                     + "ERROR: no nonce parameter");
             return null;
         }
         if (messageDigest == null)
         {
-            System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
+            LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(): "
                     + "ERROR: the algorithm is not set");
             return null;
         }
 
         /** ***** GENERATE RESPONSE *********************************** */
-        System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(), userName:" + userName + "!");
-        System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(), realm:" + realm + "!");
-        System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(), password:" + password + "!");
-        System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(), uri:" + uri + "!");
-        System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(), nonce:" + nonce + "!");
-        System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(), method:" + method + "!");
+        LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(), userName:" + userName + "!");
+        LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(), realm:" + realm + "!");
+        LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(), password:" + password + "!");
+        LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(), uri:" + uri + "!");
+        LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(), nonce:" + nonce + "!");
+        LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(), method:" + method + "!");
         String A1 = userName + ":" + realm + ":" + password;
         String A2 = method.toUpperCase() + ":" + uri;
         byte mdbytes[] = messageDigest.digest(A1.getBytes());
         String HA1 = toHexString(mdbytes);
-        System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(), HA1:" + HA1 + "!");
+        LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(), HA1:" + HA1 + "!");
         mdbytes = messageDigest.digest(A2.getBytes());
         String HA2 = toHexString(mdbytes);
-        System.out.println("DEBUG, DigestClientAuthenticationMethod, generateResponse(), HA2:" + HA2 + "!");
+        LOG.debug("DEBUG, DigestClientAuthenticationMethod, generateResponse(), HA2:" + HA2 + "!");
         String KD = HA1 + ":" + nonce;
         if (cnonce != null)
         {
@@ -173,7 +177,7 @@ public class DigestClientAuthenticationMethod implements ClientAuthenticationMet
         mdbytes = messageDigest.digest(KD.getBytes());
         String response = toHexString(mdbytes);
 
-        System.out.println("DEBUG, DigestClientAlgorithm, generateResponse():" + " response generated: " + response);
+        LOG.debug("DEBUG, DigestClientAlgorithm, generateResponse():" + " response generated: " + response);
 
         return response;
     }

@@ -151,46 +151,46 @@ public class XMLcpimParser extends DefaultHandler
             Attributes attrs) throws SAXException
     {
         element = qName;
-        System.out.println("StartElement:" + element);
+        LOG.debug("StartElement:" + element);
         if (element.compareToIgnoreCase("presence") == 0)
         {
-            //System.out.println("presence!!!!");
+            //LOG.debug("presence!!!!");
             presenceTag = new PresenceTag();
             String entity = attrs.getValue("entity").trim();
             presenceTag.setEntity(entity);
-            //System.out.println("presence!!!!");
+            //LOG.debug("presence!!!!");
         }
         if (element.compareToIgnoreCase("presentity") == 0)
         {
-            //System.out.println("presentity!!!!");
+            //LOG.debug("presentity!!!!");
             presentityTag = new PresentityTag();
             String id = attrs.getValue("id").trim();
             presentityTag.setId(id);
-            //System.out.println("presentity!!!!");
+            //LOG.debug("presentity!!!!");
         }
         if (element.compareToIgnoreCase("tuple") == 0)
         {
-            //System.out.println("tuple!!!!");
+            //LOG.debug("tuple!!!!");
             tupleTag = new TupleTag();
             String id = attrs.getValue("id").trim();
             tupleTag.setId(id);
-            //System.out.println("tuple!!!!");
+            //LOG.debug("tuple!!!!");
         }
         if (element.compareToIgnoreCase("status") == 0)
         {
-            //System.out.println("status!!!!");
+            //LOG.debug("status!!!!");
             statusTag = new StatusTag();
-            //System.out.println("status!!!!");
+            //LOG.debug("status!!!!");
         }
         if (element.compareToIgnoreCase("basic") == 0)
         {
-            //System.out.println("basic!!!!");
+            //LOG.debug("basic!!!!");
             valueTag = new ValueTag();
-            //System.out.println("basic!!!!");
+            //LOG.debug("basic!!!!");
         }
         if (element.compareToIgnoreCase("contact") == 0)
         {
-            //System.out.println("contact!!!!");
+            //LOG.debug("contact!!!!");
             contactTag = new ContactTag();
             String priority = attrs.getValue("priority").trim();
             if (priority != null)
@@ -203,13 +203,13 @@ public class XMLcpimParser extends DefaultHandler
                     e.printStackTrace();
                 }
             }
-            //System.out.println("contact!!!!");
+            //LOG.debug("contact!!!!");
         }
         if (element.compareToIgnoreCase("note") == 0)
         {
-            //System.out.println("note!!!!");
+            //LOG.debug("note!!!!");
             noteTag = new NoteTag();
-            //System.out.println("note!!!!");
+            //LOG.debug("note!!!!");
         }
     }
 
@@ -223,39 +223,39 @@ public class XMLcpimParser extends DefaultHandler
         }
         if (element.compareToIgnoreCase("presentity") == 0)
         {
-            //System.out.println("/presentity!!!!");
+            //LOG.debug("/presentity!!!!");
             presenceTag.setPresentityTag(presentityTag);
-            //System.out.println("/presentity!!!!");
+            //LOG.debug("/presentity!!!!");
         }
         if (element.compareToIgnoreCase("tuple") == 0)
         {
-            //System.out.println("/tuple!!!!");
+            //LOG.debug("/tuple!!!!");
             presenceTag.addTupleTag(tupleTag);
-            //System.out.println("/tuple!!!!");
+            //LOG.debug("/tuple!!!!");
         }
         if (element.compareToIgnoreCase("status") == 0)
         {
-            //System.out.println("/status!!!!");
+            //LOG.debug("/status!!!!");
             tupleTag.setStatusTag(statusTag);
-            //System.out.println("/status!!!");
+            //LOG.debug("/status!!!");
         }
         if (element.compareToIgnoreCase("basic") == 0)
         {
-            //System.out.println("/basic!!!!");
+            //LOG.debug("/basic!!!!");
             statusTag.setValueTag(valueTag);
-            //System.out.println("/basic!!!!");
+            //LOG.debug("/basic!!!!");
         }
         if (element.compareToIgnoreCase("contact") == 0)
         {
-            //System.out.println("/contact!!!!");
+            //LOG.debug("/contact!!!!");
             tupleTag.setContactTag(contactTag);
-            //System.out.println("/contact!!!!");
+            //LOG.debug("/contact!!!!");
         }
         if (element.compareToIgnoreCase("note") == 0)
         {
-            //System.out.println("/note!!!!");
+            //LOG.debug("/note!!!!");
             tupleTag.setNoteTag(noteTag);
-            //System.out.println("//note!!!!");
+            //LOG.debug("//note!!!!");
         }
     }
 

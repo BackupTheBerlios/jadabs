@@ -13,14 +13,20 @@ import javax.sip.SipProvider;
 import javax.sip.TimeoutEvent;
 import javax.sip.message.Response;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author franz
  *
  * To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-public class ClientSipListener implements SipListener {
+public class ClientSipListener implements SipListener 
+{
 
+    private static Logger LOG = Logger.getLogger("test.ClientSipListener");
+	
+    
 	/* (non-Javadoc)
 	 * @see javax.sip.SipListener#processRequest(javax.sip.RequestEvent)
 	 */
@@ -33,44 +39,44 @@ public class ClientSipListener implements SipListener {
 	 * @see javax.sip.SipListener#processResponse(javax.sip.ResponseEvent)
 	 */
 	public void processResponse(ResponseEvent responseEvent) {
-		System.out.println("\n\n\n***************************************\nSipListener.processResponse\n");
-		System.out.println("------\nRESPONSE\n------\n" + responseEvent.getResponse().toString());
-		System.out.println("------------\nRESPONSE EVENT\n------------\n" + responseEvent.toString());
-		System.out.println("***************************************\n\n\n\n\n");
+		LOG.debug("\n\n\n***************************************\nSipListener.processResponse\n");
+		LOG.debug("------\nRESPONSE\n------\n" + responseEvent.getResponse().toString());
+		LOG.debug("------------\nRESPONSE EVENT\n------------\n" + responseEvent.toString());
+		LOG.debug("***************************************\n\n\n\n\n");
 		try {	
 		
 			SipProvider sipProvider = (SipProvider)responseEvent.getSource();
 			
 			
 			if (responseEvent.getResponse().getStatusCode() == Response.TRYING) {
-				System.out.println("   ****   TRYING Received   ****   ");
+				LOG.debug("   ****   TRYING Received   ****   ");
 				ClientTransaction clientTransaction = responseEvent.getClientTransaction();
 				if (clientTransaction == null) {
-					System.out.println("Error ");
+					LOG.debug("Error ");
 					System.exit(0);
 				}
-				System.out.println("***************************************\n");
-				System.out.println(clientTransaction.getState().toString()+"\n");	
-				System.out.println("***************************************\n\n\n\n\n");
+				LOG.debug("***************************************\n");
+				LOG.debug(clientTransaction.getState().toString()+"\n");	
+				LOG.debug("***************************************\n\n\n\n\n");
 				
 				//Request request = clientTransaction.createAck();
-				System.out.println("\n\n\n***************************************\nSipListener.processResponse\n");
-				System.out.println("------\nRESPONSE\n------\n" + responseEvent.getResponse().toString());
-				//System.out.println("\n-----------\nSENDING REQUEST\n------------\n"+ request.toString());
-				System.out.println("------------\nREQUEST EVENT\n------------\n" + responseEvent.toString());
-				System.out.println("***************************************\n\n\n\n\n");
+				LOG.debug("\n\n\n***************************************\nSipListener.processResponse\n");
+				LOG.debug("------\nRESPONSE\n------\n" + responseEvent.getResponse().toString());
+				//LOG.debug("\n-----------\nSENDING REQUEST\n------------\n"+ request.toString());
+				LOG.debug("------------\nREQUEST EVENT\n------------\n" + responseEvent.toString());
+				LOG.debug("***************************************\n\n\n\n\n");
 				//	clientTransaction.
 			}
 			if (responseEvent.getResponse().getStatusCode() == Response.OK) {
-				System.out.println("   ****   OK Received   ****   ");
+				LOG.debug("   ****   OK Received   ****   ");
 				ClientTransaction clientTransaction = responseEvent.getClientTransaction();
 				if (clientTransaction == null) {
-					System.out.println("Error ");
+					LOG.debug("Error ");
 					System.exit(0);
 				}
-				System.out.println("***************************************\n");
-				System.out.println(clientTransaction.getState().toString()+"\n");	
-				System.out.println("***************************************\n\n\n\n\n");
+				LOG.debug("***************************************\n");
+				LOG.debug(clientTransaction.getState().toString()+"\n");	
+				LOG.debug("***************************************\n\n\n\n\n");
 			}
 		}
 		catch (Exception e) {
@@ -82,9 +88,9 @@ public class ClientSipListener implements SipListener {
 	 * @see javax.sip.SipListener#processTimeout(javax.sip.TimeoutEvent)
 	 */
 	public void processTimeout(TimeoutEvent timeoutEvent) {
-		System.out.println("***************************************\n");
-		System.out.println("TIMEOUT\n"+timeoutEvent.getTimeout().toString());	
-		System.out.println("***************************************\n\n\n\n\n");
+		LOG.debug("***************************************\n");
+		LOG.debug("TIMEOUT\n"+timeoutEvent.getTimeout().toString());	
+		LOG.debug("***************************************\n\n\n\n\n");
 	}
 
 }

@@ -8,6 +8,7 @@ package ch.ethz.jadabs.im.common.pc;
 
 import java.util.Hashtable;
 
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -19,8 +20,14 @@ import ch.ethz.jadabs.im.ioapi.IOProperty;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class IOActivator  implements BundleActivator {
-	static BundleContext bc;
+public class IOActivator  implements BundleActivator 
+{
+
+    private Logger LOG = Logger.getLogger("ch.ethz.jadabs.im.common.pc.IOActivator");
+    
+    static BundleContext bc;
+	
+	
 	
 	FileIOProperty ioProp;
 	
@@ -28,7 +35,7 @@ public class IOActivator  implements BundleActivator {
 		IOActivator.bc = bc;
 		
 		String configfile = bc.getProperty("ch.ethz.jadabs.im.configfile");
-		System.out.println(configfile);
+		LOG.debug(configfile);
 		
 		ioProp = new FileIOProperty(configfile);
 		

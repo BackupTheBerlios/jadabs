@@ -40,6 +40,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
@@ -64,6 +65,9 @@ import ch.ethz.jadabs.im.gui.api.SwtManager;
 public class SwtManagerImpl extends Thread implements SwtManager
 {
 
+    private static Logger LOG = Logger.getLogger("ch.ethz.jadabs.im.gui.swtgui.SwtManagerImpl");
+	
+    
     protected static boolean isRunning = true;
 
     protected static Display d;
@@ -103,7 +107,7 @@ public class SwtManagerImpl extends Thread implements SwtManager
         }
 
         if (bDebug)
-            System.out.println("finalizing....");
+            LOG.debug("finalizing....");
         //if we still have any registered shells then call dispose to
         //clean them out and dispose of any resourses that are registered
         
@@ -150,7 +154,7 @@ public class SwtManagerImpl extends Thread implements SwtManager
                 if (bDebug)
                 {
                     if (shells.isEmpty())
-                        System.out.println("no more shells....");
+                        LOG.debug("no more shells....");
                 }
             }
 
@@ -256,7 +260,7 @@ public class SwtManagerImpl extends Thread implements SwtManager
                 });
             } catch (Exception e)
             {
-                System.out.println("failed on close of swtManager registered shells.");
+                LOG.debug("failed on close of swtManager registered shells.");
                 e.printStackTrace();
             }
         }
@@ -278,7 +282,7 @@ public class SwtManagerImpl extends Thread implements SwtManager
                 });
             } catch (Exception e)
             {
-                System.out.println("failed on close of display.");
+                LOG.debug("failed on close of display.");
             }
     }
 

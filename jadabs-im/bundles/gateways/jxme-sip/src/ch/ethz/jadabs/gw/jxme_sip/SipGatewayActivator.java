@@ -4,6 +4,7 @@
  */
 package ch.ethz.jadabs.gw.jxme_sip;
 
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -21,6 +22,8 @@ import ch.ethz.jadabs.jxme.services.GroupService;
 public class SipGatewayActivator implements BundleActivator
 {
 
+    private Logger LOG = Logger.getLogger("ch.ethz.jadabs.gw.jxme_sip.SipGatewayActivator");
+    
     static BundleContext bc;
     
     SipGatewayImpl sipGatewayImpl;
@@ -49,7 +52,7 @@ public class SipGatewayActivator implements BundleActivator
         
         sipGatewayImpl = new SipGatewayImpl(groupsvc, groupPipe, prop);
 		
-		System.out.println("Starting gateway !");
+		LOG.debug("Starting gateway !");
 		sipGatewayImpl.start();
 		
 		// TEST

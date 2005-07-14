@@ -6,6 +6,7 @@
  */
 package ch.ethz.jadabs.gw.sip_smtp;
 
+import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -21,7 +22,8 @@ import ch.ethz.jadabs.gw.api.Gateway;
  */
 public class Activator implements BundleActivator
 {
-
+    private Logger LOG = Logger.getLogger("ch.ethz.jadabs.gw.sip_smtp.Activator");
+    
     static BundleContext bc;
 
     TemplateJL tjl;
@@ -38,7 +40,7 @@ public class Activator implements BundleActivator
         
         tjl = new TemplateJL(prop, System.getProperty("ch.ethz.jadabs.im.cayenne_config_file"));
         		
-		System.out.println("Starting gateway !");
+		LOG.debug("Starting gateway !");
 		tjl.start();
 		
         bc.registerService(Gateway.class.getName(), tjl, null);

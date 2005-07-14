@@ -2,9 +2,9 @@
 # iPAQ UDP/BT HotSpot
 -usepad osgi-nanning.pad
 
--provideopd  jadabs-im:im-jxme:1.0.0-SNAPSHOT:opd
-#-provideopd  jadabs-im:im-bridge:1.0.0-SNAPSHOT:opd
-#-provideopd  jadabs-im:im-sip:1.0.0-SNAPSHOT:opd
+#-provideopd  jadabs-im:im-jxme:1.0.0-SNAPSHOT:opd
+-provideopd  jadabs-im:im-bridge:1.0.0-SNAPSHOT:opd
+-provideopd  jadabs-im:im-sip:1.0.0-SNAPSHOT:opd
 
 -startopd    jadabs:shell:1.0.0-SNAPSHOT:opd
 -startopd    jadabs:servicemanager:1.0.0-SNAPSHOT:opd

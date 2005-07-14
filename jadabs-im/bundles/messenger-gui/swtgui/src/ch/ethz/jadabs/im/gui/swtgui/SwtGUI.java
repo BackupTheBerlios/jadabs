@@ -38,6 +38,7 @@ package ch.ethz.jadabs.im.gui.swtgui;
 
 import java.io.InputStream;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
@@ -55,6 +56,9 @@ import ch.ethz.jadabs.im.gui.api.SwtManager;
  */
 public class SwtGUI implements Runnable
 {
+    private static Logger LOG = Logger.getLogger("ch.ethz.jadabs.im.gui.swtgui.SwtGUI");
+	
+    
     /* GUI */
 	static SwtManager manager;
 	Display display;
@@ -90,7 +94,7 @@ public class SwtGUI implements Runnable
 		manager.getDisplay().syncExec(new Runnable(){
 			public void run() {
 				if (!shell.isDisposed())
-				    System.out.println("called SwtGUI dispose");
+				    LOG.debug("called SwtGUI dispose");
 					shell.close();
 			}
 		});

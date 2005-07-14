@@ -97,7 +97,7 @@ public class TemplateJL extends IMUserAgent implements Gateway, IMReceiveProcess
 	 */
 	public void processMessageRequest(String fromSipUri, String toSipUri, String text) {
 		logger.info("MSG FROM : "+fromSipUri+" TO : "+toSipUri+" TEXT : "+text);
-		//System.out.println("MSG FROM : "+fromSipUri+" TO : "+toSipUri+" TEXT : "+text);
+		//LOG.debug("MSG FROM : "+fromSipUri+" TO : "+toSipUri+" TEXT : "+text);
 		String usernameFrom = fromSipUri.replaceFirst("sip:","");
 		usernameFrom = usernameFrom.replaceFirst("@.*\\z","");
 		String usernameTo = toSipUri.replaceFirst("sip:","");

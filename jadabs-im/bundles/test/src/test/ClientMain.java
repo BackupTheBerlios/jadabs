@@ -25,15 +25,23 @@ import javax.sip.header.ViaHeader;
 import javax.sip.message.MessageFactory;
 import javax.sip.message.Request;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author sky
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class ClientMain {
-	public static void main(String [] args) {
-		try {
+public class ClientMain 
+{
+
+    private static Logger LOG = Logger.getLogger("test.ClientMain");
+	
+    public static void main(String [] args) 
+	{
+
+        try {
 			SipFactory sipFactory = SipFactory.getInstance();
 			sipFactory.setPathName("gov.nist");
 			
@@ -74,9 +82,9 @@ public class ClientMain {
 			viaHeaders.add(viaHeader);
 			MaxForwardsHeader maxForwardsHeader = headerFactory.createMaxForwardsHeader(70);
 			
-			System.out.println(address);	
-			System.out.println(address.getURI());
-			System.out.println("");
+			LOG.debug(address);	
+			LOG.debug(address.getURI());
+			LOG.debug("");
 			
 			System.out.print(callIdHeader);
 			System.out.print(cSeqHeader);
@@ -84,7 +92,7 @@ public class ClientMain {
 			System.out.print(toHeader);
 			System.out.print(viaHeader);
 			System.out.print(maxForwardsHeader);
-			System.out.println("");
+			LOG.debug("");
 			
 			Request request = messageFactory.createRequest(
 					address.getURI(),
@@ -96,14 +104,14 @@ public class ClientMain {
 					viaHeaders,
 					maxForwardsHeader);
 			
-			System.out.println(request);
-			System.out.println("");
+			LOG.debug(request);
+			LOG.debug("");
 //	        sipProvider.sendRequest(request);
 	        ClientTransaction clientTransaction = sipProvider.getNewClientTransaction(request);
 	        clientTransaction.sendRequest();
-	        System.out.println("***************************************\n");
-	        System.out.println(clientTransaction.getState());
-	        System.out.println("***************************************\n\n\n\n\n");
+	        LOG.debug("***************************************\n");
+	        LOG.debug(clientTransaction.getState());
+	        LOG.debug("***************************************\n\n\n\n\n");
 	        
 		} catch (Exception e) {
 			e.printStackTrace();

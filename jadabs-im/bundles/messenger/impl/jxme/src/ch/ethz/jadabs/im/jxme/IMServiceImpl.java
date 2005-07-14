@@ -34,7 +34,7 @@ import ch.ethz.jadabs.jxme.services.GroupService;
  * 
  */
 public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IMSettings
-{
+{    
     private Logger LOG = Logger.getLogger("ch.ethz.jadabs.im.jxme.IMServiceImpl");
     
     //---------------------------------------------------
@@ -141,12 +141,12 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
         // if no IMPipe found create one
         if (impipe == null)
         {
-            System.out.println("no pipe found, create one: "+ IM_PIPE_NAME);
+            LOG.debug("no pipe found, create one: "+ IM_PIPE_NAME);
             // propagation pipe
             impipe = (Pipe)groupsvc.create(NamedResource.PIPE, IM_PIPE_NAME, null, Pipe.PROPAGATE);
             
             groupsvc.remotePublish(impipe);
-            System.out.println("ownerID of pipe: " + impipe.getOwnerId() + ", ID of pipe: " + impipe.getID());
+            LOG.debug("ownerID of pipe: " + impipe.getOwnerId() + ", ID of pipe: " + impipe.getID());
         }
         
     }
@@ -157,9 +157,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
     }
 
     public void setStatus(int imstatus) {
-    	System.out.println("set status to " + imstatus);
         this.imstatus = imstatus;
-        System.out.println("before status changed msg");
         
         try {
                     Element[] elms = new Element[3];
@@ -176,7 +174,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
         	e.printStackTrace();
 //            LOG.error("could not subscribe, no other IM running");
 //            throw new IMException("could not subscribe, no other IM running");
-        	System.out.println("Could not send status changed!");
+        	LOG.debug("Could not send status changed!");
         }
             sendPublish();
         } catch (IOException e) {
@@ -214,7 +212,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
     public void connect()
     {
         
-    	System.out.println("im registering");
+        LOG.debug("im registering");
     	// start NeighbourThread
 //        if (!running)
 //        {
@@ -243,7 +241,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
     }
     
     private void sendRegister() throws IOException{
-        System.out.println("SENDING Register !");
+        LOG.debug("SENDING Register !");
         
         Element[] elms = new Element[4];
         
@@ -256,7 +254,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
     }
 
     private void sendPublish() throws IOException{
-        System.out.println("SENDING Publish !");
+        LOG.debug("SENDING Publish !");
         
         Element[] elms = new Element[3];
         
@@ -272,7 +270,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
     /*
      */
     public void disconnect () {
-    	System.out.println("im unregistering");
+        LOG.debug("im unregistering");
         // stop the NeighbourThread
 //        if (running)
 //            running = false;
@@ -288,7 +286,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
             setStatus(MessageCons.IM_STATUS_OFFLINE);
         } catch (IOException e)
         {
-            LOG.debug("could not unsubscribe");
+            LOG.error("could not unsubscribe");
 //            throw new IMException("could not unsubscribe", e);
 //            throw new IMException("Could not unregister, check settings !", e);
         }
@@ -340,7 +338,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
         for (Enumeration en = neighbours.elements(); en.hasMoreElements();)
         {
             ntuples[i++] = (IMContact)en.nextElement();
-            System.out.println("Buddy: "+ntuples[i-1].getUsername());
+            LOG.debug("Buddy: "+ntuples[i-1].getUsername());
         }
         
         return ntuples;
@@ -411,7 +409,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
                 imlistener.neighbourListChanged();
                 
 //              send Register ACK message 
-                System.out.println("send reg_ack");
+                LOG.debug("send reg_ack");
                 Element[] elms = new Element[4];
                 
                 elms[0] = new Element(MessageCons.IM_TYPE, MessageCons.REG_ACK, Message.JXTA_NAME_SPACE);
@@ -426,19 +424,19 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
                         groupsvc.send(impipe,new Message(elms));
                     } catch (IOException e)
                     {
-                        LOG.debug("could not send reg_ack");
+                        LOG.error("could not send reg_ack");
 //                        throw new IMException("could not unsubscribe", e);
                     }    
                 }
                 else
                 {
-                    System.out.println("handle reg, send reg_ack: impipe == null");
+                    LOG.debug("handle reg, send reg_ack: impipe == null");
                 }
             }
             // IM_TYPE_UNREG
             else if (type.equals(MessageCons.BYE))
             {
-                System.out.println("removing neighbour: "+fromaddress);
+                LOG.debug("removing neighbour: "+fromaddress);
                 neighbours.remove(fromaddress);            
                 imlistener.neighbourListChanged();        
             }
@@ -458,11 +456,11 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
     			String toaddress = new String(message.getElement(MessageCons.TO_HEADER).getData());
     			if (toaddress.equals(getLocalURI()))
     			{
-    			    System.out.println("register_ack correct toaddress");    			    
+    			    LOG.debug("register_ack correct toaddress");    			    
     			    // only if new buddy then add to neighborhood
 	    			if (!neighbours.containsKey(fromaddress))
 	    			{
-		    			System.out.println("register_ack add new buddy");
+	    			    LOG.debug("register_ack add new buddy");
                     int status = Integer.parseInt(new String(message.getElement(MessageCons.IM_STATUS).getData()));
                     
                     IMContact ntuple = new IMContact(fromaddress, status);
@@ -472,12 +470,12 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
 		    		}
 	    			else
 	    			{
-	    			    System.out.println("register_ack not new buddy");    
+	    			    LOG.debug("register_ack not new buddy");    
 	    			}
     			}
     			else
     			{
-    			    System.out.println("register_ack wrong toaddress");    
+    			    LOG.debug("register_ack wrong toaddress");    
     			}
             } 
             else if (type.equals(MessageCons.NOTIFY))
@@ -509,7 +507,7 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
         }
         else
         {
-            System.out.println("not registred yet, can not handle message");
+            LOG.debug("not registred yet, can not handle message");
         }
     }
 
@@ -521,8 +519,8 @@ public class IMServiceImpl implements IMService, DiscoveryListener, Listener, IM
         if (namedResource instanceof Pipe)
         {
             impipe = (Pipe)namedResource;
-            System.out.println("found pipe: " + impipe.toString());
-            System.out.println("ownerID of pipe: " + impipe.getOwnerId() + ", ID of pipe: " + impipe.getID());
+            LOG.debug("found pipe: " + impipe.toString());
+            LOG.debug("ownerID of pipe: " + impipe.getOwnerId() + ", ID of pipe: " + impipe.getID());
             try
             {
                 groupsvc.resolve(impipe, 1000);

@@ -7,8 +7,8 @@ PROSE_DIR=prose-1.2.1
 
 FRAMEWORK=framework-aop-1.3.3.jar
 
-REPOPATH=file:$HOME/.maven/repository/
-#REPOPATH=file:./repository/
+#REPOPATH=file:$HOME/.maven/repository/
+REPOPATH=file:./repository/
 
 PEERNAME=peer2
 
