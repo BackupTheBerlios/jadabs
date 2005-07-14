@@ -115,7 +115,7 @@ public abstract class PluginFilterMatcher {
     * @return extension clause
     */
    private MatchItem extensionPointFromFilter(String filter) {      
-      String[] parts = Utilities.split(filter,"¦");
+      String[] parts = Utilities.split(filter,"Â¦");
       if (parts[0].trim().equals(""))
           return null;
       return new MatchItem(parts[0]);
@@ -130,7 +130,7 @@ public abstract class PluginFilterMatcher {
                      
       LinkedList result = new LinkedList();
       
-      String[] parts = Utilities.split(filter,"¦");
+      String[] parts = Utilities.split(filter,"Â¦");
       if (!parts[1].trim().equals("")) {
          parts = Utilities.split(parts[1],";");
          for (int index=0; index < parts.length; index++) {

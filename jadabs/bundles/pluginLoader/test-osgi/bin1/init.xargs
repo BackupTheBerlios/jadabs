@@ -14,7 +14,7 @@
 -Dorg.osgi.framework.system.packages=ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
 
 -Dch.ethz.jadabs.pluginloader.starter=jadabs.starter
--Dch.ethz.jadabs.pluginloader.repository=file:///home/andfrei/.maven/repository.xml
+#-Dch.ethz.jadabs.pluginloader.repository=file:///home/andfrei/.maven/repository.xml
 
 -Dch.ethz.jadabs.servicemanager.gmpipe.name=gmpipe
 -Dch.ethz.jadabs.servicemanager.gmpipe.id=23
@@ -28,7 +28,6 @@
 -install 	kobjects/jars/kxml2-2.1.9-osgi.jar
 -istart  	jadabs/jars/bundleloader-1.0.0-SNAPSHOT.jar
 -istart     jadabs/jars/pluginloader-1.0.0-SNAPSHOT.jar
--istart     jadabs/jars/pluginloader-test-1.0.0-SNAPSHOT.jar
 
 -startlevel 1
 

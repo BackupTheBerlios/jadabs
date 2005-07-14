@@ -167,7 +167,7 @@ public class PluginLoaderImpl extends PluginFilterMatcher implements PluginLoade
     
     public boolean loadPluginIfMatches(String uuid, InputStream in) throws Exception
     {
-        if (matches(in, " ¦ " + platform + " ¦ " + "PRO"))
+        if (matches(in, " Â¦ " + platform + " Â¦ " + "PRO"))
         {
             loadPlugin(uuid);
             return true;

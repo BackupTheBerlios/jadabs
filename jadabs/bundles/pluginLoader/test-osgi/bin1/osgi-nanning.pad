@@ -17,7 +17,7 @@
     
     <!-- can also be omitted, as it is specified per default -->
     <OSGiContainer id="osgi"/>
-    <OSGiContainer id="core-osgi-daop"/>
+    <OSGiContainer id="osgi-daop"/>
         	    
      <NetIface 
         type="wlan/managed"

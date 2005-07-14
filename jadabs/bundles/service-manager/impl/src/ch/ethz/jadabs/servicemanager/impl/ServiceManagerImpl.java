@@ -258,6 +258,8 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	        
 	        LOG.debug("topeer: "+topeer +" frompeer: "+frompeer);
 	        
+            LOG.debug(msg.toXMLString());
+            
 	        if (!frompeer.equals(ServiceManagerActivator.peername) && (topeer.equals(ServiceManagerActivator.peername) || topeer.equals(ANYPEER)))
 	        {
 	        
@@ -310,14 +312,17 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	            {
 	                String filter = new String(msg.getElement(SERVICE_FILTER).getData());
 	                
-	                String exps = filter.substring(0,filter.indexOf("¦"));
-	                String platformrest = filter.substring(filter.indexOf("¦"));
+	                String exps = filter.substring(0,filter.indexOf("Â¦"));
+	                String platformrest = filter.substring(filter.indexOf("Â¦"));
 	                
 	                StringTokenizer st = new StringTokenizer(exps, ",");
 	                String exp;
-	                while((exp = st.nextToken()) != null)
+                                        
+	                while(st.hasMoreTokens())
 	                {
-	                    String newfilter = exp + " ¦ " + platformrest + " ¦ " + "R";
+                        exp = st.nextToken();
+                        
+	                    String newfilter = exp + " Â¦ " + platformrest + " Â¦ " + "R";
 	                    try {
 	                        Iterator it = ServiceManagerActivator.pluginLoader.getMatchingPlugins(
 			                    newfilter, this);
@@ -365,9 +370,9 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 		            
 		            // transform | into Â¦ due to problems with nokia
 		            if (filter.indexOf('|') > -1)
-		                filter = filter.replace('|','¦');
+		                filter = filter.replace('|','Â¦');
 		            
-		            String smfilter = filter.substring(filter.lastIndexOf("¦")+1);
+		            String smfilter = filter.substring(filter.lastIndexOf("Â¦")+1);
 		            
 		            	            
 		            Iterator it = null;
@@ -840,7 +845,10 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 		            
 		            for (;epit.hasNext();)
 		            {
-		                sb.append(epit.next() + ",");
+		                sb.append(epit.next());
+                        
+                        if (epit.hasNext())
+                            sb.append(",");
 		            }
 		            
 	                String filter= sb.toString() + " Â¦ " + 
