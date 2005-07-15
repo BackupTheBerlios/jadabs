@@ -40,7 +40,7 @@ public class BundleSecurityImpl implements BundleSecurity {
     public static void init(BundleLoader bl){
         if (instance == null) {
             BundleSecurityImpl.bl = bl;
-            boolean noSecurity = System.getProperty("ch.ethz.jadabs.bundlesecurity.ignoreSecurity", "").equals("true");
+            boolean noSecurity = System.getProperty("ch.ethz.jadabs.bundlesecurity.ignoresecurity", "").equals("true");
             if (noSecurity){
                 LOG.info("WARNING: ignoring security checks");
                 instance = new BundleSecurity(){

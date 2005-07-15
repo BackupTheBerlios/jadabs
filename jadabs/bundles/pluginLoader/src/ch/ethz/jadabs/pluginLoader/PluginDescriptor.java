@@ -158,4 +158,9 @@ public class PluginDescriptor extends Descriptor {
    {
        return extensionPoints.iterator();
    }
+   
+   public String getProperty (String name){
+       return null;
+   }
+   
 }

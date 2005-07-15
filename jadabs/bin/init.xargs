@@ -20,7 +20,8 @@
 -Dch.ethz.jadabs.servicemanager.gmpipe.name=gmpipe
 -Dch.ethz.jadabs.servicemanager.gmpipe.id=23
 
-#-Dch.ethz.jadabs.bundlesecurity.jaruuid=jadabs:bundlesecurity:1.0.0-SNAPSHOT:jar
+-Dch.ethz.jadabs.bundlesecurity.jaruuid=jadabs:bundlesecurity:1.0.0-SNAPSHOT:jar
+-Dch.ethz.jadabs.bundlesecurity.rootcertificate=jadabs-ca.cer
 
 -Dorg.knopflerfish.startlevel.use=true
 

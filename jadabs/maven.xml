@@ -159,6 +159,11 @@
 			<ant:fileset dir="${maven.repo.local}/jadabs/jars" includes="log4j-cdc-*.jar"/>
 		</ant:copy>
 		
+		<!-- copy jadabs-ca.cer (root certificate -->
+		<ant:copy todir="${jadabs.dist.repository}/cert">
+			<ant:fileset dir="bin/repository/cert" includes="jadabs-ca.cer"/>
+		</ant:copy>
+		
 		
 		<!-- Create the minimal .tar file -->
 		<ant:tar longfile="gnu" tarfile="${maven.dist.dir}/${jadabs.dist.name}-minimal.tar">

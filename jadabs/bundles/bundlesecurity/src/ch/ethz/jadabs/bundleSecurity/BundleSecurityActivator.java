@@ -7,8 +7,6 @@ import org.apache.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import java.security.Provider;
-
 import ch.ethz.jadabs.bundleLoader.api.BundleSecurity;
 
 /**

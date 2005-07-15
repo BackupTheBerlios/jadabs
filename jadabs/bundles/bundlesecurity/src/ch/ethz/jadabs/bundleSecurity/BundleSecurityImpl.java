@@ -3,22 +3,18 @@
  */
 package ch.ethz.jadabs.bundleSecurity;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyFactory;
+import java.io.ByteArrayInputStream;
 import java.security.MessageDigest;
 import java.security.PublicKey;
 import java.security.Signature;
-import java.security.spec.EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Iterator;
-import java.util.Vector;
+import java.security.cert.X509Certificate;
 
 import org.apache.log4j.Logger;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import ch.ethz.jadabs.bundleLoader.api.Descriptor;
 import ch.ethz.jadabs.bundleLoader.api.BundleSecurity;
 
 /**
@@ -33,38 +29,41 @@ public class BundleSecurityImpl implements BundleSecurity {
     BASE64Decoder decoder = new BASE64Decoder();
     BASE64Encoder encoder = new BASE64Encoder();
     
-    private static BundleSecurityImpl singleton;
+    private static BundleSecurityImpl instance;
     
     private BundleSecurityImpl(){
     }
     
     protected static BundleSecurityImpl getInstance(){
-        if (singleton == null) singleton = new BundleSecurityImpl();
-        return singleton;
+        if (instance == null) instance = new BundleSecurityImpl();
+        return instance;
     }
 
     /* (non-Javadoc)
      * @see ch.ethz.jadabs.security.api.Security#checkBundle(java.io.InputStream, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public boolean checkBundle(InputStream stream, String digest,
-            String digestGenAlgo, String signature, String keyGenAlgo,
-            String publicKey) throws Exception {
+    public boolean checkBundle(Descriptor descr, byte[] bundleData) throws Exception {
         LOG.debug("Checking bundle with BundleSecurity Bundle");
         
-        byte[] message = readAllData(stream);
+        byte[] sigBytes = Base64.decodeBase64(descr.getProperty("signature").getBytes());
+        String certificateID = descr.getProperty("certificate-ID");
+        X509Certificate certificate = CertificateRepository.Instance().getTrustedCertificate(certificateID);
+        
+        String digestGenAlgo = descr.getProperty("digestGenerationAlgorithm");
+        String digest = descr.getProperty("digest");
+        LOG.debug("public key: " + certificate.getPublicKey());
+        if (LOG.isDebugEnabled()){
+            String fingerprint = new String(Base64.encodeBase64(certificate.getSignature()));
+            LOG.debug("certificate fingerprint: " + fingerprint);
+            String signature = new String(Base64.encodeBase64(sigBytes));
+            LOG.debug("signature: " + signature);
+        }
         
         if (digestGenAlgo != null && digest != null){
-            byte[] digestBytes = computeDigest(message, digestGenAlgo);
+            byte[] digestBytes = computeDigest(bundleData, digestGenAlgo);
             if (!digest.equals(encoder.encode(digestBytes))) return false;
         }
-        return verifySignature(getPublicKey(publicKey, keyGenAlgo), message, decoder.decodeBuffer(signature));
-    }
-    
-    private PublicKey getPublicKey(String pubKeyStr, String keyGenAlgo) throws Exception{
-        KeyFactory keyFactory = KeyFactory.getInstance(keyGenAlgo);
-        EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(decoder.decodeBuffer(pubKeyStr));
-        return keyFactory.generatePublic(publicKeySpec);
-        
+        return verifySignature(certificate.getPublicKey(), bundleData, sigBytes);
     }
     
     private byte[] computeDigest(byte[] message, String digestGenAlgo) throws Exception{
@@ -77,27 +76,16 @@ public class BundleSecurityImpl implements BundleSecurity {
             byte[] signature) throws Exception {
         Signature sig = Signature.getInstance(key.getAlgorithm());
         sig.initVerify(key);
-        sig.update(message);
-        return sig.verify(signature);
-    }
-    
-    private byte[] readAllData(InputStream is) throws IOException{
-        Vector byteArrays = new Vector();
-        byte[] tmpArr = new byte[BUFFERSIZE];
+        
+        //TODO updating with the whole array doesn't work (BUG?):
+        //sig.update(message);
+        //workaround:
+        ByteArrayInputStream bis = new ByteArrayInputStream(message);
         int i;
-        int nBytes;
-        for (i = 0; (nBytes = is.read(tmpArr)) == BUFFERSIZE; i += BUFFERSIZE){
-            byteArrays.add(tmpArr.clone());
-        }
-        byte[] byteArr = new byte[i + nBytes];
-        Iterator iter = byteArrays.iterator();
-        i = 0;
-        while (iter.hasNext()) {
-            System.arraycopy(iter.next(), 0, byteArr, i, BUFFERSIZE);
-            i += BUFFERSIZE;
-        }
-        System.arraycopy(tmpArr, 0, byteArr, i, nBytes);
-        return byteArr;
+        byte[] buffer = new byte[1024];
+        while ((i = bis.read(buffer)) != -1)
+            sig.update(buffer);
+        return sig.verify(signature);
     }
 
 }

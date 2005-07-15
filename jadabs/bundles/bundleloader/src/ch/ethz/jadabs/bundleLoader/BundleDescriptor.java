@@ -60,7 +60,7 @@ public class BundleDescriptor extends Descriptor {
    private static final String[] PROPERTIES = new String[]{"bundle-name",
            "bundle-group", "bundle-version", "bundle-updatelocation",
            "digestGenerationAlgorithm", "keyGenerationAlgorithm",
-           "signature", "digest", "certificate"};
+           "signature", "digest", "certificate-ID"};
    
    protected Vector dependencies = new Vector();
    private KXmlParser parser;
@@ -218,6 +218,7 @@ public class BundleDescriptor extends Descriptor {
           LOG.debug("result: " + retVal);
           return retVal;
 		  } catch (Exception e) {
+		      LOG.error(e.getMessage());
 		      LOG.debug("something went wrong checking the bundle", e);
 		  }
       return false;
