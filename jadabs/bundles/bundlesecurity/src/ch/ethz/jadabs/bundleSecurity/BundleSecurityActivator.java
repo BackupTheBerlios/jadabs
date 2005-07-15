@@ -33,13 +33,13 @@ public class BundleSecurityActivator implements BundleActivator {
 		bc.registerService(BundleSecurity.class.getName(), security, null);
 		LOG.info("BundleSecurity bundle started.");
 		
-		if (LOG.isDebugEnabled()){
-		    Provider[] providers = java.security.Security.getProviders();
-			LOG.debug("Available providers:");
-			for (int i = 0; i < providers.length; i++) {
-	            LOG.debug(providers[i].getName() + ": " + providers[i].getInfo());
-	        }
-		}
+//		if (LOG.isDebugEnabled()){
+//		    Provider[] providers = java.security.Security.getProviders();
+//			LOG.debug("Available providers:");
+//			for (int i = 0; i < providers.length; i++) {
+//	            LOG.debug(providers[i].getName() + ": " + providers[i].getInfo());
+//	        }
+//		}
 		
     }
 
