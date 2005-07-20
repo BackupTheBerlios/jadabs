@@ -392,18 +392,19 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
         Vector byteArrays = new Vector();
         byte[] tmpArr = new byte[BUFFERSIZE];
         int i;
-        int nBytes;
-        for (i = 0; (nBytes = is.read(tmpArr)) == BUFFERSIZE; i += BUFFERSIZE){
-            byteArrays.add(tmpArr.clone());
+        int readLen;
+        for (i = 0; (readLen = is.read(tmpArr)) != -1; i += readLen){
+            byteArrays.add(new Object[]{new Integer(readLen), tmpArr.clone()});
         }
-        byte[] byteArr = new byte[i + nBytes];
-        Iterator iter = byteArrays.iterator();
-        i = 0;
-        while (iter.hasNext()) {
-            System.arraycopy(iter.next(), 0, byteArr, i, BUFFERSIZE);
-            i += BUFFERSIZE;
+        byte[] byteArr = new byte[i];
+        Enumeration enum = byteArrays.elements();
+        int offset = 0;
+        while (enum.hasMoreElements()) {
+            Object[] elem = (Object[])enum.nextElement();
+            readLen = ((Integer)elem[0]).intValue();
+            System.arraycopy(elem[1], 0, byteArr, offset, readLen);
+            offset += readLen;
         }
-        System.arraycopy(tmpArr, 0, byteArr, i, nBytes);
         return byteArr;
     }
         

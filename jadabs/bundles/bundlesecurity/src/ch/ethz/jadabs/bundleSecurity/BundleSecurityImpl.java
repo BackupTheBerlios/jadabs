@@ -3,16 +3,11 @@
  */
 package ch.ethz.jadabs.bundleSecurity;
 
-import java.io.ByteArrayInputStream;
 import java.security.MessageDigest;
-import java.security.PublicKey;
 import java.security.Signature;
 import java.security.cert.X509Certificate;
 
 import org.apache.log4j.Logger;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import ch.ethz.jadabs.bundleLoader.api.Descriptor;
 import ch.ethz.jadabs.bundleLoader.api.BundleSecurity;
@@ -25,9 +20,6 @@ public class BundleSecurityImpl implements BundleSecurity {
     private static Logger LOG = Logger.getLogger(BundleSecurityImpl.class.getName());
     
     private static int BUFFERSIZE = 1024;
-    
-    BASE64Decoder decoder = new BASE64Decoder();
-    BASE64Encoder encoder = new BASE64Encoder();
     
     private static BundleSecurityImpl instance;
     
@@ -49,8 +41,6 @@ public class BundleSecurityImpl implements BundleSecurity {
         String certificateID = descr.getProperty("certificate-ID");
         X509Certificate certificate = CertificateRepository.Instance().getTrustedCertificate(certificateID);
         
-        String digestGenAlgo = descr.getProperty("digestGenerationAlgorithm");
-        String digest = descr.getProperty("digest");
         LOG.debug("public key: " + certificate.getPublicKey());
         if (LOG.isDebugEnabled()){
             String fingerprint = new String(Base64.encodeBase64(certificate.getSignature()));
@@ -59,11 +49,17 @@ public class BundleSecurityImpl implements BundleSecurity {
             LOG.debug("signature: " + signature);
         }
         
+        String digestGenAlgo = descr.getProperty("digestGenerationAlgorithm");
+        String digest = descr.getProperty("digest");
+        LOG.debug("length of data: " + bundleData.length);
         if (digestGenAlgo != null && digest != null){
             byte[] digestBytes = computeDigest(bundleData, digestGenAlgo);
-            if (!digest.equals(encoder.encode(digestBytes))) return false;
+            if (!digest.equals(new String(Base64.encodeBase64(digestBytes)))){
+                LOG.debug("Digest is not the same...");
+                return false;
+            }
         }
-        return verifySignature(certificate.getPublicKey(), bundleData, sigBytes);
+        return verifySignature(certificate, bundleData, sigBytes);
     }
     
     private byte[] computeDigest(byte[] message, String digestGenAlgo) throws Exception{
@@ -72,19 +68,11 @@ public class BundleSecurityImpl implements BundleSecurity {
     }
     
     // Verifies the signature for the given buffer of bytes using the public key.
-    private boolean verifySignature(PublicKey key, byte[] message,
+    private boolean verifySignature(X509Certificate certificate, byte[] message,
             byte[] signature) throws Exception {
-        Signature sig = Signature.getInstance(key.getAlgorithm());
-        sig.initVerify(key);
-        
-        //TODO updating with the whole array doesn't work (BUG?):
-        //sig.update(message);
-        //workaround:
-        ByteArrayInputStream bis = new ByteArrayInputStream(message);
-        int i;
-        byte[] buffer = new byte[1024];
-        while ((i = bis.read(buffer)) != -1)
-            sig.update(buffer);
+        Signature sig = Signature.getInstance(certificate.getSigAlgName());
+        sig.initVerify(certificate);
+        sig.update(message);
         return sig.verify(signature);
     }
 

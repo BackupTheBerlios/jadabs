@@ -24,6 +24,7 @@ public class CertificateRepository {
     
     private static final String certDir = "cert";
     private static final String repoDir = "repository";
+    private static final String certSuffix = ".cer";
     
     private String httpRepo;
     private String localCertDir;
@@ -37,7 +38,6 @@ public class CertificateRepository {
         localCertDir = repoDir + File.separator + certDir;
         String rootCertID = BundleSecurityActivator.bc.getProperty("ch.ethz.jadabs.bundlesecurity.rootcertificate");;
         rootCertificate = getLocalCertificate(rootCertID);
-        LOG.debug("CertificateRepository initialized.");
     }
     
     public static CertificateRepository Instance() throws Exception{
@@ -80,7 +80,7 @@ public class CertificateRepository {
     
     private String getCertPath(String identifier){
         String retVal = localCertDir + File.separator + identifier;
-        if (!identifier.endsWith(".cer")) retVal += ".cer";
+        if (!identifier.endsWith(certSuffix)) retVal += certSuffix;
         return retVal;
     }
 }
