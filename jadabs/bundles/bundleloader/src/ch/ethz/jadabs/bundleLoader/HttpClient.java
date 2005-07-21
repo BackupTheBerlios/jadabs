@@ -397,10 +397,10 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
             byteArrays.add(new Object[]{new Integer(readLen), tmpArr.clone()});
         }
         byte[] byteArr = new byte[i];
-        Enumeration enum = byteArrays.elements();
+        Enumeration e = byteArrays.elements();
         int offset = 0;
-        while (enum.hasMoreElements()) {
-            Object[] elem = (Object[])enum.nextElement();
+        while (e.hasMoreElements()) {
+            Object[] elem = (Object[])e.nextElement();
             readLen = ((Integer)elem[0]).intValue();
             System.arraycopy(elem[1], 0, byteArr, offset, readLen);
             offset += readLen;
