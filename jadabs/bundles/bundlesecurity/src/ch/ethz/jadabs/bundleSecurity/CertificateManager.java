@@ -3,13 +3,18 @@
  */
 package ch.ethz.jadabs.bundleSecurity;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
+import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 
@@ -18,30 +23,94 @@ import ch.ethz.jadabs.bundleLoader.BundleLoaderActivator;
 /**
  * @author otmar
  */
-public class CertificateRepository {
+public class CertificateManager {
     
     private static Logger LOG = Logger.getLogger(CertificateRepository.class);
+    
+    FileFilter certFilter = new FileFilter(){
+    	public boolean accept(File pathname){
+    		return pathname.getName().endsWith(certSuffix);
+    	}
+    };
     
     private static final String certDir = "cert";
     private static final String repoDir = "repository";
     private static final String certSuffix = ".cer";
     
+    private Hashtable checkedCerts;
+    private CertificateFactory certFact = CertificateFactory.getInstance("X.509");
     private String httpRepo;
-    private String localCertDir;
+    private String caCertLoc;
     private X509Certificate rootCertificate;
     
-    private static CertificateRepository instance;
+    private static CertificateManager instance;
     
-    private CertificateRepository() throws Exception{
-        httpRepo = BundleLoaderActivator.bc.getProperty("ch.ethz.jadabs.bundleloader.httprepo");
+    private CertificateManager() throws Exception{
+    	LOG.debug("Loading local certificates...");
         String repoDir = BundleSecurityActivator.bc.getProperty("org.knopflerfish.gosg.jars").substring(5);
-        localCertDir = repoDir + File.separator + certDir;
-        String rootCertID = BundleSecurityActivator.bc.getProperty("ch.ethz.jadabs.bundlesecurity.rootcertificate");;
-        rootCertificate = getLocalCertificate(rootCertID);
+        caCertLoc = repoDir + File.separator + certDir;
+        File caCertDir = new File(caCertLoc);
+        File[] certFiles = caCertDir.listFiles(certFilter);
+        X509Certificate cert;
+        for (int i = 0; i < certFiles.length; i++) {
+        	try {
+        		cert = (X509Certificate)certFact.generateCertificate(new FileInputStream(certFiles[i]));
+    			cert.checkValidity();
+        		checkedCerts.put(cert.getSubjectDN(), cert);
+        	} catch (Exception e){
+        		LOG.debug("Error loading certificate " + certFiles[i], e);
+        	}	
+		}
     }
     
-    public static CertificateRepository Instance() throws Exception{
-        if (instance == null) instance = new CertificateRepository();
+    protected boolean verifyCertificate(byte[] certData){
+    	X509Certificate cert;
+    	X509Certificate parentCert;
+		ByteArrayInputStream certStream = new ByteArrayInputStream(certData);
+		try {
+			cert = (X509Certificate)certFact.generateCertificate(certStream);
+		} catch (Exception e){
+			LOG.info("An error occured parsing the certificate data.");
+			return false;
+		}
+		try {
+			cert.checkValidity();
+		} catch (Exception e){
+			if (e instanceof CertificateNotYetValidException)
+				LOG.info("The supplied certificate is not yet valid.");
+			else if (e instanceof CertificateExpiredException)
+				LOG.info("The supplied certificate has expired.");
+			checkedCerts.remove(cert.getSubjectDN());
+			return false;
+		}
+		//already checked this certificate?
+		if (checkedCerts.contains(cert)) return true;
+		parentCert = (X509Certificate)checkedCerts.get(cert.getIssuerDN());
+		if (parentCert != null){
+			try {
+				parentCert.checkValidity();
+			} catch (Exception e){
+				if (e instanceof CertificateNotYetValidException)
+					LOG.info("The supplied parent certificate is not yet valid.");
+				else if (e instanceof CertificateExpiredException)
+					LOG.info("The supplied parent certificate has expired.");
+				checkedCerts.remove(parentCert.getSubjectDN());
+			}
+			try {
+				cert.verify(parentCert.getPublicKey());
+			} catch (Exception e){
+				LOG.info("Could not verify the supplied certificate.");
+				return false;
+			}
+			checkedCerts.put(cert.getSubjectDN(), cert);
+			return true;
+		}
+		LOG.info("Could not verify certificate. Parent certificate not available");
+		return false;
+    }
+    
+    public static CertificateManager Instance() throws Exception{
+        if (instance == null) instance = new CertificateManager();
         return instance;
     }
 
