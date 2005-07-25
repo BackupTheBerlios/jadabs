@@ -75,7 +75,7 @@ public class BundleSecurityImpl implements BundleSecurity {
     private static BundleSecurity loadSecurityBundle() throws Exception{
         BundleContext bc = BundleLoaderActivator.bc;
         // get the bundle jars from available information sources
-        String securityBundleJarUuid = System.getProperty("ch.ethz.jadabs.bundlesecurity.jaruuid");
+        String securityBundleJarUuid = BundleLoaderActivator.bc.getProperty("ch.ethz.jadabs.bundlesecurity.jaruuid");
         if (securityBundleJarUuid != null){
             InputStream jar = bl.fetchInformation(securityBundleJarUuid, null);
             Bundle bundle = BundleLoaderActivator.bc.installBundle(
@@ -101,7 +101,11 @@ public class BundleSecurityImpl implements BundleSecurity {
             return false;
         }
         String bundleSignature = desc.getProperty("signature");
-        String bundlePublicKey = desc.getProperty("publicKey");
+        String bundlePublicKey = BundleLoaderActivator.bc.getProperty("ch.ethz.jadabs.bundlesecurity.publickey");
+        if (bundlePublicKey == null){
+            LOG.error("No public key available for checking signatures");
+            return false;
+        }
         return verifySignature(bundlePublicKey, digestBytes, bundleSignature);
     }
     
@@ -117,14 +121,8 @@ public class BundleSecurityImpl implements BundleSecurity {
     private boolean verifySignature(String publicKey, byte[] digestBytes, String signature) throws Exception{
         byte[] subjPubKeyBytes = Base64.decodeBase64(publicKey.getBytes());
         byte[] signatureBytes = Base64.decodeBase64(signature.getBytes());
-        
         DSASubjectPublicKey pubKey = new DSASubjectPublicKey(subjPubKeyBytes);
-//        SHA1Digest digester = new SHA1Digest();
-//        byte[] buffer = new byte[digester.getDigestSize()];
-//        digester.update(digestBytes, 0, digestBytes.length);
-//        digester.doFinal(buffer, 0);
         DSAVerifier verifier = new DSAVerifier(pubKey);
-        //return verifier.virfySignature(buffer, signatureBytes);
         return verifier.virfySignature(digestBytes, signatureBytes);
     }
 
