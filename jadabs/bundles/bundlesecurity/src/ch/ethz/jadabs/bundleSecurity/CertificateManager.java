@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.security.MessageDigest;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
@@ -43,7 +44,10 @@ public class CertificateManager {
         caCertLoc = repoDir + File.separator + certDir;
         String repoFile = caCertLoc + File.separator + repoFileName;
         checkedCerts = CertificateRepository.Instance(repoFile);
-        
+        loadLocalCerts();
+    }
+    
+    private void loadLocalCerts(){
         File caCertDir = new File(caCertLoc);
         File[] certFiles = caCertDir.listFiles(certFilter);
         X509Certificate cert;
@@ -51,9 +55,18 @@ public class CertificateManager {
         	try {
         		cert = (X509Certificate)certFact.generateCertificate(new FileInputStream(certFiles[i]));
     			cert.checkValidity();
-    			//TODO better output here... (evt. Base64 encoded)
-    			LOG.debug("Fingerprint of " + certFiles[i] + ": " + cert.getSignature());
-        		checkedCerts.putCert(cert);
+    			if (LOG.isDebugEnabled()){
+    			    MessageDigest md = MessageDigest.getInstance("MD5");
+    			    md.update(cert.getEncoded());
+    			    byte[] digest = md.digest();
+    			    String digestEnc = "";
+    			    for (int j = 0; j < digest.length; j++) {
+                        digestEnc += ":" + Integer.toHexString(((int)digest[j]) & 0xff);
+                    }
+    			    digestEnc = (digestEnc.substring(1, digestEnc.length())).toUpperCase();
+    			    LOG.debug("MD5 (Hex) Fingerprint of " + certFiles[i] + ": " + digestEnc);
+    			}
+    			checkedCerts.putCert(cert);
         	} catch (Exception e){
         	    if (e instanceof CertificateNotYetValidException)
 					LOG.info("Certificate in " + certFiles[i] + " is not yet valid.");
