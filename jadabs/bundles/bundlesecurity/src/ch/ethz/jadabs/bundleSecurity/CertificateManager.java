@@ -7,25 +7,19 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
-import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
-
-import ch.ethz.jadabs.bundleLoader.BundleLoaderActivator;
 
 /**
  * @author otmar
  */
 public class CertificateManager {
     
-    private static Logger LOG = Logger.getLogger(CertificateRepository.class);
+    private static Logger LOG = Logger.getLogger(CertificateManager.class);
     
     FileFilter certFilter = new FileFilter(){
     	public boolean accept(File pathname){
@@ -34,14 +28,12 @@ public class CertificateManager {
     };
     
     private static final String certDir = "cert";
-    private static final String repoDir = "repository";
     private static final String certSuffix = ".cer";
+    private static final String repoFileName = ".trusted";
     
-    private Hashtable checkedCerts;
+    private CertificateRepository checkedCerts;
     private CertificateFactory certFact = CertificateFactory.getInstance("X.509");
-    private String httpRepo;
     private String caCertLoc;
-    private X509Certificate rootCertificate;
     
     private static CertificateManager instance;
     
@@ -49,6 +41,9 @@ public class CertificateManager {
     	LOG.debug("Loading local certificates...");
         String repoDir = BundleSecurityActivator.bc.getProperty("org.knopflerfish.gosg.jars").substring(5);
         caCertLoc = repoDir + File.separator + certDir;
+        String repoFile = caCertLoc + File.separator + repoFileName;
+        checkedCerts = CertificateRepository.Instance(repoFile);
+        
         File caCertDir = new File(caCertLoc);
         File[] certFiles = caCertDir.listFiles(certFilter);
         X509Certificate cert;
@@ -56,14 +51,21 @@ public class CertificateManager {
         	try {
         		cert = (X509Certificate)certFact.generateCertificate(new FileInputStream(certFiles[i]));
     			cert.checkValidity();
-        		checkedCerts.put(cert.getSubjectDN(), cert);
+    			//TODO better output here... (evt. Base64 encoded)
+    			LOG.debug("Fingerprint of " + certFiles[i] + ": " + cert.getSignature());
+        		checkedCerts.putCert(cert);
         	} catch (Exception e){
-        		LOG.debug("Error loading certificate " + certFiles[i], e);
+        	    if (e instanceof CertificateNotYetValidException)
+					LOG.info("Certificate in " + certFiles[i] + " is not yet valid.");
+				else if (e instanceof CertificateExpiredException)
+				    LOG.info("Certificate in " + certFiles[i] + " has expired.");
+				else
+				    LOG.debug("Error loading certificate " + certFiles[i], e);
         	}	
 		}
     }
     
-    protected boolean verifyCertificate(byte[] certData){
+    protected X509Certificate getTrustedCertificate(byte[] certData) throws Exception{
     	X509Certificate cert;
     	X509Certificate parentCert;
 		ByteArrayInputStream certStream = new ByteArrayInputStream(certData);
@@ -71,7 +73,7 @@ public class CertificateManager {
 			cert = (X509Certificate)certFact.generateCertificate(certStream);
 		} catch (Exception e){
 			LOG.info("An error occured parsing the certificate data.");
-			return false;
+			return null;
 		}
 		try {
 			cert.checkValidity();
@@ -80,12 +82,12 @@ public class CertificateManager {
 				LOG.info("The supplied certificate is not yet valid.");
 			else if (e instanceof CertificateExpiredException)
 				LOG.info("The supplied certificate has expired.");
-			checkedCerts.remove(cert.getSubjectDN());
-			return false;
+			checkedCerts.removeCert(cert);
+			return null;
 		}
 		//already checked this certificate?
-		if (checkedCerts.contains(cert)) return true;
-		parentCert = (X509Certificate)checkedCerts.get(cert.getIssuerDN());
+		if (checkedCerts.contains(cert)) return cert;
+		parentCert = (X509Certificate)checkedCerts.getCert(cert.getIssuerDN());
 		if (parentCert != null){
 			try {
 				parentCert.checkValidity();
@@ -94,71 +96,25 @@ public class CertificateManager {
 					LOG.info("The supplied parent certificate is not yet valid.");
 				else if (e instanceof CertificateExpiredException)
 					LOG.info("The supplied parent certificate has expired.");
-				checkedCerts.remove(parentCert.getSubjectDN());
+				checkedCerts.removeCert(parentCert);
 			}
 			try {
 				cert.verify(parentCert.getPublicKey());
 			} catch (Exception e){
 				LOG.info("Could not verify the supplied certificate.");
-				return false;
+				return null;
 			}
-			checkedCerts.put(cert.getSubjectDN(), cert);
-			return true;
+			checkedCerts.putCert(cert);
+			return cert;
+		} else {
+		    LOG.info("Could not verify certificate. Parent certificate not available");
+			return null;
 		}
-		LOG.info("Could not verify certificate. Parent certificate not available");
-		return false;
     }
     
     public static CertificateManager Instance() throws Exception{
         if (instance == null) instance = new CertificateManager();
         return instance;
     }
-
-    // only trusted certificates are stored local
-    private X509Certificate getLocalCertificate(String identifier) throws Exception{
-        LOG.debug("getting local certificate with ID " + identifier);
-        FileInputStream certFile = new FileInputStream(getCertPath(identifier));
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        return (X509Certificate)cf.generateCertificate(certFile);
-    }
     
-    private boolean isLocal(String identifier){
-        File certFile = new File(getCertPath(identifier));
-        return certFile.exists();
-    }
-    
-    protected X509Certificate getTrustedCertificate(String identifier) throws Exception{
-        if (isLocal(identifier)){
-        	X509Certificate certificate = getLocalCertificate(identifier);
-        	try{
-        		certificate.checkValidity();
-        		return certificate;
-        	}catch (Exception e){
-        		// fall through and try it with a remote version...
-        	}
-        }
-        return getRemoteCertificate(identifier);
-    }
-    
-    private X509Certificate getRemoteCertificate(String identifier) throws Exception{
-        LOG.debug("getting remote certificate with ID " + identifier);
-        String urlString = "http://" + httpRepo + "/" + repoDir + "/" + certDir + "/" + identifier + ".cer";
-        URL certURL = new URL(urlString);
-        InputStream certStream = certURL.openStream();
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        X509Certificate certificate = (X509Certificate)cf.generateCertificate(certStream);
-        certificate.verify(rootCertificate.getPublicKey());
-        certificate.checkValidity();
-        FileOutputStream certFile = new FileOutputStream(getCertPath(identifier));
-        certFile.write(certificate.getEncoded());
-        certFile.flush();
-        certFile.close();
-        return certificate;
-    }
-    
-    private String getCertPath(String identifier){
-        String retVal = localCertDir + File.separator + identifier;
-        if (!identifier.endsWith(certSuffix)) retVal += certSuffix;
-        return retVal;
-    }
 }

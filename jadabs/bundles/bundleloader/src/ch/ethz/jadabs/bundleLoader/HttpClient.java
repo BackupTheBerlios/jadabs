@@ -190,7 +190,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
                             saveInCache(new ByteArrayInputStream(jarBytes), group, name, version, type);
                             return new ByteArrayInputStream(jarBytes);
                         }
-                        error("Bundle " + uuid + " is not correctly signed.");
+                        error("Bundle " + uuid + " could not be verified.");
                         return null;
 
                     } else if (type.equals("obr"))
@@ -559,7 +559,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
                     debug("Signature of " + uuid + " seems ok...");
                     return new ByteArrayInputStream(jarBytes);
                 }
-                error("Bundle " + uuid + " is not correctly signed.");
+                error("Bundle " + uuid + " could not be verified.");
                 return null;
             }
             return new ByteArrayInputStream(clientSocket.data.getBytes());

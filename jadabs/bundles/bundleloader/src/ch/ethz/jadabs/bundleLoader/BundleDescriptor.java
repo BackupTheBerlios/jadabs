@@ -60,7 +60,7 @@ public class BundleDescriptor extends Descriptor {
    private static final String[] PROPERTIES = new String[]{"bundle-name",
            "bundle-group", "bundle-version", "bundle-updatelocation",
            "digestGenerationAlgorithm", "keyGenerationAlgorithm",
-           "signature", "digest", "certificate-ID"};
+           "signature", "digest", "certificate"};
    
    protected Vector dependencies = new Vector();
    private KXmlParser parser;

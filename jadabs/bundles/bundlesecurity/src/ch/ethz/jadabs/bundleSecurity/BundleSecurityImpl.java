@@ -38,8 +38,8 @@ public class BundleSecurityImpl implements BundleSecurity {
         LOG.debug("Checking bundle with BundleSecurity Bundle");
         
         byte[] sigBytes = Base64.decodeBase64(descr.getProperty("signature").getBytes());
-        String certificateID = descr.getProperty("certificate-ID");
-        X509Certificate certificate = CertificateRepository.Instance().getTrustedCertificate(certificateID);
+        byte[] certBytes = Base64.decodeBase64(descr.getProperty("certificate").getBytes());
+        X509Certificate certificate = CertificateManager.Instance().getTrustedCertificate(certBytes);
         
         LOG.debug("public key: " + certificate.getPublicKey());
         if (LOG.isDebugEnabled()){

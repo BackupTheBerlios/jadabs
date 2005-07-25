@@ -6,90 +6,73 @@ package ch.ethz.jadabs.bundleSecurity;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.security.cert.CertificateFactory;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.security.Principal;
 import java.security.cert.X509Certificate;
-
-import org.apache.log4j.Logger;
-
-import ch.ethz.jadabs.bundleLoader.BundleLoaderActivator;
+import java.util.Hashtable;
 
 /**
  * @author otmar
  */
-public class CertificateRepository {
+public class CertificateRepository implements Serializable{
     
-    private static Logger LOG = Logger.getLogger(CertificateRepository.class);
-    
-    private static final String certDir = "cert";
-    private static final String repoDir = "repository";
-    private static final String certSuffix = ".cer";
-    
-    private String httpRepo;
-    private String localCertDir;
-    private X509Certificate rootCertificate;
+    private Hashtable repo = new Hashtable();
+    private String repoFileName;
     
     private static CertificateRepository instance;
     
-    private CertificateRepository() throws Exception{
-        httpRepo = BundleLoaderActivator.bc.getProperty("ch.ethz.jadabs.bundleloader.httprepo");
-        String repoDir = BundleSecurityActivator.bc.getProperty("org.knopflerfish.gosg.jars").substring(5);
-        localCertDir = repoDir + File.separator + certDir;
-        String rootCertID = BundleSecurityActivator.bc.getProperty("ch.ethz.jadabs.bundlesecurity.rootcertificate");;
-        rootCertificate = getLocalCertificate(rootCertID);
+    private CertificateRepository(String repoFileName){
+        this.repoFileName = repoFileName;
     }
     
-    public static CertificateRepository Instance() throws Exception{
-        if (instance == null) instance = new CertificateRepository();
+    protected static CertificateRepository Instance(String repoFileName) throws Exception{
+        if (instance == null)
+            instance = readFromFile(repoFileName);
+        if (instance == null)
+            instance = new CertificateRepository(repoFileName);
         return instance;
     }
-
-    // only trusted certificates are stored local
-    private X509Certificate getLocalCertificate(String identifier) throws Exception{
-        LOG.debug("getting local certificate with ID " + identifier);
-        FileInputStream certFile = new FileInputStream(getCertPath(identifier));
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        return (X509Certificate)cf.generateCertificate(certFile);
+    
+    protected void putCert(X509Certificate cert) throws Exception{
+        repo.put(cert.getSubjectDN().toString(), cert);
+        updateFile();
     }
     
-    private boolean isLocal(String identifier){
-        File certFile = new File(getCertPath(identifier));
-        return certFile.exists();
+    protected X509Certificate getCert(Principal subjectDN){
+        return (X509Certificate)repo.get(subjectDN.toString());
     }
     
-    protected X509Certificate getTrustedCertificate(String identifier) throws Exception{
-        if (isLocal(identifier)){
-        	X509Certificate certificate = getLocalCertificate(identifier);
-        	try{
-        		certificate.checkValidity();
-        		return certificate;
-        	}catch (Exception e){
-        		// fall through and try it with a remote version...
-        	}
+    protected void removeCert(X509Certificate cert) throws Exception{
+        repo.remove(cert.getSubjectDN());
+        updateFile();
+    }
+    
+    protected boolean contains(X509Certificate cert){
+        return repo.containsValue(cert);
+    }
+    
+    private void updateFile() throws Exception{
+        FileOutputStream fout = new FileOutputStream(repoFileName);
+        ObjectOutputStream obout = new ObjectOutputStream(fout);
+        obout.writeObject(this);
+        obout.flush();
+        obout.close();
+        fout.flush();
+        fout.close();
+    }
+    
+    private static CertificateRepository readFromFile(String repoFileName) throws Exception {
+        File repoFile = new File(repoFileName);
+        CertificateRepository repoFromFile = null;
+        if (repoFile.exists()){
+            FileInputStream fin = new FileInputStream(repoFile);
+            ObjectInputStream obin = new ObjectInputStream(fin);
+            repoFromFile = (CertificateRepository)obin.readObject();
+            obin.close();
+            fin.close();
         }
-        return getRemoteCertificate(identifier);
-    }
-    
-    private X509Certificate getRemoteCertificate(String identifier) throws Exception{
-        LOG.debug("getting remote certificate with ID " + identifier);
-        String urlString = "http://" + httpRepo + "/" + repoDir + "/" + certDir + "/" + identifier + ".cer";
-        URL certURL = new URL(urlString);
-        InputStream certStream = certURL.openStream();
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        X509Certificate certificate = (X509Certificate)cf.generateCertificate(certStream);
-        certificate.verify(rootCertificate.getPublicKey());
-        certificate.checkValidity();
-        FileOutputStream certFile = new FileOutputStream(getCertPath(identifier));
-        certFile.write(certificate.getEncoded());
-        certFile.flush();
-        certFile.close();
-        return certificate;
-    }
-    
-    private String getCertPath(String identifier){
-        String retVal = localCertDir + File.separator + identifier;
-        if (!identifier.endsWith(certSuffix)) retVal += certSuffix;
-        return retVal;
+        return repoFromFile;
     }
 }
