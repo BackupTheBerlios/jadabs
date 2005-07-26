@@ -56,7 +56,8 @@ public class StandardHandler implements HttpRequestHandler {
       // we catch favicon requests here because modern web browsers want to get
       // a favicon before displaying a page and we don't want to have 404's all the time
       if (request.file.startsWith("/favicon.ico")) {
-         File favicon = new File(repolocation.substring(5) + File.separatorChar + ".." + File.separatorChar + "htdocs" + File.separatorChar + "favicon.ico");
+          //repolocation.substring(5) + File.separatorChar + ".." + File.separatorChar + "htdocs" + File.separatorChar + "favicon.ico"
+         File favicon = new File("favicon.ico");
          request.sendFile(favicon, "image/ico", null);
       } else if (request.file.startsWith("/repository.xml")) {
          File repoxml = new File(repolocation.substring(5) + File.separatorChar + "repository.xml");

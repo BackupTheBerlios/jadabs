@@ -426,7 +426,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#registerRequestHandler(ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler)
     */
    public void registerRequestHandler(HttpRequestHandler handler) {
-//      BundleLoaderActivator.httpDaemon.addRequestHandler(handler);
+      BundleLoaderActivator.httpDaemon.addRequestHandler(handler);
    }
 
    /**
@@ -435,7 +435,7 @@ public class BundleLoaderImpl implements BundleLoader, BundleListener {
     * @see ch.ethz.jadabs.bundleLoader.api.BundleLoader#unregisterRequestHandler(ch.ethz.jadabs.bundleLoader.api.HttpRequestHandler)
     */
    public void unregisterRequestHandler(HttpRequestHandler handler) {
-//      BundleLoaderActivator.httpDaemon.removeRequestHandler(handler);
+      BundleLoaderActivator.httpDaemon.removeRequestHandler(handler);
    }
 
    /**

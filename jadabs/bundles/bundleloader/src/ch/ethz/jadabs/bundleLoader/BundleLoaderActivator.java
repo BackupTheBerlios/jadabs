@@ -42,6 +42,7 @@ import org.osgi.framework.BundleContext;
 
 import ch.ethz.jadabs.bundleLoader.api.BundleLoader;
 import ch.ethz.jadabs.bundleLoader.security.BundleSecurityImpl;
+import ch.ethz.jadabs.http.HttpDaemon;
 
 /**
  * Activator for bundleLoader 
@@ -51,7 +52,7 @@ public class BundleLoaderActivator implements BundleActivator {
 	protected static Logger LOG = Logger.getLogger(BundleLoaderImpl.class.getName());	
 	public static BundleContext bc;
 	protected static BundleLoaderImpl bundleLoader;
-//	protected static HttpDaemon httpDaemon;
+	protected static HttpDaemon httpDaemon;
 	
 
 	
