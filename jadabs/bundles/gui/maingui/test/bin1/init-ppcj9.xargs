@@ -1,0 +1,43 @@
+#
+# minimal init.xargs to be used in a JXME environment
+#
+
+-Dorg.knopflerfish.verbosity=0
+
+-Dorg.knopflerfish.gosg.jars=file:\jadabs\repository\
+
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.debug.startlevel=false
+-Dorg.knopflerfish.framework.debug.ldap=false
+#-Dlog4j.priority=DEBUG
+
+-Dorg.osgi.framework.system.packages=org.eclipse.swt.custom,org.eclipse.swt.events,org.eclipse.swt.graphics,org.eclipse.swt.layout,org.eclipse.swt.widgets,ch.ethz.jadabs.osgiaop,org.codehaus.nanning,org.codehaus.nanning.config,org.codehaus.nanning.attribute,org.codehaus.nanning.xml
+
+-Dorg.knopflerfish.startlevel.use=true
+
+#-Dch.ethz.jadabs.bundleloader.httprepo=osgirepo.berlios.de
+#-Dch.ethz.jadabs.bundleloader.httprepo.port=80
+-Dch.ethz.jadabs.pluginloader.starter=\jadabs\jadabs-ppc.starter
+
+-Dch.ethz.jadabs.servicemanager.gmpipe.name=gmpipe
+-Dch.ethz.jadabs.servicemanager.gmpipe.id=23
+
+-Dch.ethz.jadabs.jxme.peeralias=peer1
+
+#-Dch.ethz.jadabs.bundlesecurity.jaruuid=jadabs:bundlesecurity:1.0.0-SNAPSHOT:jar
+
+-init
+
+-initlevel 1
+-istart   \jadabs\repository\jadabs\jars\log4j-cdc-1.0.0-SNAPSHOT.jar
+-install  \jadabs\repository\kobjects\jars\kxml2-2.2.1-osgi.jar
+-istart   \jadabs\repository\jadabs\jars\bundleloader-1.0.0-SNAPSHOT.jar
+-istart   \jadabs\repository\jadabs\jars\pluginloader-1.0.0-SNAPSHOT.jar
+
+-startlevel 1
+
+-launch
+
+

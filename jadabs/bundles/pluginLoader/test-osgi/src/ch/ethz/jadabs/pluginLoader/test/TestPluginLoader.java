@@ -135,20 +135,21 @@ public class TestPluginLoader implements BundleActivator
         
         
         // test IM filters
-        filters.add( " Extension/id:IM | " +
-                "Platform/id:device.ethz.ch, name:deviceservices, " +
-                    "version:0.1.0, provider-name:ETHZ-IKS; " +
-                "Property/processor:i386; " +
-                "Property/os:linux; " +
-                "Property/display:no; " +
-                "Property/vm:cdc/fp; " +
-                "Property/vm-version:1.0.1; " +
-                "OSGiContainer/id:osgi; " +
-                "OSGiContainer/id:osgi-daop; " +
-                "NetIface/type:adhoc, connection:dynamic, " +
-                    "name:bt-hotspot,iface:eth1, ip:192.168.55.55; " +
-                "NetIface/type:internet, ext-type:wlan/managed | R");
+//        filters.add( " Extension/id:IM | " +
+//                "Platform/id:device.ethz.ch, name:deviceservices, " +
+//                    "version:0.1.0, provider-name:ETHZ-IKS; " +
+//                "Property/processor:i386; " +
+//                "Property/os:linux; " +
+//                "Property/display:no; " +
+//                "Property/vm:cdc/fp; " +
+//                "Property/vm-version:1.0.1; " +
+//                "OSGiContainer/id:osgi; " +
+//                "OSGiContainer/id:osgi-daop; " +
+//                "NetIface/type:adhoc, connection:dynamic, " +
+//                    "name:bt-hotspot,iface:eth1, ip:192.168.55.55; " +
+//                "NetIface/type:internet, ext-type:wlan/managed | R");
         
+        filters.add(" Extension/id:sip | Platform/id:device.ethz.ch, name:deviceservices, version:0.1.0, provider-name:ETHZ-IKS; Property/processor:i386; Property/os:linux; Property/display:no; Property/vm:cdc/fp; Property/vm-version:1.0.1; OSGiContainer/id:osgi; OSGiContainer/id:osgi-daop; NetIface/type:adhoc, connection:dynamic, name:bt-hotspot, iface:eth1, ip:192.168.55.55; NetIface/type:internet, ext-type:wlan/managed | R");
         for (Enumeration en = filters.elements(); en.hasMoreElements();)
             queryAndPrintResult((String)en.nextElement());
 

@@ -34,5 +34,6 @@
 	<classpathentry kind="var" path="MAVEN_REPO/kobjects/jars/kxml2-2.2.1-osgi.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jsx/jars/jsx-osgi-2.2.3.8.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="bundles/jxta-shell/src"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

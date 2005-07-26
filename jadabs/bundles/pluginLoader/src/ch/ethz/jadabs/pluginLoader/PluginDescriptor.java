@@ -127,7 +127,7 @@ public class PluginDescriptor extends Descriptor {
                   LOG.debug("REQUESTING " + id + " | " + PluginLoaderImpl.platform + " | " + "R");
                   LOG.debug("\n");
                }
-               for (Iterator matches = PluginLoaderImpl.getMatchingPlugins(id + " | " + PluginLoaderImpl.platform + " | " + "R"); matches.hasNext(); ) {
+               for (Iterator matches = PluginLoaderImpl.getMatchingPlugins(id + " | " + PluginLoaderImpl.platform + " | " + "OPD,PRO"); matches.hasNext(); ) {
                   matchingPlugins.add(matches.next());
                }
                

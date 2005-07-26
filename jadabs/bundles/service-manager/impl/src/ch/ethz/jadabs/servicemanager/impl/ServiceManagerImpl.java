@@ -313,8 +313,8 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	                String filter = new String(msg.getElement(SERVICE_FILTER).getData());
 	                
 	                String exps = filter.substring(0,filter.indexOf("|"));
-	                String platformrest = filter.substring(filter.indexOf("|"));
-	                
+	                String platformrest = filter.substring(filter.indexOf("|") + 1);
+	                                    
 	                StringTokenizer st = new StringTokenizer(exps, ",");
 	                String exp;
                                         
@@ -322,15 +322,21 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	                {
                         exp = st.nextToken();
                         
-	                    String newfilter = exp + " | " + platformrest + " | " + "R";
-	                    try {
+	                    String newfilter = exp + " | " + platformrest;
+	                                            
+                        try {
 	                        Iterator it = ServiceManagerActivator.pluginLoader.getMatchingPlugins(
 			                    newfilter, this);
 	                        
+                            if (it.hasNext())
+                                LOG.debug("found matching plugin");
+                            
 	                        sendAdvertisements(it, NEWFILTER_ACK, INSTALLED_SERVICES, frompeer, filter);
 	                        
 	                    } catch(Exception e)
-	                    { }
+	                    { 
+	                        LOG.error("error in matching filters");
+                        }
 	                }
 	                
 	            }
@@ -340,23 +346,36 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 	             	String adv = new String(msg.getElement(ADV_DESCRIPTOR).getData());
 		            String rptype = new String(msg.getElement(SERVICE_RP_TYPE).getData());
 		            
-		            String id = new String(msg.getElement(SERVICE_ID).getData());
+		            final String fid = new String(msg.getElement(SERVICE_ID).getData());
 		                     
-		            LOG.debug("NEWFILTER_ACK plugin: "+id);
+		            LOG.debug("NEWFILTER_ACK plugin: "+fid);
 		            
-		            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(id, adv, frompeer, rptype);
+		            ServiceReferenceImpl svcRefImpl = new ServiceReferenceImpl(fid, adv, frompeer, rptype);
 		            
 		            // per default save the opd in the repocache
 //		            saveServiceAdvInCache(id, adv);
 		            
-		            try
-                    {
-                        // needs to be installed
-                        ServiceManagerActivator.pluginLoader.loadPlugin(id);
-                    } catch (Exception e)
-                    {
-                        LOG.error("could not install plugin: "+id);
-                    }
+//		            try
+//                    {
+//                        // needs to be installed
+//                        ServiceManagerActivator.pluginLoader.loadPlugin(id);
+//                    } catch (Exception e)
+//                    {
+//                        LOG.error("could not install plugin: "+id);
+//                    }
+                    
+                    new Thread(){ 
+                        public void run(){
+                            try
+                            {
+                                ServiceManagerActivator.pluginLoader.loadPlugin(fid);
+                                
+                            } catch (Exception e)
+                            {
+                                LOG.error("could not install: "+ fid);
+                            }
+                        }
+                    }.start();
 		            
 		            
 	            }
@@ -546,12 +565,10 @@ public class ServiceManagerImpl extends PluginFilterMatcher
 			out.flush();
 		}
 		finally {
-			try {
-				in.close();
-			}
-			catch (IOException ex) {
-				LOG.warn("Could not close InputStream", ex);
-			}
+//			try {
+//				in.close();
+//			}
+//			catcs
 			try {
 				out.close();
 			}
@@ -829,58 +846,58 @@ public class ServiceManagerImpl extends PluginFilterMatcher
         {
 	        
             // request plugins from newcommer
-	        Iterator it =
-	            ServiceManagerActivator.pluginLoader.getInstalledPlugins();
-            
-	        for (;it.hasNext();)
-	        {
-	            String pluginid = (String)it.next();
-	            
-	            try {
-		            PluginDescriptor pd = 
-		                ServiceManagerActivator.pluginLoader.getPluginDescriptor(pluginid);
-		            
-		            Iterator epit = pd.getExtensionPoints();
-		            StringBuffer sb = new StringBuffer();
-		            
-		            for (;epit.hasNext();)
-		            {
-		                sb.append(epit.next());
-                        
-                        if (epit.hasNext())
-                            sb.append(",");
-		            }
-		            
-	                String filter= sb.toString() + " | " + 
-	                	ServiceManagerActivator.pluginLoader.getPlatform() + " | " + "R";
-		                
-	                sendRequest(namedResource.getName(), 
-		                        NEWFILTER_REQ, SERVICE_FILTER, filter, null, null);
-			            
-	            } catch (Exception e)
-	            {
-	                
-	            }
-	        }
-            
-            // push providing plugins to new commers
-//	        Iterator it = ServiceManagerActivator.pluginLoader.getProvidingPlugins();
+//	        Iterator it =
+//	            ServiceManagerActivator.pluginLoader.getInstalledPlugins();
+//            
 //	        for (;it.hasNext();)
 //	        {
 //	            String pluginid = (String)it.next();
-//	        	
-//	            LOG.debug("plugin: "+pluginid);
 //	            
-//	            InputStream is = 
-//	                ServiceManagerActivator.pluginLoader.fetchInformation(pluginid, this);
-//	            
-//	            String pd = inputStream2String(is);
-//	            
-//	            sendRequest(namedResource.getName(),
-//	                    SERVICE_ADV, ADV_DESCRIPTOR, pd,
-//	                    SERVICE_ID, pluginid);
-//	            
+//	            try {
+//		            PluginDescriptor pd = 
+//		                ServiceManagerActivator.pluginLoader.getPluginDescriptor(pluginid);
+//		            
+//		            Iterator epit = pd.getExtensionPoints();
+//		            StringBuffer sb = new StringBuffer();
+//		            
+//		            for (;epit.hasNext();)
+//		            {
+//		                sb.append(epit.next());
+//                        
+//                        if (epit.hasNext())
+//                            sb.append(",");
+//		            }
+//		            
+//	                String filter= sb.toString() + " | " + 
+//	                	ServiceManagerActivator.pluginLoader.getPlatform() + " | " + "R";
+//		                
+//	                sendRequest(namedResource.getName(), 
+//		                        NEWFILTER_REQ, SERVICE_FILTER, filter, null, null);
+//			            
+//	            } catch (Exception e)
+//	            {
+//	                
+//	            }
 //	        }
+            
+            // push providing plugins to new commers
+	        Iterator it = ServiceManagerActivator.pluginLoader.getProvidingPlugins();
+	        for (;it.hasNext();)
+	        {
+	            String pluginid = (String)it.next();
+	        	
+	            LOG.debug("plugin: "+pluginid);
+	            
+	            InputStream is = 
+	                ServiceManagerActivator.pluginLoader.fetchInformation(pluginid, this);
+	            
+	            String pd = inputStream2String(is);
+	            
+	            sendRequest(namedResource.getName(),
+	                    SERVICE_ADV, ADV_DESCRIPTOR, pd,
+	                    SERVICE_ID, pluginid);
+	            
+	        }
         
         }
     }

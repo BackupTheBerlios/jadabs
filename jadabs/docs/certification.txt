@@ -1,0 +1,29 @@
+create dsa params:
+C:\OpenSSL\bin>openssl.exe dsaparam -out c:\Security\dsap.pem 1024
+
+create CA certificate:
+C:\OpenSSL\bin>openssl req -x509 -newkey dsa:c:\Security\dsap.pem -outform DER -keyout c:\Security\cakey.pem -out c:\Security\jadabs-cacert.der
+
+import CA in .keystore:
+C:\OpenSSL\bin>%JAVA_HOME%\bin\keytool -import -alias jadabs-ca -file c:\Security\jadabs-cacert.der -keystore c:\Security\.keystore
+
+generate keypair in .keystore:
+C:\OpenSSL\bin>%JAVA_HOME%\bin\keytool -genkey -alias osgicert -keystore c:\Security\.keystore
+
+generate certificate request for osgicert:
+C:\OpenSSL\bin>%JAVA_HOME%\bin\keytool -certreq -alias osgicert -keystore c:\Security\.keystore -file c:\Security\osgi.req
+
+convert cacert
+C:\OpenSSL\bin>openssl x509 -out c:\Security\jadabs-cacert.pem -outform pem -in c:\Security\jadabs-cacert.der -inform der
+
+create response
+C:\OpenSSL\bin>openssl x509 -out c:\Security\osgi-response.cer -outform pem -in c:\Security\osgi.req -inform pem -days 360 -req -CA c:\Security\jadabs-cacert.pem -CAkey c:\Security\cakey.pem -CAcreateserial
+
+import response in .keystore:
+C:\OpenSSL\bin>%JAVA_HOME%\bin\keytool -import -alias osgicert -trustcacerts -file c:\Security\osgi-response.cer -keystore c:\Security\.keystore
+
+show keystore
+C:\OpenSSL\bin>%JAVA_HOME%\bin\keytool -list -v -keystore c:\Security\.keystore
+
+export certificat
+keytool --export -alias jadabs-ca -file jadabs-1.0.0-SNAPSHOT/repository/cert/jadabs-ca.cer
