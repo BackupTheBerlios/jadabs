@@ -52,7 +52,7 @@ public class BundleLoaderActivator implements BundleActivator {
 	protected static Logger LOG = Logger.getLogger(BundleLoaderImpl.class.getName());	
 	public static BundleContext bc;
 	protected static BundleLoaderImpl bundleLoader;
-	protected static HttpDaemon httpDaemon;
+//	protected static HttpDaemon httpDaemon;
 	
 
 	
