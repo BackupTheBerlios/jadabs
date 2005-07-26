@@ -60,6 +60,9 @@ import java.util.TimeZone;
  */
 public class NanoHTTPD
 {
+    private static int PORT = 80;
+    private static String WWW_HTML = "C:/Documents and Settings/andfrei/.maven";
+    
 	// ==================================================
 	// API parts
 	// ==================================================
@@ -94,7 +97,10 @@ public class NanoHTTPD
 								parms.getProperty( value ) + "'" );
 		}
 
-		return serveFile( uri, header, myFileDir, true );
+        if (uri.indexOf("overview") > -1)
+            return serveOverview( uri, header);
+        else
+            return serveFile( uri, header, myFileDir, true );
 	}
 
 	/**
@@ -230,9 +236,9 @@ public class NanoHTTPD
 		}
 
 		// Change port if requested
-		int port = 8080;
-		if ( args.length > 0 && lopt != 0 )
-			port = Integer.parseInt( args[0] );
+//		int port = 80;
+//		if ( args.length > 0 && lopt != 0 )
+//			port = Integer.parseInt( args[0] );
 
 		if ( args.length > 1 &&
 			 args[1].toLowerCase().endsWith( "licence" ))
@@ -241,16 +247,16 @@ public class NanoHTTPD
 		NanoHTTPD nh = null;
 		try
 		{
-			nh = new NanoHTTPD( port );
+			nh = new NanoHTTPD( PORT );
 		}
 		catch( IOException ioe )
 		{
 			System.err.println( "Couldn't start server:\n" + ioe );
 			System.exit( -1 );
 		}
-		nh.myFileDir = new File("/var/www/html");
+		nh.myFileDir = new File(WWW_HTML);
 
-		System.out.println( "Now serving files in port " + port + " from \"" +
+		System.out.println( "Now serving files in port " + PORT + " from \"" +
                 nh.myFileDir.getAbsolutePath() + "\"" );
 		System.out.println( "Hit Enter to stop.\n" );
 
@@ -278,10 +284,18 @@ public class NanoHTTPD
 				InputStream is = mySocket.getInputStream();
 				if ( is == null) return;
 				BufferedReader in = new BufferedReader( new InputStreamReader( is ));
-
-				// Read the request line
-				StringTokenizer st = new StringTokenizer( in.readLine());
-				if ( !st.hasMoreTokens())
+                               
+                
+                // Read the request line
+                StringTokenizer st;
+				try {
+				    st = new StringTokenizer( in.readLine());
+                } catch(NullPointerException ne)
+                {
+                    return;
+                }
+                
+                if ( !st.hasMoreTokens())
 					sendError( HTTP_BADREQUEST, "BAD REQUEST: Syntax error. Usage: GET /example/file.html" );
 
 				String method = st.nextToken();
@@ -641,6 +655,64 @@ public class NanoHTTPD
 		}
 	}
 
+    
+    // ==================================================
+    // Overview server code
+    // ==================================================
+
+    /**
+     * Serves file from homeDir and its' subdirectories (only).
+     * Uses only URI, ignores all headers and HTTP parameters.
+     */
+    public Response serveOverview( String uri, Properties header )
+    {
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append("<html>" +
+                "<head>" +
+                    "<meta name=\"GENERATOR\" content=\"Jadabs automatical generated\">" +
+                    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1252\">" +
+                    "<title>Jadabs</title>" +
+                "</head>");
+        
+        sb.append("<body bgcolor=\"#CCCCFF\">" +
+                "<h1>Jadabs -- Peer</h1>" +
+                "<p>&nbsp;</p>" +
+                "<h2>Installed Plugins</h2>" +
+                    "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: collapse\" bordercolor=\"#111111\" width=\"46%\" id=\"AutoNumber1\">" +
+                    "<tr>" +
+                    "<td width=\"44%\">Plugin</td>" +
+                    "<td width=\"24%\">Status</td>" +
+                    "<td width=\"39%\">Edit</td>" +
+                    "</tr>
+  <tr>
+    <td width="44%">servicemanager</td>
+    <td width="24%">active</td>
+    <td width="39%">(stop,start)</td>
+  </tr>
+</table>
+<h2>Installed Bundles</h2>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="46%" id="AutoNumber1">
+  <tr>
+    <td width="44%">Bundle</td>
+    <td width="24%">Status</td>
+    <td width="39%">Edit</td>
+  </tr>
+  <tr>
+    <td width="44%">osgi-service</td>
+    <td width="24%">active</td>
+    <td width="39%">(stop,start)</td>
+  </tr>
+</table>
+
+</body>
+
+</html>
+");
+        
+        return new Response( HTTP_OK, MIME_HTML, msg );
+    }
+    
 	/**
 	 * Hashtable mapping (String)FILENAME_EXTENSION -> (String)MIME_TYPE
 	 */
