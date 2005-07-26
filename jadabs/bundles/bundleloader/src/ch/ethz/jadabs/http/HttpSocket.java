@@ -107,6 +107,8 @@ public class HttpSocket extends Socket {
    
    public InputStream getFileInputStream(String urlfile) throws IOException
    {
+       System.out.println("get urlfile: "+urlfile);
+       
        URL url = new URL(urlfile);
        
        return url.openStream();
@@ -121,7 +123,11 @@ public class HttpSocket extends Socket {
       DataOutputStream outbound = new DataOutputStream(
             getOutputStream() );
 
-      outbound.writeBytes("GET " + request +  " HTTP/1.0\r\n\r\n");
+      String httpreq = "GET " + request +  " HTTP/1.0 \r\n\r\n";
+      
+      System.out.println("request:" + httpreq);
+      
+      outbound.writeBytes(httpreq);
       outbound.flush();
    }
    
@@ -134,7 +140,11 @@ public class HttpSocket extends Socket {
       DataOutputStream outbound = new DataOutputStream(
             getOutputStream() );
 
-      outbound.writeBytes("POST " + request +  " HTTP/1.0\r\n\r\n");
+      String httpreq = "POST " + request +  " HTTP/1.0 \r\n\r\n";
+          
+      System.out.println("request:" + httpreq);
+      
+      outbound.writeBytes(httpreq);
       outbound.flush();
    }
 

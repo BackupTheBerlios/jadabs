@@ -675,42 +675,42 @@ public class NanoHTTPD
                     "<title>Jadabs</title>" +
                 "</head>");
         
-        sb.append("<body bgcolor=\"#CCCCFF\">" +
-                "<h1>Jadabs -- Peer</h1>" +
-                "<p>&nbsp;</p>" +
-                "<h2>Installed Plugins</h2>" +
-                    "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: collapse\" bordercolor=\"#111111\" width=\"46%\" id=\"AutoNumber1\">" +
-                    "<tr>" +
-                    "<td width=\"44%\">Plugin</td>" +
-                    "<td width=\"24%\">Status</td>" +
-                    "<td width=\"39%\">Edit</td>" +
-                    "</tr>
-  <tr>
-    <td width="44%">servicemanager</td>
-    <td width="24%">active</td>
-    <td width="39%">(stop,start)</td>
-  </tr>
-</table>
-<h2>Installed Bundles</h2>
-<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="46%" id="AutoNumber1">
-  <tr>
-    <td width="44%">Bundle</td>
-    <td width="24%">Status</td>
-    <td width="39%">Edit</td>
-  </tr>
-  <tr>
-    <td width="44%">osgi-service</td>
-    <td width="24%">active</td>
-    <td width="39%">(stop,start)</td>
-  </tr>
-</table>
-
-</body>
-
-</html>
-");
+//        sb.append("<body bgcolor=\"#CCCCFF\">" +
+//                "<h1>Jadabs -- Peer</h1>" +
+//                "<p>&nbsp;</p>" +
+//                "<h2>Installed Plugins</h2>" +
+//                    "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: collapse\" bordercolor=\"#111111\" width=\"46%\" id=\"AutoNumber1\">" +
+//                    "<tr>" +
+//                    "<td width=\"44%\">Plugin</td>" +
+//                    "<td width=\"24%\">Status</td>" +
+//                    "<td width=\"39%\">Edit</td>" +
+//                    "</tr>
+//  <tr>
+//    <td width="44%">servicemanager</td>
+//    <td width="24%">active</td>
+//    <td width="39%">(stop,start)</td>
+//  </tr>
+//</table>
+//<h2>Installed Bundles</h2>
+//<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="46%" id="AutoNumber1">
+//  <tr>
+//    <td width="44%">Bundle</td>
+//    <td width="24%">Status</td>
+//    <td width="39%">Edit</td>
+//  </tr>
+//  <tr>
+//    <td width="44%">osgi-service</td>
+//    <td width="24%">active</td>
+//    <td width="39%">(stop,start)</td>
+//  </tr>
+//</table>
+//
+//</body>
+//
+//</html>
+//");
         
-        return new Response( HTTP_OK, MIME_HTML, msg );
+        return new Response( HTTP_OK, MIME_HTML, sb.toString() );
     }
     
 	/**
