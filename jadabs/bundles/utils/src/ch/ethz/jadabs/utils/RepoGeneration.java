@@ -30,7 +30,11 @@ public class RepoGeneration
     public static void main(String[] args)
     {
 
-        if (args.length == 1)
+        if (args.length != 1)
+        {
+            System.out.println("Usage: java -jar RepoGeneration.jar <repodir>");
+            return;
+        }else
             repoDir = args[0];
 
         repositoryFile = repoDir + File.separatorChar+"repository.xml";

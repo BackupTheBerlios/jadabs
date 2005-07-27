@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  	<extend>${basedir}/../../project.xml</extend>
+
+  	<groupId>jadabs</groupId>
+  	<id>utils</id>
+  	<name>Jadabs Plugin Loader</name>
+
+  	<shortDescription>Jadabs Plugin Loader</shortDescription>
+
+	<properties>
+		
+	</properties>
+	
+	
+  	<dependencies>
+
+    
+  	</dependencies>
+  
+</project>
