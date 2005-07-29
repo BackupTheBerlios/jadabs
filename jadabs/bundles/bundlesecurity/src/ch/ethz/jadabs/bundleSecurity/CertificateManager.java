@@ -4,10 +4,6 @@
 package ch.ethz.jadabs.bundleSecurity;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.security.MessageDigest;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
@@ -22,16 +18,6 @@ public class CertificateManager {
     
     private static Logger LOG = Logger.getLogger(CertificateManager.class);
     
-    FileFilter certFilter = new FileFilter(){
-    	public boolean accept(File pathname){
-    		return pathname.getName().endsWith(certSuffix);
-    	}
-    };
-    
-    private static final String certDir = "cert";
-    private static final String certSuffix = ".cer";
-    private static final String repoFileName = ".trusted";
-    
     private CertificateRepository checkedCerts;
     private CertificateFactory certFact = CertificateFactory.getInstance("X.509");
     private String caCertLoc;
@@ -39,43 +25,7 @@ public class CertificateManager {
     private static CertificateManager instance;
     
     private CertificateManager() throws Exception{
-    	LOG.debug("Loading local certificates...");
-        String repoDir = BundleSecurityActivator.bc.getProperty("org.knopflerfish.gosg.jars").substring(5);
-        caCertLoc = repoDir + File.separator + certDir;
-        String repoFile = caCertLoc + File.separator + repoFileName;
-        checkedCerts = CertificateRepository.Instance(repoFile);
-        loadLocalCerts();
-    }
-    
-    private void loadLocalCerts(){
-        File caCertDir = new File(caCertLoc);
-        File[] certFiles = caCertDir.listFiles(certFilter);
-        X509Certificate cert;
-        for (int i = 0; i < certFiles.length; i++) {
-        	try {
-        		cert = (X509Certificate)certFact.generateCertificate(new FileInputStream(certFiles[i]));
-    			cert.checkValidity();
-    			if (LOG.isDebugEnabled()){
-    			    MessageDigest md = MessageDigest.getInstance("MD5");
-    			    md.update(cert.getEncoded());
-    			    byte[] digest = md.digest();
-    			    String digestEnc = "";
-    			    for (int j = 0; j < digest.length; j++) {
-                        digestEnc += ":" + Integer.toHexString(((int)digest[j]) & 0xff);
-                    }
-    			    digestEnc = (digestEnc.substring(1, digestEnc.length())).toUpperCase();
-    			    LOG.debug("MD5 (Hex) Fingerprint of " + certFiles[i] + ": " + digestEnc);
-    			}
-    			checkedCerts.putCert(cert);
-        	} catch (Exception e){
-        	    if (e instanceof CertificateNotYetValidException)
-					LOG.info("Certificate in " + certFiles[i] + " is not yet valid.");
-				else if (e instanceof CertificateExpiredException)
-				    LOG.info("Certificate in " + certFiles[i] + " has expired.");
-				else
-				    LOG.debug("Error loading certificate " + certFiles[i], e);
-        	}	
-		}
+        checkedCerts = CertificateRepository.Instance();
     }
     
     protected X509Certificate getTrustedCertificate(byte[] certData) throws Exception{
