@@ -81,7 +81,10 @@ public class BundleLoaderActivator implements BundleActivator {
         if (portstr != null)
             httpdPort = Integer.parseInt(portstr);
         
-        String httpDir = bc.getProperty("org.knopflerfish.gosg.jars").substring(5);
+        String repodir = bc.getProperty("org.knopflerfish.gosg.jars");
+        
+        // ex.: file:/home/andfrei/.maven/repository/, remove "file:" and "repository/"
+        String httpDir = repodir.substring(5, repodir.length()-11);
         
         nanoHttpD = new NanoHTTPD(httpDir, httpdPort);
         

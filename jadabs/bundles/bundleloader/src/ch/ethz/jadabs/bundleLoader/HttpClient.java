@@ -93,7 +93,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
 //        if (!repoCacheDir.exists())
 //            repoCacheDir.mkdir();
         
-        repoCacheDir = new File(BundleLoaderActivator.bc.getProperty("org.knopflerfish.gosg.jars"));
+        repoCacheDir = new File(BundleLoaderActivator.bc.getProperty("org.knopflerfish.gosg.jars").substring(5));
         
         //TODO: read property or file and build up list of known hosts
         // String host = "jadabsrepo.ethz.ch";
@@ -279,9 +279,7 @@ public class HttpClient extends PluginFilterMatcher implements InformationSource
         // save file
         sb.append(File.separatorChar + filename);
         String absfilepath = sb.toString();
-        
-        System.out.println("filepath: "+absfilepath);
-        
+                
         // set filepath in BundleInformation
 //        binfo.setBundleCacheLocation(absfilepath);
                 
