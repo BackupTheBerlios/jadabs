@@ -43,6 +43,8 @@ import org.osgi.framework.BundleContext;
 import ch.ethz.jadabs.bundleLoader.api.BundleLoader;
 import ch.ethz.jadabs.bundleLoader.security.BundleSecurityImpl;
 import ch.ethz.jadabs.http.HttpDaemon;
+import ch.ethz.jadabs.http.HttpSite;
+import ch.ethz.jadabs.http.NanoHTTPD;
 
 /**
  * Activator for bundleLoader 
@@ -51,11 +53,17 @@ import ch.ethz.jadabs.http.HttpDaemon;
 public class BundleLoaderActivator implements BundleActivator {
 	protected static Logger LOG = Logger.getLogger(BundleLoaderImpl.class.getName());	
 	public static BundleContext bc;
-	protected static BundleLoaderImpl bundleLoader;
+	public static BundleLoaderImpl bundleLoader;
+    protected static NanoHTTPD nanoHttpD;
 //	protected static HttpDaemon httpDaemon;
-	
 
-	
+    protected static int httpdPort = 80;
+	public static String peername;
+    
+    public static long startTime = System.currentTimeMillis();
+    
+    protected static BundleLoaderPageHandler bundleLoaderPageHandler;
+    
 	/**
 	 * Called by the OSGi framework to start the bundle
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
@@ -64,11 +72,26 @@ public class BundleLoaderActivator implements BundleActivator {
 	{
 		LOG.info("BundleLoader starting ...");			
 		BundleLoaderActivator.bc = bc;
-				
+		
+        // Peers name
+        peername = bc.getProperty("ch.ethz.jadabs.jxme.peeralias");
+        
 		// start a http daemon to answer bundle loader requests
+        String portstr = bc.getProperty("ch.ethz.jadabs.httpd.port");
+        if (portstr != null)
+            httpdPort = Integer.parseInt(portstr);
+        
+        String httpDir = bc.getProperty("org.knopflerfish.gosg.jars").substring(5);
+        
+        nanoHttpD = new NanoHTTPD(httpDir, httpdPort);
+        
+        
+        bc.registerService(HttpSite.class.getName(), nanoHttpD, null);
+        
 //		httpDaemon = new HttpDaemon();
 //		httpDaemon.addRequestHandler(new BundleLoaderHandler());
 //		httpDaemon.start();
+        
 		
 		// instanciate BundleLoader, register and start
 		BundleLoaderActivator.bundleLoader = BundleLoaderImpl.getInstance();
@@ -77,6 +100,9 @@ public class BundleLoaderActivator implements BundleActivator {
 		
 		// init BundleSecurity
 		BundleSecurityImpl.init(BundleLoaderActivator.bundleLoader);
+        
+        // register BundleLoaderPageHandler in HTTPSite
+        bundleLoaderPageHandler = new BundleLoaderPageHandler();
 	}
 
 	/**

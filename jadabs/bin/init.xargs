@@ -17,6 +17,8 @@
 -Dch.ethz.jadabs.bundleloader.httprepo.port=80
 -Dch.ethz.jadabs.pluginloader.starter=jadabs.starter
 
+-Dch.ethz.jadabs.httpd.port=8080
+
 -Dch.ethz.jadabs.servicemanager.gmpipe.name=gmpipe
 -Dch.ethz.jadabs.servicemanager.gmpipe.id=23
 

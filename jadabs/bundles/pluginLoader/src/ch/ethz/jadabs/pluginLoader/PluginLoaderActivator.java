@@ -44,6 +44,8 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 
 import ch.ethz.jadabs.bundleLoader.api.BundleLoader;
+import ch.ethz.jadabs.http.HttpSite;
+import ch.ethz.jadabs.http.PageHandler;
 import ch.ethz.jadabs.pluginLoader.api.PluginLoader;
 
 
@@ -59,7 +61,8 @@ public class PluginLoaderActivator implements BundleActivator
     protected static BundleContext bc;
     protected static BundleLoader bloader;
     protected static PluginLoaderImpl ploader;
-    
+    protected static PageHandler pageHandler;
+    protected static HttpSite httpSite;
     
     /**
      * start the bundle, this method is called by the OSGi framework
@@ -99,7 +102,13 @@ public class PluginLoaderActivator implements BundleActivator
         PluginLoaderImpl.getInstance().init(starter);
         
         
-
+        // register PageHandler
+        pageHandler = new PluginLoaderPageHandler();
+        sref = bc.getServiceReference(HttpSite.class.getName());
+        
+        httpSite = (HttpSite)bc.getService(sref);
+        
+        httpSite.registerPageHandler("Plugins", pageHandler);
     }
     
     /**
@@ -110,5 +119,6 @@ public class PluginLoaderActivator implements BundleActivator
     public void stop(BundleContext bc) throws Exception
     {
        ploader = null;
+       httpSite.unregisterPageHandler("Plugins", pageHandler);
     }
 }

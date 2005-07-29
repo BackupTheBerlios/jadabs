@@ -15,767 +15,889 @@ import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
+
+import ch.ethz.jadabs.bundleLoader.BundleLoaderActivator;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 server in Java
- *
- * <p> NanoHTTPD version 1.02,
- * Copyright &copy; 2001,2005 Jarno Elonen (elonen@iki.fi, http://iki.fi/elonen/)
- *
- * <p><b>Features & limitations: </b><ul>
- *
- *    <li> Only one Java file </li>
- *    <li> Java 1.1 compatible </li>
- *    <li> Released as open source, Modified BSD licence </li>
- *    <li> No fixed config files, logging, authorization etc. (Implement yourself if you need them.) </li>
- *    <li> Supports parameter parsing of GET and POST methods </li>
- *    <li> Supports both dynamic content and file serving </li>
- *    <li> Never caches anything </li>
- *    <li> Doesn't limit bandwidth, request time or simultaneous connections </li>
- *    <li> Default code serves files and shows all HTTP parameters and headers</li>
- *    <li> File server supports directory listing, index.html and index.htm </li>
- *    <li> File server does the 301 redirection trick for directories without '/'</li>
- *    <li> File server supports simple skipping for files (continue download) </li>
- *    <li> File server uses current directory as a web root </li>
- *    <li> File server serves also very long files without memory overhead </li>
- *    <li> Contains a built-in list of most common mime types </li>
- *
+ * 
+ * <p>
+ * NanoHTTPD version 1.02, Copyright &copy; 2001,2005 Jarno Elonen
+ * (elonen@iki.fi, http://iki.fi/elonen/)
+ * 
+ * <p>
+ * <b>Features & limitations: </b>
+ * <ul>
+ * 
+ * <li> Only one Java file </li>
+ * <li> Java 1.1 compatible </li>
+ * <li> Released as open source, Modified BSD licence </li>
+ * <li> No fixed config files, logging, authorization etc. (Implement yourself
+ * if you need them.) </li>
+ * <li> Supports parameter parsing of GET and POST methods </li>
+ * <li> Supports both dynamic content and file serving </li>
+ * <li> Never caches anything </li>
+ * <li> Doesn't limit bandwidth, request time or simultaneous connections </li>
+ * <li> Default code serves files and shows all HTTP parameters and headers</li>
+ * <li> File server supports directory listing, index.html and index.htm </li>
+ * <li> File server does the 301 redirection trick for directories without '/'</li>
+ * <li> File server supports simple skipping for files (continue download) </li>
+ * <li> File server uses current directory as a web root </li>
+ * <li> File server serves also very long files without memory overhead </li>
+ * <li> Contains a built-in list of most common mime types </li>
+ * 
  * </ul>
- *
- * <p><b>Ways to use: </b><ul>
- *
- *    <li> Run as a standalone app, serves files from current directory and shows requests</li>
- *    <li> Subclass serve() and embed to your own program </li>
- *    <li> Call serveFile() from serve() with your own base directory </li>
- *
+ * 
+ * <p>
+ * <b>Ways to use: </b>
+ * <ul>
+ * 
+ * <li> Run as a standalone app, serves files from current directory and shows
+ * requests</li>
+ * <li> Subclass serve() and embed to your own program </li>
+ * <li> Call serveFile() from serve() with your own base directory </li>
+ * 
  * </ul>
- *
- * See the end of the source file for distribution license
- * (Modified BSD licence)
+ * 
+ * See the end of the source file for distribution license (Modified BSD
+ * licence)
  */
-public class NanoHTTPD
+public class NanoHTTPD implements HttpSite
 {
-    private static int PORT = 80;
-    private static String WWW_HTML = "C:/Documents and Settings/andfrei/.maven";
+
+    private static Logger LOG = Logger.getLogger(NanoHTTPD.class.getName());
     
-	// ==================================================
-	// API parts
-	// ==================================================
+    private static String defaultWWWDir = ".";
 
-	/**
-	 * Override this to customize the server.<p>
-	 *
-	 * (By default, this delegates to serveFile() and allows directory listing.)
-	 *
-	 * @parm uri	Percent-decoded URI without parameters, for example "/index.cgi"
-	 * @parm method	"GET", "POST" etc.
-	 * @parm parms	Parsed, percent decoded parameters from URI and, in case of POST, data.
-	 * @parm header	Header entries, percent decoded
-	 * @return HTTP response, see class Response for details
-	 */
-	public Response serve( String uri, String method, Properties header, Properties parms )
-	{
-		System.out.println( method + " '" + uri + "' " );
+    private static int defaultHttpPort = 80;
 
-		Enumeration e = header.propertyNames();
-		while ( e.hasMoreElements())
-		{
-			String value = (String)e.nextElement();
-			System.out.println( "  HDR: '" + value + "' = '" +
-								header.getProperty( value ) + "'" );
-		}
-		e = parms.propertyNames();
-		while ( e.hasMoreElements())
-		{
-			String value = (String)e.nextElement();
-			System.out.println( "  PRM: '" + value + "' = '" +
-								parms.getProperty( value ) + "'" );
-		}
+    private File wwwFileDir;
 
-        if (uri.indexOf("overview") > -1)
-            return serveOverview( uri, header);
-        else
-            return serveFile( uri, header, myFileDir, true );
-	}
-
-	/**
-	 * HTTP response.
-	 * Return one of these from serve().
-	 */
-	public class Response
-	{
-		/**
-		 * Default constructor: response = HTTP_OK, data = mime = 'null'
-		 */
-		public Response()
-		{
-			this.status = HTTP_OK;
-		}
-
-		/**
-		 * Basic constructor.
-		 */
-		public Response( String status, String mimeType, InputStream data )
-		{
-			this.status = status;
-			this.mimeType = mimeType;
-			this.data = data;
-		}
-
-		/**
-		 * Convenience method that makes an InputStream out of
-		 * given text.
-		 */
-		public Response( String status, String mimeType, String txt )
-		{
-			this.status = status;
-			this.mimeType = mimeType;
-			this.data = new ByteArrayInputStream( txt.getBytes());
-		}
-
-		/**
-		 * Adds given line to the header.
-		 */
-		public void addHeader( String name, String value )
-		{
-			header.put( name, value );
-		}
-
-		/**
-		 * HTTP status code after processing, e.g. "200 OK", HTTP_OK
-		 */
-		public String status;
-
-		/**
-		 * MIME type of content, e.g. "text/html"
-		 */
-		public String mimeType;
-
-		/**
-		 * Data of the response, may be null.
-		 */
-		public InputStream data;
-
-		/**
-		 * Headers for the HTTP response. Use addHeader()
-		 * to add lines.
-		 */
-		public Properties header = new Properties();
-	}
-
-	/**
-	 * Some HTTP response status codes
-	 */
-	public static final String
-		HTTP_OK = "200 OK",
-		HTTP_REDIRECT = "301 Moved Permanently",
-		HTTP_FORBIDDEN = "403 Forbidden",
-		HTTP_NOTFOUND = "404 Not Found",
-		HTTP_BADREQUEST = "400 Bad Request",
-		HTTP_INTERNALERROR = "500 Internal Server Error",
-		HTTP_NOTIMPLEMENTED = "501 Not Implemented";
-
-	/**
-	 * Common mime types for dynamic content
-	 */
-	public static final String
-		MIME_PLAINTEXT = "text/plain",
-		MIME_HTML = "text/html",
-		MIME_DEFAULT_BINARY = "application/octet-stream";
-
-	// ==================================================
-	// Socket & server code
-	// ==================================================
-
-	/**
-	 * Starts a HTTP server to given port.<p>
-	 * Throws an IOException if the socket is already in use
-	 */
-	public NanoHTTPD( int port ) throws IOException
-	{
-		myTcpPort = port;
-
-		final ServerSocket ss = new ServerSocket( myTcpPort );
-		Thread t = new Thread( new Runnable()
-			{
-				public void run()
-				{
-					try
-					{
-						while( true )
-							new HTTPSession( ss.accept());
-					}
-					catch ( IOException ioe )
-					{}
-				}
-			});
-		t.setDaemon( true );
-		t.start();
-	}
-
-	/**
-	 * Starts as a standalone file server and waits for Enter.
-	 */
-	public static void main( String[] args )
-	{
-		System.out.println( "NanoHTTPD 1.02 (C) 2001,2005 Jarno Elonen\n" +
-							"(Command line options: [port] [--licence])\n" );
-
-		// Show licence if requested
-		int lopt = -1;
-		for ( int i=0; i<args.length; ++i )
-		if ( args[i].toLowerCase().endsWith( "licence" ))
-		{
-			lopt = i;
-			System.out.println( LICENCE + "\n" );
-		}
-
-		// Change port if requested
-//		int port = 80;
-//		if ( args.length > 0 && lopt != 0 )
-//			port = Integer.parseInt( args[0] );
-
-		if ( args.length > 1 &&
-			 args[1].toLowerCase().endsWith( "licence" ))
-				System.out.println( LICENCE + "\n" );
-
-		NanoHTTPD nh = null;
-		try
-		{
-			nh = new NanoHTTPD( PORT );
-		}
-		catch( IOException ioe )
-		{
-			System.err.println( "Couldn't start server:\n" + ioe );
-			System.exit( -1 );
-		}
-		nh.myFileDir = new File(WWW_HTML);
-
-		System.out.println( "Now serving files in port " + PORT + " from \"" +
-                nh.myFileDir.getAbsolutePath() + "\"" );
-		System.out.println( "Hit Enter to stop.\n" );
-
-		try { System.in.read(); } catch( Throwable t ) {};
-	}
-
-	/**
-	 * Handles one session, i.e. parses the HTTP request
-	 * and returns the response.
-	 */
-	private class HTTPSession implements Runnable
-	{
-		public HTTPSession( Socket s )
-		{
-			mySocket = s;
-			Thread t = new Thread( this );
-			t.setDaemon( true );
-			t.start();
-		}
-
-		public void run()
-		{
-			try
-			{
-				InputStream is = mySocket.getInputStream();
-				if ( is == null) return;
-				BufferedReader in = new BufferedReader( new InputStreamReader( is ));
-                               
-                
-                // Read the request line
-                StringTokenizer st;
-				try {
-				    st = new StringTokenizer( in.readLine());
-                } catch(NullPointerException ne)
-                {
-                    return;
-                }
-                
-                if ( !st.hasMoreTokens())
-					sendError( HTTP_BADREQUEST, "BAD REQUEST: Syntax error. Usage: GET /example/file.html" );
-
-				String method = st.nextToken();
-
-				if ( !st.hasMoreTokens())
-					sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI. Usage: GET /example/file.html" );
-
-				String uri = decodePercent( st.nextToken());
-
-				// Decode parameters from the URI
-				Properties parms = new Properties();
-				int qmi = uri.indexOf( '?' );
-				if ( qmi >= 0 )
-				{
-					decodeParms( uri.substring( qmi+1 ), parms );
-					uri = decodePercent( uri.substring( 0, qmi ));
-				}
-
-				// If there's another token, it's protocol version,
-				// followed by HTTP headers. Ignore version but parse headers.
-				Properties header = new Properties();
-				if ( st.hasMoreTokens())
-				{
-					String line = in.readLine();
-					while ( line.trim().length() > 0 )
-					{
-						int p = line.indexOf( ':' );
-						header.put( line.substring(0,p).trim(), line.substring(p+1).trim());
-						line = in.readLine();
-					}
-				}
-
-				// If the method is POST, there may be parameters
-				// in data section, too, read another line:
-				if ( method.equalsIgnoreCase( "POST" ))
-					decodeParms( in.readLine(), parms );
-
-				// Ok, now do the serve()
-				Response r = serve( uri, method, header, parms );
-				if ( r == null )
-					sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Serve() returned a null response." );
-				else
-					sendResponse( r.status, r.mimeType, r.header, r.data );
-
-				in.close();
-			}
-			catch ( IOException ioe )
-			{
-				try
-				{
-					sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
-				}
-				catch ( Throwable t ) {}
-			}
-			catch ( InterruptedException ie )
-			{
-				// Thrown by sendError, ignore and exit the thread.
-			}
-		}
-
-		/**
-		 * Decodes the percent encoding scheme. <br/>
-		 * For example: "an+example%20string" -> "an example string"
-		 */
-		private String decodePercent( String str ) throws InterruptedException
-		{
-			try
-			{
-				StringBuffer sb = new StringBuffer();
-				for( int i=0; i<str.length(); i++ )
-				{
-				    char c = str.charAt( i );
-				    switch ( c )
-					{
-				        case '+':
-				            sb.append( ' ' );
-				            break;
-				        case '%':
-			                sb.append((char)Integer.parseInt( str.substring(i+1,i+3), 16 ));
-				            i += 2;
-				            break;
-				        default:
-				            sb.append( c );
-				            break;
-				    }
-				}
-				return new String( sb.toString().getBytes());
-			}
-			catch( Exception e )
-			{
-				sendError( HTTP_BADREQUEST, "BAD REQUEST: Bad percent-encoding." );
-				return null;
-			}
-		}
-
-		/**
-		 * Decodes parameters in percent-encoded URI-format
-		 * ( e.g. "name=Jack%20Daniels&pass=Single%20Malt" ) and
-		 * adds them to given Properties.
-		 */
-		private void decodeParms( String parms, Properties p )
-			throws InterruptedException
-		{
-			if ( parms == null )
-				return;
-
-			StringTokenizer st = new StringTokenizer( parms, "&" );
-			while ( st.hasMoreTokens())
-			{
-				String e = st.nextToken();
-				int sep = e.indexOf( '=' );
-				if ( sep >= 0 )
-					p.put( decodePercent( e.substring( 0, sep )).trim(),
-						   decodePercent( e.substring( sep+1 )));
-			}
-		}
-
-		/**
-		 * Returns an error message as a HTTP response and
-		 * throws InterruptedException to stop furhter request processing.
-		 */
-		private void sendError( String status, String msg ) throws InterruptedException
-		{
-			sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes()));
-			throw new InterruptedException();
-		}
-
-		/**
-		 * Sends given response to the socket.
-		 */
-		private void sendResponse( String status, String mime, Properties header, InputStream data )
-		{
-			try
-			{
-				if ( status == null )
-					throw new Error( "sendResponse(): Status can't be null." );
-
-				OutputStream out = mySocket.getOutputStream();
-				PrintWriter pw = new PrintWriter( out );
-				pw.print("HTTP/1.0 " + status + " \r\n");
-
-				if ( mime != null )
-					pw.print("Content-Type: " + mime + "\r\n");
-
-				if ( header == null || header.getProperty( "Date" ) == null )
-					pw.print( "Date: " + gmtFrmt.format( new Date()) + "\r\n");
-
-				if ( header != null )
-				{
-					Enumeration e = header.keys();
-					while ( e.hasMoreElements())
-					{
-						String key = (String)e.nextElement();
-						String value = header.getProperty( key );
-						pw.print( key + ": " + value + "\r\n");
-					}
-				}
-
-				pw.print("\r\n");
-				pw.flush();
-
-				if ( data != null )
-				{
-					byte[] buff = new byte[2048];
-					while (true)
-					{
-						int read = data.read( buff, 0, 2048 );
-						if (read <= 0)
-							break;
-						out.write( buff, 0, read );
-					}
-				}
-				out.flush();
-				out.close();
-				if ( data != null )
-					data.close();
-			}
-			catch( IOException ioe )
-			{
-				// Couldn't write? No can do.
-				try { mySocket.close(); } catch( Throwable t ) {}
-			}
-		}
-
-		private Socket mySocket;
-		private BufferedReader myIn;
-	};
-
-	/**
-	 * URL-encodes everything between "/"-characters.
-	 * Encodes spaces as '%20' instead of '+'.
-	 */
-	private String encodeUri( String uri )
-	{
-		String newUri = "";
-		StringTokenizer st = new StringTokenizer( uri, "/ ", true );
-		while ( st.hasMoreTokens())
-		{
-			String tok = st.nextToken();
-			if ( tok.equals( "/" ))
-				newUri += "/";
-			else if ( tok.equals( " " ))
-				newUri += "%20";
-			else
-				newUri += URLEncoder.encode( tok );
-		}
-		return newUri;
-	}
-
-	private int myTcpPort;
-	private File myFileDir;
-
-	// ==================================================
-	// File server code
-	// ==================================================
-
-	/**
-	 * Serves file from homeDir and its' subdirectories (only).
-	 * Uses only URI, ignores all headers and HTTP parameters.
-	 */
-	public Response serveFile( String uri, Properties header, File homeDir,
-							   boolean allowDirectoryListing )
-	{
-		// Make sure we won't die of an exception later
-		if ( !homeDir.isDirectory())
-			return new Response( HTTP_INTERNALERROR, MIME_PLAINTEXT,
-								 "INTERNAL ERRROR: serveFile(): given homeDir is not a directory." );
-
-		// Remove URL arguments
-		uri = uri.trim().replace( File.separatorChar, '/' );
-		if ( uri.indexOf( '?' ) >= 0 )
-			uri = uri.substring(0, uri.indexOf( '?' ));
-
-		// Prohibit getting out of current directory
-		if ( uri.startsWith( ".." ) || uri.endsWith( ".." ) || uri.indexOf( "../" ) >= 0 )
-			return new Response( HTTP_FORBIDDEN, MIME_PLAINTEXT,
-								 "FORBIDDEN: Won't serve ../ for security reasons." );
-
-		File f = new File( homeDir, uri );
-		if ( !f.exists())
-			return new Response( HTTP_NOTFOUND, MIME_PLAINTEXT,
-								 "Error 404, file not found." );
-
-		// List the directory, if necessary
-		if ( f.isDirectory())
-		{
-			// Browsers get confused without '/' after the
-			// directory, send a redirect.
-			if ( !uri.endsWith( "/" ))
-			{
-				uri += "/";
-				Response r = new Response( HTTP_REDIRECT, MIME_HTML,
-										   "<html><body>Redirected: <a href=\"" + uri + "\">" +
-										   uri + "</a></body></html>");
-				r.addHeader( "Location", uri );
-				return r;
-			}
-
-			// First try index.html and index.htm
-			if ( new File( f, "index.html" ).exists())
-				f = new File( homeDir, uri + "/index.html" );
-			else if ( new File( f, "index.htm" ).exists())
-				f = new File( homeDir, uri + "/index.htm" );
-
-			// No index file, list the directory
-			else if ( allowDirectoryListing )
-			{
-				String[] files = f.list();
-				String msg = "<html><body><h1>Directory " + uri + "</h1><br/>";
-
-				if ( uri.length() > 1 )
-				{
-					String u = uri.substring( 0, uri.length()-1 );
-					int slash = u.lastIndexOf( '/' );
-					if ( slash >= 0 && slash  < u.length())
-						msg += "<b><a href=\"" + uri.substring(0, slash+1) + "\">..</a></b><br/>";
-				}
-
-				for ( int i=0; i<files.length; ++i )
-				{
-					File curFile = new File( f, files[i] );
-					boolean dir = curFile.isDirectory();
-					if ( dir )
-					{
-						msg += "<b>";
-						files[i] += "/";
-					}
-
-					msg += "<a href=\"" + encodeUri( uri + files[i] ) + "\">" +
-						   files[i] + "</a>";
-
-					// Show file size
-					if ( curFile.isFile())
-					{
-						long len = curFile.length();
-						msg += " &nbsp;<font size=2>(";
-						if ( len < 1024 )
-							msg += curFile.length() + " bytes";
-						else if ( len < 1024 * 1024 )
-							msg += curFile.length()/1024 + "." + (curFile.length()%1024/10%100) + " KB";
-						else
-							msg += curFile.length()/(1024*1024) + "." + curFile.length()%(1024*1024)/10%100 + " MB";
-
-						msg += ")</font>";
-					}
-					msg += "<br/>";
-					if ( dir ) msg += "</b>";
-				}
-				return new Response( HTTP_OK, MIME_HTML, msg );
-			}
-			else
-			{
-				return new Response( HTTP_FORBIDDEN, MIME_PLAINTEXT,
-								 "FORBIDDEN: No directory listing." );
-			}
-		}
-
-		// Get MIME type from file name extension, if possible
-		String mime = null;
-		int dot = uri.lastIndexOf( '.' );
-		if ( dot >= 0 )
-			mime = (String)theMimeTypes.get( uri.substring( dot + 1 ).toLowerCase());
-		if ( mime == null )
-			mime = MIME_DEFAULT_BINARY;
-
-		try
-		{
-			// Support (simple) skipping:
-			long startFrom = 0;
-			String range = header.getProperty( "Range" );
-			if ( range != null )
-			{
-				if ( range.startsWith( "bytes=" ))
-				{
-					range = range.substring( "bytes=".length());
-					int minus = range.indexOf( '-' );
-					if ( minus > 0 )
-						range = range.substring( 0, minus );
-					try	{
-						startFrom = Long.parseLong( range );
-					}
-					catch ( NumberFormatException nfe ) {}
-				}
-			}
-
-			FileInputStream fis = new FileInputStream( f );
-			fis.skip( startFrom );
-			Response r = new Response( HTTP_OK, mime, fis );
-			r.addHeader( "Content-length", "" + (f.length() - startFrom));
-			r.addHeader( "Content-range", "" + startFrom + "-" +
-						(f.length()-1) + "/" + f.length());
-			return r;
-		}
-		catch( IOException ioe )
-		{
-			return new Response( HTTP_FORBIDDEN, MIME_PLAINTEXT, "FORBIDDEN: Reading file failed." );
-		}
-	}
-
+    private int httpPort;
     
+    private Hashtable sitePages = new Hashtable();
+
     // ==================================================
-    // Overview server code
+    // API parts
+    // ==================================================
+
+    private static void debug(String msg)
+    {
+        if (LOG == null)
+            System.out.println(msg);
+        else
+            LOG.debug(msg);
+        
+    }
+    
+    /**
+     * Override this to customize the server.
+     * <p>
+     * 
+     * (By default, this delegates to serveFile() and allows directory listing.)
+     * 
+     * @parm uri Percent-decoded URI without parameters, for example
+     *       "/index.cgi"
+     * @parm method "GET", "POST" etc.
+     * @parm parms Parsed, percent decoded parameters from URI and, in case of
+     *       POST, data.
+     * @parm header Header entries, percent decoded
+     * @return HTTP response, see class Response for details
+     */
+    public Response serve(String uri, String method, Properties header, Properties parms)
+    {
+        debug(method + " '" + uri + "' ");
+
+        Enumeration e = header.propertyNames();
+        while (e.hasMoreElements())
+        {
+            String value = (String) e.nextElement();
+            debug("  HDR: '" + value + "' = '" + header.getProperty(value) + "'");
+        }
+        e = parms.propertyNames();
+        while (e.hasMoreElements())
+        {
+            String value = (String) e.nextElement();
+            debug("  PRM: '" + value + "' = '" + parms.getProperty(value) + "'");
+        }
+
+        if (uri.indexOf("admin") > -1)
+            return dispatchAdmin(uri, header);
+        else
+            return serveFile(uri, header, wwwFileDir, true);
+    }
+
+    /**
+     * HTTP response. Return one of these from serve().
+     */
+    public class Response
+    {
+
+        /**
+         * Default constructor: response = HTTP_OK, data = mime = 'null'
+         */
+        public Response()
+        {
+            this.status = HTTP_OK;
+        }
+
+        /**
+         * Basic constructor.
+         */
+        public Response(String status, String mimeType, InputStream data)
+        {
+            this.status = status;
+            this.mimeType = mimeType;
+            this.data = data;
+        }
+
+        /**
+         * Convenience method that makes an InputStream out of given text.
+         */
+        public Response(String status, String mimeType, String txt)
+        {
+            this.status = status;
+            this.mimeType = mimeType;
+            this.data = new ByteArrayInputStream(txt.getBytes());
+        }
+
+        /**
+         * Adds given line to the header.
+         */
+        public void addHeader(String name, String value)
+        {
+            header.put(name, value);
+        }
+
+        /**
+         * HTTP status code after processing, e.g. "200 OK", HTTP_OK
+         */
+        public String status;
+
+        /**
+         * MIME type of content, e.g. "text/html"
+         */
+        public String mimeType;
+
+        /**
+         * Data of the response, may be null.
+         */
+        public InputStream data;
+
+        /**
+         * Headers for the HTTP response. Use addHeader() to add lines.
+         */
+        public Properties header = new Properties();
+    }
+
+    /**
+     * Some HTTP response status codes
+     */
+    public static final String HTTP_OK = "200 OK", HTTP_REDIRECT = "301 Moved Permanently",
+            HTTP_FORBIDDEN = "403 Forbidden", HTTP_NOTFOUND = "404 Not Found", HTTP_BADREQUEST = "400 Bad Request",
+            HTTP_INTERNALERROR = "500 Internal Server Error", HTTP_NOTIMPLEMENTED = "501 Not Implemented";
+
+    /**
+     * Common mime types for dynamic content
+     */
+    public static final String MIME_PLAINTEXT = "text/plain", MIME_HTML = "text/html",
+            MIME_DEFAULT_BINARY = "application/octet-stream";
+
+    // ==================================================
+    // Socket & server code
     // ==================================================
 
     /**
-     * Serves file from homeDir and its' subdirectories (only).
-     * Uses only URI, ignores all headers and HTTP parameters.
+     * Starts a HTTP server to given port.
+     * <p>
+     * Throws an IOException if the socket is already in use
      */
-    public Response serveOverview( String uri, Properties header )
+    public NanoHTTPD(String wwwDir, int port) throws IOException
     {
-        StringBuffer sb = new StringBuffer();
+        if (wwwDir != null)
+            wwwFileDir = new File(wwwDir);
+        else
+            wwwFileDir = new File(defaultWWWDir);
+
+        if (port > 0)
+            httpPort = port;
+        else
+            httpPort = defaultHttpPort;
+
+        final ServerSocket ss = new ServerSocket(httpPort);
+        Thread t = new Thread(new Runnable()
+        {
+
+            public void run()
+            {
+                try
+                {
+                    while (true)
+                        new HTTPSession(ss.accept());
+                } catch (IOException ioe)
+                {
+                }
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+    }
+
+    /**
+     * Starts as a standalone file server and waits for Enter.
+     */
+    public static void main(String[] args)
+    {
+        System.out.println("NanoHTTPD 1.02 (C) 2001,2005 Jarno Elonen\n"
+                + "(Command line options: [port] [--licence])\n");
+
+        // Show licence if requested
+        int lopt = -1;
+        for (int i = 0; i < args.length; ++i)
+            if (args[i].toLowerCase().endsWith("licence"))
+            {
+                lopt = i;
+                System.out.println(LICENCE + "\n");
+            }
+
+        // Change port if requested
+        // int port = 80;
+        // if ( args.length > 0 && lopt != 0 )
+        // port = Integer.parseInt( args[0] );
+
+        if (args.length > 1 && args[1].toLowerCase().endsWith("licence"))
+            System.out.println(LICENCE + "\n");
+
+        NanoHTTPD nh = null;
+        try
+        {
+            nh = new NanoHTTPD(defaultWWWDir, defaultHttpPort);
+        } catch (IOException ioe)
+        {
+            System.err.println("Couldn't start server:\n" + ioe);
+            System.exit(-1);
+        }
+
+        // System.out.println( "Now serving files in port " + PORT + " from \""
+        // +
+        // nh.myFileDir.getAbsolutePath() + "\"" );
+        System.out.println("Hit Enter to stop.\n");
+
+        try
+        {
+            System.in.read();
+        } catch (Throwable t)
+        {
+        }
+        ;
+    }
+
+    /**
+     * Handles one session, i.e. parses the HTTP request and returns the
+     * response.
+     */
+    private class HTTPSession implements Runnable
+    {
+
+        public HTTPSession(Socket s)
+        {
+            mySocket = s;
+            Thread t = new Thread(this);
+            t.setDaemon(true);
+            t.start();
+        }
+
+        public void run()
+        {
+            try
+            {
+                InputStream is = mySocket.getInputStream();
+                if (is == null)
+                    return;
+                BufferedReader in = new BufferedReader(new InputStreamReader(is));
+
+                // Read the request line
+                StringTokenizer st;
+                try
+                {
+                    st = new StringTokenizer(in.readLine());
+                } catch (NullPointerException ne)
+                {
+                    return;
+                }
+
+                if (!st.hasMoreTokens())
+                    sendError(HTTP_BADREQUEST, "BAD REQUEST: Syntax error. Usage: GET /example/file.html");
+
+                String method = st.nextToken();
+
+                if (!st.hasMoreTokens())
+                    sendError(HTTP_BADREQUEST, "BAD REQUEST: Missing URI. Usage: GET /example/file.html");
+
+                String uri = decodePercent(st.nextToken());
+
+                // Decode parameters from the URI
+                Properties parms = new Properties();
+                int qmi = uri.indexOf('?');
+                if (qmi >= 0)
+                {
+                    decodeParms(uri.substring(qmi + 1), parms);
+                    uri = decodePercent(uri.substring(0, qmi));
+                }
+
+                // If there's another token, it's protocol version,
+                // followed by HTTP headers. Ignore version but parse headers.
+                Properties header = new Properties();
+                if (st.hasMoreTokens())
+                {
+                    String line = in.readLine();
+                    while (line.trim().length() > 0)
+                    {
+                        int p = line.indexOf(':');
+                        header.put(line.substring(0, p).trim(), line.substring(p + 1).trim());
+                        line = in.readLine();
+                    }
+                }
+
+                // If the method is POST, there may be parameters
+                // in data section, too, read another line:
+                if (method.equalsIgnoreCase("POST"))
+                    decodeParms(in.readLine(), parms);
+
+                // Ok, now do the serve()
+                Response r = serve(uri, method, header, parms);
+                if (r == null)
+                    sendError(HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Serve() returned a null response.");
+                else
+                    sendResponse(r.status, r.mimeType, r.header, r.data);
+
+                in.close();
+            } catch (IOException ioe)
+            {
+                try
+                {
+                    sendError(HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
+                } catch (Throwable t)
+                {
+                }
+            } catch (InterruptedException ie)
+            {
+                // Thrown by sendError, ignore and exit the thread.
+            }
+        }
+
+        /**
+         * Decodes the percent encoding scheme. <br/> For example:
+         * "an+example%20string" -> "an example string"
+         */
+        private String decodePercent(String str) throws InterruptedException
+        {
+            try
+            {
+                StringBuffer sb = new StringBuffer();
+                for (int i = 0; i < str.length(); i++)
+                {
+                    char c = str.charAt(i);
+                    switch (c) {
+                    case '+':
+                        sb.append(' ');
+                        break;
+                    case '%':
+                        sb.append((char) Integer.parseInt(str.substring(i + 1, i + 3), 16));
+                        i += 2;
+                        break;
+                    default:
+                        sb.append(c);
+                        break;
+                    }
+                }
+                return new String(sb.toString().getBytes());
+            } catch (Exception e)
+            {
+                sendError(HTTP_BADREQUEST, "BAD REQUEST: Bad percent-encoding.");
+                return null;
+            }
+        }
+
+        /**
+         * Decodes parameters in percent-encoded URI-format ( e.g.
+         * "name=Jack%20Daniels&pass=Single%20Malt" ) and adds them to given
+         * Properties.
+         */
+        private void decodeParms(String parms, Properties p) throws InterruptedException
+        {
+            if (parms == null)
+                return;
+
+            StringTokenizer st = new StringTokenizer(parms, "&");
+            while (st.hasMoreTokens())
+            {
+                String e = st.nextToken();
+                int sep = e.indexOf('=');
+                if (sep >= 0)
+                    p.put(decodePercent(e.substring(0, sep)).trim(), decodePercent(e.substring(sep + 1)));
+            }
+        }
+
+        /**
+         * Returns an error message as a HTTP response and throws
+         * InterruptedException to stop furhter request processing.
+         */
+        private void sendError(String status, String msg) throws InterruptedException
+        {
+            sendResponse(status, MIME_PLAINTEXT, null, new ByteArrayInputStream(msg.getBytes()));
+            throw new InterruptedException();
+        }
+
+        /**
+         * Sends given response to the socket.
+         */
+        private void sendResponse(String status, String mime, Properties header, InputStream data)
+        {
+            try
+            {
+                if (status == null)
+                    throw new Error("sendResponse(): Status can't be null.");
+
+                OutputStream out = mySocket.getOutputStream();
+                PrintWriter pw = new PrintWriter(out);
+                pw.print("HTTP/1.0 " + status + " \r\n");
+
+                if (mime != null)
+                    pw.print("Content-Type: " + mime + "\r\n");
+
+                if (header == null || header.getProperty("Date") == null)
+                    pw.print("Date: " + gmtFrmt.format(new Date()) + "\r\n");
+
+                if (header != null)
+                {
+                    Enumeration e = header.keys();
+                    while (e.hasMoreElements())
+                    {
+                        String key = (String) e.nextElement();
+                        String value = header.getProperty(key);
+                        pw.print(key + ": " + value + "\r\n");
+                    }
+                }
+
+                pw.print("\r\n");
+                pw.flush();
+
+                if (data != null)
+                {
+                    byte[] buff = new byte[2048];
+                    while (true)
+                    {
+                        int read = data.read(buff, 0, 2048);
+                        if (read <= 0)
+                            break;
+                        out.write(buff, 0, read);
+                    }
+                }
+                out.flush();
+                out.close();
+                if (data != null)
+                    data.close();
+            } catch (IOException ioe)
+            {
+                // Couldn't write? No can do.
+                try
+                {
+                    mySocket.close();
+                } catch (Throwable t)
+                {
+                }
+            }
+        }
+
+        private Socket mySocket;
+
+        private BufferedReader myIn;
+    };
+
+    /**
+     * URL-encodes everything between "/"-characters. Encodes spaces as '%20'
+     * instead of '+'.
+     */
+    private String encodeUri(String uri)
+    {
+        String newUri = "";
+        StringTokenizer st = new StringTokenizer(uri, "/ ", true);
+        while (st.hasMoreTokens())
+        {
+            String tok = st.nextToken();
+            if (tok.equals("/"))
+                newUri += "/";
+            else if (tok.equals(" "))
+                newUri += "%20";
+            else
+                newUri += URLEncoder.encode(tok);
+        }
+        return newUri;
+    }
+
+    // private int myTcpPort;
+    // private File myFileDir;
+
+    // ==================================================
+    // File server code
+    // ==================================================
+
+    /**
+     * Serves file from homeDir and its' subdirectories (only). Uses only URI,
+     * ignores all headers and HTTP parameters.
+     */
+    public Response serveFile(String uri, Properties header, File homeDir, boolean allowDirectoryListing)
+    {
+        // Make sure we won't die of an exception later
+        if (!homeDir.isDirectory())
+            return new Response(HTTP_INTERNALERROR, MIME_PLAINTEXT,
+                    "INTERNAL ERRROR: serveFile(): given homeDir is not a directory.");
+
+        // Remove URL arguments
+        uri = uri.trim().replace(File.separatorChar, '/');
+        if (uri.indexOf('?') >= 0)
+            uri = uri.substring(0, uri.indexOf('?'));
+
+        // Prohibit getting out of current directory
+        if (uri.startsWith("..") || uri.endsWith("..") || uri.indexOf("../") >= 0)
+            return new Response(HTTP_FORBIDDEN, MIME_PLAINTEXT, "FORBIDDEN: Won't serve ../ for security reasons.");
+
+        File f = new File(homeDir, uri);
+        if (!f.exists())
+            return new Response(HTTP_NOTFOUND, MIME_PLAINTEXT, "Error 404, file not found.");
+
+        // List the directory, if necessary
+        if (f.isDirectory())
+        {
+            // Browsers get confused without '/' after the
+            // directory, send a redirect.
+            if (!uri.endsWith("/"))
+            {
+                uri += "/";
+                Response r = new Response(HTTP_REDIRECT, MIME_HTML, "<html><body>Redirected: <a href=\"" + uri + "\">"
+                        + uri + "</a></body></html>");
+                r.addHeader("Location", uri);
+                return r;
+            }
+
+            // First try index.html and index.htm
+            if (new File(f, "index.html").exists())
+                f = new File(homeDir, uri + "/index.html");
+            else if (new File(f, "index.htm").exists())
+                f = new File(homeDir, uri + "/index.htm");
+
+            // No index file, list the directory
+            else if (allowDirectoryListing)
+            {
+                String[] files = f.list();
+                String msg = "<html><body><h1>Directory " + uri + "</h1><br/>";
+
+                if (uri.length() > 1)
+                {
+                    String u = uri.substring(0, uri.length() - 1);
+                    int slash = u.lastIndexOf('/');
+                    if (slash >= 0 && slash < u.length())
+                        msg += "<b><a href=\"" + uri.substring(0, slash + 1) + "\">..</a></b><br/>";
+                }
+
+                for (int i = 0; i < files.length; ++i)
+                {
+                    File curFile = new File(f, files[i]);
+                    boolean dir = curFile.isDirectory();
+                    if (dir)
+                    {
+                        msg += "<b>";
+                        files[i] += "/";
+                    }
+
+                    msg += "<a href=\"" + encodeUri(uri + files[i]) + "\">" + files[i] + "</a>";
+
+                    // Show file size
+                    if (curFile.isFile())
+                    {
+                        long len = curFile.length();
+                        msg += " &nbsp;<font size=2>(";
+                        if (len < 1024)
+                            msg += curFile.length() + " bytes";
+                        else if (len < 1024 * 1024)
+                            msg += curFile.length() / 1024 + "." + (curFile.length() % 1024 / 10 % 100) + " KB";
+                        else
+                            msg += curFile.length() / (1024 * 1024) + "." + curFile.length() % (1024 * 1024) / 10 % 100
+                                    + " MB";
+
+                        msg += ")</font>";
+                    }
+                    msg += "<br/>";
+                    if (dir)
+                        msg += "</b>";
+                }
+                return new Response(HTTP_OK, MIME_HTML, msg);
+            } else
+            {
+                return new Response(HTTP_FORBIDDEN, MIME_PLAINTEXT, "FORBIDDEN: No directory listing.");
+            }
+        }
+
+        // Get MIME type from file name extension, if possible
+        String mime = null;
+        int dot = uri.lastIndexOf('.');
+        if (dot >= 0)
+            mime = (String) theMimeTypes.get(uri.substring(dot + 1).toLowerCase());
+        if (mime == null)
+            mime = MIME_DEFAULT_BINARY;
+
+        try
+        {
+            // Support (simple) skipping:
+            long startFrom = 0;
+            String range = header.getProperty("Range");
+            if (range != null)
+            {
+                if (range.startsWith("bytes="))
+                {
+                    range = range.substring("bytes=".length());
+                    int minus = range.indexOf('-');
+                    if (minus > 0)
+                        range = range.substring(0, minus);
+                    try
+                    {
+                        startFrom = Long.parseLong(range);
+                    } catch (NumberFormatException nfe)
+                    {
+                    }
+                }
+            }
+
+            FileInputStream fis = new FileInputStream(f);
+            fis.skip(startFrom);
+            Response r = new Response(HTTP_OK, mime, fis);
+            r.addHeader("Content-length", "" + (f.length() - startFrom));
+            r.addHeader("Content-range", "" + startFrom + "-" + (f.length() - 1) + "/" + f.length());
+            return r;
+        } catch (IOException ioe)
+        {
+            return new Response(HTTP_FORBIDDEN, MIME_PLAINTEXT, "FORBIDDEN: Reading file failed.");
+        }
+    }
+
+    // ==================================================
+    // Admin server code
+    // ==================================================
+
+    private Response dispatchAdmin(String uri, Properties header)
+    {
+        String content = "&nbsp;";
+               
+        StringTokenizer st = new StringTokenizer(uri,"/");
+        // admin token 
+        String token = st.nextToken(); 
+        if (st.hasMoreTokens())
+        {
+            token = st.nextToken();
+            // remove "/admin" 
+            String link = uri.substring(7);
+            
+            if (sitePages.containsKey(token))
+            {
+                PageHandler pageHandler = (PageHandler)sitePages.get(token);
+                
+                content = pageHandler.getContent(link);
+            }    
+        }
         
-        sb.append("<html>" +
-                "<head>" +
-                    "<meta name=\"GENERATOR\" content=\"Jadabs automatical generated\">" +
-                    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1252\">" +
-                    "<title>Jadabs</title>" +
-                "</head>");
+        return serveAdmin(uri, header, content);
         
-//        sb.append("<body bgcolor=\"#CCCCFF\">" +
-//                "<h1>Jadabs -- Peer</h1>" +
-//                "<p>&nbsp;</p>" +
-//                "<h2>Installed Plugins</h2>" +
-//                    "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: collapse\" bordercolor=\"#111111\" width=\"46%\" id=\"AutoNumber1\">" +
-//                    "<tr>" +
-//                    "<td width=\"44%\">Plugin</td>" +
-//                    "<td width=\"24%\">Status</td>" +
-//                    "<td width=\"39%\">Edit</td>" +
-//                    "</tr>
-//  <tr>
-//    <td width="44%">servicemanager</td>
-//    <td width="24%">active</td>
-//    <td width="39%">(stop,start)</td>
-//  </tr>
-//</table>
-//<h2>Installed Bundles</h2>
-//<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="46%" id="AutoNumber1">
-//  <tr>
-//    <td width="44%">Bundle</td>
-//    <td width="24%">Status</td>
-//    <td width="39%">Edit</td>
-//  </tr>
-//  <tr>
-//    <td width="44%">osgi-service</td>
-//    <td width="24%">active</td>
-//    <td width="39%">(stop,start)</td>
-//  </tr>
-//</table>
-//
-//</body>
-//
-//</html>
-//");
-        
-        return new Response( HTTP_OK, MIME_HTML, sb.toString() );
     }
     
-	/**
-	 * Hashtable mapping (String)FILENAME_EXTENSION -> (String)MIME_TYPE
-	 */
-	private static Hashtable theMimeTypes = new Hashtable();
-	static
-	{
-		StringTokenizer st = new StringTokenizer(
-			"htm		text/html "+
-			"html		text/html "+
-			"txt		text/plain "+
-			"asc		text/plain "+
-			"gif		image/gif "+
-			"jpg		image/jpeg "+
-			"jpeg		image/jpeg "+
-			"png		image/png "+
-			"mp3		audio/mpeg "+
-			"m3u		audio/mpeg-url " +
-			"pdf		application/pdf "+
-			"doc		application/msword "+
-			"ogg		application/x-ogg "+
-			"zip		application/octet-stream "+
-			"exe		application/octet-stream "+
-			"class		application/octet-stream " );
-		while ( st.hasMoreTokens())
-			theMimeTypes.put( st.nextToken(), st.nextToken());
-	}
+    private static void appendLine(StringBuffer sb, String line, int level) {
+        String leveller = new String();
+        for (int i = 0; i < level; i++) {
+            leveller = leveller + "\t";         
+        }
+        
+        sb.append(leveller + line+"\n");
+    }
+    
+    /**
+     * Serves file from homeDir and its' subdirectories (only). Uses only URI,
+     * ignores all headers and HTTP parameters.
+     */
+    public Response serveAdmin(String uri, Properties header, String content)
+    {
+        StringBuffer sb = new StringBuffer();
 
-	/**
-	 * GMT date formatter
-	 */
+        appendLine(sb, "<html>\n\n" + "<head>\n" + "<meta name=\"GENERATOR\" content=\"Jadabs automatical generated\">\n"
+                + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1252\">\n"
+                + "<title>Jadabs</title>\n" + "</head>",0);
+
+        appendLine(sb, "<body bgcolor=\"#CCCCFF\">\n",0);
+
+        appendLine(sb, "<h1 align=\"center\">Jadabs -- "+ BundleLoaderActivator.peername +"</h1>",1);
+        appendLine(sb, "<div align=\"center\">",1);
+        appendLine(sb, "<center>",1);
+        appendLine(sb, "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: collapse\" bordercolor=\"#111111\" width=\"75%\" id=\"AutoNumber1\" height=\"589\">",1);
+        appendLine(sb, "<tr>",2);
+        appendLine(sb, "<td width=\"100%\" height=\"589\" align=\"center\" valign=\"top\" bordercolor=\"#000000\" bgcolor=\"#C0C0C0\" bordercolordark=\"#000000\">",2);
+        appendLine(sb, "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: collapse\" bordercolor=\"#FFFFFF\" width=\"100%\" id=\"AutoNumber2\" height=\"47\">",2);
+        appendLine(sb, "<tr>",3);
+        
+        // generate index heading
+        for(Enumeration en = sitePages.keys(); en.hasMoreElements();)
+        {
+            String page = (String)en.nextElement();
+            sb.append(
+            "<td width=20% style=\"border-style: solid; border-width: 1\" bgcolor=#000000 height=2>"+
+            "<p align=center><font color=#FFFFFF><a href=\"/admin/"+page+"\" style=\"text-decoration: none\"><font color=#FFFFFF>"+page + "</font></a></font></td>");
+        }
+//                  "<td width=20% style=\"border-style: solid; border-width: 1\" bgcolor=#000000 height=2>"+
+//                  "<p align=center><font color=#FFFFFF>Bundles</font></td>"+
+//                  "<td width=20% style=\"border-style: solid; border-width: 1\" bgcolor=#000000 height=2>"+
+//                  "<p align=center><font color=#FFFFFF>Plugins</font></td>"+
+//                  "<td width=20% style=\"border-style: solid; border-width: 1\" bgcolor=#000000 height=2>&nbsp;</td>"+
+//                  "<td width=20% style=\"border-style: solid; border-width: 1\" bgcolor=#000000 height=2>&nbsp;</td>"+
+//                  "<td width=21% style=\"border-style: solid; border-width: 1\" bgcolor=#000000 height=2>"+
+//                  "<p align=center>&nbsp;</td>"
+                  
+                  
+                  
+         sb.append(
+                "</tr>"+
+                "<tr>" +
+                  "<td width=389% style=\"border-style: solid; border-width: 1\" bgcolor=#FFFFFF height=17 colspan=5>"+content+"</td>"+
+              "</table>"+
+              "</td>"+
+            "</tr>"+
+          "</table>"+
+          "</center>"+
+        "</div>");
+        
+//        sb
+//                .append("<body bgcolor=\"#CCCCFF\">\n\n"
+//                        + "<h1>Jadabs -- " + BundleLoaderActivator.peername + "</h1>\n"
+//                        + "<p>&nbsp;</p>"
+//                       );
+//        
+//        sb.append(
+//                        "<h2>Installed Bundles</h2>\n"
+//                        +
+//
+//                        "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: collapse\" bordercolor=\"#111111\" width=\"46%\" id=\"AutoNumber1\">\n\n"
+//                        + "<tr>"  + 
+//                        "<td width=\"44%\" bgcolor=\"#808080\" align=\"left\"><font color=\"#FFFFFF\">Bundle</td>"+
+//                        "</tr>\n"
+//                        );
+//        // loop over installed bundles
+//        Iterator itbds = BundleLoaderActivator.bundleLoader.getInstalledBundles();
+//        for (;itbds.hasNext();)
+//        {
+//            String bdluuid = (String)itbds.next();
+//            
+//            sb.append(
+//                    "<tr>" + 
+//                    "<td>"+ bdluuid +"</td>" + 
+//                    "</tr>\n"
+//                    );
+//        }                        
+//        sb.append("</table>\n\n");
+//        
+//         //loop over the urls PageHandlers
+//        sb.append(generatePageHandlerContent("/overview"));
+
+        
+        // close page
+        sb.append("</body>\n" + "</html>\n");
+
+        return new Response(HTTP_OK, MIME_HTML, sb.toString());
+    }
+    
+    private String generatePageHandlerContent(String url)
+    {
+        StringBuffer sb = new StringBuffer();
+        if (sitePages.contains(url));
+        {
+            LinkedList pageHandlers = (LinkedList)sitePages.get(url);
+            Iterator pageHandlersIt = pageHandlers.iterator();
+            
+            for(;pageHandlersIt.hasNext();)
+            {
+                PageHandler pageHandler = (PageHandler)pageHandlersIt.next();
+                sb.append(pageHandler.getContent(url));
+            }
+        }
+        
+        return sb.toString();
+    }
+    
+    //---------------------------------------------------
+    // Implements HttpSite Interface
+    //---------------------------------------------------
+    
+    public void registerPageHandler(String url, PageHandler pageHandler)
+    {
+        sitePages.put(url, pageHandler);
+    }
+    
+    public void unregisterPageHandler(String url, PageHandler pageHandler)
+    {
+        sitePages.remove(url);
+
+    }
+    
+    /**
+     * Hashtable mapping (String)FILENAME_EXTENSION -> (String)MIME_TYPE
+     */
+    private static Hashtable theMimeTypes = new Hashtable();
+    static
+    {
+        StringTokenizer st = new StringTokenizer("htm		text/html " + "html		text/html " + "txt		text/plain "
+                + "asc		text/plain " + "gif		image/gif " + "jpg		image/jpeg " + "jpeg		image/jpeg " + "png		image/png "
+                + "mp3		audio/mpeg " + "m3u		audio/mpeg-url " + "pdf		application/pdf " + "doc		application/msword "
+                + "ogg		application/x-ogg " + "zip		application/octet-stream " + "exe		application/octet-stream "
+                + "class		application/octet-stream ");
+        while (st.hasMoreTokens())
+            theMimeTypes.put(st.nextToken(), st.nextToken());
+    }
+
+    /**
+     * GMT date formatter
+     */
     private static java.text.SimpleDateFormat gmtFrmt;
-	static
-	{
-		gmtFrmt = new java.text.SimpleDateFormat( "E, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
-		gmtFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
-	}
+    static
+    {
+        gmtFrmt = new java.text.SimpleDateFormat("E, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
+        gmtFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
 
-	/**
-	 * The distribution licence
-	 */
-	private static final String LICENCE =
-		"Copyright (C) 2001,2005 by Jarno Elonen <elonen@iki.fi>\n"+
-		"\n"+
-		"Redistribution and use in source and binary forms, with or without\n"+
-		"modification, are permitted provided that the following conditions\n"+
-		"are met:\n"+
-		"\n"+
-		"Redistributions of source code must retain the above copyright notice,\n"+
-		"this list of conditions and the following disclaimer. Redistributions in\n"+
-		"binary form must reproduce the above copyright notice, this list of\n"+
-		"conditions and the following disclaimer in the documentation and/or other\n"+
-		"materials provided with the distribution. The name of the author may not\n"+
-		"be used to endorse or promote products derived from this software without\n"+
-		"specific prior written permission. \n"+
-		" \n"+
-		"THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR\n"+
-		"IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES\n"+
-		"OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.\n"+
-		"IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,\n"+
-		"INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT\n"+
-		"NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n"+
-		"DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n"+
-		"THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n"+
-		"(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n"+
-		"OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.";
+    /**
+     * The distribution licence
+     */
+    private static final String LICENCE = "Copyright (C) 2001,2005 by Jarno Elonen <elonen@iki.fi>\n" + "\n"
+            + "Redistribution and use in source and binary forms, with or without\n"
+            + "modification, are permitted provided that the following conditions\n" + "are met:\n" + "\n"
+            + "Redistributions of source code must retain the above copyright notice,\n"
+            + "this list of conditions and the following disclaimer. Redistributions in\n"
+            + "binary form must reproduce the above copyright notice, this list of\n"
+            + "conditions and the following disclaimer in the documentation and/or other\n"
+            + "materials provided with the distribution. The name of the author may not\n"
+            + "be used to endorse or promote products derived from this software without\n"
+            + "specific prior written permission. \n" + " \n"
+            + "THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR\n"
+            + "IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES\n"
+            + "OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.\n"
+            + "IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,\n"
+            + "INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT\n"
+            + "NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n"
+            + "DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n"
+            + "THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n"
+            + "(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n"
+            + "OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.";
 }
