@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Security</title>
+    <author email="caduffo@student.ethz.ch">Otmar Caduff</author>
+  </properties>
+
+	<body>
+	    
+  	<section name="Introduction">
+		<p>
+			Jadabs offers the possibility to download and install software
+			bundles at runtime. The security enhancements in Jadabs enable
+			software bundles to be signed on creation and checked when
+			downloaded by a peer. This documentation will give information
+			about the ideas behind the security enhancements and how to use
+			them.
+		</p>
+		
+	</section>
+		
+	</body>
+</document>

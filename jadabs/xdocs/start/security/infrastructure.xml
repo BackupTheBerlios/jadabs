@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Infrastructure</title>
+    <author email="caduffo@student.ethz.ch">Otmar Caduff</author>
+  </properties>
+
+	<body>
+	    
+  	<section name="Infrastructure">
+  		<subsection name="Prerequisites">
+  			<p>
+  				The security enhancements make use of the Java keystore. The certificate
+  				and private key used to sign the software bundles have to be available
+  				in a keystore. See the <a href="setup.html">Setup</a> and
+  				<a href="properties.html">Properties</a> sections for more information.
+  			</p>
+  		</subsection>
+		<subsection name="Deployment and signing of bundles">
+			<p>
+				Jadabs bundles are built using <a href="http://maven.apache.org">Maven
+				</a>. Maven is a project building and management tool with the
+				possibility to write proprietary plugins. The Jadabs project also
+				uses the <a href="http://mavenosgiplugin.berlios.de/">Maven-OSGi plugin
+				</a>. The main purpose of this plugin is to add OSGi specific
+				information to the manifest file of the created jar. It furthermore
+				generates a <code>.obr</code> file, a bundle descriptor with Jadabs
+				specific information.
+			</p>
+			<p>
+				If the security option is enabled, the created jar file is signed.
+				The signature along with the developer's certificate is added in the
+				<code>bundle-security</code> tag to the <code>.obr</code> file.
+			</p>
+		</subsection>
+		<subsection name="Download and installation of bundles">
+			<p>
+				On Jadabs peers, bundles are automatically downloaded and installed
+				when needed. If the security option is enabled, several actions are
+				performed:
+				<ul>
+					<li>The <code>.jar</code> and <code>.obr</code> files are downloaded</li>
+					<li>The certificate is extracted from the <code>.obr</code> file.
+						If the certificate was not verified yet, the peer tries to verify
+						the certificate with one of its locally available certificates.
+						If the verification succeeds, the certificate is added to the
+						set of local certificates.</li>
+					<li>Once the certificate is in the set of local certificates - which
+						are either verified or preinstalled - it is used to verify the
+						signature.</li>
+					<li>If the signature could be verified, the bundle can be installed.</li>
+				</ul>
+			</p>
+		</subsection>
+	  	<center>
+	    	<img src="../../images/security-overview.gif" alt="security overview"/>
+	    	<p>Fig. 1: Sample scenario</p>
+	    </center>
+	    <subsection name="The bundlesecurity bundle">
+	    	<p>
+	    		This bundle implements the <code>ch.ethz.jadabs.bundleLoader.api.BundleSecurity
+	    		</code>interface. If this bundle is not available, the bundleloader bundle might
+	    		still be able to verify signatures, but with the following constraints:
+	    		<ul>
+	    			<li>The signature has to be in DSA/SHA1</li>
+	    			<li>The <code>subjectPublicKey</code> information of the certificate of the
+	    				corresponding private key used to sign the bundle has to be passed as a
+	    				base64 encoded string with the 
+	    				<code>ch.ethz.jadabs.bundlesecurity.publickey</code> property.
+	    			</li>
+	    		</ul>
+	    		The security related code contained in the bundleloader bundle does not
+	    		make use of any <code>java.security</code> classes, thus it might be useful
+	    		for implementing a CLDC compatible version (an obstacle to solve might be
+	    		to provide an implementation of the <code>java.math.BigInteger</code> class).
+	    	</p>
+	    </subsection>
+	</section>
+		
+	</body>
+</document>

@@ -32,6 +32,14 @@
   			<item name="User Guide" 				href="/start/userguide.html"/>
   			<item name="Model" 						href="/start/model.html"/>
 	  		<item name="JXME"						href="/start/jxme.html"/>
+			<item name="Security"					href="/start/security/index.html" collapse="true">
+		        <item name="Motivation"				href="/start/security/motivation.html"/>
+		        <item name="Overview"				href="/start/security/overview.html"/>
+		        <item name="Infrastructure"			href="/start/security/infrastructure.html"/>
+		        <item name="Setup"					href="/start/security/setup.html"/>
+		        <item name="Properties"				href="/start/security/properties.html"/>
+		        <item name="Links"					href="/start/security/links.html"/>
+		    </item>
 	  		<item name="Download"					href="https://developer.berlios.de/project/showfiles.php?group_id=2534"/>
 <!--
   			<item name="AOP"						href="/start/aop.html"/>

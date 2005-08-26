@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Properties</title>
+    <author email="caduffo@student.ethz.ch">Otmar Caduff</author>
+  </properties>
+
+	<body>
+	    
+  	<section name="Properties for the Maven-OSGi Plugin">
+		<table>
+          <tr><th>property</th><th>default value</th><th>description</th></tr>
+          <tr>
+          	<td><code>osgi.maven.security.digestGenerationAlgorithm</code></td>
+          	<td><code>-</code></td>
+          	<td>
+          		If a digest generation algorithm is given, the digest of
+          		the bundle is computed and emitted to the <code>.obr</code> file.
+          		This property is optional, becuase most algorithms used to sign
+          		compute a digest by themselves.
+          	</td>
+          </tr>
+          <tr>
+          	<td><code>osgi.maven.security.provider</code></td>
+          	<td><code>-</code></td>
+          	<td>
+          		The class name of the security provider to be installed and
+          		added to the already available providers. It must be a subclass
+          		of <code>java.security.Provider</code>. If you want to use this
+          		option, make sure that the classes are available in the classpath.
+          		This property is also optional.
+          	</td>
+          </tr>
+          <tr>
+          	<td><code>osgi.maven.security.keystoreLocation</code></td>
+          	<td><code>{user.home}/.keystore</code></td>
+          	<td>
+          		The location of the file containing the keystore information.
+          		A keystore is basically a set of certificates and keys.
+          	</td>
+          </tr>
+          <tr>
+          	<td><code>osgi.maven.security.keystoreType</code></td>
+          	<td>
+          		The default keystore type as specified in the Java security
+          		properties file or <code>JKS</code> if no such property exists.
+          	</td>
+          	<td>
+          		The type of the keystore. Possible values would be
+          		<code>JKS</code> or <code>PKCS12</code>.
+          	</td>
+          </tr>
+          <tr>
+          	<td><code>osgi.maven.security.keystoreAlias</code></td>
+          	<td><code>maven-osgi</code></td>
+          	<td>
+          		The alias that identifies the certificate and private key
+          		used to sign the bundles.
+          	</td>
+          </tr>
+          <tr>
+          	<td><code>osgi.maven.security.keyPassword</code></td>
+          	<td><code>osgi-pwd</code></td>
+          	<td>
+          		The password needed to access the private key in the keystore.
+          		It's not recommended to add this property to a file you check
+          		in a repository. You can for example set this property when
+          		calling maven, e.g. <code>maven
+          		-Dosgi.maven.security.keyPassword={your password}</code>.
+          	</td>
+          </tr>
+          <tr>
+          	<td><code>osgi.maven.security.showPublicKey</code></td>
+          	<td><code>-</code></td>
+          	<td>
+          		If this property is set to true, a base64 encoded version of the
+          		public key is printed on the screen when a bundle is signed.
+          		Might be helpful for debugging.
+          	</td>
+          </tr>
+      </table>
+	</section>
+	<section name="Properties for the Jadabs peers">
+		<table>
+          <tr><th>property</th><th>default value</th><th>description</th></tr>
+          <tr>
+          	<td><code>ch.ethz.jadabs.bundlesecurity.jaruuid</code></td>
+          	<td><code>-</code></td>
+          	<td>
+          		The uuid of the bundle containing the security enhancement.
+          		It must implement the
+          		<code>ch.ethz.jadabs.bundleLoader.api.BundleSecurity</code>
+          		interface. If this property is not set, the bundle loader will try
+          		to verify the signature with a minimal implementation included in
+          		the bundle loader itself.
+          	</td>
+          </tr>
+          <tr>
+          	<td><code>ch.ethz.jadabs.bundlesecurity.ignoresecurity</code></td>
+          	<td><code>-</code></td>
+          	<td>
+          		If this property is set to true, downloaded bundles will be
+          		installed and run with no security checks. This property is
+          		optional.
+          	</td>
+          </tr>
+          <tr>
+          	<td><code>ch.ethz.jadabs.bundlesecurity.publickey</code></td>
+          	<td><code>-</code></td>
+          	<td>
+          		A base64 representation of the <code>subjectPublicKey</code>
+          		information of the certificate used to verify the signature.
+          		Only needed if the bundle loader has to check the signature by
+          		itself, i.e. when no bundlesecurity bundle was loaded and
+          		the security enhancements are enabled.
+          	</td>
+          </tr>
+		</table>
+	</section>
+	</body>
+</document>

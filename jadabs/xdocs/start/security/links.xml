@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Links</title>
+    <author email="caduffo@student.ethz.ch">Otmar Caduff</author>
+  </properties>
+
+	<body>
+	    
+  	<section name="Links">
+  	<subsection name="Articles">
+  		<ul>
+  			<li>Jim Birchfield: <a href="http://builder.com.com/5100-6370-1046088.html">Master the basics of Java Cryptography Extension (JCE)</a></li>
+			<li>Pankaj Kumar: <a href="http://www.informit.com/articles/article.asp?p=170967">Cryptography with Java</a></li>
+  			<li>Declan McCullagh: <a href="http://news.zdnet.com/2100-1009_22-5313655.html">Crypto researchers abuzz over flaws</a></li>
+  			<li>Gary McGraw, John Viega: <a href="http://www-128.ibm.com/developerworks/java/library/s-hashing/index.html">	Make your software behave: Cryptography essentials</a></li>
+  			<li>Michael Yuan: <a href="http://www-128.ibm.com/developerworks/java/library/j-midpds.html">Securing your J2ME/MIDP apps</a></li>
+  			<li>Michael Yuan, Ju Long: <a href="http://www-128.ibm.com/developerworks/wireless/library/wi-secj2me.html">Securing wireless J2ME</a></li>
+  			<li>Michael Juntao Yuan: <a href="http://www.javaworld.com/javaworld/jw-12-2002/jw-1220-wireless.html">Data security in mobile Java applications</a></li>
+  		</ul>
+  	</subsection>
+  	<subsection name="Other resources">
+  		<ul>
+			<li><a href="http://www.bouncycastle.org/">bouncycastle.org</a></li>
+			<li><a href="http://javaalmanac.com/egs/java.security/pkg.html">java.security Examples from The Java Developers Almanac 1.4</a></li>
+			<li><a href="http://www.ietf.org/rfc/rfc3280.txt">RFC 3280: Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a></li>
+			<li>The JavaTM Tutorial: <a href="http://java.sun.com/docs/books/tutorial/security1.2/sigcert/index.html">API and Tools Use for Secure Code and File Exchanges</a></li>
+			<li><a href="http://www.openssl.org/">OpenSSL: The Open Source toolkit for SSL/TLS</a></li>
+		</ul>
+	</subsection>
+	</section>
+		
+	</body>
+</document>

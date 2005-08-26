@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Motivation</title>
+    <author email="caduffo@student.ethz.ch">Otmar Caduff</author>
+  </properties>
+
+	<body>
+	    
+  	<section name="Motivation">
+		<p>
+			Jadabs offers the possibility to download and install software bundles at runtime.
+			In a distributed environment with such possibilities, it might be of importance to
+			give some guarantees:
+			<ul>
+				<li>Is the supplier of the software the one she or he claims to be?</li>
+				<li>Is the integrity of the dowonloaded bundle given?</li>
+				<li>Does the software actually do what it is supposed to do, i.e. is it not malitious?</li>
+			</ul>
+			The security enhancements of Jadabs can fulfill the first two requirements.	The
+			third requirement might be hard to satisfy. But with the provided enhancements,
+			it can be guaranteed that the software is provided by the given entity.
+		</p>
+		
+	</section>
+		
+	</body>
+</document>

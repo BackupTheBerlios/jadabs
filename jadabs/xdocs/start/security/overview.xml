@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Overview</title>
+    <author email="caduffo@student.ethz.ch">Otmar Caduff</author>
+  </properties>
+
+	<body>
+	    
+  	<section name="Overview">
+  		<p>
+  			This section gives a short overview of the methods used.
+  		</p>
+		<subsection name="Digital signatures">
+			<p>
+				With digital sigantures, it is possible to sign data similiar to signing
+				paper documents with your own signature. Thus, it can state as a proof that
+				the data was signed by the person holding the signature and it is not
+				possible for another person to forge the signature. Furthermore, once data
+				was signed, it can not be altered and its signature can not be used for
+				other data.
+			</p>
+			<p>
+				Data is digitally signed using asymetric encryption algorithms (e.g. DSA,
+				RSA): the signer encrypts the data (or its digest) to be signed using his private
+				key. The resulting encrypted data represents the digital signature and can be
+				verified with the corresponding public key.
+			</p>
+		</subsection>
+		<subsection name="Digital certificates">
+			<p>
+				Digital certificates ensure that a public key belongs to the entity it pretends
+				to be. Basically, a certificate represents a public key signed by a trusted authority,
+				i.e. the signature of a certificate can be verified with a public key that
+				can be considered as trusted. X.509 is aknown as the most important standard for
+				digital certificates.
+			</p>
+		</subsection>
+		<subsection name="Digests">
+			<p>
+				Encryption of data using established security algorithms is cpu-intensive, thus
+				it is important to keep the data to be encrypted as small as possible. For this
+				reason, a digest - similiar to a fingerprint of a person - is computed and instead
+				of the whole data, just the digest is encrypted. Digests are computed using
+				cryptographic hash functions that ensure certain security properties. For
+				example, computing different data that yields the digest of given data is
+				hardly possible with reasonable computing resources. SHA-1 is an example of a
+				cryptographic hash function.
+			</p>
+		</subsection>
+	</section>
+	</body>
+</document>

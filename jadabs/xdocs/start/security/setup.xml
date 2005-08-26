@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Security setup</title>
+    <author email="caduffo@student.ethz.ch">Otmar Caduff</author>
+  </properties>
+
+	<body>
+	    
+  	<section name="Security setup">
+	  	<p>
+	  		In this section, I will first explain how to create certificates and keypairs and
+	  		eventually how to use them with Jadabs.
+	  	</p>
+  	<subsection name="Creating certificates using OpenSSL">
+  		<p>
+  			Normally, two parties are involved in creating digital certificates: an entity
+  			associated with the public key (subject) and an issuer. The two parties
+  			generally represent organizations or persons. The party wanting a certificate
+  			sends a certificate request - basically an unsigned certificate already
+  			containing a public key - to the issuer, which in turn replies with the digitally
+  			signed certificate (presumed the issuer is sure of the authenticity of the
+  			request. In order to be able to sign a certificate request, the issuer must
+  			already possess an own signed certificate. If there is no other instance that
+  			signed the issuers certificatel, the issuer has done it by himself and is thus
+  			the certificate authority. Its certificate is seen as a root certificate, also
+  			known as CA (certificate authority) certificate. In this subsection I will show
+  			you how to create a CA certificate, a certificate request and finally how to sign
+  			the request using the parameters of the CA certificate using
+  			<a href="http://www.openssl.org/">OpenSSL</a> and the
+  			<a href="http://java.sun.com/j2se/1.5.0/docs/tooldocs/solaris/keytool.html">Java
+  			keytool</a> included in Sun's JRE.
+  		</p>
+  		<p>
+  			OpenSSL comes with most Linux distributions and a Windows version is also
+  			available. Here, I will use the windows version.
+  		</p>
+  		<p>
+  			As cryptography algorithm, we will use DSA. First, we have to create the
+  			parameters. It is assumed that the <code>Security</code> directory exists.
+<source><![CDATA[
+C:\OpenSSL\bin\openssl dsaparam -out c:\Security\dsaparam.pem 1024
+]]>
+</source>
+			After that, we can create the CA certificate with its private key. You will be
+			prompted for a pass phrase for the private key, becuase private keys are
+			generally stored encrypted. Further you have to enter information which will
+			identify the CA certificate. The resulting file will be in a format appropriate
+			to be imported into the Java keystore.
+<source><![CDATA[
+C:\OpenSSL\bin\openssl req -x509 -newkey dsa:c:\Security\dsaparam.pem -outform pem -keyout c:\Security\jadabs-cakey.pem -out c:\Security\jadabs-cacert.pem
+]]>
+</source>
+			In order to create a certificate request, we first need to generate a keypair.
+			Instead of specifying <code>maven-osgi</code> as the key alias, we could use
+			another name. This would require us to adapt the
+			<code>osgi.maven.security.keystoreAlias</code> property. As before, you will
+			be prompted for a password to the keystore, information about the holder of
+			this new keypair and a password for the private key. A <code>.keystore</code>
+			file in your home directory will be created.
+<source><![CDATA[
+%JAVA_HOME%\bin\keytool -genkey -alias maven-osgi
+]]>
+</source>
+			Now we can generate a certificate request using the keypair we created:
+<source><![CDATA[
+%JAVA_HOME%\bin\keytool -certreq -alias maven-osgi -file c:\Security\request.der
+]]>
+</source>
+			Signing the certificate request with the previously created private key of
+			the CA certificate (we define 365 days, the default of 30 days might be to
+			short):
+<source><![CDATA[
+C:\OpenSSL\bin\openssl x509 -out c:\Security\response.pem -outform pem -in c:\Security\request.der -inform der -days 365 -req -CA c:\Security\jadabs-cacert.pem -CAkey c:\Security\jadabs-cakey.pem -CAcreateserial
+]]>
+</source>
+			Before importing the certificate response, we have to import the certificate
+			belonging to the issuer, that is the CA certificate:
+<source><![CDATA[
+%JAVA_HOME%\bin\keytool -import -alias jadabs-ca -trustcacerts -file c:\Security\jadabs-cacert.pem
+]]>
+</source>			
+			To enable the Maven-OSGi plugin to access the signed certificate, we have
+			to import it into the keystore:
+<source><![CDATA[
+%JAVA_HOME%\bin\keytool -import -alias maven-osgi -file c:\Security\response.pem
+]]>
+</source>
+			That's it! With the following command we can have a look at what's in the
+			keystore:
+<source><![CDATA[
+%JAVA_HOME%\bin\keytool -list -v
+]]>
+</source>
+  		</p>
+	</subsection>
+	<subsection name="Distribution of certificates">
+		<p>
+			Trusted certificates have to be copied to the <code>repository/cert</code>
+			directory on the jadabs peers. At startup, all files in this directory
+			ending with <code>.cer</code> are loaded as certificates and their validity
+			(current time has to be between start- and enddate of the certificate
+			validity period) is checked. The trusted certificates are needed to verify
+			certificates that are used to check the signatures.
+		</p>
+		<p>
+			Certificates containing the public key to verify a signature are part of
+			the .obr file that normally comes together with the <code>.jar</code> file
+			containing the actual software bundle. Once extracted from the
+			<code>.obr</code> file, their validity is checked using the appropriate
+			trusted certificate (has to be present in the <code>repository/cert</code>
+			directory before startup) and added to the set of trusted certificates,
+			unless the certificate has not already been examined.
+		</p>
+		<p>
+			If you want to use proprietary certificates, make sure that the certificate
+			used for signing the bundles is in the Java keystore and the issuer
+			certificate is in a file ending with <code>.cer</code> in the 
+			<code>repository/cert</code> directory of your Jadabs peers.
+		</p>
+	</subsection>
+	</section>
+	</body>
+</document>
